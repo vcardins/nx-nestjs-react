@@ -1,0 +1,15 @@
+export const endpoints = {
+	signIn: 'auth/signin',
+	providerUri: 'auth/{provider}/uri',
+	providerSignin: 'auth/{provider}/signin',
+	signUp: 'account/signup',
+	verifyEmail: 'account/verify/email',
+	verifyPhoneNumber: 'account/verify/phone',
+	closeAccount: 'account/close',
+	reopenAccount: 'account/reopen',
+	resetPassword: 'account/reset-password',
+	forgotPassword: 'account/forgot-password',
+	changePassword: 'account/change-password',
+	// changePhoneNumber: 'account/change-phone-number',
+	profile: 'account/profile',
+};

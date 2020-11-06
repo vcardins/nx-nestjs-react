@@ -1,0 +1,93 @@
+{
+	"npmScope": "xapp",
+	"affected": {
+		"defaultBase": "master"
+	},
+	"implicitDependencies": {
+		"workspace.json": "*",
+		"package.json": {
+			"dependencies": "*",
+			"devDependencies": "*"
+		},
+		"tsconfig.base.json": "*",
+		"tslint.json": "*",
+		"nx.json": "*"
+	},
+	"tasksRunnerOptions": {
+		"default": {
+			"runner": "@nrwl/nx-cloud",
+			"options": {
+				"accessToken": "MTA1OTE5OTYtNmE4Ny00YTRmLTljNDQtMTUyMzMxMjc4MmM5fHJlYWQtd3JpdGU=",
+				"cacheableOperations": ["build", "test", "lint", "e2e"],
+				"canTrackAnalytics": false,
+				"showUsageWarnings": true
+			}
+		}
+	},
+	"projects": {
+		"api": {
+			"tags": ["type:library", "scope:api", "platform:server"]
+		},
+		"api-core": {
+			"tags": ["type:library", "scope:api", "platform:server"]
+		},
+		"api-auth": {
+			"tags": ["type:library", "scope:api", "platform:server"]
+		},
+		"api-config": {
+			"tags": ["type:library", "scope:api", "platform:server"]
+		},
+		"api-database": {
+			"tags": ["type:library", "scope:api", "platform:server"]
+		},
+		"api-notification": {
+			"tags": ["type:library", "scope:api", "platform:server"]
+		},
+		"api-files": {
+			"tags": ["type:library", "scope:api", "platform:server"]
+		},
+		"api-mail": {
+			"tags": ["type:library", "scope:api", "platform:server"]
+		},
+		"react-core": {
+			"tags": []
+		},
+		"react-auth": {
+			"tags": []
+		},
+		"shared-interfaces": {
+			"tags": []
+		},
+		"shared-enums": {
+			"tags": []
+		},
+		"shared-assets": {
+			"tags": []
+		},
+		"shared-exceptions": {
+			"tags": []
+		},
+		"shared-utils": {
+			"tags": []
+		},
+		"shared-config": {
+			"tags": []
+		},
+		"shared-services": {
+			"tags": []
+		},
+		"desktop": {
+			"tags": []
+		},
+		"desktop-e2e": {
+			"tags": [],
+			"implicitDependencies": ["desktop"]
+		},
+		"api-users": {
+			"tags": []
+		},
+		"api-access-control": {
+			"tags": []
+		}
+	}
+}

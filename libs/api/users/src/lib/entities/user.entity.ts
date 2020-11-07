@@ -17,12 +17,11 @@ import {
 
 import { BaseEntity } from '@xapp/api/core';
 import { VerificationKeyPurpose, ModuleAction } from '@xapp/shared/enums';
-import { NotificationRead, Notification } from '@xapp/api/notification';
+import { Group } from '@xapp/api/access-control';
 import { PublicFile } from '@xapp/api/files';
 
 import { LoggedIn } from './logged_in.entity';
 import { UserProfile } from './user_profile.entity';
-import { Group } from '@xapp/api/access-control';
 
 @Entity({ name: 'user' })
 export class User extends BaseEntity {
@@ -148,15 +147,6 @@ export class User extends BaseEntity {
 		eager: true,
 	})
 	userProfile: UserProfile;
-
-	@OneToMany('Notification', 'receiverUser')
-	notificationReceived: Notification[];
-
-	@OneToMany('Notification', 'senderUser', {cascade: true})
-	notificationsSent: Notification[];
-
-	@OneToMany('NotificationRead', 'user', {cascade: true})
-	notificationReads: NotificationRead[];
 
 	@BeforeInsert()
 	doBeforeInsertion() {

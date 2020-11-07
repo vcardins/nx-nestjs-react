@@ -24,7 +24,6 @@
 			"@xapp/api/core": ["libs/api/core/src/index.ts"],
 			"@xapp/api/database": ["libs/api/database/src/index.ts"],
 			"@xapp/api/mail": ["libs/api/mail/src/index.ts"],
-			"@xapp/api/notification": ["libs/api/notification/src/index.ts"],
 			"@xapp/api/files": ["libs/api/files/src/index.ts"],
 			"@xapp/react/auth": ["libs/react/auth/src/index.ts"],
 			"@xapp/react/core": ["libs/react/core/src/index.ts"],

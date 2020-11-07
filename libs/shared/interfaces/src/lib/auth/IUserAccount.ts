@@ -1,3 +1,5 @@
+import { VerificationKeyPurpose } from '@xapp/shared/enums';
+
 export interface IUserAccount {
 	username: string;
 	email: string;
@@ -20,9 +22,4 @@ export interface IUserAccount {
 	failedPasswordResetCount: number;
 	lastUpdateIp: string | null;
 	lastUpdated: Date | null;
-	groups: Group[];
-	loggedIns: LoggedIn[];
-	notificationReceived: Notification[];
-	notificationsSent: Notification[];
-	notificationReads: NotificationRead[];
 }

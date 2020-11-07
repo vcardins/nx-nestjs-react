@@ -230,27 +230,6 @@
 				}
 			}
 		},
-		"api-notification": {
-			"root": "libs/api/notification",
-			"sourceRoot": "libs/api/notification/src",
-			"projectType": "library",
-			"schematics": {},
-			"architect": {
-				"lint": {
-					"builder": "@nrwl/linter:eslint",
-					"options": {
-						"lintFilePatterns": ["libs/api/notification/**/*.ts"]
-					}
-				},
-				"test": {
-					"builder": "@nrwl/jest:jest",
-					"options": {
-						"jestConfig": "libs/api/notification/jest.config.js",
-						"passWithNoTests": true
-					}
-				}
-			}
-		},
 		"api-config": {
 			"root": "libs/api/config",
 			"sourceRoot": "libs/api/config/src",

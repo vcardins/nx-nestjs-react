@@ -40,9 +40,6 @@
 		"api-database": {
 			"tags": ["type:library", "scope:api", "platform:server"]
 		},
-		"api-notification": {
-			"tags": ["type:library", "scope:api", "platform:server"]
-		},
 		"api-files": {
 			"tags": ["type:library", "scope:api", "platform:server"]
 		},

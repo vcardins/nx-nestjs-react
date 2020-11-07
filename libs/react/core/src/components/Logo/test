@@ -1,0 +1,59 @@
+import React from 'react';
+import { IAppConfig } from '@xapp/api/core';
+import { Suspense, Menu, Avatar, Dropdown, IDropdownItem } from '@xapp/react/core';
+import { useHistory } from 'react-router-dom';
+const history = useHistory();
+
+activeRoute,
+routes,
+navigation,
+onSignOut,
+
+	const userProfileRoute = routes[USER_PROFILE];
+	const userSettingsRoute = routes[USER_SETTINGS];
+	const changePasswordRoute = routes[CHANGE_PASSWORD];
+
+	const menu = (
+		<Menu
+			items={navigation}
+			activeItem={activeRoute.path}
+			collapsed={false}
+			onBuildId={getNavId}
+		/>
+	);
+
+	const userAccountOptions: IDropdownItem[] = [
+		{
+			id: getNavId(userProfileRoute.key),
+			title: userProfileRoute.title,
+			icon: 'face',
+			onClick: () => history.push(userProfileRoute.path),
+		},
+		{
+			id: getNavId(userSettingsRoute.key),
+			title: userSettingsRoute.title,
+			icon: 'settings',
+			onClick: () => history.push(userSettingsRoute.path),
+		},
+		{
+			id: getNavId(changePasswordRoute.key),
+			title: changePasswordRoute.title,
+			icon: 'fingerprint',
+			onClick: () => history.push(changePasswordRoute.path),
+		},
+		{
+			id: getNavId('signOut'),
+			title: 'Sign Out',
+			icon: 'exit_to_app',
+			onClick: onSignOut,
+		},
+	];
+
+	<Dropdown options={userAccountOptions}>
+		<Avatar
+			id="header-avatar"
+			inverse
+			avatar={loggedUserFullName}
+			size={40}
+		/>
+	</Dropdown>

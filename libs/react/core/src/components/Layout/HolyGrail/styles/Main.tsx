@@ -1,0 +1,6 @@
+import styled from 'styled-components';
+
+export const Main = styled.main`
+	grid-area: main;
+	overflow: hidden;
+`;

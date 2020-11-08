@@ -12,6 +12,7 @@ import {
 import { UserGroup } from '@xapp/shared/enums';
 import { appConfig } from '@xapp/shared/config';
 import { LocalStorage, RestClient } from '@xapp/shared/services';
+import { INotifier, Notifier } from '@xapp/react/core';
 
 const {
 	apiMeta: {
@@ -27,7 +28,6 @@ const {
 	routes,
 } = appConfig;
 
-const api = new RestClient();
 /**
  * Performs User account api calls
  * @class AuthService
@@ -35,6 +35,18 @@ const api = new RestClient();
  * @implements {IAuthService}
  */
 class AuthService extends EventEmitter {
+	readonly api: RestClient;
+	readonly notifier: INotifier;
+
+	constructor() {
+		super();
+		this.notifier = new Notifier();
+		this.api = new RestClient({
+			onHandleException: this.handleExceptionDisplay.bind(this),
+			onHandleUnauthorizedAccess: this.handleExceptionDisplay.bind(this),
+		});
+	}
+
 	private handleAuthentication = () => {
 		if ( this.isUserSessionValid() ) {
 			this.emit('onAutoLogin');
@@ -64,12 +76,20 @@ class AuthService extends EventEmitter {
 	async getProviderUri(providerKey: string) {
 		const url = endpoints.providerUri.replace('{provider}', providerKey);
 		// eslint-disable-next-line camelcase
-		return await api.get<{redirect_uri: string}>({url});
+		return await this.api.get<{redirect_uri: string}>({url});
 	}
 
 	async getOauthAccessToken(providerKey: string, code: string) {
 		const url = endpoints.providerSignin.replace('{provider}', providerKey);
-		return api.post<{token: string}>({url, data: { code }});
+		return this.api.post<{token: string}>({url, data: { code }});
+	}
+
+	private async handleExceptionDisplay(
+		error?: Error,
+		statusCode?: number,
+	): Promise<void> {
+		this.notifier.reportError(error?.message || 'Could not complete action');
+		console.error(error, statusCode);
 	}
 
 	getUser() {
@@ -85,12 +105,12 @@ class AuthService extends EventEmitter {
 	isUserSessionValid(): boolean {
 		const accessToken = this.getAccessToken();
 
-		if ( !accessToken ) {
+		if (!accessToken) {
 			this.emit('onNoAccessToken');
 			return false;
 		}
 
-		const decoded: IJwtPayload = jwtDecode(accessToken);
+		const decoded = jwtDecode(accessToken) as IJwtPayload;
 		const currentTime = Date.now() / 1000;
 
 		return decoded.exp > currentTime;
@@ -126,13 +146,13 @@ class AuthService extends EventEmitter {
 			password,
 		};
 
-		const response = await api.post<IUserToken>({
+		const response = await this.api.post<IUserToken>({
 			url: endpoints.signIn,
 			data: payload,
 			options: { withoutCredentials: true },
 		});
 
-		const jwt: IJwtPayload = jwtDecode(response.access_token);
+		const jwt = jwtDecode(response.access_token) as IJwtPayload;
 
 		this.setSession(response.access_token, jwt.exp, rememberMe);
 		this.setUser(response.user);

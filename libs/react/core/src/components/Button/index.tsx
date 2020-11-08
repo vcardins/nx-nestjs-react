@@ -33,7 +33,7 @@ function Button({ children, type = 'button', onClick, ...props}: IButtonProps) {
 		buttonRef.current.appendChild(d);
 
 		d.addEventListener('animationend', () => {
-			d.parentElement.removeChild(d);
+			d?.parentElement?.removeChild(d);
 		});
 	}
 }

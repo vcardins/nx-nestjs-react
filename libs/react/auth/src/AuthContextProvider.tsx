@@ -47,7 +47,7 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
 	}, []);
 
 	const isSessionValid = useCallback(() => AuthService.isUserSessionValid(), []);
-	const getProviderUri = useCallback((provider: string) => AuthService.getProviderUri(provider),[]);
+	const getProviderUri = useCallback((provider: string) => AuthService.getProviderUri(provider), []);
 	const getOauthAccessToken = useCallback((provider: string, code: string) => AuthService.getOauthAccessToken(provider, code), []);
 
 	const value = useMemo<IAuthContext>(() => ({

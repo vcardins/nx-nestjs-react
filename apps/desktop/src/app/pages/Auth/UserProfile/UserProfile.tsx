@@ -7,9 +7,9 @@ import { AccountService } from '@xapp/react/auth';
 import { appContext } from '../../../AppContextProvider';
 
 const UserProfilePage = memo(() => {
-	const { userProfile, onUpdateUserProfile } = useContext(appContext);
+	const { user, onUpdateUserProfile } = useContext(appContext);
 	const {formData, handleSubmit, handleChange, errors, submitting, success} = useForm<IUserProfileInput>({
-		initialValues: userProfile,
+		initialValues: user.profile,
 		clearAfterSubmit: false,
 		onSubmit: async (data) => {
 			const response = await AccountService.updateProfile(data);

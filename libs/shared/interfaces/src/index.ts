@@ -4,7 +4,7 @@ export * from './lib/IDateRange';
 export * from './lib/IKeyPair';
 export * from './lib/IActionResponse';
 export * from './lib/IValidationError';
-// export * from './lib/ILookup';
+export * from './lib/ILookup';
 
 export * from './lib/auth/IAuthGroup';
 export * from './lib/auth/IChangePasswordInput';

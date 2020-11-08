@@ -86,7 +86,11 @@ export const Menu = (props: IMenuProps) => {
 				isHeading={type === DropdownItemTypes.Group}
 			>
 				<MenuItemContainer item={item}>
-					<MenuItemIcon path={icon} title={title} size={1}/>
+					<MenuItemIcon
+						icon={icon}
+						title={title}
+						size={20}
+					/>
 					<MenuItemTitle>{title}</MenuItemTitle>
 				</MenuItemContainer>
 				{ tree }

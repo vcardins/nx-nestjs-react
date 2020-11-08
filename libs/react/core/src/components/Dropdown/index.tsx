@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
-import Icon from '@mdi/react';
+import Icon from 'react-icons-kit';
+
 import { IDropdownItem } from '../../interfaces/IDropdownItem';
 import { useOuterClickNotifier } from '../../hooks/useOuterClickNotifier';
 import { DropdownItemTypes } from '../../enums/DropdownItemTypes';
@@ -32,7 +33,7 @@ interface IDropdownProps extends IDropdownListProps {
 	highlightOnHover?: boolean;
 }
 
-const DropdownList = React.memo(({
+export const DropdownList = React.memo(({
 	options = [],
 	size,
 	disabled,
@@ -58,7 +59,10 @@ const DropdownList = React.memo(({
 					<>
 						{icon && (
 							<IconWrapper>
-								<Icon path={icon} size={size === DropdownSizeStyle.Default ? 1 : 0.75} />
+								<Icon
+									icon={icon}
+									size={size === DropdownSizeStyle.Default ? 20 : 16}
+								/>
 							</IconWrapper>
 						)}
 						{title && !iconOnly && <LabelWrapper>{title}</LabelWrapper>}

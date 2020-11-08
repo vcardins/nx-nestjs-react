@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
-// import Icon from '@mdi/react';
 import Icon from 'react-icons-kit';
 
 const commonPadding = css`

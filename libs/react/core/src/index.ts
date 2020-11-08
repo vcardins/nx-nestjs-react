@@ -17,6 +17,8 @@ export * from './components/Suspense';
 export * from './components/UserCard';
 export * from './components/DebugRouter';
 
+export * from './components/Notifier';
+
 export * from './hooks/useForm';
 export * from './hooks/useKeyPress';
 export * from './hooks/useOnClickOutside';

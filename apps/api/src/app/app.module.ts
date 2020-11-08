@@ -13,6 +13,7 @@ import { ConfigModule } from '@xapp/api/config';
 import { AUTH_GUARD_TYPE } from '@xapp/api/auth';
 
 import { TodoModule } from './todos/todo.module';
+import { LookupModule } from './lookup/lookup.module';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -32,6 +33,7 @@ export class AppModule {
 				CoreModule.forRoot(options),
 				AuthModule.forRoot(options),
 				TodoModule,
+				LookupModule,
 				DatabaseModule.forRoot(),
 				AutomapperModule.withMapper(),
 			],

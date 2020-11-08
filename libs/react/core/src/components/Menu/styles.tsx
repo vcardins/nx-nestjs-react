@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import Icon from '@mdi/react';
+import Icon from 'react-icons-kit';
 
 import { DropdownItemTypes } from '../../enums/DropdownItemTypes';
 import { IDropdownItem } from '../../interfaces/IDropdownItem';

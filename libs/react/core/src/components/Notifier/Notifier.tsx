@@ -1,7 +1,7 @@
 import React from 'react';
 import { toast } from 'react-toastify';
-import Icon from '@mdi/react';
-import { mdiCloseCircle } from '@mdi/js';
+import Icon from 'react-icons-kit';
+import { ic_close } from 'react-icons-kit/md/ic_close';
 
 import { INotifier, INotifierCallback } from './INotifier';
 
@@ -43,8 +43,7 @@ export class Notifier implements INotifier {
 			<>
 				<Icon
 					style={{ verticalAlign: 'bottom', marginLeft: '1em' }}
-					path={mdiCloseCircle}
-					size={1.25}
+					icon={ic_close}
 				/>
 				<span
 					style={{

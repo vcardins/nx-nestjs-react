@@ -1,5 +1,5 @@
 import React from 'react';
-import Icon from '@mdi/react';
+import Icon from 'react-icons-kit';
 import styled, { css } from 'styled-components';
 
 // type SizeProp = 'mini' | 'small' | 'large' | 'big';
@@ -44,7 +44,11 @@ export function Logo ({
 		<LogoWrapper onClick={handleClick}>
 			{ icon &&
 				<span className="logo-icon">
-					<Icon path={icon} title={title} size={1}/>
+					<Icon
+						icon={icon}
+						title={title}
+						size={24}
+					/>
 				</span>
 			}
 			{ !icon &&

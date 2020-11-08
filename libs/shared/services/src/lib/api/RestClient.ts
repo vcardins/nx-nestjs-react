@@ -21,12 +21,17 @@ interface IRestClientProps {
 
 export class RestClient<TModel = any> {
 	public jsonContentType = 'application/json';
-	public authHeader: string;
-	public basePath: string;
-	private onHandleUnauthorizedAccess: (method: RestMethod, payload: IRestClientPayload) => Promise<any>;
+	public authHeader = '';
+	public basePath = '';
+	private onHandleUnauthorizedAccess: (method: RestMethod, payload: IRestClientPayload) => Promise<void>;
 	private onHandleException: IExceptionHandler;
 
-	constructor({authHeader, basePath, onHandleException, onHandleUnauthorizedAccess}: IRestClientProps = {}) {
+	constructor({
+		authHeader = '',
+		basePath = '',
+		onHandleException,
+		onHandleUnauthorizedAccess,
+	}: IRestClientProps = {}) {
 		this.authHeader = authHeader;
 		this.basePath = basePath;
 		this.onHandleException = onHandleException;
@@ -148,27 +153,21 @@ export class RestClient<TModel = any> {
 			case 403:
 			case 404:
 			case 500:
+			case 400:
+				const error = await response.json();
 				throw errorHandler?.(
-					new Error(errorMessages[response.status]),
+					new Error(error.message || errorMessages[response.status]),
 					response.status,
 				);
 			case 401:
 				// console.error('Access code has expired');
 				throw this.onHandleUnauthorizedAccess?.(method, payload);
-			case 400:
-				const error = await response.json();
-				throw errorHandler?.(
-					new Error(error),
-					response.status,
-				);
 			case 200:
 			case 201:
 			case 204:
-				const content = responseContentType.indexOf(this.jsonContentType) !== -1
+				return responseContentType.indexOf(this.jsonContentType) !== -1
 					? await response.json() as unknown as T
 					: await response.text() as unknown as T;
-
-				return content;
 		}
 	}
 

@@ -1,20 +1,18 @@
-import socketIOClient from 'socket.io-client';
+import { Socket } from 'socket.io-client/build/socket';
 
-import { IUserPreferences, IUserProfile } from '@xapp/shared/interfaces';
+import { IUserProfileInput, ISignedUserOutput, ILookup } from '@xapp/shared/interfaces';
 import { IRoute, IKeyedRoute } from '../interfaces/IRoute';
 import { INavItem } from '../interfaces/INavItem';
 
 export interface IAppContext<TDataContext> {
 	activeRoute: IRoute;
 	routes: IKeyedRoute;
-	socket: typeof socketIOClient.Socket;
-	userSettings: IUserPreferences;
-	userProfile: IUserProfile;
-	// lookup: ILookup;
+	socket: Socket;
+	user: ISignedUserOutput;
+	lookup: ILookup;
 	dataContext: TDataContext;
 	navigation: INavItem[];
-	onUpdateUserPreferences: (updates: Partial<IUserPreferences>) => void;
-	onUpdateUserProfile: (updates: Partial<IUserProfile>) => void;
+	onUpdateUserProfile: (updates: Partial<IUserProfileInput>) => void;
 	onActivateRoute?: (value: IRoute, location: string) => void;
 	onSignOut: (isTriggeredByExpiredSession?: boolean) => Promise<void>;
 }

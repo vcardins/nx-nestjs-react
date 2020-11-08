@@ -1,7 +1,6 @@
 import { IUserProfile } from './IUserProfile';
 import { IGroupWithPermissions } from './IGroupWithPermissions';
 
-/* eslint-disable immutable/no-mutation */
 export interface ISignedUserOutput {
 	id: number;
 	lastLogin: Date;

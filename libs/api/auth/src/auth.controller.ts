@@ -3,12 +3,10 @@ import { Request } from 'express';
 import { Body, Controller, Get, HttpCode, HttpStatus, Inject, Post, Req, Logger, Param } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { plainToClass } from 'class-transformer';
-import { JsonWebTokenError } from 'jsonwebtoken';
 
 import { OAuthProvider } from '@xapp/shared/enums';
 import { CORE_CONFIG_TOKEN, ICoreConfig, /*AccountOutput, GroupDto, */Public, SocketGateway } from '@xapp/api/core';
 import { UserDto } from '@xapp/api/users';
-import { IJwtPayload } from '@xapp/shared/interfaces';
 
 // import { FacebookTokenOutput } from '../dto/facebook-token.output';
 // import { FacebookSignInInput } from '../dto/facebook-signIn.input';
@@ -19,7 +17,6 @@ import { SignInInput } from './dto/signin.input';
 import { AuthService } from './auth.service';
 import { JwtTokenService } from './auth-tokens/jwt-token.service';
 import { UserTokenOutput } from './auth-tokens/dto/user-token.output';
-import { AccessTokenDto } from './auth-tokens/dto/access-token.dto';
 import { OAuthSignInInput } from './auth-tokens/dto/oauth-signIn.input';
 
 
@@ -43,6 +40,7 @@ export class AuthController {
 	private emit(event: string, data?: any) {
 		this.socketService?.server.emit('events', { module: 'Auth', event, data });
 	}
+
 	private getHost(req: Request) {
 		return req.get('origin') || `${this.coreConfig.protocol}://${req.get('host')}`;
 	}
@@ -58,26 +56,6 @@ export class AuthController {
 		const user = await this.authService.signIn(signInDto);
 
 		return this.getUserTokenDto(user);
-	}
-
-	@HttpCode(HttpStatus.OK)
-	@Post('info')
-	@ApiResponse({
-		status: HttpStatus.OK,
-		type: UserTokenOutput,
-		description: 'API View that checks the veracity of a token, returning the token if it is valid.',
-	})
-	async getUserInfo(@Body() tokenDto: AccessTokenDto): Promise<UserTokenOutput> {
-		const validateTokenResult = await this.tokenService.validate(tokenDto.access_token);
-
-		if (validateTokenResult) {
-			const jwtPayload: IJwtPayload = this.tokenService.decode(tokenDto.access_token);
-			const user = await this.authService.info(jwtPayload.id);
-
-			return this.getUserTokenDto(plainToClass(UserDto, user));
-		}
-
-		throw new JsonWebTokenError('invalid token');
 	}
 
 	@HttpCode(HttpStatus.OK)

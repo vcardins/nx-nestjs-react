@@ -1,13 +1,14 @@
 import { Controller, Patch, Body, Response, InternalServerErrorException } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiBadRequestResponse, ApiOperation } from '@nestjs/swagger';
+import { Entity } from 'typeorm';
 
 import { SocketGateway, baseAuthControllerFactory, ModuleGroup, getUtcDate, Roles, Permissions, ApiException } from '@xapp/api/core';
+import { getOperationId } from '@xapp/shared/utils';
 import { ModuleAction, ModuleName } from '@xapp/shared/enums';
+
 import { TodoService } from './todo.service';
 import { Todo } from './todo.entity';
 import { TodoOutput } from './todo.output';
-import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiBadRequestResponse, ApiOperation } from '@nestjs/swagger';
-import { getOperationId } from '@xapp/shared/utils';
-import { Entity } from 'typeorm';
 import { ITodoComplete } from './todo-complete.interface';
 
 const roles = [];

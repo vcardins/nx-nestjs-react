@@ -29,11 +29,15 @@ export class AccessGuard extends AuthGuard(AUTH_GUARD_TYPE) {
 			Logger.error('Error in canActivate', error.message, AccessGuard.name);
 		}
 
-		const module = this.reflector.get<ModuleName>('module', context.getClass());
+		// const module = this.reflector.get<ModuleName>('module', context.getClass());
 		const roles = this.reflector.get<string[]>('roles', context.getHandler()) || [];
 		const permissions = this.reflector.get<ModuleAction[]>('permissions', context.getHandler()) || [];
 
 		const user: User = request.user || null;
+
+		if (user && !roles.length && !permissions.length) {
+			return true;
+		}
 
 		const hasRoutePermission = permissions
 			? user instanceof User && user.checkPermissions(permissions)

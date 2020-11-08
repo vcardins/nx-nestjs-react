@@ -70,10 +70,7 @@ export abstract class BaseService<T extends BaseEntity> implements IBaseService<
 
 	async findById(id: IdType, options?: FindOneOptions): Promise<T> {
 		try {
-			let qb = this.queryBuilder || this.createQueryBuilder();
-			qb = qb.where(`${this.modelName}.id = :id`, { id, ...options });
-
-			return await qb.getOne();
+			return this.repository.findOne(id, options);
 		}
 		catch (error) {
 			throw new NotFoundException(error);

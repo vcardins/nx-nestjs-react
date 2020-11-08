@@ -4,9 +4,10 @@ export interface IUserProfileInput {
 	firstName?: string;
 	lastName?: string;
 	mobile?: string;
+	displayName?: string;
 	bio?: string;
 	dateOfBirth?: string;
-	pictureUrl: string;
+	pictureUrl?: string;
 	locale?: string;
 	preferences?: IUserPreferences;
 }

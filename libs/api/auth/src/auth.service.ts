@@ -17,7 +17,7 @@ import { GOOGLE_CONFIG_TOKEN } from './auth-tokens/configs/google.config';
 import { IGoogleConfig } from './auth-tokens/interfaces/google-config.interface';
 import { JwtTokenService } from './auth-tokens/jwt-token.service';
 
-import { User, UserDto, UserProfile, UserProfileDto, UserService } from '@xapp/api/users';
+import { User, UserDto, UserProfile, UserService } from '@xapp/api/users';
 import { RedirectUriOutput } from './dto/redirect-uri.output';
 import { SignInInput, SignUpInput } from './dto';
 
@@ -45,7 +45,7 @@ export class AuthService {
 	}
 
 	async info(id: number) {
-		return this.userService.findById(id);
+		return await this.userService.findById(id);
 	}
 
 	async signIn({ email, password }: SignInInput): Promise<UserDto> {
@@ -72,25 +72,10 @@ export class AuthService {
 		}
 
 		const { userProfile, groups, ...rest } = user;
+
 		await this.userService.update(user.id, {...rest, lastLogin: getUtcDate()});
 
-		return plainToClass(UserDto, {
-			id: rest.id,
-			dateJoined: rest.dateJoined,
-			isActive: rest.isActive,
-			isSuperuser: rest.isSuperuser,
-			lastLogin: rest.lastLogin,
-			username: rest.username,
-			email: rest.email,
-			groups: groups.map((group) => ({
-				...group,
-				permissions: group.permissions.map(({action, module}) => ({
-					action,
-					module,
-				})),
-			})),
-			profile: plainToClass(UserProfileDto, userProfile),
-		});
+		return this.userService.getUserDto(user);
 	}
 
 	async signUp(userInfo: Omit<SignUpInput, 'confirmPassword'>) {

@@ -2,7 +2,7 @@ import { ConflictException, Injectable, NotFoundException, InternalServerErrorEx
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindOneOptions } from 'typeorm';
 import { InjectMapper } from 'nestjsx-automapper';
-import { Express } from 'express';
+// import { Express } from 'express';
 import * as argon2 from 'argon2';
 
 import { IFindAndCountResult, IPaginationQuery, BaseService } from '@xapp/api/core';
@@ -10,6 +10,9 @@ import { getUtcDate } from '@xapp/shared/utils';
 import { FilesService } from '@xapp/api/files';
 
 import { User } from './entities/user.entity';
+import { plainToClass } from 'class-transformer';
+import { UserDto } from './dto/user.dto';
+import { UserProfileDto } from './dto/user-profile.dto';
 // import { UserDto } from '../dto/user.dto';
 
 const userAuthRelations = ['groups', 'groups.permissions', 'userProfile'];
@@ -222,6 +225,23 @@ export class UserService extends BaseService<User> {
 	async removeRefreshToken(userId: number) {
 		return this.repository.update(userId, {
 			currentHashedRefreshToken: null,
+		});
+	}
+
+	getUserDto(user: User): UserDto {
+		const { userProfile, groups = [], id, dateJoined, isActive, isSuperuser, lastLogin, username, email } = user;
+
+		return plainToClass(UserDto, {
+			id, dateJoined, isActive, isSuperuser, lastLogin,
+			username, email,
+			groups: groups.map((group) => ({
+				...group,
+				permissions: group.permissions.map(({action, module}) => ({
+					action,
+					module,
+				})),
+			})),
+			profile: plainToClass(UserProfileDto, userProfile),
 		});
 	}
 }

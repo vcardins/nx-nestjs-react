@@ -4,9 +4,10 @@ import { InjectMapper } from 'nestjsx-automapper';
 import { Repository } from 'typeorm';
 
 import { BaseService } from '@xapp/api/core';
-import { Todo } from './todo.entity';
 import { getUtcDate } from '@xapp/shared/utils';
+
 import { ITodoComplete } from './todo-complete.interface';
+import { Todo } from './todo.entity';
 
 @Injectable()
 export class TodoService extends BaseService<Todo> {

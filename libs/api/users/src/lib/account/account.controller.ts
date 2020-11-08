@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Req, Patch, UseInterceptors, UploadedFile, Delete } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, Req, Patch, UseInterceptors, UploadedFile, Delete, Get } from '@nestjs/common';
 import { ApiBearerAuth, ApiResponse, ApiTags, ApiConsumes } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { plainToClass } from 'class-transformer';
@@ -18,6 +18,7 @@ import { VerifyPhoneNumberInput } from './dto/verify-phone-number.input';
 import { AccountService } from './account.service';
 import { UserService } from '../user.service';
 import { User } from '../entities/user.entity';
+import { UserDto } from '../dto/user.dto';
 
 @ApiTags('account')
 @Controller('/account')
@@ -45,6 +46,19 @@ Returns a JSON Web Token that can be used for authenticated requests.`,
 				data: user.verificationKey,
 			};
 		}
+	}
+
+	@ApiBearerAuth()
+	@HttpCode(HttpStatus.OK)
+	@Get('info')
+	@ApiResponse({
+		status: HttpStatus.OK,
+		type: UserDto,
+		description: 'API View that checks the veracity of a token, returning the token if it is valid.',
+	})
+	async getUserInfo(@Req() req): Promise<UserDto> {
+		const user = await this.userService.findById(req.user?.id);
+		return this.userService.getUserDto(user);
 	}
 
 	@ApiBearerAuth()

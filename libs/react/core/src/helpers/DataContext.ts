@@ -1,7 +1,6 @@
 /* eslint-disable immutable/no-mutation */
 import { RestClient, RestMethod, IRestClientPayload } from '@xapp/shared/services';
-import { INotifier } from '../components/Notifier/INotifier';
-import { Notifier } from '../components/Notifier/Notifier';
+import { INotifier, Notifier } from '../components/Notifier';
 
 // const sanitizeId = (id: string) => (!id ? id : id.replace(/-/g, ''));
 
@@ -23,11 +22,11 @@ export interface IDataContextProps {
 }
 
 export class DataContext<TOutput = any, TInput = any> implements IDataContext<TOutput, TInput> {
+	public readonly api: RestClient;
 	public readonly notifier: INotifier;
 	private basePath: string;
 	private accessToken: string;
 	private refreshToken: string;
-	public api: RestClient;
 
 	private onUpdateAccessToken: (accessToken: string) => void;
 
@@ -47,20 +46,20 @@ export class DataContext<TOutput = any, TInput = any> implements IDataContext<TO
 		});
 	}
 
-	readAll = async (payload?: IRestClientPayload<TInput>): Promise<TOutput[]> =>
-		this.api.get<TInput>(payload);
+	readAll = async <T>(payload?: IRestClientPayload<TInput>): Promise<TOutput[]> =>
+		this.api.get<T | TInput>(payload);
 
-	read = async (payload?: IRestClientPayload<TInput>): Promise<TOutput> =>
-		this.api.get<TInput>(payload);
+	read = async <T>(payload?: IRestClientPayload<TInput>): Promise<TOutput> =>
+		this.api.get<T | TInput>(payload);
 
-	create = async (payload?: IRestClientPayload<TInput>): Promise<TOutput> =>
-		this.api.post<TInput>(payload);
+	create = async <T>(payload?: IRestClientPayload<TInput>): Promise<TOutput> =>
+		this.api.post<T | TInput>(payload);
 
-	patch = async (payload?: IRestClientPayload<TInput>): Promise<TOutput> =>
-		this.api.patch<TInput>(payload);
+	patch = async <T>(payload?: IRestClientPayload<TInput>): Promise<TOutput> =>
+		this.api.patch<T | TInput>(payload);
 
-	update = async (payload?: IRestClientPayload<TInput>): Promise<TOutput> =>
-		this.api.put<TInput>(payload);
+	update = async <T>(payload?: IRestClientPayload<TInput>): Promise<TOutput> =>
+		this.api.put<T | TInput>(payload);
 
 	delete = async (id: string | number): Promise<TOutput> =>
 		this.api.delete({ data: id });
@@ -75,7 +74,7 @@ export class DataContext<TOutput = any, TInput = any> implements IDataContext<TO
 	private async handleExceptionDisplay(
 		error?: Error,
 		statusCode?: number,
-	): Promise<any> {
+	): Promise<void> {
 		this.notifier.reportError(error?.message || 'Could not complete action');
 		console.error(error, statusCode);
 	}
@@ -83,7 +82,7 @@ export class DataContext<TOutput = any, TInput = any> implements IDataContext<TO
 	private async handleUnauthorizedAccess(
 		method: RestMethod,
 		payload: IRestClientPayload<TInput>,
-	): Promise<any> {
+	): Promise<void> {
 		this.notifier.reportError('Access Forbidden');
 		// if (!this.refreshToken) {
 		// 	return;

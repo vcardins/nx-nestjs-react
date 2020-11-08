@@ -29,7 +29,6 @@ export const ApiMeta = (): IAppConfig['apiMeta'] => ({
 	authTokenKey: 'access_token',
 	userSettingsStorageKey: `${CODE}_settings`,
 	userInfoStorageKey: `${CODE}_user`,
-	authHeader: 'Authorization',
 	authToken: 'Bearer',
 	websocketEndpoint: baseUrl,
 });

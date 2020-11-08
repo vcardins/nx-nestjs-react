@@ -9,7 +9,6 @@ export interface IRestApiHeaderConfig {
 	port?: string;
 	grantType:  string;
 	websocketEndpoint?: string;
-	authHeader: string;
 	authToken: string;
 	authTokenKey: string;
 	accessTokenStorageKey: string;

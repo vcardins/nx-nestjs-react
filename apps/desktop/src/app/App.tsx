@@ -9,10 +9,10 @@ import { ToastContainer, Slide } from 'react-toastify';
 
 export const App = () => (
 	<AppProviders>
+		<GlobalStyle />
 		<Authorization routes={routes}>
 			{({user, onSignOut}: IAuthContext) => (
 				<Authentication splashScreen={SplashScreen}>
-					<GlobalStyle />
 					<Layout
 						routes={routes}
 						user={user}

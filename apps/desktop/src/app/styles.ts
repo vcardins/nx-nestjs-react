@@ -19,15 +19,6 @@ export const globalStyle = createGlobalStyle`
 	}
 
 	@font-face {
-		font-family: 'Material Icons';
-		font-style: normal;
-		font-weight: 400;
-		src:
-		local('Material Icons'),
-		local('MaterialIcons-Regular');
-	}
-
-	@font-face {
 		font-family: 'Lato';
 		font-style: normal;
 		font-weight: 300;
@@ -94,26 +85,5 @@ export const globalStyle = createGlobalStyle`
 
 	fieldset {
 		border: 0;
-	}
-
-	@keyframes progress-linear {
-		0% {
-			background-size: 200% 100%;
-			background-position: left -31.25% top 0%;
-		}
-
-		50% {
-			background-size: 800% 100%;
-			background-position: left -49% top 0%;
-		}
-
-		100% {
-			background-size: 400% 100%;
-			background-position: left -102% top 0%;
-		}
-	}
-
-	.material-icons {
-		font-size: 12px;
 	}
 `;

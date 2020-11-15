@@ -3,13 +3,13 @@ import { Center } from '../Center';
 import { Code, Emoji, Title, Message } from './styles';
 import { Link } from 'react-router-dom';
 
-type IProps = {
+type IErrorProps = {
 	code: string;
 	title?: string;
 	message: string;
 };
 
-const Error = ({ code, title = 'Ooooops!', message }: IProps) => (
+export const Error = ({ code, title = 'Ooooops!', message }: IErrorProps) => (
 	<Center width={400} unit="px">
 		<Emoji>😭</Emoji>
 		<Code>Error {code}</Code>
@@ -18,5 +18,3 @@ const Error = ({ code, title = 'Ooooops!', message }: IProps) => (
 		<Link to="/">Return to Home</Link>
 	</Center>
 );
-
-export { Error };

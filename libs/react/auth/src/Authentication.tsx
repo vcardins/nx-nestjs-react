@@ -4,7 +4,7 @@ import { AuthService } from './services/AuthService';
 
 interface IProps {
 	splashScreen: any;
-	children: any;
+	children: React.ReactElement;
 }
 
 const showMessage = (message: string) => console.info(message);

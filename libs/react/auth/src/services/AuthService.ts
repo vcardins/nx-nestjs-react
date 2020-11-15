@@ -160,17 +160,15 @@ class AuthService extends EventEmitter {
 		return response;
 	}
 
-	signInWithToken = (): Promise<ISignedUserOutput> => {
-		return new Promise((resolve, reject) => {
-			if ( this.isUserSessionValid() ) {
-				this.setSession();
-				resolve(this.getUser());
-			}
-			else {
-				reject();
-			}
-		});
-	}
+	signInWithToken = (): Promise<ISignedUserOutput> => new Promise((resolve, reject) => {
+		if ( this.isUserSessionValid() ) {
+			this.setSession();
+			resolve(this.getUser());
+		}
+		else {
+			reject();
+		}
+	});
 
 	signOut(message?: any): Promise<IActionResponse<any>> {
 		return new Promise((resolve) => {

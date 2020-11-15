@@ -20,6 +20,7 @@
 		"@typescript-eslint/explicit-module-boundary-types": "off",
 		"@typescript-eslint/explicit-function-return-type": "off",
 		"@typescript-eslint/no-parameter-properties": "off",
+		"@typescript-eslint/no-use-before-define": "on",
 		"@nrwl/nx/enforce-module-boundaries": [
 			"warn",
 			{
@@ -162,7 +163,6 @@
 		"no-undef-init": "off",
 		"no-undefined": "off",
 		"no-unused-vars": "error",
-		"no-use-before-define": ["error", "nofunc"],
 
 		// Node.js and CommonJS
 		// These rules relate to code running in Node.js, or in browsers with CommonJS:

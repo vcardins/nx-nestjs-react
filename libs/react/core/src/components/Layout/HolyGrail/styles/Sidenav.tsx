@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
-import Icon from 'react-icons-kit';
+import { Icon } from '../../../../components/Icon';
 
 const commonPadding = css`
 	padding: 0 ${({ theme }) => theme.spacing.normal };
@@ -74,7 +74,7 @@ export const Sidenav = {
 };
 
 /* Brand Styles */
-const BrandIcon = styled(Icon).attrs<{id: string}>(({id}) => ({id}))`
+const BrandIcon = styled(Icon)`
 	margin-top: 2px;
 	color: rgba(255, 255, 255, 0.75);
 `;

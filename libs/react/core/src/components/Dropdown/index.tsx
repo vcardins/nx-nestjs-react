@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import Icon from 'react-icons-kit';
 
 import { IDropdownItem } from '../../interfaces/IDropdownItem';
 import { useOuterClickNotifier } from '../../hooks/useOuterClickNotifier';
@@ -15,6 +14,7 @@ import {
 	IconWrapper,
 	LabelWrapper,
 } from './styles';
+import { Icon } from '../../components/Icon';
 
 interface IDropdownListProps {
 	selectedItem?: string;

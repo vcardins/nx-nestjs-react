@@ -1,8 +1,6 @@
 import React from 'react';
-import Icon from 'react-icons-kit';
 import styled, { css } from 'styled-components';
-
-// type SizeProp = 'mini' | 'small' | 'large' | 'big';
+import { Icon } from '../../components/Icon';
 
 interface Props {
 	size?: number;
@@ -33,7 +31,7 @@ export function Logo ({
 	title = '',
 	icon = '',
 	onClick,
-}: Props): JSX.Element {
+}: Props) {
 	function handleClick() {
 		if (typeof onClick === 'function') {
 			onClick();

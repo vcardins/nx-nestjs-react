@@ -1,9 +1,10 @@
 import React from 'react';
 import { toast } from 'react-toastify';
-import Icon from 'react-icons-kit';
+
 import { ic_close } from 'react-icons-kit/md/ic_close';
 
 import { INotifier, INotifierCallback } from './INotifier';
+import { Icon } from '../../components/Icon';
 
 /**
  * Notifier class

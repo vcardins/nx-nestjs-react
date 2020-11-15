@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import React, { useState } from 'react';
 import screenfull from 'screenfull';
-import Icon from 'react-icons-kit';
+import { Icon } from '../../../components/Icon';
 
 import { ic_fullscreen } from 'react-icons-kit/md/ic_fullscreen';
 import { ic_fullscreen_exit } from 'react-icons-kit/md/ic_fullscreen_exit';

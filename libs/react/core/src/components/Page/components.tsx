@@ -31,7 +31,7 @@ export const PageIcon = ({ icon }: { icon?: string }) => {
 
 	return (
 		<PageWrapper>
-			<Icon name={icon}/>
+			<Icon icon={icon}/>
 		</PageWrapper>
 	);
 };

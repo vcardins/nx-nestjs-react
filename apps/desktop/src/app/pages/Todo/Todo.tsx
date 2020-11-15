@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
 import React, { memo, useEffect, useState, useRef, useCallback } from 'react';
-import Icon from 'react-icons-kit';
 import styled, {css} from 'styled-components';
 
 import { ic_delete } from 'react-icons-kit/md/ic_delete';
@@ -9,7 +8,7 @@ import { ic_check_box } from 'react-icons-kit/md/ic_check_box';
 import { ic_send } from 'react-icons-kit/md/ic_send';
 import { ic_refresh } from 'react-icons-kit/md/ic_refresh';
 
-import { Page, Form, TextInput, FieldGroup, Submit, useForm, Button } from '@xapp/react/core';
+import { Page, Form, TextInput, FieldGroup, Submit, useForm, Button, Icon } from '@xapp/react/core';
 import { DateFormatter, formatDate } from '@xapp/react/core';
 import { InlineEdit } from '@xapp/react/core';
 

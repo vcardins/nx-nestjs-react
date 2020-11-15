@@ -8,7 +8,7 @@ export const LinearProgressContainer = styled.div`
 	>* { text-align: center; }
 `;
 
-export const LinearProgressBar = styled.progress`
+export const LinearProgressShape = styled.progress`
 	appearance: none;
 	border: none;
 	height: 0.25em;
@@ -45,6 +45,23 @@ export const LinearProgressBar = styled.progress`
 
 		&::-ms-fill {
 			animation-name: none;
+		}
+	}
+
+	@keyframes progress-linear {
+		0% {
+			background-size: 200% 100%;
+			background-position: left -31.25% top 0%;
+		}
+
+		50% {
+			background-size: 800% 100%;
+			background-position: left -49% top 0%;
+		}
+
+		100% {
+			background-size: 400% 100%;
+			background-position: left -102% top 0%;
 		}
 	}
 `;

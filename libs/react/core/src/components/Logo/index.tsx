@@ -6,6 +6,7 @@ interface Props {
 	size?: number;
 	title?: string;
 	icon?: string;
+	logo?: string;
 	onClick?: () => void;
 }
 
@@ -26,31 +27,20 @@ const LogoTitle = styled.span`
 	font-weight: bold;
 `;
 
-export function Logo ({
-	size = 1,
-	title = '',
-	icon = '',
-	onClick,
-}: Props) {
-	function handleClick() {
-		if (typeof onClick === 'function') {
-			onClick();
-		}
-	}
+export function Logo (props: Props) {
+	const { size = 24, title, icon = '', logo = '/assets/images/logo.svg' } = props;
 
 	return (
-		<LogoWrapper onClick={handleClick}>
+		<LogoWrapper onClick={() => props.onClick?.()}>
 			{ icon &&
-				<span className="logo-icon">
-					<Icon
-						icon={icon}
-						title={title}
-						size={24}
-					/>
-				</span>
+				<Icon
+					icon={icon}
+					title={title}
+					size={24}
+				/>
 			}
 			{ !icon &&
-				<Img size={size} src="/assets/images/logo.svg"/>
+				<Img size={size} src={logo}/>
 			}
 			{ title && <LogoTitle>{title}</LogoTitle>}
 		</LogoWrapper>

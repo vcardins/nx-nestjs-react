@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { Wrapper } from './styles';
 import { useTimeout } from '../../hooks/useTimeout';
-import { LinearProgress } from '../LinearProgress';
+import { Progress } from '../Progress';
+import { ProgressType } from '../Progress/ProgressType';
 
-type IProps = {
+interface IPageLoadingProps {
 	delay?: number;
 	message?: string;
-};
+}
 
-export function PageLoading({ delay = 10, message }: IProps) {
+export function PageLoading({ delay = 10, message }: IPageLoadingProps) {
 	const [showLoading, setShowLoading] = useState(delay <= 0);
 
 	useTimeout(() => {
@@ -21,7 +22,10 @@ export function PageLoading({ delay = 10, message }: IProps) {
 
 	return (
 		<Wrapper>
-			<LinearProgress message={message}/>
+			<Progress
+				type={ProgressType.Linear}
+				message={message}
+			/>
 		</Wrapper>
 	);
 }

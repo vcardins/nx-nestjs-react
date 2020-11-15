@@ -1,5 +1,9 @@
-/* eslint-disable no-undef */
 import React from 'react';
+
+import { Wrapper, LogoWrapper } from './styles';
+
+import { Progress } from '../Progress';
+import { ProgressType } from '../Progress/ProgressType';
 
 type ISplashScreenProps = {
 	logo?: string;
@@ -7,29 +11,15 @@ type ISplashScreenProps = {
 };
 
 export function SplashScreen({
-	logo = '', // /assets/images/logo.svg
+	logo = '/assets/images/logo.svg',
 	size = '128',
 }: ISplashScreenProps) {
 	return (
-		<div>
-			<div className="center">
-				<div className="logo">
-					<img width={size} src={logo} alt="logo"/>
-				</div>
-				<div className="spinner-wrapper">
-					<div className="spinner">
-						<div className="inner">
-							<div className="gap"/>
-							<div className="left">
-								<div className="half-circle"/>
-							</div>
-							<div className="right">
-								<div className="half-circle"/>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+		<Wrapper>
+			<LogoWrapper>
+				<img width={size} src={logo} alt="logo"/>
+			</LogoWrapper>
+			<Progress type={ProgressType.Spin} />
+		</Wrapper>
 	);
 }

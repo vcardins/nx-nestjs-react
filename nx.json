@@ -40,6 +40,9 @@
 			"library": {
 				"style": "styled-components",
 				"linter": "eslint"
+		},
+		"mobile": {
+			"tags": []
 			}
 		}
 	},

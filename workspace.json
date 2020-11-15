@@ -679,6 +679,66 @@
 						"lintFilePatterns": ["apps/web-e2e/**/*.{js,ts}"]
 					}
 				}
+		},
+		"mobile": {
+			"root": "apps/mobile",
+			"sourceRoot": "apps/mobile/src",
+			"projectType": "application",
+			"schematics": {},
+			"architect": {
+				"start": {
+					"builder": "@nrwl/react-native:start",
+					"options": {
+						"port": 8081
+					}
+				},
+				"run-ios": {
+					"builder": "@nrwl/react-native:run-ios",
+					"options": {}
+				},
+				"bundle-ios": {
+					"builder": "@nrwl/react-native:bundle",
+					"outputs": ["apps/mobile/build"],
+					"options": {
+						"entryFile": "apps/mobile/index.js",
+						"platform": "ios",
+						"bundleOutput": "dist/apps/mobile/ios/index.bundle"
+					}
+				},
+				"run-android": {
+					"builder": "@nrwl/react-native:run-android",
+					"options": {}
+				},
+				"build-android": {
+					"builder": "@nrwl/react-native:build-android",
+					"outputs": [
+						"apps/mobile/android/app/build/outputs/bundle",
+						"apps/mobile/android/app/build/outputs/apk"
+					],
+					"options": {}
+				},
+				"bundle-android": {
+					"builder": "@nrwl/react-native:bundle",
+					"options": {
+						"entryFile": "apps/mobile/index.js",
+						"platform": "android",
+						"bundleOutput": "dist/apps/mobile/android/index.bundle"
+					}
+				},
+				"lint": {
+					"builder": "@nrwl/linter:eslint",
+					"options": {
+						"lintFilePatterns": ["apps/mobile/**/*.{js,ts,tsx}"]
+					}
+				},
+				"test": {
+					"builder": "@nrwl/jest:jest",
+					"options": {
+						"jestConfig": "apps/mobile/jest.config.js",
+						"passWithNoTests": true
+					}
+				}
+			}
 			},
 			"tags": [],
 			"implicitDependencies": ["web"]

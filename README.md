@@ -4,7 +4,22 @@
 1. https://github.com/lujakob/nestjs-realworld-example-app
 1. https://blog.nrwl.io/building-angular-and-react-applications-together-with-nx-78b5578de598
 
-Inspirations:
+## commit lint conventional
+https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional
+Commit Types:
+[
+  'build',
+  'ci',
+  'chore',
+  'docs',
+  'feat',
+  'fix',
+  'perf',
+  'refactor',
+  'revert',
+  'style',
+  'test'
+];
 
 This project was generated using [Nx](https://nx.dev).
 

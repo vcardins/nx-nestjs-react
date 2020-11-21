@@ -1,5 +1,6 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { use } from 'passport';
+// https://github.com/iMichaelOwolabi/google-oauth-nestjs
 import { Strategy, StrategyOptionsWithRequest } from 'passport-google-oauth20';
 import { plainToClass } from 'class-transformer';
 

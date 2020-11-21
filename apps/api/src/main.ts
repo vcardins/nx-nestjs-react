@@ -23,7 +23,10 @@ async function bootstrap() {
 	const appOptions = { cors: true };
 	const app = await NestFactory.create<NestExpressApplication>(
 		AppModule.forRoot({
-			providers: [...apiConfig.core.providers(), ...apiConfig.auth.providers()],
+			providers: [
+				...apiConfig.core.providers(),
+				...apiConfig.auth.providers(),
+			],
 			passportProviders: apiConfig.auth.passportProviders(),
 		}),
 		appOptions,

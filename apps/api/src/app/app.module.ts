@@ -18,9 +18,14 @@ import { LookupModule } from './lookup/lookup.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
+interface IAppModuleProps{
+	providers: Provider[];
+	passportProviders: Provider[];
+}
+
 @Module({})
 export class AppModule {
-	static forRoot(options:{providers: Provider[]; passportProviders: Provider[]}): DynamicModule {
+	static forRoot(options: IAppModuleProps): DynamicModule {
 		return {
 			module: AppModule,
 			imports: [

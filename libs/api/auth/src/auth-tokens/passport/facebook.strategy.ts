@@ -31,7 +31,12 @@ export class FacebookStrategy {
 					clientID: this.fbConfig.clientID,
 					clientSecret: this.fbConfig.clientSecret,
 				},
-				async (accessToken: string, refreshToken: string, profile: any, done) => {
+				async (
+					accessToken: string,
+					refreshToken: string,
+					profile: any,
+					done: any,
+				) => {
 					// Logger.log(JSON.stringify(profile), FacebookStrategy.name);
 					if (!profile.id) {
 						done(null, null);

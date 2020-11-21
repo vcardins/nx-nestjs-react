@@ -8,7 +8,7 @@ import { ModuleAction, ModuleName } from '@xapp/shared/enums';
 
 import { TodoService } from './todo.service';
 import { Todo } from './todo.entity';
-import { TodoOutput } from './todo.output';
+import { TodoOutput } from '../dto/todo.output';
 import { ITodoComplete } from './todo-complete.interface';
 
 const roles = [];

@@ -19,6 +19,7 @@ export function getTypeOrmModule(entities: ConnectionOptions['entities'] ) {
 export class DatabaseModule {
 	static forRoot(entities: ConnectionOptions['entities'] = []): DynamicModule {
 		return {
+			global: true,
 			module: DatabaseModule,
 			imports: [
 				getTypeOrmModule(entities)

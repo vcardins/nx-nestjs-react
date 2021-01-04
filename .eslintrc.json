@@ -2,11 +2,11 @@
 	"root": true,
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
-		"ecmaVersion": 2018,
+		"ecmaVersion": 2020,
 		"sourceType": "module",
 		"project": "./tsconfig.*?.json"
 	},
-	"ignorePatterns": ["**/*"],
+	"ignorePatterns": ["node_modules/*", "!.prettierrc.js"], // We don't want to lint generated files nor node_modules, but we want to lint .prettierrc.js (ignored by default by eslint)
 	"plugins": ["@typescript-eslint", "@nrwl/nx"],
 	"extends": [
 		"eslint:recommended",
@@ -374,6 +374,7 @@
 		{
 			"files": ["*.tsx"],
 			"rules": {
+				"no-use-before-define": "off",
 				"@typescript-eslint/no-unused-vars": "off"
 			}
 		},
@@ -388,6 +389,9 @@
 		},
 		{
 			"files": ["*.ts", "*.tsx"],
+			"plugins": [
+				"@typescript-eslint"
+			],
 			"rules": {
 				"default-param-last": "off",
 				"prefer-exponentiation-operator": "off"

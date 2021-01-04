@@ -1,4 +1,4 @@
-import { TodoOutput } from './todo.output';
+import { TodoOutput } from './dto/todo.output';
 
 export interface ITodoComplete {
 	id: TodoOutput['id'];

@@ -36,7 +36,6 @@ const Container = styled.div`
 				${MenuItemTitle} {
 					opacity: 0;
 				}
-				}
 			}
 		}
 
@@ -53,10 +52,6 @@ const Container = styled.div`
 			${Sidenav.Container} {
 				width: ${({ theme }) => theme.sizes.sideNav.expanded };
 			}
-		}
-
-		${Header.Menu} {
-			display: none;
 		}
 
 		${Sidenav.Container},

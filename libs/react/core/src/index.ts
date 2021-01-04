@@ -44,6 +44,8 @@ export * from './interfaces/IRoutedPageProps';
 export * from './interfaces/IToolbar';
 export * from './interfaces/IThemeContext';
 
+export * from './types/ActionMap';
+
 export * from './config/PageKey';
 export * from './config/PageMeta';
 

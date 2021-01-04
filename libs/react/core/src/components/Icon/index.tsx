@@ -5,6 +5,7 @@ import IconKit, { IconProp } from 'react-icons-kit';
 interface IExtendedIconProps extends IconProp {
 	id?: string;
 	title?: string;
+	inverse?: boolean;
 }
 
 const ExtendedIcon = styled(IconKit)<IExtendedIconProps>`

@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Icon } from '../../../../components/Icon';
+import { Icon } from '../../../Icon';
 
 const commonPadding = css`
 	padding: 0 ${({ theme }) => theme.spacing.normal };
@@ -130,7 +130,9 @@ type TypeId = {id?: string};
 
 /* Link Styles */
 const ActionIcon = styled(Icon).attrs<TypeId>(({id}) => ({id}))`
-	color: rgba(255, 255, 255, 0.75);
+	${({inverse}) => !inverse && css`
+		color: rgba(255, 255, 255, 0.75);
+	`}
 `;
 
 const ActionAnchor = styled(Link)`

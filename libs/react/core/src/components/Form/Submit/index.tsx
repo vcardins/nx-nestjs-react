@@ -13,14 +13,13 @@ interface ISubmit {
 export const Submit = ({
 	id,
 	loading,
-	success,
+	// success,
 	children = 'Submit',
 	loadingText = 'Submitting ...',
 }: ISubmit) => (
 	<Button
-		id={id || name}
+		id={id}
 		disabled={loading}
-		name={name}
 		type="submit"
 	>
 		{

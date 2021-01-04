@@ -1,14 +1,11 @@
 /* eslint-disable camelcase */
 import React, { useState } from 'react';
 import screenfull from 'screenfull';
-import { Icon } from '../../../components/Icon';
 
 import { ic_fullscreen } from 'react-icons-kit/md/ic_fullscreen';
 import { ic_fullscreen_exit } from 'react-icons-kit/md/ic_fullscreen_exit';
 import { ic_exit_to_app } from 'react-icons-kit/md/ic_exit_to_app';
-import { ic_close } from 'react-icons-kit/md/ic_close';
-import { ic_expand_less } from 'react-icons-kit/md/ic_expand_less';
-import { ic_expand_more } from 'react-icons-kit/md/ic_expand_more';
+import { ic_menu } from 'react-icons-kit/md/ic_menu';
 import { ic_apps } from 'react-icons-kit/md/ic_apps';
 
 import { Suspense } from '../../Suspense';
@@ -39,6 +36,10 @@ export const HolyGrailLayout = (props: ILayoutProps) => {
 	const [isSidenavActive, setSidenavActive] = useState(false);
 	const [isSidenavCollapsed, setSidenavCollapsed] = useState(false);
 
+	if (!user) {
+		return null;
+	}
+
 	function onToggleFullscreen () {
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
@@ -57,8 +58,9 @@ export const HolyGrailLayout = (props: ILayoutProps) => {
 					>
 						<ActionLink.Icon
 							data-title={isSidenavCollapsed ? 'Expand' : 'Collapse'}
-							icon={isSidenavCollapsed ? ic_expand_less : ic_expand_more}
-							size={1}
+							icon={ic_menu}
+							inverse={true}
+							size={24}
 						/>
 					</a>
 				</Header.Menu>
@@ -79,15 +81,6 @@ export const HolyGrailLayout = (props: ILayoutProps) => {
 					<Brand.Link id="sidenav-brand-link" to="/">
 						{activeRoute.title}
 					</Brand.Link>
-					<Brand.Close
-						id="sidenav-brand-close"
-						onClick={() => setSidenavCollapsed(true)}
-					>
-						<Icon
-							icon={ic_close}
-							aria-hidden="true"
-						/>
-					</Brand.Close>
 				</Sidenav.Brand>
 				<Sidenav.Profile id="sidenav-profile">
 					<Avatar

@@ -11,7 +11,7 @@ interface IDateWrapperProps {
 }
 
 interface IProps extends IDateWrapperProps {
-	value: string;
+	value: Date | string;
 	format?: string;
 }
 
@@ -26,7 +26,7 @@ const DateWrapper = styled.span<IDateWrapperProps>`
 	font-size: 12px;
 `;
 
-export const formatDate = (value: string, format = DEFAULT_FORMAT) =>
+export const formatDate = (value: IProps['value'], format = DEFAULT_FORMAT) =>
 	dayjs(value).format(format);
 
 export const DateFormatter = ({ value, width, unit, format = DEFAULT_FORMAT}: IProps) => {

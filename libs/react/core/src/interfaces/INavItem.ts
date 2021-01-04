@@ -10,6 +10,7 @@ export interface INavItem {
 	auth?: string[];
 	badge?: IBadge;
 	route?: IRoute;
+	isHidden?: boolean;
 	onClick?: () => void;
 	target?: string;
 	children?: INavItem[];

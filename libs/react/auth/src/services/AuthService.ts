@@ -116,10 +116,12 @@ class AuthService extends EventEmitter {
 		return decoded.exp > currentTime;
 	}
 
-	setSession(accessToken: string = this.getAccessToken(), expireAt?: number, persist?: boolean): void {
+	setSession(accessToken: string = this.getAccessToken(), expireAt?: number): void {
 		if ( accessToken ) {
-			// eslint-disable-next-line no-console
-			console.log('Expires At', new Date(expireAt).toLocaleDateString(), persist);
+			if (expireAt) {
+				// eslint-disable-next-line no-console
+				console.log('Expires At', new Date(expireAt*1000).toLocaleDateString());
+			}
 			LocalStorage.set(accessTokenStorageKey, accessToken);
 		}
 		else {
@@ -135,7 +137,6 @@ class AuthService extends EventEmitter {
 	async signInWithEmailAndPassword(
 		email: string,
 		password: string,
-		rememberMe: boolean,
 	): Promise<IUserToken> {
 		const payload: any = {
 			grant_type: grantType,
@@ -154,7 +155,7 @@ class AuthService extends EventEmitter {
 
 		const jwt = jwtDecode(response.access_token) as IJwtPayload;
 
-		this.setSession(response.access_token, jwt.exp, rememberMe);
+		this.setSession(response.access_token, jwt.exp);
 		this.setUser(response.user);
 
 		return response;

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { IDropdownItem } from '../../interfaces/IDropdownItem';
-import { DropdownItemTypes } from '../../enums/DropdownItemTypes';
+import { INavItem } from '../../interfaces/INavItem';
+import { NavItemTypes } from '../../enums/NavItemTypes';
 
 import {
 	MenuContainer,
@@ -15,7 +15,7 @@ import {
 
 interface IMenuProps {
 	collapsed?: boolean;
-	items: IDropdownItem[];
+	items: INavItem[];
 	position?: string;
 	activeItem?: string;
 	trigger?: string;
@@ -47,7 +47,7 @@ export const Menu = (props: IMenuProps) => {
 	// 	}
 	// }
 
-	function buildParentLevel(items: IDropdownItem[], isHeading = false) {
+	function buildParentLevel(items: INavItem[], isHeading = false) {
 		const rootProps = isHeading && { className: `nav-main nav-main--${position} nav-main--${collapsed ? 'collapsed' : 'expanded'}` };
 
 		return (
@@ -61,18 +61,22 @@ export const Menu = (props: IMenuProps) => {
 		);
 	}
 
-	function buildNavItem (item: IDropdownItem) {
-		if (item.hide) {
+	function buildNavItem (item: INavItem) {
+		const { id, title, icon, isHidden, type, children = [] /*badge, */} = item;
+		if (isHidden) {
 			return null;
 		}
 
-		if (item.type === DropdownItemTypes.Divider) {
+		if (type === NavItemTypes.Divider) {
 			return (
-				<MenuItem key={item.id} id={onBuildId(item.id)} title={item.title} />
+				<MenuItem
+					key={id}
+					id={onBuildId(id)}
+					title={title}
+				/>
 			);
 		}
 
-		const { id, title, icon, type, children = [] /*badge, */} = item;
 		const hasChildren = children.length > 0;
 		const tree = hasChildren
 			? buildParentLevel(children)
@@ -83,7 +87,7 @@ export const Menu = (props: IMenuProps) => {
 			<MenuItem
 				key={key}
 				id={key}
-				isHeading={type === DropdownItemTypes.Group}
+				isHeading={type === NavItemTypes.Group}
 			>
 				<MenuItemContainer item={item}>
 					<MenuItemIcon

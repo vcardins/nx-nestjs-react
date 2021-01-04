@@ -1,18 +1,10 @@
 import React, { useEffect, useMemo } from 'react';
 import { renderRoutes, matchRoutes } from 'react-router-config';
-import { toast, ToastPosition } from 'react-toastify';
 import { useLocation } from 'react-router-dom';
 
 import { ISignedUserOutput } from '@xapp/shared/interfaces';
 import { IRoute, IKeyedRoute } from '../../interfaces/IRoute';
 import { Layouts } from './layouts';
-
-toast.configure({
-	autoClose: 2500,
-	draggable: true,
-	hideProgressBar: true,
-	position: toast.POSITION.TOP_RIGHT as ToastPosition,
-});
 
 interface ILayoutProps {
 	routes: IKeyedRoute;

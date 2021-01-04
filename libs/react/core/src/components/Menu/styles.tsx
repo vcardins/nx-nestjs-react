@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import { Icon } from '../../components/Icon';
 
-import { DropdownItemTypes } from '../../enums/DropdownItemTypes';
-import { IDropdownItem } from '../../interfaces/IDropdownItem';
+import { Icon } from '../../components/Icon';
+import { NavItemTypes } from '../../enums/NavItemTypes';
+import { INavItem } from '../../interfaces/INavItem';
 
 interface IMenuItemContainerProps {
-	item: IDropdownItem;
+	item: INavItem;
 	children: JSX.Element | JSX.Element[];
 }
 
@@ -79,7 +79,7 @@ export const MenuItemContainer = ({ item, children }: IMenuItemContainerProps) =
 	let Component;
 	// const BadgeWrapper = styled.span`${(props) => getBadgeConfig(props)}`;
 	switch (item.type) {
-		case DropdownItemTypes.Route:
+		case NavItemTypes.Route:
 			Component = styled(Link)`
 				${ baseMenuItemCss }
 				${MenuItemIcon} {
@@ -91,7 +91,7 @@ export const MenuItemContainer = ({ item, children }: IMenuItemContainerProps) =
 					{ children }
 				</Component>
 			);
-		case DropdownItemTypes.Link:
+		case NavItemTypes.Link:
 			Component = styled.a`
 				font-size: 100%;
 			`;
@@ -100,13 +100,13 @@ export const MenuItemContainer = ({ item, children }: IMenuItemContainerProps) =
 					{ children }
 				</Component>
 			);
-		case DropdownItemTypes.Divider:
+		case NavItemTypes.Divider:
 			Component = styled.span`
 				${ baseMenuItemCss }
 				padding: 0.5em 0 0.5em 1em;
 			`;
 			break;
-		case DropdownItemTypes.Group:
+		case NavItemTypes.Group:
 			Component = styled.span.attrs({ 'data-menu-group': true })`
 				font-weight: bold;
 				position: relative;

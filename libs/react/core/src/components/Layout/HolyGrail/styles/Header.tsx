@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Icon } from '../../../Icon';
 
 const HeaderContainer = styled.header`
 	grid-area: header;
@@ -7,6 +8,14 @@ const HeaderContainer = styled.header`
 	padding: 0 ${({ theme }) => `${theme.spacing.large} 0 ${theme.spacing.small}`};
 	box-shadow: 1px 1px 2px 1px rgba(36, 36, 36, 0.15);
 	z-index: 1;
+`;
+
+
+type TypeId = {id?: string};
+
+/* Link Styles */
+export const SidebarToggle = styled(Icon).attrs<TypeId>(({id}) => ({id}))`
+	/* color: rgba(255, 255, 255, 0.75); */
 `;
 
 const HeaderSearch = styled.div`

@@ -12,4 +12,5 @@ export interface IEndpointsConfig {
 	reopenAccount: string;
 	changePhoneNumber?: string;
 	profile: string;
+	updateProfile: string;
 }

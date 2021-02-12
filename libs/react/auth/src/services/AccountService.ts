@@ -20,7 +20,7 @@ const api = new RestClient();
 
 export const AccountService: IAccountService = {
 	async updateProfile(data: IUserProfileInput): Promise<IUserProfile> {
-		return api.patch<IUserProfile>({url: endpoints.profile, data});
+		return api.patch<IUserProfile>({url: endpoints.updateProfile, data});
 	},
 
 	async signUp(data: ISignUpInput): Promise<IActionResponse<IUserProfile>> {

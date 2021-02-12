@@ -42,7 +42,6 @@ const AppContext: Context<IAppContext> = createContext<IAppContext>(
 interface IAppContextProviderProps {
 	children: React.ReactNode;
 	routes: IAppContext['routes'];
-	onLoadNavigation: (user: ISignedUserOutput) => INavItem[];
 }
 
 // const mainReducer = (
@@ -54,7 +53,7 @@ interface IAppContextProviderProps {
 // 	// config: configReducer(config, action as ConfigActions),
 // });
 
-const AppContextProvider: FC<IAppContextProviderProps> = ({ children, onLoadNavigation, routes }) => {
+const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }) => {
 	// const [state, dispatch] = useReducer(mainReducer, initialState);
 	// The ref object is a generic container whose current property is mutable ...
 	// ... and can hold any value, similar to an instance property on a class
@@ -90,7 +89,7 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, onLoadNavi
 
 					const updatedSocket = io({
 						path: appConfig.apiMeta.websocketEndpoint,
-						query: `token=${accessToken}`,
+						query: { token: accessToken },
 						transports: ['websocket'],
 					});
 
@@ -123,7 +122,6 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, onLoadNavi
 					setDataContext(dataStores);
 					setSocket(updatedSocket);
 					setUser(userInfo);
-					setNavigation(onLoadNavigation(userInfo));
 				}
 				catch (e) {
 					setUser(null);
@@ -143,7 +141,7 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, onLoadNavi
 			socket?.disconnect();
 			setUser(null);
 		};
-	}, [accessToken, authHeader, onLoadNavigation]);
+	}, [accessToken, authHeader]);
 
 	const value = useMemo<IAppContext>(() => ({
 		routes,

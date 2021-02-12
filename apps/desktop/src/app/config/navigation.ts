@@ -1,6 +1,10 @@
 import { IKeyedRoute, INavItem, NavItemTypes, PageKey } from '@xapp/react/core';
 import { hasRoutePermission } from '@xapp/react/auth';
 import { IGroupWithPermissions } from '@xapp/shared/interfaces';
+import { ic_fingerprint } from 'react-icons-kit/md/ic_fingerprint';
+import { ic_person_pin } from 'react-icons-kit/md/ic_person_pin';
+import { ic_done } from 'react-icons-kit/md/ic_done';
+import { ic_security } from 'react-icons-kit/md/ic_security';
 
 const getNavId = (key: string) => `nav-item-${key}`;
 
@@ -14,16 +18,16 @@ export function getNavigation(routes: IKeyedRoute, userGroups: IGroupWithPermiss
 			children: [
 				{
 					id: getNavId('user-profile'),
-					title: 'User Profiles',
+					title: 'User Profile',
 					type: NavItemTypes.Route,
-					icon: 'face',
+					icon: ic_person_pin,
 					route: routes[PageKey.UserProfile],
 				},
 				{
 					id: getNavId('change-password'),
 					title: 'Change Password',
 					type: NavItemTypes.Route,
-					icon: 'fingerprint',
+					icon: ic_fingerprint,
 					route: routes[PageKey.ChangePassword],
 				},
 			],
@@ -32,14 +36,14 @@ export function getNavigation(routes: IKeyedRoute, userGroups: IGroupWithPermiss
 			id: getNavId('admin'),
 			title: 'Admin',
 			type: NavItemTypes.Route,
-			icon: 'beenhere',
+			icon: ic_security,
 			route: routes[PageKey.Admin],
 		},
 		{
 			id: getNavId('todo'),
 			title: 'Todo',
 			type: NavItemTypes.Route,
-			icon: 'beenhere',
+			icon: ic_done,
 			route: routes[PageKey.Todo],
 		},
 	];

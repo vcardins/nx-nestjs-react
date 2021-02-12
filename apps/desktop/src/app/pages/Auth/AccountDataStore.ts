@@ -1,6 +1,5 @@
 ﻿import { DataContext } from '@xapp/react/core';
 import { IUserProfileInput, ISignedUserOutput, IUserProfile, IActionResponse, IVerifyEmailInput, IVerifyPhoneNumberInput, ISignInInput, IChangePhoneNumberInput, IChangePasswordInput, IResetPasswordInput, IForgotPasswordInput, IEndpointsConfig } from '@xapp/shared/interfaces';
-// import { routes } from '../../config/routes';
 
 export class AccountStore extends DataContext {
 	constructor(authHeader: string, private endpoints: IEndpointsConfig) {

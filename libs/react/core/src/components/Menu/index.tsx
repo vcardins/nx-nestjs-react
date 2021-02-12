@@ -19,11 +19,10 @@ interface IMenuProps {
 	position?: string;
 	activeItem?: string;
 	trigger?: string;
-	onBuildId: (key: string) => string;
 }
 
 export const Menu = (props: IMenuProps) => {
-	const { position = 'vertical', collapsed, onBuildId/*trigger = 'click', activeItem */ } = props;
+	const { position = 'vertical', collapsed/*trigger = 'click', activeItem */ } = props;
 
 	// function triggerMenu ({ target }: React.MouseEvent<HTMLElement>, href: Function): void {
 	// 	event.stopPropagation();
@@ -71,7 +70,7 @@ export const Menu = (props: IMenuProps) => {
 			return (
 				<MenuItem
 					key={id}
-					id={onBuildId(id)}
+					id={id}
 					title={title}
 				/>
 			);
@@ -81,20 +80,21 @@ export const Menu = (props: IMenuProps) => {
 		const tree = hasChildren
 			? buildParentLevel(children)
 			: null;
-		const key = onBuildId(id);
 
 		return (
 			<MenuItem
-				key={key}
-				id={key}
+				key={id}
+				id={id}
 				isHeading={type === NavItemTypes.Group}
 			>
 				<MenuItemContainer item={item}>
-					<MenuItemIcon
-						icon={icon}
-						title={title}
-						size={20}
-					/>
+					{ typeof icon === 'object' && (
+						<MenuItemIcon
+							icon={icon}
+							title={title}
+							size={20}
+						/>
+					)}
 					<MenuItemTitle>{title}</MenuItemTitle>
 				</MenuItemContainer>
 				{ tree }

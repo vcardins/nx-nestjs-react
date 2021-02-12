@@ -10,3 +10,4 @@ export * from './reset-password.input';
 export * from './forgot-password.input';
 export * from './signin.input';
 export * from './signin.output';
+export * from './user-profile.input';

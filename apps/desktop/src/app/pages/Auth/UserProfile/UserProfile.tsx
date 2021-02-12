@@ -9,7 +9,7 @@ import { appContext } from '../../../AppContextProvider';
 const UserProfilePage = memo(() => {
 	const { user, onUpdateUserProfile } = useContext(appContext);
 	const {formData, handleSubmit, handleChange, errors, submitting, success} = useForm<IUserProfileInput>({
-		initialValues: user.profile,
+		initialValues: user?.profile ?? {} as IUserProfileInput,
 		clearAfterSubmit: false,
 		onSubmit: async (data) => {
 			const response = await AccountService.updateProfile(data);
@@ -48,14 +48,14 @@ const UserProfilePage = memo(() => {
 				<TextInput
 					label="Avatar"
 					name="avatar"
-					value={formData.pictureUrl}
+					value={formData.pictureUrl ?? ''}
 					error={errors?.['pictureUrl']}
 				/>
 				<TextInput
 					component="textarea"
 					label="Bio"
 					name="bio"
-					value={formData.bio}
+					value={formData.bio ?? ''}
 					error={errors?.['bio']}
 				/>
 				<FieldGroup sided>

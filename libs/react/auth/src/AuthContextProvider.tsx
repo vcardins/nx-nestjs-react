@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useCallback, useContext } from 'react';
+
 import { ISignInInput } from '@xapp/shared/interfaces';
 import { IAuthContext } from './interfaces/IAuthContext';
 import { AuthService } from './services/AuthService';
@@ -29,11 +30,12 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
 	const [accessToken, setAccessToken] = useState(AuthService.getAccessToken());
 
 	const handleSignIn = useCallback(async (props: ISignInInput) => {
-		const {email, password, rememberMe} = props;
+		const { email, password } = props;
 		// eslint-disable-next-line camelcase
-		const { user, access_token } = await AuthService.signInWithEmailAndPassword(email, password, rememberMe);
+		const { user, access_token } = await AuthService.signInWithEmailAndPassword(email, password);
 		setUser(user);
 		setAccessToken(access_token);
+
 		return user;
 	}, []);
 

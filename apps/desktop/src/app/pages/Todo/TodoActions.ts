@@ -1,4 +1,4 @@
-import { ActionMap } from '../../actions/ActionMap';
+import { ActionMap } from '@xapp/react/core';
 import { TodoOutput } from './TodoOutput';
 
 export enum TodoActionTypes {

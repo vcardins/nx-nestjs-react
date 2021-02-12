@@ -1,4 +1,4 @@
-import { Form } from 'react-jsonschema-form-validation';
+import { Form } from './Form';
 import { Select } from './Select';
 import { TextInput } from './TextInput';
 import { FieldGroup } from './FieldSet';

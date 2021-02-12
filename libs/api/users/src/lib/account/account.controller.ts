@@ -10,6 +10,8 @@ import { ModuleAction } from '@xapp/shared/enums';
 import { SignUpInput } from './dto/signup.input';
 import { AccountOutput } from './dto/account.output';
 import { ChangePasswordInput } from './dto/change-password.input';
+import { UserProfileInput } from './dto/user-profile.input';
+
 import { ResetPasswordInput } from './dto/reset-password.input';
 import { ForgotPasswordInput } from './dto/forgot-password.input';
 import { ReopenAccountInput } from './dto/reopen-account.input';
@@ -59,6 +61,20 @@ Returns a JSON Web Token that can be used for authenticated requests.`,
 	async getUserInfo(@Req() req): Promise<UserDto> {
 		const user = await this.userService.findById(req.user?.id);
 		return this.userService.getUserDto(user);
+	}
+
+	@ApiBearerAuth()
+	@Roles('isActive')
+	@HttpCode(HttpStatus.OK)
+	@Patch('/profile')
+	@ApiResponse({
+		status: HttpStatus.OK,
+		type: MessageOutput,
+		description: '',
+	})
+	async patchUserInfo(@Req() req, @Body() model: UserProfileInput) {
+		await this.accountService.updateProfile(req.user?.id, model);
+		return { message: 'Your profile was successfully updated'};
 	}
 
 	@ApiBearerAuth()

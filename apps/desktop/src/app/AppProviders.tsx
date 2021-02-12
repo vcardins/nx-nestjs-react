@@ -3,22 +3,21 @@ import { ThemeProvider } from 'styled-components';
 import { createBrowserHistory } from 'history';
 
 import { AuthContextProvider } from '@xapp/react/auth';
-import { getTheme, DebugRouter } from '@xapp/react/core';
+import { getTheme, DebugRouter, IKeyedRoute } from '@xapp/react/core';
 import { appConfig } from '@xapp/shared/config';
-import { ISignedUserOutput } from '@xapp/shared/interfaces';
 import { Themes } from '@xapp/shared/enums';
 
-import { routes } from './config/routes';
-import { getNavigation } from './config/navigation';
 import { AppContextProvider } from './AppContextProvider';
 
-export const AppProviders = ({ children }: { children: React.ReactNode }) => (
+interface IAppProviders {
+	children: React.ReactNode;
+	routes: IKeyedRoute;
+}
+
+export const AppProviders = ({ children, routes }: IAppProviders) => (
 	<ThemeProvider theme={getTheme(appConfig.theme as Themes)}>
 		<AuthContextProvider>
-			<AppContextProvider
-				routes={routes}
-				onLoadNavigation={(user: ISignedUserOutput) => getNavigation(routes, user.groups)}
-			>
+			<AppContextProvider routes={routes}>
 				<DebugRouter history={createBrowserHistory()}>
 					{children}
 				</DebugRouter>

@@ -15,7 +15,7 @@ import { appContext } from '../../../AppContextProvider';
 const initialValues: ISignInInput = {
 	email: 'demo@xapp.com',
 	password: 'demo',
-	rememberMe: undefined,
+	// rememberMe: undefined,
 };
 
 const normalizePath = (path: string | string[]): string =>
@@ -79,12 +79,12 @@ const SignInPage = memo(() => {
 				value={formData.password}
 				error={errors?.['password']}
 			/>
-			<Checkbox
+			{/* <Checkbox
 				name="remember"
 				label="Remember Me"
 				value={formData.rememberMe}
 				sided
-			/>
+			/> */}
 			<FieldGroup sided>
 				<Submit
 					loading={submitting}

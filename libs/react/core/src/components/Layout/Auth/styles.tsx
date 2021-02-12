@@ -29,7 +29,6 @@ export const Column2 = styled.div`
 	overflow: auto;
 	>* {
 		width: 100%;
-		margin: 2em;
 	}
 `;
 

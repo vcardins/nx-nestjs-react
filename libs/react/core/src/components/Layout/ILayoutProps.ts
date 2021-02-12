@@ -1,5 +1,5 @@
-import { IRoute } from '../../interfaces/IRoute';
 import { ISignedUserOutput } from '@xapp/shared/interfaces';
+import { IRoute } from '../../interfaces/IRoute';
 export interface ILayoutProps {
 	id: string;
 	renderedRoutes: JSX.Element;

@@ -6,7 +6,7 @@ import { AuthGroups } from '@xapp/shared/enums';
 
 export const UserProfilePageConfig: IPageConfig = {
 	layout: {
-		style: LayoutStyles.Auth,
+		style: LayoutStyles.Viewport,
 		config: {},
 	},
 	auth: AuthGroups.everyone,

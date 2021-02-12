@@ -3,16 +3,18 @@ import { renderRoutes, matchRoutes } from 'react-router-config';
 import { useLocation } from 'react-router-dom';
 
 import { ISignedUserOutput } from '@xapp/shared/interfaces';
-import { IRoute, IKeyedRoute } from '../../interfaces/IRoute';
+import { IRoute, IKeyedRoute } from '@xapp/react/core';
+
 import { Layouts } from './layouts';
 
 interface ILayoutProps {
 	routes: IKeyedRoute;
 	user: ISignedUserOutput;
+	sideMenu: JSX.Element;
 	onSignOut: () => Promise<void>;
 }
 
-export const Layout = ({ routes, user, onSignOut }: ILayoutProps) => {
+export const Layout = ({ routes, user, sideMenu, onSignOut }: ILayoutProps) => {
 	const {pathname } = useLocation();
 	const routesValues = Object.values(routes) || [];
 	const matchingRoute = matchRoutes(routesValues, pathname)[0];
@@ -39,7 +41,7 @@ export const Layout = ({ routes, user, onSignOut }: ILayoutProps) => {
 			activeRoute={activeRoute}
 			user={user}
 			onSignOut={onSignOut}
-			sideMenu={<span/>}
+			sideMenu={sideMenu}
 			userMenu={<span/>}
 		/>
 	);

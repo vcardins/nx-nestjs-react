@@ -25,6 +25,7 @@ import {
 	ResetPasswordInput,
 	ForgotPasswordInput,
 	ReopenAccountInput,
+	UserProfileInput,
 } from './dto';
 import { UserService } from '../user.service';
 import { User } from '../entities/user.entity';
@@ -269,6 +270,14 @@ export class AccountService { // implements IAccountService {
 		await updatedUser.setPassword(updatedUser.hashedPassword);
 
 		return this.userService.update(id, user);
+	}
+
+	async updateProfile(id: number, userProfile: UserProfileInput) {
+		const foundUser = await this.userService.findById(id);
+
+		const updatedUser = plainToClassFromExist(foundUser, userProfile);
+
+		return this.userService.update(id, updatedUser);
 	}
 
 	private setVerificationKey(verificationKeyPurpose: VerificationKeyPurpose, state: string): Partial<User> {

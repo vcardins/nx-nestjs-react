@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
 import React, { memo, useEffect, useState, useRef, useCallback } from 'react';
-import styled, {css} from 'styled-components';
 
 import { ic_delete } from 'react-icons-kit/md/ic_delete';
 import { ic_check } from 'react-icons-kit/md/ic_check';
@@ -17,50 +16,14 @@ import { TodoInput } from './TodoInput';
 
 import { validationSchema } from './schema';
 import { useApp } from '../../AppContextProvider';
-
-const TodoItem = styled.li<{isCompleted: boolean}>`
-	display: grid;
-	grid-template-columns: auto 130px 20px 20px;
-	width: inherit;
-	padding: 0.5em 1em;
-	border-bottom: 1px solid ${({theme}) => theme.colors.tertiary.lightGrey};
-	${({isCompleted}) => isCompleted && css`
-		text-decoration: line-through;
-		text-decoration-style: dashed;
-		color: ${({theme}) => theme.colors.tertiary.grey};
-	`};
-	[data-completed="true"] {
-		color: ${({theme}) => theme.colors.primary.green};
-	}
-`;
-
-const TodoIcon = styled(Icon)`
-	text-align: center;
-	color: ${({theme}) => theme.colors.tertiary.lightGrey};
-	:hover {
-		cursor: pointer;
-		color: ${({theme}) => theme.colors.secondary.blue};
-	}
-`;
-
-const TodoList = styled.ul`
-	display: flex;
-	flex-direction: column;
-	list-style: none;
-
-	${TodoItem} {
-		:hover {
-			background-color: ${({theme}) => theme.colors.tertiary.lightestGrey};
-		}
-	}
-`;
+import { TodoList, TodoItem, TodoIcon } from './components';
 
 const initialValues: TodoInput = { title: '' };
 const dateFormat = 'MMM D, YYYY h:mm A';
 
 const TodoPage = memo(() => {
 	const { dataContext } = useApp();
-	const api = dataContext.todo;
+	const api = dataContext?.todo;
 
 	const [todos, setTodos] = useState<TodoOutput[]>([]);
 	const formRef = useRef({ valid: false });

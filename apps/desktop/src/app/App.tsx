@@ -1,14 +1,16 @@
 import React from 'react';
-import { Layout, SplashScreen } from '@xapp/react/core';
+import { ToastContainer, Slide } from 'react-toastify';
+
+import { Layout, Menu, SplashScreen } from '@xapp/react/core';
 import { Authentication, Authorization, IAuthContext } from '@xapp/react/auth';
 
 import { AppProviders } from './AppProviders';
 import { globalStyle as GlobalStyle } from './styles';
 import { routes } from './config/routes';
-import { ToastContainer, Slide } from 'react-toastify';
+import { getNavigation } from './config/navigation';
 
 export const App = () => (
-	<AppProviders>
+	<AppProviders routes={routes}>
 		<GlobalStyle />
 		<Authorization routes={routes}>
 			{({user, onSignOut}: IAuthContext) => (
@@ -16,6 +18,11 @@ export const App = () => (
 					<Layout
 						routes={routes}
 						user={user}
+						sideMenu={
+							<Menu
+								items={getNavigation(routes, user.groups)}
+							/>
+						}
 						onSignOut={onSignOut}
 					/>
 				</Authentication>

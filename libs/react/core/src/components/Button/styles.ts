@@ -9,8 +9,8 @@ export const StyledButton = styled.button<IButtonProps>`
 	align-items: center;
 	justify-content: center;
 	font-weight: bold;
-	width: fit-content;
-	height: fit-content;
+	min-width: fit-content;
+	min-height: fit-content;
 	color: ${({ theme }) => (theme as ITheme).colors.primary.white };
 	cursor: pointer;
 	padding: 4px 16px;

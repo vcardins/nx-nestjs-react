@@ -86,7 +86,7 @@ export class RestClient<TModel = any> {
 		}
 
 		const defaultOptions = Object.assign(
-			{ contentType: null, withoutCredentials: false, headers: undefined },
+			{ contentType: null, noAuthToken: false, headers: undefined },
 			options,
 		);
 

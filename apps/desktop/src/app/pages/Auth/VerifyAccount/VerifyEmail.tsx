@@ -1,9 +1,11 @@
 import React, { memo, useState, useEffect } from 'react';
 import { parse } from 'query-string';
-
-import { AccountService } from '@xapp/react/auth';
+import { useApp } from '../../../AppContextProvider';
 
 const VerifyEmailPage = memo(() => {
+	const { dataContext } = useApp();
+	const api = dataContext?.account;
+
 	const [submitting, setSubmitting] = useState(false);
 	const [, setSuccess] = useState(false);
 	const [message, setMessage] = useState('');
@@ -11,7 +13,7 @@ const VerifyEmailPage = memo(() => {
 	useEffect(() => {
 		const verifyEmail = async (key: string) => {
 			try {
-				const response = await AccountService.verifyEmail({ key });
+				const response = await api.verifyEmail({ key });
 
 				if (response.message) {
 					setMessage(response.message);

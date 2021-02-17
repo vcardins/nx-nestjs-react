@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom';
 
 import { Form, TextInput, FieldGroup, Submit, PageKey, useForm } from '@xapp/react/core';
 import { IForgotPasswordInput } from '@xapp/shared/interfaces';
-import { AccountService } from '@xapp/react/auth';
 
 import { validationSchema } from './schema';
-import { appContext } from '../../../AppContextProvider';
+import { appContext, useApp } from '../../../AppContextProvider';
 
 const initialValues: IForgotPasswordInput = {
 	email: '',
@@ -14,9 +13,12 @@ const initialValues: IForgotPasswordInput = {
 
 const ForgotPasswordPage = memo(() => {
 	const { routes } = useContext(appContext);
+	const { dataContext } = useApp();
+	const api = dataContext?.account;
+
 	const {formData, handleSubmit, handleChange, errors, submitting, success} = useForm<IForgotPasswordInput>({
 		initialValues,
-		onSubmit: AccountService.forgotPassword,
+		onSubmit: api.forgotPassword,
 	});
 	const formRef = useRef({ valid: false });
 

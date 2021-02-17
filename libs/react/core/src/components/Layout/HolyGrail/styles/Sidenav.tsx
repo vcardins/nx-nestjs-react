@@ -111,7 +111,7 @@ const ProfileNameContainer = styled.div`
 `;
 
 const ProfileName = styled.div`
-	font-size: 14px;
+	font-size: 16px;
 	color: ${({ theme }) => theme.colors.primary.white};
 	margin: 0;
 `;

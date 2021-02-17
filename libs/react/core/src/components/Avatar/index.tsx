@@ -48,7 +48,7 @@ function buildLetterAvatar(props: IAvatarProps): string {
 
 export function Avatar(props: IAvatarProps) {
 	const theme = useContext(ThemeContext);
-	const { size = 48, src: url, inverse } = props;
+	const { size = 42, src: url, inverse } = props;
 	const { white, blue } = theme.colors.primary;
 	const bgColor = props.bgColor
 		? props.bgColor

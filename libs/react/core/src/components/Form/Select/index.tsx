@@ -37,7 +37,7 @@ function getOptions<T extends KeyType> (items: T[] = [], keyValueProps: IKeyPair
 export function Select<T extends KeyType> (props: ISelectField<T>) {
 	const { id, name, label, value, items = [], keyValueProps } = props;
 	const options = getOptions(items, keyValueProps);
-	const plainElement = (
+	const selectElement = (
 		<StyledSelect
 			id={id || name}
 			name={name}
@@ -48,13 +48,13 @@ export function Select<T extends KeyType> (props: ISelectField<T>) {
 		</StyledSelect>
 	);
 
-	if (props.plain) {
-		return plainElement;
+	if (props.labelLess) {
+		return selectElement;
 	}
 
 	return (
 		<FieldSet name={name} label={label}>
-			{ plainElement }
+			{ selectElement }
 		</FieldSet>
 	);
 }

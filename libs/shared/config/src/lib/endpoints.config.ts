@@ -13,6 +13,6 @@ export const endpoints: IEndpointsConfig = {
 	resetPassword: 'reset-password',
 	forgotPassword: 'forgot-password',
 	changePassword: 'change-password',
-	updateProfile: 'account/profile',
+	updateProfile: 'profile',
 	// changePhoneNumber: 'account/change-phone-number',
 };

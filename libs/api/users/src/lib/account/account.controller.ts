@@ -72,9 +72,8 @@ Returns a JSON Web Token that can be used for authenticated requests.`,
 		type: MessageOutput,
 		description: '',
 	})
-	async patchUserInfo(@Req() req, @Body() model: UserProfileInput) {
-		await this.accountService.updateProfile(req.user?.id, model);
-		return { message: 'Your profile was successfully updated'};
+	async patchUserProfile(@Req() req, @Body() model: UserProfileInput) {
+		return await this.accountService.updateProfile(req.user?.id, model);
 	}
 
 	@ApiBearerAuth()

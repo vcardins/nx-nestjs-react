@@ -4,14 +4,14 @@ import { INotifier, Notifier } from '../components/Notifier';
 
 // const sanitizeId = (id: string) => (!id ? id : id.replace(/-/g, ''));
 
-export interface IDataContext<TOutput = any, TInput = any> {
-	readAll(payload?: IRestClientPayload<TInput>): Promise<TOutput[]>;
-	read(payload?: IRestClientPayload<TInput>): Promise<TOutput>;
-	create(payload: IRestClientPayload<TInput>): Promise<TOutput>;
-	patch(payload: IRestClientPayload<TInput>): Promise<TOutput>;
-	update(payload: IRestClientPayload<TInput>): Promise<TOutput>;
+export interface IDataContext<TOutput = any, TInputCreate = any, TInputUpdate = TInputCreate> {
+	readAll(payload?: IRestClientPayload<TInputCreate>): Promise<TOutput[]>;
+	read(payload?: IRestClientPayload<TInputCreate>): Promise<TOutput>;
+	create(payload: IRestClientPayload<TInputCreate>): Promise<TOutput>;
+	patch(payload: IRestClientPayload<TInputUpdate>): Promise<TOutput>;
+	update(payload: IRestClientPayload<TInputUpdate>): Promise<TOutput>;
 	delete(id: string |  number): Promise<TOutput>;
-	upload(payload: IRestClientPayload<TInput>): Promise<TOutput>;
+	upload(payload: IRestClientPayload<TInputCreate>): Promise<TOutput>;
 }
 
 export interface IDataContextProps {
@@ -21,7 +21,7 @@ export interface IDataContextProps {
 	handleUpdateAccessToken?: (accessToken: string) => void;
 }
 
-export class DataContext<TOutput = any, TInput = any> implements IDataContext<TOutput, TInput> {
+export class DataContext<TOutput = any, TInputCreate = any, TInputUpdate = TInputCreate> implements IDataContext<TOutput, TInputCreate, TInputUpdate> {
 	public readonly api: RestClient;
 	public readonly notifier: INotifier;
 	private basePath: string;
@@ -46,25 +46,25 @@ export class DataContext<TOutput = any, TInput = any> implements IDataContext<TO
 		});
 	}
 
-	readAll = async <T>(payload?: IRestClientPayload<TInput>): Promise<TOutput[]> =>
-		this.api.get<T | TInput>(payload);
+	readAll = async <T>(payload?: IRestClientPayload<TInputCreate>): Promise<TOutput[]> =>
+		this.api.get<T | TInputCreate>(payload);
 
-	read = async <T>(payload?: IRestClientPayload<TInput>): Promise<TOutput> =>
-		this.api.get<T | TInput>(payload);
+	read = async <T>(payload?: IRestClientPayload<TInputCreate>): Promise<TOutput> =>
+		this.api.get<T | TInputCreate>(payload);
 
-	create = async <T>(payload?: IRestClientPayload<TInput>): Promise<TOutput> =>
-		this.api.post<T | TInput>(payload);
+	create = async <T>(payload?: IRestClientPayload<TInputCreate>): Promise<TOutput> =>
+		this.api.post<T | TInputCreate>(payload);
 
-	patch = async <T>(payload?: IRestClientPayload<TInput>): Promise<TOutput> =>
-		this.api.patch<T | TInput>(payload);
+	patch = async <T>(payload?: IRestClientPayload<TInputUpdate>): Promise<TOutput> =>
+		this.api.patch<T | TInputUpdate>(payload);
 
-	update = async <T>(payload?: IRestClientPayload<TInput>): Promise<TOutput> =>
-		this.api.put<T | TInput>(payload);
+	update = async <T>(payload?: IRestClientPayload<TInputUpdate>): Promise<TOutput> =>
+		this.api.put<T | TInputUpdate>(payload);
 
 	delete = async (id: string | number): Promise<TOutput> =>
 		this.api.delete({ data: id });
 
-	upload = async (payload?: IRestClientPayload<TInput>): Promise<TOutput> =>
+	upload = async (payload?: IRestClientPayload<TInputCreate>): Promise<TOutput> =>
 		this.api.upload(payload);
 
 	setBaseEndpoint(basePath: string) {
@@ -81,12 +81,12 @@ export class DataContext<TOutput = any, TInput = any> implements IDataContext<TO
 
 	private async handleUnauthorizedAccess(
 		method: RestMethod,
-		payload: IRestClientPayload<TInput>,
+		payload: IRestClientPayload<TInputCreate>,
 	): Promise<void> {
 		this.notifier.reportError('Access Forbidden');
-		// if (!this.refreshToken) {
-		// 	return;
-		// }
+		if (!this.refreshToken) {
+			return;
+		}
 		// const oldAccessToken = this.accessToken;
 		// const newAccessToken = await this.fetchAccessToken(
 		// 	this.refreshToken,

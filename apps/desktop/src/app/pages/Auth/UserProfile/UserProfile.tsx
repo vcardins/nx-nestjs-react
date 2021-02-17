@@ -1,21 +1,29 @@
 import React, { memo, useContext, useRef } from 'react';
-import { validationSchema } from './schema';
 
-import { Form, TextInput, Page, Submit, FieldGroup, useForm } from '@xapp/react/core';
+import { Form, TextInput, Page, Submit, FieldGroup, DatePicker, formatDate, useForm } from '@xapp/react/core';
 import { IUserProfileInput } from '@xapp/shared/interfaces';
-import { AccountService } from '@xapp/react/auth';
-import { appContext } from '../../../AppContextProvider';
+
+import { appContext, useApp } from '../../../AppContextProvider';
+import { validationSchema } from './schema';
 
 const UserProfilePage = memo(() => {
 	const { user, onUpdateUserProfile } = useContext(appContext);
+	const { dataContext } = useApp();
+	const api = dataContext?.account;
+
 	const {formData, handleSubmit, handleChange, errors, submitting, success} = useForm<IUserProfileInput>({
 		initialValues: user?.profile ?? {} as IUserProfileInput,
 		clearAfterSubmit: false,
 		onSubmit: async (data) => {
-			const response = await AccountService.updateProfile(data);
+			const response = await api?.updateProfile(data);
 			onUpdateUserProfile(response);
 		},
 	});
+
+	const handleDayChange = (dateOfBirth: Date) => {
+		handleChange({ ...formData, dateOfBirth: formatDate(dateOfBirth) });
+	}
+
 	const formRef = useRef({ valid: false });
 
 	return (
@@ -30,26 +38,33 @@ const UserProfilePage = memo(() => {
 				<TextInput
 					label="First Name"
 					name="firstName"
-					value={formData.firstName}
+					value={formData.firstName ?? ''}
 					error={errors?.['firstName']}
 				/>
 				<TextInput
 					label="Last Name"
 					name="lastName"
-					value={formData.lastName}
+					value={formData.lastName ?? ''}
 					error={errors?.['lastName']}
 				/>
 				<TextInput
 					label="Phone Number"
 					name="phoneNumber"
-					value={formData.mobile}
-					error={errors?.['mobile']}
+					value={formData.phoneNumber ?? ''}
+					error={errors?.['phoneNumber']}
 				/>
 				<TextInput
 					label="Avatar"
 					name="avatar"
 					value={formData.pictureUrl ?? ''}
 					error={errors?.['pictureUrl']}
+				/>
+				<DatePicker
+					label="Date of Birth"
+					name="dateOfBirth"
+					value={formData.dateOfBirth ?? ''}
+					error={errors?.['dateOfBirth']}
+					onDayChange={handleDayChange}
 				/>
 				<TextInput
 					component="textarea"

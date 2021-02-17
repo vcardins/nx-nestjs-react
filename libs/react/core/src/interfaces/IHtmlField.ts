@@ -15,8 +15,10 @@ export interface IHtmlField {
 	placeholder?: string;
 	/* The field label */
 	autoComplete?: AutoComplete;
+
 	/* Sets whether the field should be build without the styling wrapper */
-	plain?: boolean;
+	labelLess?: boolean;
+
 	/* Sets whether the field should be build without the styling wrapper */
 	sided?: boolean;
 

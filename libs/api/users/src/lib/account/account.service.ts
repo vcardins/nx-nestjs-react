@@ -1,3 +1,4 @@
+import { UserProfileDto } from '@xapp/api/users';
 import { Injectable, NotFoundException, Logger, BadRequestException } from '@nestjs/common';
 import { plainToClassFromExist, plainToClass } from 'class-transformer';
 
@@ -272,12 +273,16 @@ export class AccountService { // implements IAccountService {
 		return this.userService.update(id, user);
 	}
 
-	async updateProfile(id: number, userProfile: UserProfileInput) {
+	async updateProfile(id: number, userProfile: UserProfileInput): Promise<UserProfileDto> {
 		const foundUser = await this.userService.findById(id);
+		const updatedUser = {
+			...foundUser,
+			userProfile: plainToClassFromExist(foundUser.userProfile, userProfile),
+		};
 
-		const updatedUser = plainToClassFromExist(foundUser, userProfile);
+		const user = await this.userService.update(id, updatedUser);
 
-		return this.userService.update(id, updatedUser);
+		return this.userService.getUserDto(user)?.profile;
 	}
 
 	private setVerificationKey(verificationKeyPurpose: VerificationKeyPurpose, state: string): Partial<User> {

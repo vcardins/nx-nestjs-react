@@ -6,7 +6,7 @@ import { FieldSet } from '../FieldSet';
 
 interface ICheckbox extends IHtmlField {}
 
-export function Checkbox ({ id, name, label, value, plain, sided }: ICheckbox) {
+export function Checkbox ({ id, name, label, value, labelLess, sided }: ICheckbox) {
 	const plainElement = (
 		<StyledCheckbox
 			id={id || name}
@@ -16,7 +16,7 @@ export function Checkbox ({ id, name, label, value, plain, sided }: ICheckbox) {
 		/>
 	);
 
-	if (plain) {
+	if (labelLess) {
 		return plainElement;
 	}
 

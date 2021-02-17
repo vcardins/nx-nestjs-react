@@ -3,7 +3,7 @@ import { IUserPreferences } from './IUserPreferences';
 export interface IUserProfileInput {
 	firstName?: string;
 	lastName?: string;
-	mobile?: string;
+	phoneNumber?: string;
 	displayName?: string;
 	bio?: string;
 	dateOfBirth?: string;

@@ -4,10 +4,9 @@ import { Link } from 'react-router-dom';
 import { validationSchema } from './schema';
 
 import { Form, TextInput, FieldGroup, Submit, PageKey, useForm } from '@xapp/react/core';
-import { AccountService } from '@xapp/react/auth';
 import { ISignUpInput } from '@xapp/shared/interfaces';
 
-import { appContext } from '../../../AppContextProvider';
+import { appContext, useApp } from '../../../AppContextProvider';
 
 const initialValues: ISignUpInput = {
 	username: '',
@@ -20,9 +19,12 @@ const initialValues: ISignUpInput = {
 
 const SignUpPage = memo(() => {
 	const {routes} = useContext(appContext);
+	const { dataContext } = useApp();
+	const api = dataContext?.account;
+
 	const {formData, handleSubmit, handleChange, errors, submitting, success} = useForm<ISignUpInput>({
 		initialValues,
-		onSubmit: AccountService.signUp,
+		onSubmit: api.signUp,
 	});
 	const formRef = useRef({ valid: false });
 

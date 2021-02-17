@@ -4,16 +4,19 @@ import { Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react/core';
 import { IVerifyPhoneNumberInput } from '@xapp/shared/interfaces';
 
 import { validationSchema } from './schema';
-import { AccountService } from '@xapp/react/auth';
+import { useApp } from '../../../AppContextProvider';
 
 const initialValues: IVerifyPhoneNumberInput = {
 	code: '',
 };
 
 const VerifyMobilePage = memo(() => {
+	const { dataContext } = useApp();
+	const api = dataContext?.account;
+
 	const {formData, handleSubmit, handleChange, errors, submitting, success} = useForm<IVerifyPhoneNumberInput>({
 		initialValues,
-		onSubmit: AccountService.verifyPhoneNumber,
+		onSubmit: api.verifyPhoneNumber,
 	});
 
 	const formRef = useRef({ valid: false });

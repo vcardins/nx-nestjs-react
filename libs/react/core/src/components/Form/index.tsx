@@ -1,15 +1,7 @@
-import { Form } from './Form';
-import { Select } from './Select';
-import { TextInput } from './TextInput';
-import { FieldGroup } from './FieldSet';
-import { Checkbox } from './Checkbox';
-import { Submit } from './Submit';
-
-export {
-	Select,
-	TextInput,
-	FieldGroup,
-	Checkbox,
-	Submit,
-	Form,
-};
+export * from './Form';
+export * from './Select';
+export * from './TextInput';
+export * from './FieldSet';
+export * from './Checkbox';
+export * from './Submit';
+export * from './DatePicker';

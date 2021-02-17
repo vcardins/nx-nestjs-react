@@ -26,8 +26,8 @@ const Container = styled.div`
 				width: ${({ theme }) => theme.sizes.sideNav.collapsed };
 
 				[data-avatar] {
-					height: 28px;
-					width: 28px;
+					height: 24px;
+					width: 24px;
 				}
 
 				#sidenav-brand-close,

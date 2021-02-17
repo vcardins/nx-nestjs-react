@@ -25,7 +25,7 @@ export class UserProfileDto implements IUserProfile {
 	locale: string | null;
 
 	@ApiProperty()
-	mobile: string | null;
+	phoneNumber: string | null;
 
 	@ApiProperty()
 	get displayName () {

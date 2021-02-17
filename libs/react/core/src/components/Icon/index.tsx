@@ -13,6 +13,12 @@ const ExtendedIcon = styled(IconKit)<IExtendedIconProps>`
 	${({size}) => size && `font-size: ${size}px!important`}; */
 `;
 
+export const Icon = (props: IExtendedIconProps) => (
+	<ExtendedIcon
+		{...props}
+	/>
+);
+
 // type IconSizeProp = 'mini' | 'tiny' | 'small' | 'large' | 'big' | 'huge' | 'massive';
 // interface Props {
 // 	id?: string;
@@ -30,9 +36,3 @@ const ExtendedIcon = styled(IconKit)<IExtendedIconProps>`
 // 	/** Size in pixels. */
 // 	size?: number;
 // }
-
-export const Icon = (props: IExtendedIconProps) => (
-	<ExtendedIcon
-		{...props}
-	/>
-);

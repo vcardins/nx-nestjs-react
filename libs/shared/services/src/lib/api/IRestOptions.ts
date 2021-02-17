@@ -1,5 +1,5 @@
 export interface IRestOptions {
 	contentType?: string;
-	withoutCredentials?: boolean;
+	noAuthToken?: boolean;
 	headers?: Headers;
 }

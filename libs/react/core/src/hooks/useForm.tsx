@@ -1,13 +1,15 @@
-import { useState, useCallback } from 'react';
-import { FieldValidationError } from '@xapp/shared/exceptions';
+import { useState, useCallback, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
+
+import { FieldValidationError } from '@xapp/shared/exceptions';
 
 export interface IUseFormProps<T> {
 	initialValues: T;
 	clearAfterSubmit?: boolean;
 	onSubmit: (data: T) => Promise<any>;
 }
+
 interface IUseFormResponse<T> {
 	submitting: boolean;
 	success: boolean;
@@ -19,8 +21,9 @@ interface IUseFormResponse<T> {
 }
 
 export function useForm<T>(props: IUseFormProps<T>): IUseFormResponse<T> {
-	const {initialValues, clearAfterSubmit = true, onSubmit} = props;
+	const { initialValues, clearAfterSubmit = true, onSubmit } = props;
 	const history = useHistory();
+
 	const [formData, setFormData] = useState<T>(initialValues);
 	const [submitting, setSubmitting] = useState(false);
 	const [success, setSuccess] = useState(false);
@@ -52,8 +55,7 @@ export function useForm<T>(props: IUseFormProps<T>): IUseFormResponse<T> {
 			}
 
 			return response;
-		}
-		catch (e) {
+		} catch (e) {
 			if (e?.errors) {
 				setErrors(e.errors);
 			}
@@ -61,11 +63,12 @@ export function useForm<T>(props: IUseFormProps<T>): IUseFormResponse<T> {
 			if (e?.message) {
 				toast.error(e?.message);
 			}
-		}
-		finally {
+		} finally {
 			setSubmitting(false);
 		}
 	};
+
+	useEffect(() => setFormData(initialValues), [initialValues]);
 
 	const handleReset = () => setFormData(initialValues);
 

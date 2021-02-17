@@ -3,9 +3,9 @@ import { parse } from 'query-string';
 
 import { Page, Form, TextInput, FieldGroup, Submit, IRoutedPageProps, useForm } from '@xapp/react/core';
 import { IResetPasswordInput } from '@xapp/shared/interfaces';
-import { AccountService } from '@xapp/react/auth';
 
 import { validationSchema } from './schema';
+import { useApp } from '../../../AppContextProvider';
 
 const initialValues: IResetPasswordInput = {
 	password: '',
@@ -14,9 +14,12 @@ const initialValues: IResetPasswordInput = {
 };
 
 const ResetPasswordPage = memo((props: IRoutedPageProps) => {
+	const { dataContext } = useApp();
+	const api = dataContext?.account;
+
 	const {formData, handleSubmit, handleChange, errors, submitting, success} = useForm<IResetPasswordInput>({
 		initialValues,
-		onSubmit: AccountService.resetPassword,
+		onSubmit: api.resetPassword,
 	});
 
 	const [verificationKey, setVerificationKey] = useState<string>();

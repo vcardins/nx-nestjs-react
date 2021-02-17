@@ -26,11 +26,11 @@ const DateWrapper = styled.span<IDateWrapperProps>`
 	font-size: 12px;
 `;
 
-export const formatDate = (value: IProps['value'], format = DEFAULT_FORMAT) =>
+export const formatDateTime = (value: IProps['value'], format = DEFAULT_FORMAT) =>
 	dayjs(value).format(format);
 
 export const DateFormatter = ({ value, width, unit, format = DEFAULT_FORMAT}: IProps) => {
-	const date = value ? formatDate(value, format) : null;
+	const date = value ? formatDateTime(value, format) : null;
 
 	return (
 		<DateWrapper width={width} unit={unit}>

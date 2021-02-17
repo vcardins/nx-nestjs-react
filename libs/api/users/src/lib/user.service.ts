@@ -229,7 +229,7 @@ export class UserService extends BaseService<User> {
 	}
 
 	getUserDto(user: User): UserDto {
-		const { userProfile, groups = [], id, dateJoined, isActive, isSuperuser, lastLogin, username, email } = user;
+		const { userProfile, groups = [], id, dateJoined, isActive, isSuperuser, lastLogin, username, email, phoneNumber } = user;
 
 		return plainToClass(UserDto, {
 			id, dateJoined, isActive, isSuperuser, lastLogin,
@@ -241,7 +241,7 @@ export class UserService extends BaseService<User> {
 					module,
 				})),
 			})),
-			profile: plainToClass(UserProfileDto, userProfile),
+			profile: plainToClass(UserProfileDto, { ...userProfile, phoneNumber }),
 		});
 	}
 }

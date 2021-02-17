@@ -20,7 +20,7 @@ export class UserProfileInput implements IUserProfileInput {
 
 	@MaxLength(12)
 	@IsOptional()
-	mobile?: string;
+	phoneNumber?: string;
 
 	@MaxLength(12)
 	@IsOptional()

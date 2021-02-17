@@ -17,7 +17,7 @@ interface IAppDataContext {
 	todo: TodoStore;
 	lookup: LookupStore;
 	account: AccountStore;
-};
+}
 
 
 type IAppContext = ICommonAppContext<IAppDataContext>;

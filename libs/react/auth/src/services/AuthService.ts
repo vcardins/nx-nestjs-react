@@ -150,7 +150,7 @@ class AuthService extends EventEmitter {
 		const response = await this.api.post<IUserToken>({
 			url: endpoints.signIn,
 			data: payload,
-			options: { withoutCredentials: true },
+			options: { noAuthToken: true },
 		});
 
 		const jwt = jwtDecode(response.access_token) as IJwtPayload;

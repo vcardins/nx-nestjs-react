@@ -1,5 +1,21 @@
 ﻿import { DataContext } from '@xapp/react/core';
-import { IUserProfileInput, ISignedUserOutput, IUserProfile, IActionResponse, IVerifyEmailInput, IVerifyPhoneNumberInput, ISignInInput, IChangePhoneNumberInput, IChangePasswordInput, IResetPasswordInput, IForgotPasswordInput, IEndpointsConfig } from '@xapp/shared/interfaces';
+import {
+	IUserProfileInput,
+	ISignedUserOutput,
+	IUserProfile,
+	IActionResponse,
+	IVerifyEmailInput,
+	IVerifyPhoneNumberInput,
+	ISignInInput,
+	IChangePhoneNumberInput,
+	IChangePasswordInput,
+	IResetPasswordInput,
+	IForgotPasswordInput,
+	IEndpointsConfig,
+	ISignUpInput,
+} from '@xapp/shared/interfaces';
+
+const options = { noAuthToken: true };
 
 export class AccountStore extends DataContext {
 	constructor(authHeader: string, private endpoints: IEndpointsConfig) {
@@ -9,20 +25,32 @@ export class AccountStore extends DataContext {
 		});
 	}
 
+	// BEGIN: Unauthenticated user's methods
+	async signUp(data: ISignUpInput): Promise<IUserProfile> {
+		return await this.create<{message: string; data: any}>({ url: this.endpoints.signUp, data, options });
+	}
+
+	async verifyEmail(data: IVerifyEmailInput): Promise<IActionResponse> {
+		return this.patch({url: this.endpoints.verifyEmail, data, options });
+	}
+
+	async verifyPhoneNumber(data: IVerifyPhoneNumberInput): Promise<IActionResponse> {
+		return this.patch({url: this.endpoints.verifyPhoneNumber, data, options });
+	}
+
+	async forgotPassword(data: IForgotPasswordInput): Promise<IActionResponse> {
+		return await this.update({ url: this.endpoints.forgotPassword, data, options });
+	}
+
+	// END: Unauthenticated user's methods
+
+	// Authenticated user's methods
 	async updateProfile(data: IUserProfileInput): Promise<IUserProfile> {
-		return this.patch<IUserProfile>({url: this.endpoints.profile, data});
+		return this.patch<IUserProfile>({url: this.endpoints.updateProfile, data});
 	}
 
 	async getUserProfile(): Promise<ISignedUserOutput> {
 		return this.read<ISignedUserOutput>({url: this.endpoints.profile});
-	}
-
-	async verifyEmail(data: IVerifyEmailInput): Promise<IActionResponse> {
-		return this.patch({url: this.endpoints.verifyEmail, data});
-	}
-
-	async verifyPhoneNumber(data: IVerifyPhoneNumberInput): Promise<IActionResponse> {
-		return this.patch({url: this.endpoints.verifyPhoneNumber, data});
 	}
 
 	async closeAccount(): Promise<IActionResponse> {
@@ -43,9 +71,5 @@ export class AccountStore extends DataContext {
 
 	async resetPassword(data: IResetPasswordInput): Promise<IActionResponse> {
 		return this.update({ url: this.endpoints.resetPassword, data});
-	}
-
-	async forgotPassword(data: IForgotPasswordInput): Promise<IActionResponse> {
-		return await this.update({ url: this.endpoints.forgotPassword, data});
 	}
 }

@@ -12,8 +12,8 @@ interface ITextInput extends IHtmlField {
 }
 
 export function TextInput (props: ITextInput) {
-	const { id, name, label, value, plain, type, component } = props;
-	const plainElement = (
+	const { id, name, label, value, labelLess, type, component } = props;
+	const inputElement = (
 		<StyledInput
 			id={id || name}
 			name={name}
@@ -23,13 +23,13 @@ export function TextInput (props: ITextInput) {
 		/>
 	);
 
-	if (plain) {
-		return plainElement;
+	if (labelLess) {
+		return inputElement;
 	}
 
 	return (
 		<FieldSet name={name} label={label}>
-			{ plainElement }
+			{ inputElement }
 		</FieldSet>
 	);
 }

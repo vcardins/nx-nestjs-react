@@ -8,7 +8,7 @@ import { ic_send } from 'react-icons-kit/md/ic_send';
 import { ic_refresh } from 'react-icons-kit/md/ic_refresh';
 
 import { Page, Form, TextInput, FieldGroup, Submit, useForm, Button, Icon } from '@xapp/react/core';
-import { DateFormatter, formatDate } from '@xapp/react/core';
+import { DateFormatter, formatDateTime } from '@xapp/react/core';
 import { InlineEdit } from '@xapp/react/core';
 
 import { TodoOutput } from './TodoOutput';
@@ -145,7 +145,7 @@ const TodoPage = memo(() => {
 								icon={icon}
 								onClick={() => handleComplete(todo)}
 								data-completed={!!dateCompleted}
-								title={!dateCompleted ? 'Mark as complete' : `Completed at: ${formatDate(dateCompleted)}. Click to uncompleted`}
+								title={!dateCompleted ? 'Mark as complete' : `Completed at: ${formatDateTime(dateCompleted)}. Click to uncompleted`}
 							/>
 						</TodoItem>
 					);

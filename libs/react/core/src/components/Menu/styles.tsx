@@ -8,7 +8,7 @@ import { INavItem } from '../../interfaces/INavItem';
 
 interface IMenuItemContainerProps {
 	item: INavItem;
-	children: JSX.Element | JSX.Element[];
+	children: React.ReactNode;
 }
 
 interface IMenuGroupProps {
@@ -75,57 +75,62 @@ export const MenuContainer = styled.div`
 	width: 100%;
 `;
 
+const NavItemDivider = styled.span`
+	${ baseMenuItemCss }
+	padding: 0.5em 0 0.5em 1em;
+`;
+
+const NavItemLink = styled.a`
+	font-size: 100%;
+`;
+
+const NavItemGroup = styled.span.attrs({ 'data-menu-group': true })`
+	font-weight: bold;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 16px 16px 10px;
+	color: rgba(255, 255, 255, 0.5);
+	text-transform: uppercase;
+	font-size: 14px;
+`;
+
+const NavItemRoute = styled(Link)`
+	${ baseMenuItemCss }
+	${MenuItemIcon} {
+		order: -1;
+	}
+`;
+
 export const MenuItemContainer = ({ item, children }: IMenuItemContainerProps) => {
-	let Component;
 	// const BadgeWrapper = styled.span`${(props) => getBadgeConfig(props)}`;
 	switch (item.type) {
 		case NavItemTypes.Route:
-			Component = styled(Link)`
-				${ baseMenuItemCss }
-				${MenuItemIcon} {
-					order: -1;
-				}
-			`;
 			return (
-				<Component to={item.route.path}>
+				<NavItemRoute to={item.route.path}>
 					{ children }
-				</Component>
+				</NavItemRoute>
 			);
 		case NavItemTypes.Link:
-			Component = styled.a`
-				font-size: 100%;
-			`;
 			return (
-				<Component href={item.route.path} target={item.target}>
+				<NavItemLink href={item.route.path} target={item.target}>
 					{ children }
-				</Component>
+				</NavItemLink>
 			);
 		case NavItemTypes.Divider:
-			Component = styled.span`
-				${ baseMenuItemCss }
-				padding: 0.5em 0 0.5em 1em;
-			`;
-			break;
+			return (
+				<NavItemDivider>
+					{ children }
+				</NavItemDivider>
+			);
 		case NavItemTypes.Group:
-			Component = styled.span.attrs({ 'data-menu-group': true })`
-				font-weight: bold;
-				position: relative;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				padding: 16px 16px 10px;
-				color: rgba(255, 255, 255, 0.5);
-				text-transform: uppercase;
-				font-size: 14px;
-			`;
-			break;
+			return (
+				<NavItemGroup>
+					{ children }
+				</NavItemGroup>
+			);
 		default:
 			return null;
 	}
-
-	return (
-		<Component>
-			{ children }
-		</Component>
-	);
 };

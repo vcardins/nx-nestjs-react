@@ -93,9 +93,9 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 					updatedSocket.connect();
 					// on reconnection, reset the transports option, as the Websocket
 					// connection may have failed (caused by proxy, firewall, browser, ...)
-					// socket.on('reconnect_attempt', () => {
-					// 	socket.io.opts.transports = ['polling', 'websocket'];
-					// });
+					socket.on('reconnect_attempt', () => {
+						socket.io.opts.transports = ['polling', 'websocket'];
+					});
 
 					// const getSocketListener = (module: string) =>
 					// 	socket.on('events', (data: any) => {
@@ -138,7 +138,7 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 			socket?.disconnect();
 			setUser(null);
 		};
-	}, [accessToken, authHeader, socket]);
+	}, [accessToken, authHeader]);
 
 	const value = useMemo<IAppContext>(
 		() => ({
@@ -156,9 +156,17 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 		[routes, activeRoute, socket, navigation, user, lookup, dataContext, onSignOut],
 	);
 
-	return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+	return (
+		<AppContext.Provider value={value}>
+			{children}
+		</AppContext.Provider>
+	);
 };
 
 const useApp = () => useContext(AppContext);
 
-export { AppContextProvider, AppContext as appContext, useApp };
+export {
+	AppContextProvider,
+	AppContext as appContext,
+	useApp,
+};

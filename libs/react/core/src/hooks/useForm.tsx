@@ -20,7 +20,7 @@ interface IUseFormResponse<T> {
 	handleChange: (data: T) => void;
 }
 
-export function useForm<T>(props: IUseFormProps<T>): IUseFormResponse<T> {
+export function useForm<T>(props: IUseFormProps<T>, dependencies: string[] | number[] = []): IUseFormResponse<T> {
 	const { initialValues, clearAfterSubmit = true, onSubmit } = props;
 	const history = useHistory();
 
@@ -68,7 +68,7 @@ export function useForm<T>(props: IUseFormProps<T>): IUseFormResponse<T> {
 		}
 	};
 
-	useEffect(() => setFormData(initialValues), [initialValues]);
+	useEffect(() => setFormData(initialValues), dependencies);
 
 	const handleReset = () => setFormData(initialValues);
 

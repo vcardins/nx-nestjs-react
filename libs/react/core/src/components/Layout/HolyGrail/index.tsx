@@ -59,7 +59,7 @@ export const HolyGrailLayout = (props: ILayoutProps) => {
 						<ActionLink.Icon
 							data-title={isSidenavCollapsed ? 'Expand' : 'Collapse'}
 							icon={ic_menu}
-							inverse={true}
+							inverse={true ? 1 : 0}
 							size={24}
 						/>
 					</a>

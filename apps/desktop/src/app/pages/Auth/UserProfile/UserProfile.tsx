@@ -18,7 +18,7 @@ const UserProfilePage = memo(() => {
 			const response = await api?.updateProfile(data);
 			onUpdateUserProfile(response);
 		},
-	});
+	}, [user?.profile?.firstName]);
 
 	const handleDayChange = (dateOfBirth: Date) => {
 		handleChange({ ...formData, dateOfBirth: formatDate(dateOfBirth) });

@@ -22,7 +22,7 @@ const UserProfilePage = memo(() => {
 
 	const handleDayChange = (dateOfBirth: Date) => {
 		handleChange({ ...formData, dateOfBirth: formatDate(dateOfBirth) });
-	}
+	};
 
 	const formRef = useRef({ valid: false });
 

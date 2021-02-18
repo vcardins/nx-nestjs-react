@@ -3,7 +3,7 @@ import { io } from 'socket.io-client';
 
 import { IAppContext as ICommonAppContext, INavItem } from '@xapp/react/core';
 import { ISignedUserOutput, IUserProfileInput, ILookup } from '@xapp/shared/interfaces';
-import { useAuth } from  '@xapp/react/auth';
+import { useAuth } from '@xapp/react/auth';
 import { appConfig } from '@xapp/shared/config';
 
 import { TodoStore } from './pages/Todo/TodoDataStore';
@@ -18,7 +18,6 @@ interface IAppDataContext {
 	lookup: LookupStore;
 	account: AccountStore;
 }
-
 
 type IAppContext = ICommonAppContext<IAppDataContext>;
 
@@ -35,9 +34,7 @@ const initialContext: IAppContext = {
 	onSignOut: () => null,
 };
 
-const AppContext: Context<IAppContext> = createContext<IAppContext>(
-	initialContext,
-);
+const AppContext: Context<IAppContext> = createContext<IAppContext>(initialContext);
 
 interface IAppContextProviderProps {
 	children: React.ReactNode;
@@ -53,11 +50,11 @@ interface IAppContextProviderProps {
 // 	// config: configReducer(config, action as ConfigActions),
 // });
 
-const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }) => {
+const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: IAppContextProviderProps) => {
 	// const [state, dispatch] = useReducer(mainReducer, initialState);
 	// The ref object is a generic container whose current property is mutable ...
 	// ... and can hold any value, similar to an instance property on a class
-	const {accessToken, onSignOut, authHeader} = useAuth();
+	const { accessToken, onSignOut, authHeader } = useAuth();
 	const [user, setUser] = useState<ISignedUserOutput>(null);
 	const [lookup, setLookup] = useState<ILookup>(null);
 	const [dataContext, setDataContext] = useState<IAppDataContext>();
@@ -141,32 +138,27 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }) 
 			socket?.disconnect();
 			setUser(null);
 		};
-	}, [accessToken, authHeader]);
+	}, [accessToken, authHeader, socket]);
 
-	const value = useMemo<IAppContext>(() => ({
-		routes,
-		activeRoute,
-		socket,
-		navigation,
-		user,
-		lookup,
-		dataContext,
-		onUpdateUserProfile: (profile: IUserProfileInput) => setUser({...user, profile}),
-		onActivateRoute: setActiveRoute,
-		onSignOut,
-	}), [routes, activeRoute, socket, navigation, user, dataContext, onSignOut]);
-
-	return (
-		<AppContext.Provider value={value}>
-			{children}
-		</AppContext.Provider>
+	const value = useMemo<IAppContext>(
+		() => ({
+			routes,
+			activeRoute,
+			socket,
+			navigation,
+			user,
+			lookup,
+			dataContext,
+			onUpdateUserProfile: (profile: IUserProfileInput) => setUser({ ...user, profile }),
+			onActivateRoute: setActiveRoute,
+			onSignOut,
+		}),
+		[routes, activeRoute, socket, navigation, user, lookup, dataContext, onSignOut],
 	);
+
+	return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 
 const useApp = () => useContext(AppContext);
 
-export {
-	AppContextProvider,
-	AppContext as appContext,
-	useApp,
-};
+export { AppContextProvider, AppContext as appContext, useApp };

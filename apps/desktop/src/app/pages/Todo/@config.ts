@@ -8,7 +8,7 @@ export const TodoPageConfig: IPageConfig = {
 		style: LayoutStyles.Viewport,
 		config: {},
 	},
-	// auth: AuthGroups.user,
+	auth: AuthGroups.user,
 	routes: [
 		{
 			key: PageKey.Todo,

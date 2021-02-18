@@ -1,12 +1,11 @@
 import React, { memo, useContext, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { parse } from 'query-string';
+import { Link/*, useLocation*/ } from 'react-router-dom';
 
-import { FieldGroup, Form, TextInput, Checkbox, Button, Submit, PageKey, useForm } from '@xapp/react/core';
-import { useAuth } from  '@xapp/react/auth';
+import { FieldGroup, Form, TextInput, Button, Submit, PageKey, useForm } from '@xapp/react/core';
+import { useAuth } from '@xapp/react/auth';
 
 import { OAuthProvider } from '@xapp/shared/enums';
-import { ISignInInput  } from '@xapp/shared/interfaces';
+import { ISignInInput } from '@xapp/shared/interfaces';
 
 import { validationSchema } from './schema';
 import { appContext } from '../../../AppContextProvider';
@@ -18,14 +17,13 @@ const initialValues: ISignInInput = {
 	// rememberMe: undefined,
 };
 
-const normalizePath = (path: string | string[]): string =>
-	Array.isArray(path) ? path[0] : path;
+const normalizePath = (path: string | string[]): string => (Array.isArray(path) ? path[0] : path);
 
 const SignInPage = memo(() => {
-	const location = useLocation();
-	const {routes} = useContext(appContext);
-	const {onSignIn, getProviderUri, getOauthAccessToken } = useAuth();
-	const {formData, handleSubmit, handleChange, errors, submitting, success} = useForm<ISignInInput>({
+	// const location = useLocation();
+	const { routes } = useContext(appContext);
+	const { onSignIn, getProviderUri } = useAuth(); // getOauthAccessToken
+	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<ISignInInput>({
 		initialValues,
 		onSubmit: onSignIn,
 	});
@@ -57,13 +55,7 @@ const SignInPage = memo(() => {
 	};
 
 	return (
-		<Form
-			ref={formRef}
-			data={formData}
-			onChange={handleChange}
-			onSubmit={handleSubmit}
-			schema={validationSchema}
-		>
+		<Form ref={formRef} data={formData} onChange={handleChange} onSubmit={handleSubmit} schema={validationSchema}>
 			<TextInput
 				label="Email"
 				name="email"
@@ -86,31 +78,19 @@ const SignInPage = memo(() => {
 				sided
 			/> */}
 			<FieldGroup sided>
-				<Submit
-					loading={submitting}
-					success={success}
-				/>
+				<Submit loading={submitting} success={success} />
 			</FieldGroup>
 			<FieldGroup>
-				<Link to={normalizePath(route.resetPassword.path)}>
-					{route.resetPassword.title}
-				</Link>
-				<Link to={normalizePath(route.signUp.path)}>
-					{route.signUp.title}
-				</Link>
+				<Link to={normalizePath(route.resetPassword.path)}>{route.resetPassword.title}</Link>
+				<Link to={normalizePath(route.signUp.path)}>{route.signUp.title}</Link>
 			</FieldGroup>
 			<h4>Social Login</h4>
 			<FieldGroup sided>
-				{
-					Object.keys(OAuthProvider).map((provider) => (
-						<Button
-							key={provider}
-							onClick={() => handleSocialSignin(OAuthProvider[provider])}
-						>
-							{provider}
-						</Button>
-					))
-				}
+				{Object.keys(OAuthProvider).map((provider) => (
+					<Button key={provider} onClick={() => handleSocialSignin(OAuthProvider[provider])}>
+						{provider}
+					</Button>
+				))}
 			</FieldGroup>
 		</Form>
 	);

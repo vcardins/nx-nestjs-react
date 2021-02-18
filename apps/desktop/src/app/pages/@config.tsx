@@ -13,6 +13,9 @@ import { TodoPageConfig } from './Todo/@config';
 
 import { authPagesConfigs } from './Auth/@config';
 
+const RedirectHome = <Redirect to={appConfig.routes.home}/>;
+const RedirectNotFound = <Redirect to={appConfig.routes.notFound}/>;
+
 const DefaultPageConfig: IPageConfig = {
 	layout: {
 		style: LayoutStyles.Clean,
@@ -24,13 +27,13 @@ const DefaultPageConfig: IPageConfig = {
 			exact: true,
 			title: 'Home Page',
 			path: appConfig.routes.home,
-			component: () => <Redirect to={appConfig.routes.home}/>,
+			component: () => RedirectHome,
 		},
 		{
 			key: PageKey.PageNotFound,
 			exact: true,
 			title: 'Not Found',
-			component: () => <Redirect to={appConfig.routes.notFound}/>,
+			component: () => RedirectNotFound,
 		},
 	],
 };

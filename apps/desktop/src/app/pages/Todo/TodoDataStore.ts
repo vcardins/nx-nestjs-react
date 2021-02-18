@@ -1,4 +1,4 @@
-﻿import { DataContext } from '@xapp/react/core';
+import { DataContext } from '@xapp/react/core';
 
 import { TodoOutput } from './TodoOutput';
 import { TodoInput } from './TodoInput';

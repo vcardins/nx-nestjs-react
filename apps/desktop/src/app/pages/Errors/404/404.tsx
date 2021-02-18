@@ -8,4 +8,6 @@ const Error404Page = memo(() => (
 	/>
 ));
 
+Error404Page.displayName = 'Error404Page';
+
 export default Error404Page;

@@ -8,4 +8,6 @@ const Error500Page = memo(() => (
 	/>
 ));
 
+Error500Page.displayName = 'Error500Page';
+
 export default Error500Page;

@@ -36,7 +36,7 @@ const VerifyEmailPage = memo(() => {
 		if (key) {
 			verifyEmail(key as string);
 		}
-	}, []);
+	}, [api]);
 
 	if (submitting) {
 		return (

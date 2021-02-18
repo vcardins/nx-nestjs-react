@@ -5,4 +5,6 @@ const AdminPage = memo(() => (
 	<Page title="Admin" padded/>
 ));
 
+AdminPage.displayName = 'AdminPage';
+
 export default AdminPage;

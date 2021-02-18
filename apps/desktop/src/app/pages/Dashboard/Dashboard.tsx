@@ -6,4 +6,6 @@ const DashboardPage = memo(() => (
 	</div>
 ));
 
+DashboardPage.displayName = 'DashboardPage';
+
 export default DashboardPage;

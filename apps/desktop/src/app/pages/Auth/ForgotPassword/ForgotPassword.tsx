@@ -5,7 +5,7 @@ import { Form, TextInput, FieldGroup, Submit, PageKey, useForm } from '@xapp/rea
 import { IForgotPasswordInput } from '@xapp/shared/interfaces';
 
 import { validationSchema } from './schema';
-import { appContext, useApp } from '../../../AppContextProvider';
+import { appContext, useApp } from '../../../context';
 
 const initialValues: IForgotPasswordInput = {
 	email: '',

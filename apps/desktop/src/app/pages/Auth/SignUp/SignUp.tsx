@@ -6,7 +6,7 @@ import { validationSchema } from './schema';
 import { Form, TextInput, FieldGroup, Submit, PageKey, useForm } from '@xapp/react/core';
 import { ISignUpInput } from '@xapp/shared/interfaces';
 
-import { appContext, useApp } from '../../../AppContextProvider';
+import { appContext, useApp } from '../../../context';
 
 const initialValues: ISignUpInput = {
 	username: '',

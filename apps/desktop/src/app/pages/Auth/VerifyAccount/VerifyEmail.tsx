@@ -1,6 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
 import { parse } from 'query-string';
-import { useApp } from '../../../AppContextProvider';
+import { useApp } from '../../../context';
 
 const VerifyEmailPage = memo(() => {
 	const { dataContext } = useApp();

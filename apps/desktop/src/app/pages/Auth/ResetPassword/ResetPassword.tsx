@@ -5,7 +5,7 @@ import { Page, Form, TextInput, FieldGroup, Submit, IRoutedPageProps, useForm } 
 import { IResetPasswordInput } from '@xapp/shared/interfaces';
 
 import { validationSchema } from './schema';
-import { useApp } from '../../../AppContextProvider';
+import { useApp } from '../../../context';
 
 const initialValues: IResetPasswordInput = {
 	password: '',

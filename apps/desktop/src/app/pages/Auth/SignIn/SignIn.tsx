@@ -8,7 +8,7 @@ import { OAuthProvider } from '@xapp/shared/enums';
 import { ISignInInput } from '@xapp/shared/interfaces';
 
 import { validationSchema } from './schema';
-import { appContext } from '../../../AppContextProvider';
+import { appContext } from '../../../context';
 // import { GoogleLogo } from './logos';
 
 const initialValues: ISignInInput = {
@@ -98,7 +98,6 @@ const SignInPage = memo(() => {
 	async function handleSocialSignin(provider: string) {
 		// eslint-disable-next-line camelcase
 		const { redirect_uri: url } = await getProviderUri(provider);
-		// eslint-disable-next-line immutable/no-mutation
 		document.location.href = url;
 	}
 });

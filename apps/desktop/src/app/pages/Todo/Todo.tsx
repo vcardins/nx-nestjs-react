@@ -15,7 +15,7 @@ import { TodoOutput } from './TodoOutput';
 import { TodoInput } from './TodoInput';
 
 import { validationSchema } from './schema';
-import { useApp } from '../../AppContextProvider';
+import { useApp } from '../../context';
 import { TodoList, TodoItem, TodoIcon } from './components';
 
 const initialValues: TodoInput = { title: '' };

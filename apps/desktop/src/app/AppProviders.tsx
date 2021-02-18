@@ -7,7 +7,7 @@ import { getTheme, DebugRouter, IKeyedRoute } from '@xapp/react/core';
 import { appConfig } from '@xapp/shared/config';
 import { Themes } from '@xapp/shared/enums';
 
-import { AppContextProvider } from './AppContextProvider';
+import { AppContextProvider, SocketContextProvider } from './context';
 
 interface IAppProviders {
 	children: React.ReactNode;
@@ -18,9 +18,11 @@ export const AppProviders = ({ children, routes }: IAppProviders) => (
 	<ThemeProvider theme={getTheme(appConfig.theme as Themes)}>
 		<AuthContextProvider>
 			<AppContextProvider routes={routes}>
-				<DebugRouter history={createBrowserHistory()}>
-					{children}
-				</DebugRouter>
+				<SocketContextProvider>
+					<DebugRouter history={createBrowserHistory()}>
+						{ children }
+					</DebugRouter>
+				</SocketContextProvider>
 			</AppContextProvider>
 		</AuthContextProvider>
 	</ThemeProvider>

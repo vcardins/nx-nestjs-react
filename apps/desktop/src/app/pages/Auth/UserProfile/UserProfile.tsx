@@ -3,7 +3,7 @@ import React, { memo, useContext, useRef } from 'react';
 import { Form, TextInput, Page, Submit, FieldGroup, DatePicker, formatDate, useForm } from '@xapp/react/core';
 import { IUserProfileInput } from '@xapp/shared/interfaces';
 
-import { appContext, useApp } from '../../../AppContextProvider';
+import { appContext, useApp } from '../../../context';
 import { validationSchema } from './schema';
 
 const UserProfilePage = memo(() => {

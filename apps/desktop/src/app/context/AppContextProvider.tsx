@@ -1,17 +1,11 @@
 import React, { FC, Context, createContext, useEffect, useState, useRef, useContext, useMemo } from 'react'; // , Dispatch, useReducer
-import { io } from 'socket.io-client';
 
 import { IAppContext as ICommonAppContext, INavItem } from '@xapp/react/core';
 import { ISignedUserOutput, IUserProfileInput, ILookup } from '@xapp/shared/interfaces';
 import { useAuth } from '@xapp/react/auth';
 import { appConfig } from '@xapp/shared/config';
 
-import { TodoStore } from './pages/Todo/TodoDataStore';
-import { AccountStore } from './pages/Auth/AccountDataStore';
-import { LookupStore } from './pages/Lookup/LookupDataStore';
-
-// eslint-disable-next-line no-console
-const Console = console;
+import { TodoStore, AccountStore, LookupStore } from '../store';
 
 interface IAppDataContext {
 	todo: TodoStore;
@@ -24,7 +18,6 @@ type IAppContext = ICommonAppContext<IAppDataContext>;
 const initialContext: IAppContext = {
 	routes: {},
 	activeRoute: null,
-	socket: null,
 	user: null,
 	lookup: null,
 	navigation: null,
@@ -58,7 +51,6 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 	const [user, setUser] = useState<ISignedUserOutput>(null);
 	const [lookup, setLookup] = useState<ILookup>(null);
 	const [dataContext, setDataContext] = useState<IAppDataContext>();
-	const [socket, setSocket] = useState<ReturnType<typeof io>>(null);
 
 	// const [lookup, setLookup] = useState({} as ILookup);
 	const [activeRoute, setActiveRoute] = useState(null);
@@ -83,41 +75,7 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 
 					const userInfo = await dataStores.account.getUserProfile();
 					setLookup(await dataStores.lookup.read());
-
-					const updatedSocket = io({
-						path: appConfig.apiMeta.websocketEndpoint,
-						query: { token: accessToken },
-						transports: ['websocket'],
-					});
-
-					updatedSocket.connect();
-					// on reconnection, reset the transports option, as the Websocket
-					// connection may have failed (caused by proxy, firewall, browser, ...)
-					socket.on('reconnect_attempt', () => {
-						socket.io.opts.transports = ['polling', 'websocket'];
-					});
-
-					// const getSocketListener = (module: string) =>
-					// 	socket.on('events', (data: any) => {
-					// 		switch (data.module) {
-					// 			case 'todo':
-					// 				return (action: string)
-					// 		}
-					// 	});
-
-					updatedSocket
-						// eslint-disable-next-line no-console
-						.on('disconnect', () => Console.log('Disconnected'))
-						.on('exception', (data: any) => Console.log('Event', data))
-						.on('connected', (data: any) => {
-							Console.log('Connected client', data.clientId);
-						})
-						.on('events', (data: any) => {
-							Console.log(data);
-						});
-
 					setDataContext(dataStores);
-					setSocket(updatedSocket);
 					setUser(userInfo);
 				}
 				catch (e) {
@@ -135,7 +93,6 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 		bootstrap();
 
 		return () => {
-			socket?.disconnect();
 			setUser(null);
 		};
 	}, [accessToken, authHeader]);
@@ -144,7 +101,6 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 		() => ({
 			routes,
 			activeRoute,
-			socket,
 			navigation,
 			user,
 			lookup,
@@ -153,7 +109,7 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 			onActivateRoute: setActiveRoute,
 			onSignOut,
 		}),
-		[routes, activeRoute, socket, navigation, user, lookup, dataContext, onSignOut],
+		[routes, activeRoute, navigation, user, lookup, dataContext, onSignOut],
 	);
 
 	return (

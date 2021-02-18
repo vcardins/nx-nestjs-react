@@ -4,7 +4,7 @@ import { Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react/core';
 import { IVerifyPhoneNumberInput } from '@xapp/shared/interfaces';
 
 import { validationSchema } from './schema';
-import { useApp } from '../../../AppContextProvider';
+import { useApp } from '../../../context';
 
 const initialValues: IVerifyPhoneNumberInput = {
 	code: '',

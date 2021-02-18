@@ -4,7 +4,7 @@ import { Page, Form, TextInput, FieldGroup, Submit, IRoutedPageProps, useForm } 
 import { IChangePasswordInput } from '@xapp/shared/interfaces';
 import { validationSchema } from './schema';
 
-import { useApp } from '../../../AppContextProvider';
+import { useApp } from '../../../context';
 
 const ChangePasswordPage = memo((props: IRoutedPageProps) => {
 	const { dataContext } = useApp();

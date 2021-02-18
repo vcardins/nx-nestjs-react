@@ -5,9 +5,8 @@ import { Layout, Menu, SplashScreen } from '@xapp/react/core';
 import { Authentication, Authorization, IAuthContext } from '@xapp/react/auth';
 
 import { AppProviders } from './AppProviders';
+import { routes, getNavigation } from './config';
 import { globalStyle as GlobalStyle } from './styles';
-import { routes } from './config/routes';
-import { getNavigation } from './config/navigation';
 
 export const App = () => (
 	<AppProviders routes={routes}>

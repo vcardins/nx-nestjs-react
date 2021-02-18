@@ -538,7 +538,7 @@ const rules = {
 
 	'immutable/no-let': 'off',
 	'immutable/no-this': 'off',
-	'immutable/no-mutation': 'error'
+	'immutable/no-mutation': 'off'
 };
 
 module.exports = {

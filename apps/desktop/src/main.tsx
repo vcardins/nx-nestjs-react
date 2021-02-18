@@ -16,7 +16,6 @@ function render () {
 	);
 }
 
-// eslint-disable-next-line immutable/no-mutation
 window.onload = render;
 
 // If you want your app to work offline and load faster, you can change

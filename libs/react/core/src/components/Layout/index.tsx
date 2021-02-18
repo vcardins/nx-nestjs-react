@@ -27,7 +27,9 @@ export const Layout = ({ routes, user, sideMenu, onSignOut }: ILayoutProps) => {
 		}
 
 		// eslint-disable-next-line immutable/no-mutation
-		return () => document.title = '';
+		return () => {
+			document.title = '';
+		};
 	}, [activeRoute]);
 
 	const renderedRoutes = renderRoutes(routesValues);

@@ -1,10 +1,13 @@
+
 import { IKeyedRoute, INavItem, NavItemTypes, PageKey } from '@xapp/react/core';
 import { hasRoutePermission } from '@xapp/react/auth';
 import { IGroupWithPermissions } from '@xapp/shared/interfaces';
+/* eslint-disable camelcase */
 import { ic_fingerprint } from 'react-icons-kit/md/ic_fingerprint';
 import { ic_person_pin } from 'react-icons-kit/md/ic_person_pin';
 import { ic_done } from 'react-icons-kit/md/ic_done';
 import { ic_security } from 'react-icons-kit/md/ic_security';
+/* eslint-enable camelcase */
 
 const getNavId = (key: string) => `nav-item-${key}`;
 

@@ -26,7 +26,7 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 	}
 
 	handleConnection(client: Socket/*, ...args: any[]*/) {
-		const accessToken = client.handshake.query.token;
+		const accessToken = client.handshake.query['token'];
 		const message = `Client connected: ${client.id}`;
 		this.logger.log(message, accessToken);
 		client.emit('onConnected', { clientId: client.id });

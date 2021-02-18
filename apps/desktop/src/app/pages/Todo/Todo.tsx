@@ -1,11 +1,12 @@
-/* eslint-disable camelcase */
-import React, { memo, useEffect, useState, useRef, useCallback } from 'react';
 
+import React, { memo, useEffect, useState, useRef, useCallback } from 'react';
+/* eslint-disable camelcase */
 import { ic_delete } from 'react-icons-kit/md/ic_delete';
 import { ic_check } from 'react-icons-kit/md/ic_check';
 import { ic_check_box } from 'react-icons-kit/md/ic_check_box';
 import { ic_send } from 'react-icons-kit/md/ic_send';
 import { ic_refresh } from 'react-icons-kit/md/ic_refresh';
+/* eslint-enable camelcase */
 
 import { Page, Form, TextInput, FieldGroup, Submit, useForm, Button, Icon } from '@xapp/react/core';
 import { DateFormatter, formatDateTime } from '@xapp/react/core';

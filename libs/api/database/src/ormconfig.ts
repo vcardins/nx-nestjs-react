@@ -14,7 +14,7 @@ const isDevelop = envName === 'development';
 const sourceRootKey = isDevelop ? 'root' : 'outputPath';
 const filesExt = isFromMigration ? '.ts' : '{.ts}';
 const envFile = `.env${envName ? '.' : ''}${envName}`;
-const envFilePath = `${basePath}${envFile}`
+const envFilePath = `${basePath}${envFile}`;
 
 const { projects, defaultProject } = (workspaceJson as unknown) as IWorkspaceJson;
 
@@ -90,7 +90,7 @@ const entities = getFilesByFolder(`${isFromMigration ? '/**' : ''}/**/*.entity`)
 const connectionString = new ConnectionString(process.env.DATABASE_URL || 'sqlite://database/sqlitedb.db');
 
 const [migrations, subscribers, seeds] = ['migrations', 'subscribers', 'seeds'].map((folder) =>
-	getFilesByFolder(`/**/${folder}/**/*`)
+	getFilesByFolder(`/**/${folder}/**/*`),
 );
 
 const type = connectionString.protocol as DatabaseType;

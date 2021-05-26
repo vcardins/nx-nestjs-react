@@ -11,6 +11,6 @@ export class TodoStore extends DataContext<TodoOutput, TodoInput> {
 		});
 	}
 
-	complete = async (id: number, setIncomplete = false) =>
+	complete = (id: number, setIncomplete = false) =>
 		this.patch({ url: 'complete', data: { id, setIncomplete }});
 }

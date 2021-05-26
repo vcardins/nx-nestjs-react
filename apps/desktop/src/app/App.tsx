@@ -19,7 +19,7 @@ export const App = () => (
 						user={user}
 						sideMenu={
 							<Menu
-								items={getNavigation(routes, user.groups)}
+								items={getNavigation(routes, user?.groups)}
 							/>
 						}
 						onSignOut={onSignOut}

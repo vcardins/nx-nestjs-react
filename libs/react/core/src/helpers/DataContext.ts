@@ -46,25 +46,25 @@ export class DataContext<TOutput = any, TInputCreate = any, TInputUpdate = TInpu
 		});
 	}
 
-	readAll = async <T>(payload?: IRestClientPayload<TInputCreate>): Promise<TOutput[]> =>
+	readAll = <T>(payload?: IRestClientPayload<TInputCreate>): Promise<TOutput[]> =>
 		this.api.get<T | TInputCreate>(payload);
 
-	read = async <T>(payload?: IRestClientPayload<TInputCreate>): Promise<TOutput> =>
+	read = <T>(payload?: IRestClientPayload<TInputCreate>): Promise<TOutput> =>
 		this.api.get<T | TInputCreate>(payload);
 
-	create = async <T>(payload?: IRestClientPayload<TInputCreate>): Promise<TOutput> =>
+	create = <T>(payload?: IRestClientPayload<TInputCreate>): Promise<TOutput> =>
 		this.api.post<T | TInputCreate>(payload);
 
-	patch = async <T>(payload?: IRestClientPayload<TInputUpdate>): Promise<TOutput> =>
+	patch = <T>(payload?: IRestClientPayload<TInputUpdate>): Promise<TOutput> =>
 		this.api.patch<T | TInputUpdate>(payload);
 
-	update = async <T>(payload?: IRestClientPayload<TInputUpdate>): Promise<TOutput> =>
+	update = <T>(payload?: IRestClientPayload<TInputUpdate>): Promise<TOutput> =>
 		this.api.put<T | TInputUpdate>(payload);
 
-	delete = async (id: string | number): Promise<TOutput> =>
+	delete = (id: string | number): Promise<TOutput> =>
 		this.api.delete({ data: id });
 
-	upload = async (payload?: IRestClientPayload<TInputCreate>): Promise<TOutput> =>
+	upload = (payload?: IRestClientPayload<TInputCreate>): Promise<TOutput> =>
 		this.api.upload(payload);
 
 	setBaseEndpoint(basePath: string) {
@@ -79,7 +79,7 @@ export class DataContext<TOutput = any, TInputCreate = any, TInputUpdate = TInpu
 		console.error(error, statusCode);
 	}
 
-	private async handleUnauthorizedAccess(
+	private handleUnauthorizedAccess(
 		method: RestMethod,
 		payload: IRestClientPayload<TInputCreate>,
 	): Promise<void> {
@@ -87,6 +87,7 @@ export class DataContext<TOutput = any, TInputCreate = any, TInputUpdate = TInpu
 		if (!this.refreshToken) {
 			return;
 		}
+		console.log(method, payload);
 		// const oldAccessToken = this.accessToken;
 		// const newAccessToken = await this.fetchAccessToken(
 		// 	this.refreshToken,

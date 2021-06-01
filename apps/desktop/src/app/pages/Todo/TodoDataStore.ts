@@ -12,5 +12,5 @@ export class TodoStore extends DataContext<TodoOutput, TodoInput> {
 	}
 
 	complete = (id: number, setIncomplete = false) =>
-		this.patch({ url: 'complete', data: { id, setIncomplete }});
+		this.patch({ url: 'complete', data: { id, setIncomplete } });
 }

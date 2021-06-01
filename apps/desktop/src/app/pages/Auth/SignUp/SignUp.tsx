@@ -18,11 +18,11 @@ const initialValues: ISignUpInput = {
 };
 
 const SignUpPage = memo(() => {
-	const {routes} = useContext(appContext);
+	const { routes } = useContext(appContext);
 	const { dataContext } = useApp();
 	const api = dataContext?.account;
 
-	const {formData, handleSubmit, handleChange, errors, submitting, success} = useForm<ISignUpInput>({
+	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<ISignUpInput>({
 		initialValues,
 		onSubmit: api.signUp,
 	});

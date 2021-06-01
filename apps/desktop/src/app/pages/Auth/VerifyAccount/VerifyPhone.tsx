@@ -14,7 +14,7 @@ const VerifyMobilePage = memo(() => {
 	const { dataContext } = useApp();
 	const api = dataContext?.account;
 
-	const {formData, handleSubmit, handleChange, errors, submitting, success} = useForm<IVerifyPhoneNumberInput>({
+	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<IVerifyPhoneNumberInput>({
 		initialValues,
 		onSubmit: api.verifyPhoneNumber,
 	});

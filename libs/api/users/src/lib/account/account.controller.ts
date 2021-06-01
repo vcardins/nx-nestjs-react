@@ -2,7 +2,6 @@ import { Body, Controller, HttpCode, HttpStatus, Post, Req, Patch, UseIntercepto
 import { ApiBearerAuth, ApiResponse, ApiTags, ApiConsumes } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { plainToClass } from 'class-transformer';
-// import { Express } from 'express';
 
 import { MessageOutput, Public, Roles, Permissions } from '@xapp/api/core';
 import { ModuleAction } from '@xapp/shared/enums';

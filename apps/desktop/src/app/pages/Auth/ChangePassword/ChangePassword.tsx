@@ -10,7 +10,7 @@ const ChangePasswordPage = memo((props: IRoutedPageProps) => {
 	const { dataContext } = useApp();
 	const api = dataContext?.account;
 
-	const {formData, handleSubmit, handleChange, errors, submitting, success} = useForm<IChangePasswordInput>({
+	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<IChangePasswordInput>({
 		initialValues: {
 			oldPassword: '',
 			newPassword: '',

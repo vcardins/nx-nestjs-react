@@ -274,7 +274,7 @@ const rules = {
 	'no-whitespace-before-property': 'off',
 	'nonblock-statement-body-position': 'off',
 	'object-curly-newline': 'off',
-	'object-curly-spacing': 'off',
+	'object-curly-spacing': ['error', 'always'], // enforce consistent spacing inside braces
 	'object-property-newline': 'off',
 	'one-var': 'off',
 	'one-var-declaration-per-line': 'off',
@@ -560,7 +560,6 @@ module.exports = {
 		'plugin:@typescript-eslint/eslint-recommended',
 		'plugin:@typescript-eslint/recommended',
 		'prettier',
-		'prettier/@typescript-eslint'
 	],
 	overrides: [
 		{

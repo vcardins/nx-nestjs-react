@@ -43,7 +43,7 @@ const TodoPage = memo(() => {
 	const handleComplete = useCallback(async (todo: TodoOutput) => {
 		try {
 			const response = await api.complete(todo.id, !!todo.dateCompleted);
-			const index = todos.findIndex(({id}) => id === response.id);
+			const index = todos.findIndex(({ id }) => id === response.id);
 
 			setTodos([
 				...todos.slice(0, index),
@@ -56,9 +56,9 @@ const TodoPage = memo(() => {
 
 	const handleEdit = useCallback(async (todo: TodoOutput, title: string) => {
 		try {
-			const index = todos.findIndex(({id}) => id === todo.id);
-			const updated = {...todo, title};
-			const response = await api.update({data: updated});
+			const index = todos.findIndex(({ id }) => id === todo.id);
+			const updated = { ...todo, title };
+			const response = await api.update({ data: updated });
 
 			setTodos([
 				...todos.slice(0, index),
@@ -73,7 +73,7 @@ const TodoPage = memo(() => {
 		setTodos([...todos, todo]);
 	}, [todos]);
 
-	const {formData, handleSubmit, handleChange, errors, submitting, success} = useForm<TodoInput>({
+	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<TodoInput>({
 		initialValues,
 		onSubmit: async (data: TodoInput & { id: number }) => {
 			const values = !data.id
@@ -128,7 +128,7 @@ const TodoPage = memo(() => {
 			</Form>
 			<TodoList>
 				{todos.map((todo) => {
-					const { id, title, dateCreated, dateCompleted} = todo;
+					const { id, title, dateCreated, dateCompleted } = todo;
 					const icon = !dateCompleted ? ic_check : ic_check_box;
 
 					return (

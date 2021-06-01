@@ -1,4 +1,4 @@
-import styled, {css} from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Icon } from '@xapp/react/core';
 
 export const TodoItem = styled.li<{isCompleted: boolean}>`
@@ -6,23 +6,23 @@ export const TodoItem = styled.li<{isCompleted: boolean}>`
 	grid-template-columns: auto 130px 20px 20px;
 	width: inherit;
 	padding: 0.5em 1em;
-	border-bottom: 1px solid ${({theme}) => theme.colors.tertiary.lightGrey};
-	${({isCompleted}) => isCompleted && css`
+	border-bottom: 1px solid ${({ theme }) => theme.colors.tertiary.lightGrey};
+	${({ isCompleted }) => isCompleted && css`
 		text-decoration: line-through;
 		text-decoration-style: dashed;
-		color: ${({theme}) => theme.colors.tertiary.grey};
+		color: ${({ theme }) => theme.colors.tertiary.grey};
 	`};
 	[data-completed="true"] {
-		color: ${({theme}) => theme.colors.primary.green};
+		color: ${({ theme }) => theme.colors.primary.green};
 	}
 `;
 
 export const TodoIcon = styled(Icon)`
 	text-align: center;
-	color: ${({theme}) => theme.colors.tertiary.lightGrey};
+	color: ${({ theme }) => theme.colors.tertiary.lightGrey};
 	:hover {
 		cursor: pointer;
-		color: ${({theme}) => theme.colors.secondary.blue};
+		color: ${({ theme }) => theme.colors.secondary.blue};
 	}
 `;
 
@@ -33,7 +33,7 @@ export const TodoList = styled.ul`
 
 	${TodoItem} {
 		:hover {
-			background-color: ${({theme}) => theme.colors.tertiary.lightestGrey};
+			background-color: ${({ theme }) => theme.colors.tertiary.lightestGrey};
 		}
 	}
 `;

@@ -17,7 +17,7 @@ const ResetPasswordPage = memo((props: IRoutedPageProps) => {
 	const { dataContext } = useApp();
 	const api = dataContext?.account;
 
-	const {formData, handleSubmit, handleChange, errors, submitting, success} = useForm<IResetPasswordInput>({
+	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<IResetPasswordInput>({
 		initialValues,
 		onSubmit: api.resetPassword,
 	});

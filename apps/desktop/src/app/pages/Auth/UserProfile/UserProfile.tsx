@@ -11,7 +11,7 @@ const UserProfilePage = memo(() => {
 	const { dataContext } = useApp();
 	const api = dataContext?.account;
 
-	const {formData, handleSubmit, handleChange, errors, submitting, success} = useForm<IUserProfileInput>({
+	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<IUserProfileInput>({
 		initialValues: user?.profile ?? {} as IUserProfileInput,
 		clearAfterSubmit: false,
 		onSubmit: async (data) => {

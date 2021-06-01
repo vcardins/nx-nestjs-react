@@ -13,6 +13,4 @@ export interface IRoute extends IMetaRoute {
 	action?: () => void;
 }
 
-export interface IKeyedRoute {
-	[key: string]: IRoute;
-}
+export interface IKeyedRoute extends Record<string, IRoute> {}

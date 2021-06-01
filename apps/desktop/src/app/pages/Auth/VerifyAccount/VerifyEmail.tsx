@@ -31,7 +31,7 @@ const VerifyEmailPage = memo(() => {
 			}
 		};
 
-		const {key} = parse(document.location.search) || {};
+		const { key } = parse(document.location.search) || {};
 
 		if (key) {
 			verifyEmail(key as string);

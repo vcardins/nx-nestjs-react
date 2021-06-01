@@ -16,7 +16,7 @@ const ForgotPasswordPage = memo(() => {
 	const { dataContext } = useApp();
 	const api = dataContext?.account;
 
-	const {formData, handleSubmit, handleChange, errors, submitting, success} = useForm<IForgotPasswordInput>({
+	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<IForgotPasswordInput>({
 		initialValues,
 		onSubmit: api.forgotPassword,
 	});

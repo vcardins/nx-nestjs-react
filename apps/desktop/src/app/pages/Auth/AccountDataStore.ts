@@ -31,11 +31,11 @@ export class AccountStore extends DataContext {
 	}
 
 	async verifyEmail(data: IVerifyEmailInput): Promise<IActionResponse> {
-		return this.patch({url: this.endpoints.verifyEmail, data, options });
+		return this.patch({ url: this.endpoints.verifyEmail, data, options });
 	}
 
 	async verifyPhoneNumber(data: IVerifyPhoneNumberInput): Promise<IActionResponse> {
-		return this.patch({url: this.endpoints.verifyPhoneNumber, data, options });
+		return this.patch({ url: this.endpoints.verifyPhoneNumber, data, options });
 	}
 
 	async forgotPassword(data: IForgotPasswordInput): Promise<IActionResponse> {
@@ -46,30 +46,30 @@ export class AccountStore extends DataContext {
 
 	// Authenticated user's methods
 	async updateProfile(data: IUserProfileInput): Promise<IUserProfile> {
-		return this.patch<IUserProfile>({url: this.endpoints.updateProfile, data});
+		return this.patch<IUserProfile>({ url: this.endpoints.updateProfile, data });
 	}
 
 	async getUserProfile(): Promise<ISignedUserOutput> {
-		return this.read<ISignedUserOutput>({url: this.endpoints.profile});
+		return this.read<ISignedUserOutput>({ url: this.endpoints.profile });
 	}
 
 	async closeAccount(): Promise<IActionResponse> {
-		return this.patch({url: this.endpoints.closeAccount});
+		return this.patch({ url: this.endpoints.closeAccount });
 	}
 
 	async reopenAccount(data: ISignInInput): Promise<IActionResponse> {
-		return this.patch({url: this.endpoints.reopenAccount, data});
+		return this.patch({ url: this.endpoints.reopenAccount, data });
 	}
 
 	async changePhoneNumber(data: IChangePhoneNumberInput): Promise<IActionResponse> {
-		return this.patch({url: this.endpoints.changePhoneNumber, data});
+		return this.patch({ url: this.endpoints.changePhoneNumber, data });
 	}
 
 	async changePassword(data: IChangePasswordInput): Promise<IActionResponse> {
-		return this.patch({url: this.endpoints.changePassword, data});
+		return this.patch({ url: this.endpoints.changePassword, data });
 	}
 
 	async resetPassword(data: IResetPasswordInput): Promise<IActionResponse> {
-		return this.update({ url: this.endpoints.resetPassword, data});
+		return this.update({ url: this.endpoints.resetPassword, data });
 	}
 }

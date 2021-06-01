@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import { renderRoutes, matchRoutes } from 'react-router-config';
 import { useLocation } from 'react-router-dom';
 
-import { ISignedUserOutput } from '@xapp/shared/interfaces';
+import { IAppConfig, ISignedUserOutput } from '@xapp/shared/interfaces';
 import { IRoute, IKeyedRoute } from '@xapp/react/core';
 
 import { Layouts } from './layouts';
@@ -10,11 +10,12 @@ import { Layouts } from './layouts';
 interface ILayoutProps {
 	routes: IKeyedRoute;
 	user: ISignedUserOutput;
-	sideMenu: JSX.Element;
+	sideMenu: React.ReactElement;
+	config: IAppConfig;
 	onSignOut: () => Promise<void>;
 }
 
-export const Layout = ({ routes, user, sideMenu, onSignOut }: ILayoutProps) => {
+export const Layout = ({ config, routes, user, sideMenu, onSignOut }: ILayoutProps) => {
 	const {pathname } = useLocation();
 	const routesValues = Object.values(routes) || [];
 	const matchingRoute = matchRoutes(routesValues, pathname)[0];
@@ -39,6 +40,7 @@ export const Layout = ({ routes, user, sideMenu, onSignOut }: ILayoutProps) => {
 	return (
 		<PageLayout
 			id={layoutId}
+			config={config}
 			renderedRoutes={renderedRoutes}
 			activeRoute={activeRoute}
 			user={user}

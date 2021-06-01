@@ -55,7 +55,13 @@ const SignInPage = memo(() => {
 	};
 
 	return (
-		<Form ref={formRef} data={formData} onChange={handleChange} onSubmit={handleSubmit} schema={validationSchema}>
+		<Form
+			ref={formRef}
+			data={formData}
+			onChange={handleChange}
+			onSubmit={handleSubmit}
+			schema={validationSchema}
+		>
 			<TextInput
 				label="Email"
 				name="email"

@@ -9,9 +9,10 @@ import { IRoute, IKeyedRoute, PageKey } from '@xapp/react/core';
 import { useAuth } from './AuthContextProvider';
 import { hasRoutePermission } from './helpers/routes';
 import { IAuthContext } from './interfaces/IAuthContext';
+import { IAppConfig } from '@xapp/shared/interfaces';
 
 interface IAuthorizationProps {
-	children: (authContext: IAuthContext) => React.ReactElement;
+	children: (authContext: IAuthContext, config: IAppConfig) => React.ReactElement;
 	routes: IKeyedRoute;
 	onActivateRoute?: (route: IRoute, pathname: string) => void;
 }
@@ -124,5 +125,5 @@ export const Authorization = ({children, routes}: IAuthorizationProps) => {
 		return hasRoutePermission(auth, user?.groups);
 	}
 
-	return children(useAuth());
+	return children(useAuth(), appConfig);
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import { ToastContainer, Slide } from 'react-toastify';
 
 import { Layout, Menu, SplashScreen } from '@xapp/react/core';
+import { IAppConfig } from '@xapp/shared/interfaces';
 import { Authentication, Authorization, IAuthContext } from '@xapp/react/auth';
 
 import { AppProviders } from './AppProviders';
@@ -12,11 +13,12 @@ export const App = () => (
 	<AppProviders routes={routes}>
 		<GlobalStyle />
 		<Authorization routes={routes}>
-			{({user, onSignOut}: IAuthContext) => (
+			{({ user, onSignOut }: IAuthContext, appConfig: IAppConfig) => (
 				<Authentication splashScreen={SplashScreen}>
 					<Layout
 						routes={routes}
 						user={user}
+						config={appConfig}
 						sideMenu={
 							<Menu
 								items={getNavigation(routes, user?.groups)}

@@ -25,8 +25,9 @@ import {
 
 export const HolyGrailLayout = (props: ILayoutProps) => {
 	const {
+		config,
 		renderedRoutes,
-		activeRoute,
+		// activeRoute,
 		userMenu,
 		sideMenu,
 		user,
@@ -79,7 +80,7 @@ export const HolyGrailLayout = (props: ILayoutProps) => {
 						size={24}
 					/>
 					<Brand.Link id="sidenav-brand-link" to="/">
-						{activeRoute.title}
+						{ config.title }
 					</Brand.Link>
 				</Sidenav.Brand>
 				<Sidenav.Profile id="sidenav-profile">

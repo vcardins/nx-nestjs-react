@@ -9,7 +9,7 @@ export const UserProfilePageConfig: IPageConfig = {
 		style: LayoutStyles.Viewport,
 		config: {},
 	},
-	auth: AuthGroups.everyone,
+	auth: AuthGroups.user,
 	routes: [
 		{
 			key: PageKey.UserProfile,

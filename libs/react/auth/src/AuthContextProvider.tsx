@@ -30,9 +30,8 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
 	const [accessToken, setAccessToken] = useState(AuthService.getAccessToken());
 
 	const handleSignIn = useCallback(async (props: ISignInInput) => {
-		const { email, password } = props;
 		// eslint-disable-next-line camelcase
-		const { user, access_token } = await AuthService.signInWithEmailAndPassword(email, password);
+		const { user, access_token } = await AuthService.signInWithEmailAndPassword(props);
 		setUser(user);
 		setAccessToken(access_token);
 

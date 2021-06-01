@@ -1,11 +1,14 @@
-import { ISignedUserOutput } from '@xapp/shared/interfaces';
+import React from 'react';
+import { IAppConfig, ISignedUserOutput } from '@xapp/shared/interfaces';
 import { IRoute } from '../../interfaces/IRoute';
+
 export interface ILayoutProps {
 	id: string;
-	renderedRoutes: JSX.Element;
+	config: IAppConfig;
+	renderedRoutes: React.ReactElement;
 	activeRoute: IRoute;
-	userMenu?: JSX.Element;
-	sideMenu?: JSX.Element;
+	userMenu?: React.ReactElement;
+	sideMenu?: React.ReactElement;
 	user: ISignedUserOutput;
 	onSignOut: () => Promise<void>;
 }

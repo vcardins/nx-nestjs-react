@@ -8,6 +8,7 @@ import {
 	IGroupWithPermissions,
 	IActionResponse,
 	IJwtPayload,
+	ISignInInput,
 } from '@xapp/shared/interfaces';
 import { UserGroup } from '@xapp/shared/enums';
 import { appConfig } from '@xapp/shared/config';
@@ -120,7 +121,7 @@ class AuthService extends EventEmitter {
 		if ( accessToken ) {
 			if (expireAt) {
 				// eslint-disable-next-line no-console
-				console.log('Expires At', new Date(expireAt*1000).toLocaleDateString());
+				console.log('Expires At', new Date(expireAt * 1000).toLocaleDateString());
 			}
 			LocalStorage.set(accessTokenStorageKey, accessToken);
 		}
@@ -134,10 +135,8 @@ class AuthService extends EventEmitter {
 		LocalStorage.set(userInfoStorageKey, user);
 	}
 
-	async signInWithEmailAndPassword(
-		email: string,
-		password: string,
-	): Promise<IUserToken> {
+	async signInWithEmailAndPassword(props: ISignInInput): Promise<IUserToken> {
+		const { email, password } = props;
 		const payload: any = {
 			grant_type: grantType,
 			client_id: clientId,

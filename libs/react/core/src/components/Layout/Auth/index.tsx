@@ -9,7 +9,7 @@ export const AuthLayout = ({ id, renderedRoutes }: ILayoutProps) => (
 		<Column1></Column1>
 		<Column2>
 			<Suspense>
-				{renderedRoutes}
+				{ renderedRoutes }
 			</Suspense>
 		</Column2>
 	</Container>

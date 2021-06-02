@@ -15,7 +15,6 @@ export * from './components/PageLoading';
 export * from './components/SplashScreen';
 export * from './components/Suspense';
 export * from './components/UserCard';
-export * from './components/DebugRouter';
 export * from './components/Progress';
 
 export * from './components/Notifier';

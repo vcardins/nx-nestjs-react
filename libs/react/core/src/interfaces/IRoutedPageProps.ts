@@ -1,3 +1,3 @@
-import { RouteComponentProps } from 'react-router-dom';
+import { BrowserRouterProps } from 'react-router-dom';
 
-export interface IRoutedPageProps extends RouteComponentProps<{}> {}
+export interface IRoutedPageProps extends BrowserRouterProps {} // <{}>

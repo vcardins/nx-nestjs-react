@@ -3,6 +3,9 @@ import React from 'react';
 import { IPageConfig, LayoutStyles, PageKey } from '@xapp/react/core';
 import { AuthGroups } from '@xapp/shared/enums';
 
+import Todo from './Todo';
+// const element = React.lazy(() => import('./Todo'));
+
 export const TodoPageConfig: IPageConfig = {
 	layout: {
 		style: LayoutStyles.Viewport,
@@ -12,9 +15,9 @@ export const TodoPageConfig: IPageConfig = {
 	routes: [
 		{
 			key: PageKey.Todo,
-			exact: true,
+			caseSensitive: true,
 			path: '/todos',
-			component: React.lazy(() => import('./Todo')),
+			element: <Todo />,
 			title: 'Todo',
 		},
 	],

@@ -4,6 +4,9 @@ import { IPageConfig, LayoutStyles, PageKey } from '@xapp/react/core';
 import { appConfig } from '@xapp/shared/config';
 import { AuthGroups } from '@xapp/shared/enums';
 
+import VerifyEmail from './VerifyEmail';
+// const element = React.lazy(() => import('./VerifyEmail'));
+
 export const VerifyAccountPageConfig: IPageConfig = {
 	layout: {
 		style: LayoutStyles.Auth,
@@ -13,16 +16,16 @@ export const VerifyAccountPageConfig: IPageConfig = {
 	routes: [
 		{
 			key: PageKey.VerifyEmail,
-			exact: true,
+			caseSensitive: true,
 			path: `${appConfig.routes.verifyAccount}/email`,
-			component: React.lazy(() => import('./VerifyEmail')),
+			element: <VerifyEmail />,
 			title: 'Verify your account email',
 		},
 		{
 			key: PageKey.VerifyPhone,
-			exact: true,
+			caseSensitive: true,
 			path: `${appConfig.routes.verifyAccount}/phone`,
-			component: React.lazy(() => import('./VerifyPhone')),
+			element: React.lazy(() => import('./VerifyPhone')),
 			title: 'Verify your account phone number',
 		},
 	],

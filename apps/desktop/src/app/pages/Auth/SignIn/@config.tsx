@@ -4,6 +4,9 @@ import { IPageConfig, LayoutStyles, PageKey } from '@xapp/react/core';
 import { appConfig } from '@xapp/shared/config';
 import { AuthGroups } from '@xapp/shared/enums';
 
+import SignIn from './SignIn';
+// const element = React.lazy(() => import('./SignIn'));
+
 export const SignInPageConfig: IPageConfig = {
 	layout: {
 		style: LayoutStyles.Auth,
@@ -13,17 +16,24 @@ export const SignInPageConfig: IPageConfig = {
 	routes: [
 		{
 			key: PageKey.SignIn,
-			exact: true,
-			path: `${appConfig.routes.signIn}/:provider?/:code?`,
+			caseSensitive: true,
+			path: appConfig.routes.signIn,
 			title: 'Already have an account? Sign in!',
-			component: React.lazy(() => import('./SignIn')),
+			element: <SignIn />,
+			children: [
+				{
+					caseSensitive: true,
+					path: ':provider?/:code',
+					element: <SignIn />,
+				},
+			],
 		},
 		// {
 		// 	key: `${PageKey.SignIn}Provider`,
-		// 	exact: true,
+		// 	caseSensitive: true,
 		// 	path: `${appConfig.routes.signIn}/:provider/callback`,
 		// 	title: 'Already have an account? Sign in!',
-		// 	component: React.lazy(() => import('./SignInOauth')),
+		// 	element: React.lazy(() => import('./SignInOauth')),
 		// },
 	],
 };

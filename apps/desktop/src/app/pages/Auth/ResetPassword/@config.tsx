@@ -4,6 +4,9 @@ import { IPageConfig, LayoutStyles, PageKey } from '@xapp/react/core';
 import { appConfig } from '@xapp/shared/config';
 import { AuthGroups } from '@xapp/shared/enums';
 
+import ResetPassword from './ResetPassword';
+// const element = React.lazy(() => import('./ResetPassword'));
+
 export const ResetPasswordPageConfig: IPageConfig = {
 	layout: {
 		style: LayoutStyles.Viewport,
@@ -13,9 +16,9 @@ export const ResetPasswordPageConfig: IPageConfig = {
 	routes: [
 		{
 			key: PageKey.ResetPassword,
-			exact: true,
+			caseSensitive: true,
 			path: `${appConfig.routes.resetPassword}/:key`,
-			component: React.lazy(() => import('./ResetPassword')),
+			element: <ResetPassword/>,
 			title: 'Reset Password',
 		},
 	],

@@ -4,6 +4,9 @@ import { IPageConfig, LayoutStyles, PageKey } from '@xapp/react/core';
 import { appConfig } from '@xapp/shared/config';
 import { AuthGroups } from '@xapp/shared/enums';
 
+import ChangePassword from './ChangePassword';
+// const element = React.lazy(() => import('./ChangePassword'));
+
 export const ChangePasswordPageConfig: IPageConfig = {
 	layout: {
 		style: LayoutStyles.Viewport,
@@ -13,9 +16,9 @@ export const ChangePasswordPageConfig: IPageConfig = {
 	routes: [
 		{
 			key: PageKey.ChangePassword,
-			exact: true,
+			caseSensitive: true,
 			path: appConfig.routes.changePassword,
-			component: React.lazy(() => import('./ChangePassword')),
+			element: <ChangePassword />,
 			title: 'Change Password',
 		},
 	],

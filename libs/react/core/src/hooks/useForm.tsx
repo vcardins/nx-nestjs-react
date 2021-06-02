@@ -1,6 +1,6 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { FieldValidationError } from '@xapp/shared/exceptions';
 
@@ -22,17 +22,17 @@ interface IUseFormResponse<T> {
 
 export function useForm<T>(props: IUseFormProps<T>, dependencies: string[] | number[] = []): IUseFormResponse<T> {
 	const { initialValues, clearAfterSubmit = true, onSubmit } = props;
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	const [formData, setFormData] = useState<T>(initialValues);
 	const [submitting, setSubmitting] = useState(false);
 	const [success, setSuccess] = useState(false);
 	const [errors, setErrors] = useState<FieldValidationError['errors']>(new Set());
 
-	const handleChange = useCallback((newData: T) => {
+	const handleChange = (newData: T) => {
 		setFormData(newData);
 		setSuccess(false);
-	}, []);
+	};
 
 	const handleSubmit = async () => {
 		setSubmitting(true);
@@ -51,11 +51,12 @@ export function useForm<T>(props: IUseFormProps<T>, dependencies: string[] | num
 			}
 
 			if (response?.redirect) {
-				history.push(response.redirect);
+				navigate(response.redirect);
 			}
 
 			return response;
-		} catch (e) {
+		}
+		catch (e) {
 			if (e?.errors) {
 				setErrors(e.errors);
 			}
@@ -63,7 +64,8 @@ export function useForm<T>(props: IUseFormProps<T>, dependencies: string[] | num
 			if (e?.message) {
 				toast.error(e?.message);
 			}
-		} finally {
+		}
+		finally {
 			setSubmitting(false);
 		}
 	};

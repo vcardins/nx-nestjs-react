@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 import { IPageConfig, LayoutStyles, PageKey } from '@xapp/react/core';
 import { appConfig } from '@xapp/shared/config';
@@ -13,8 +13,8 @@ import { TodoPageConfig } from './Todo/@config';
 
 import { authPagesConfigs } from './Auth/@config';
 
-const RedirectHome = <Redirect to={appConfig.routes.home}/>;
-const RedirectNotFound = <Redirect to={appConfig.routes.notFound}/>;
+const RedirectHome = <Navigate to={appConfig.routes.home}/>;
+const RedirectNotFound = <Navigate to={appConfig.routes.notFound}/>;
 
 const DefaultPageConfig: IPageConfig = {
 	layout: {
@@ -24,16 +24,16 @@ const DefaultPageConfig: IPageConfig = {
 	routes: [
 		{
 			key: PageKey.Home,
-			exact: true,
+			caseSensitive: true,
 			title: 'Home Page',
 			path: appConfig.routes.home,
-			component: () => RedirectHome,
+			element: () => RedirectHome,
 		},
 		{
 			key: PageKey.PageNotFound,
-			exact: true,
+			caseSensitive: true,
 			title: 'Not Found',
-			component: () => RedirectNotFound,
+			element: () => RedirectNotFound,
 		},
 	],
 };

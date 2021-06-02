@@ -4,6 +4,9 @@ import { IPageConfig, LayoutStyles, PageKey } from '@xapp/react/core';
 import { appConfig } from '@xapp/shared/config';
 import { AuthGroups } from '@xapp/shared/enums';
 
+import UserProfile from './UserProfile';
+// const element = React.lazy(() => import('./UserProfile'));
+
 export const UserProfilePageConfig: IPageConfig = {
 	layout: {
 		style: LayoutStyles.Viewport,
@@ -13,16 +16,16 @@ export const UserProfilePageConfig: IPageConfig = {
 	routes: [
 		{
 			key: PageKey.UserProfile,
-			exact: true,
+			caseSensitive: true,
 			path: appConfig.routes.userProfile,
-			component: React.lazy(() => import('./UserProfile')),
+			element: <UserProfile />,
 			title: 'My Profile',
 		},
 		{
 			key: PageKey.UserSettings,
-			exact: true,
+			caseSensitive: true,
 			path: '/user-settings',
-			component: React.lazy(() => import('./UserSettings')),
+			element: React.lazy(() => import('./UserSettings')),
 			title: 'My Settings',
 		},
 	],

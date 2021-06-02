@@ -1,9 +1,9 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
-import { createBrowserHistory } from 'history';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import { AuthContextProvider } from '@xapp/react/auth';
-import { getTheme, DebugRouter, IKeyedRoute } from '@xapp/react/core';
+import { getTheme, IKeyedRoute } from '@xapp/react/core';
 import { appConfig } from '@xapp/shared/config';
 import { Themes } from '@xapp/shared/enums';
 
@@ -19,9 +19,9 @@ export const AppProviders = ({ children, routes }: IAppProviders) => (
 		<AuthContextProvider>
 			<AppContextProvider routes={routes}>
 				<SocketContextProvider>
-					<DebugRouter history={createBrowserHistory()}>
+					<Router>
 						{ children }
-					</DebugRouter>
+					</Router>
 				</SocketContextProvider>
 			</AppContextProvider>
 		</AuthContextProvider>

@@ -122,7 +122,7 @@ export const HolyGrailLayout = (props: ILayoutProps) => {
 			</Sidenav.Container>
 			<Main id="main-container">
 				<Suspense>
-					{renderedRoutes}
+					{ renderedRoutes }
 				</Suspense>
 			</Main>
 		</Container>

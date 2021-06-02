@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
-import { matchRoutes } from 'react-router-config';
-import { useHistory, useLocation } from 'react-router-dom';
+import { Location } from 'history';
+
+import { useNavigate, useLocation, matchRoutes } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { appConfig } from '@xapp/shared/config';
@@ -10,6 +11,7 @@ import { useAuth } from './AuthContextProvider';
 import { hasRoutePermission } from './helpers/routes';
 import { IAuthContext } from './interfaces/IAuthContext';
 import { IAppConfig } from '@xapp/shared/interfaces';
+import { RouteObject } from 'react-router';
 
 interface IAuthorizationProps {
 	children: (authContext: IAuthContext, config: IAppConfig) => React.ReactElement;
@@ -37,30 +39,31 @@ interface IState {
 	pathname?: string;
 }
 
-export const Authorization = ({children, routes}: IAuthorizationProps) => {
-	const location = useLocation<{ redirectUrl?: string }>();
-	const history = useHistory<IState>();
-	const {user, isSessionValid, onSignOut} = useAuth();
+export const Authorization = ({ children, routes }: IAuthorizationProps) => {
+	const location = useLocation() as Location<IState>; // <{ redirectUrl?: string }>
+	const navigate = useNavigate();
+	const { user, isSessionValid, onSignOut } = useAuth();
+	const notLoginLocation = location.pathname !== appConfig.routes.signIn;
 
 	const getMatchedRoute = useCallback((pathname: string): IRoute => {
-		const { route = {} } = matchRoutes(Object.values(routes), pathname)[0];
-		return route as IRoute;
+		const routeObjects = Object.values(routes) as RouteObject[];
+		const matchedRoute = matchRoutes(routeObjects, pathname)?.[0]?.route as IRoute;
+
+		return matchedRoute ? matchedRoute : null;
 	}, [routes]);
 
 	const handleRouteRedirection = useCallback(() => {
 		let pathname: string;
 		let state: IState;
-		const allowAccess = isAccessAllowed();
-		const notLoginLocation = location.pathname !== appConfig.routes.signIn;
 
 		/*
 		User is guest, redirect to Login Page
 		*/
 		if (!user?.groups?.length) {
 			// If the requested location is NOT login and the access is not allowed redirect to login
-			if (notLoginLocation && !allowAccess) {
+			if (notLoginLocation || !isAccessAllowed()) {
 				pathname = appConfig.routes.signIn;
-				state = { redirectUrl: location.pathname };
+				state = { redirectUrl: location.pathname } as IState;
 			}
 		}
 		/*
@@ -71,7 +74,7 @@ export const Authorization = ({children, routes}: IAuthorizationProps) => {
 		else {
 			// if the request location is login but user is logged in
 			// then redirect to home
-			if (!allowAccess) {
+			if (!isAccessAllowed()) {
 				if (notLoginLocation) {
 					showNotAuthorizedError(location.pathname);
 				}
@@ -84,14 +87,14 @@ export const Authorization = ({children, routes}: IAuthorizationProps) => {
 			}
 		}
 
-		if (pathname && pathname !== history.location.pathname) {
-			history.push(pathname, state);
+		if (pathname && pathname !== location.pathname) {
+			navigate(pathname, { state });
 		}
-	}, [history, isAccessAllowed, location.pathname, location?.state?.redirectUrl, user?.groups?.length]);
+	}, [navigate, isAccessAllowed, notLoginLocation, location.pathname, location?.state?.redirectUrl, user?.groups?.length]);
 
 	useEffect(() => {
 		// It listen route changes in order to:
-		const historyListener = history.listen((location) => {
+		const historyListener = async () => {
 			if (!user) {
 				return;
 			}
@@ -103,16 +106,18 @@ export const Authorization = ({children, routes}: IAuthorizationProps) => {
 				return onSignOut(route.key !== PageKey.SignIn);
 			}
 
-			// 2. Verify whether the user (group) is allowed to access the route
-			// If NOT display an error message and redirect to the home page
-			if (!isAccessAllowed()) {
+			// // 2. Verify whether the user (group) is allowed to access the route
+			// // If NOT display an error message and redirect to the home page
+			if (!isAccessAllowed() && notLoginLocation) {
 				showNotAuthorizedError(route.path as string);
-				history.push(appConfig.routes.home);
+				navigate(appConfig.routes.home);
 			}
-		});
+		};
 
-		return () => historyListener();
-	}, [getMatchedRoute, history, isAccessAllowed, isSessionValid, location, onSignOut, user]);
+		historyListener();
+
+	// 	// return () => historyListener();
+	}, [getMatchedRoute, notLoginLocation, navigate, isAccessAllowed, isSessionValid, location.pathname, onSignOut, user]);
 
 	useEffect(() => {
 		handleRouteRedirection();
@@ -120,9 +125,8 @@ export const Authorization = ({children, routes}: IAuthorizationProps) => {
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	function isAccessAllowed() {
-		const { auth } = getMatchedRoute(history.location.pathname);
-
-		return hasRoutePermission(auth, user?.groups);
+		const route = getMatchedRoute(location.pathname);
+		return hasRoutePermission(route.auth, user?.groups);
 	}
 
 	return children(useAuth(), appConfig);

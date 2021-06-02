@@ -4,6 +4,9 @@ import { IPageConfig, LayoutStyles, PageKey } from '@xapp/react/core';
 import { appConfig } from '@xapp/shared/config';
 import { AuthGroups } from '@xapp/shared/enums';
 
+import Dashboard from './Dashboard';
+// const element = React.lazy(() => import('./Dashboard'));
+
 export const DashboardPageConfig: IPageConfig = {
 	layout: {
 		style: LayoutStyles.Viewport,
@@ -13,10 +16,12 @@ export const DashboardPageConfig: IPageConfig = {
 	routes: [
 		{
 			key: PageKey.Dashboard,
-			exact: true,
+			caseSensitive: true,
 			path: appConfig.routes.home,
 			title: 'Dashboard',
-			component: React.lazy(() => import('./Dashboard')),
+			element: <Dashboard/>,
 		},
 	],
 };
+
+//React.lazy(() => import('./Dashboard'))

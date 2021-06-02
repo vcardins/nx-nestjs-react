@@ -3,6 +3,9 @@ import React from 'react';
 import { IPageConfig, LayoutStyles, PageKey } from '@xapp/react/core';
 import { AuthGroups } from '@xapp/shared/enums';
 
+import Admin from './Admin';
+// const element = React.lazy(() => import('./Admin'));
+
 export const AdminPageConfig: IPageConfig = {
 	layout: {
 		style: LayoutStyles.Viewport,
@@ -12,9 +15,9 @@ export const AdminPageConfig: IPageConfig = {
 	routes: [
 		{
 			key: PageKey.Admin,
-			exact: true,
+			caseSensitive: true,
 			path: '/admin',
-			component: React.lazy(() => import('./Admin')),
+			element: <Admin />,
 			title: 'Admin',
 		},
 	],

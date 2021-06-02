@@ -4,6 +4,9 @@ import { IPageConfig, LayoutStyles, PageKey } from '@xapp/react/core';
 import { appConfig } from '@xapp/shared/config';
 import { AuthGroups } from '@xapp/shared/enums';
 
+import SignUp from './SignUp';
+// const element = React.lazy(() => import('./SignUp'));
+
 export const SignUpPageConfig: IPageConfig = {
 	layout: {
 		style: LayoutStyles.Auth,
@@ -13,9 +16,9 @@ export const SignUpPageConfig: IPageConfig = {
 	routes: [
 		{
 			key: PageKey.SignUp,
-			exact: true,
+			caseSensitive: true,
 			path: appConfig.routes.signUp,
-			component: React.lazy(() => import('./SignUp')),
+			element: <SignUp />,
 			title: 'Don\'t have an account? SignUp here',
 		},
 	],

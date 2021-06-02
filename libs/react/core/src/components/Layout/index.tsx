@@ -1,11 +1,13 @@
 import React, { useEffect, useMemo } from 'react';
-import { renderRoutes, matchRoutes } from 'react-router-config';
-import { useLocation } from 'react-router-dom';
+import { useRoutes, useLocation } from 'react-router-dom';
 
+import { matchRoutes } from './react-router';
 import { IAppConfig, ISignedUserOutput } from '@xapp/shared/interfaces';
-import { IRoute, IKeyedRoute } from '@xapp/react/core';
 
 import { Layouts } from './layouts';
+import { IKeyedRoute, IRoute } from '../../interfaces/IRoute';
+import { PageKey } from '../../config/PageKey';
+import { RouteObject } from 'react-router';
 
 interface ILayoutProps {
 	routes: IKeyedRoute;
@@ -15,11 +17,13 @@ interface ILayoutProps {
 	onSignOut: () => Promise<void>;
 }
 
+
 export const Layout = ({ config, routes, user, sideMenu, onSignOut }: ILayoutProps) => {
-	const {pathname } = useLocation();
-	const routesValues = Object.values(routes) || [];
-	const matchingRoute = matchRoutes(routesValues, pathname)[0];
-	const activeRoute = useMemo(() => matchingRoute?.route as IRoute, [matchingRoute]);
+	const location = useLocation();
+
+	const routesValues = (Object.values(routes) || []) as RouteObject[];
+	const matchingRoute = matchRoutes(routesValues, location)[0]?.route as IRoute;
+	const activeRoute = useMemo(() => matchingRoute, [matchingRoute]);
 
 	useEffect(() => {
 		if (activeRoute) {
@@ -33,7 +37,7 @@ export const Layout = ({ config, routes, user, sideMenu, onSignOut }: ILayoutPro
 		};
 	}, [activeRoute]);
 
-	const renderedRoutes = renderRoutes(routesValues);
+	const renderedRoutes = useRoutes(routesValues.map(({ caseSensitive, path, element }) => ({ caseSensitive, path, element })));
 	const PageLayout = Layouts[activeRoute.layout.style];
 	const layoutId = `layout-${activeRoute.layout.style}`;
 

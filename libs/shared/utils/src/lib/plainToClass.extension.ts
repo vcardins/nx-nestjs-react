@@ -1,4 +1,3 @@
-/* eslint-disable immutable/no-mutation */
 import { ClassTransformer, ClassTransformOptions } from 'class-transformer';
 import { ClassType } from 'class-transformer/ClassTransformer';
 import { TransformOperationExecutor } from 'class-transformer/TransformOperationExecutor';
@@ -36,7 +35,6 @@ const strip = (container: MetadataStorage, type: new () => any, input: any) => {
 	return input;
 };
 
-// eslint-disable-next-line immutable/no-mutation
 ClassTransformer.prototype.plainToClass = <T extends Object, V extends any[]>(
 	cls: ClassType<T>,
 	plain: V,

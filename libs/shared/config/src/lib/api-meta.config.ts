@@ -4,9 +4,9 @@ const CODE = 'app';
 const {
 	CLIENT_ID,
 	CLIENT_SECRET,
-	WEBSOCKET_URL,
-	PROTOCOL,
-	PORT,
+	// WEBSOCKET_URL,
+	// PROTOCOL,
+	// PORT,
 } = process.env;
 
 const basePath = '/api';

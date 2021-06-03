@@ -23,9 +23,7 @@ export const AuthContext: React.Context<IAuthContext> = React.createContext<IAut
 
 export const useAuth = () => useContext(AuthContext);
 
-export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
-	children,
-}) => {
+export const AuthContextProvider: React.FC = ({ children }: { children: React.ReactNode }) => {
 	const [user, setUser] = useState(AuthService.getUser());
 	const [accessToken, setAccessToken] = useState(AuthService.getAccessToken());
 

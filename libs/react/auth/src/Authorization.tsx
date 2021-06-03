@@ -31,7 +31,7 @@ interface IAuthorizationProps {
 */
 
 function showNotAuthorizedError(location: string) {
-	toast.error(`You\'re not authorized to access ${location}`);
+	toast.error(`You're not authorized to access ${location}`);
 }
 
 interface IState {

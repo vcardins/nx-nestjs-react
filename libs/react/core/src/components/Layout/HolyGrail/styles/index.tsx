@@ -9,14 +9,14 @@ const Container = styled.div`
 	display: grid;
 	grid-template: 'header' 'main';
 	grid-template-columns: 100%;
-	grid-template-rows: ${({theme}) => theme.sizes.header.height} 1fr;
+	grid-template-rows: ${({ theme }) => theme.sizes.header.height} 1fr;
 	height: 100vh;
 
 	@media ${({ theme }) => theme.devices.tablet} {
 		grid-template-areas: 'sidenav header' 'sidenav main' 'sidenav footer';
 
 		&[data-sidenav-collapsed='true'] {
-			grid-template-columns: ${({theme}) => theme.sizes.sideNav.collapsed} calc(100% - ${({theme}) => theme.sizes.sideNav.collapsed});
+			grid-template-columns: ${({ theme }) => theme.sizes.sideNav.collapsed} calc(100% - ${({ theme }) => theme.sizes.sideNav.collapsed});
 
 			[data-menu-group="true"] {
 				opacity: 0;
@@ -40,7 +40,7 @@ const Container = styled.div`
 		}
 
 		&[data-sidenav-collapsed='false'] {
-			grid-template-columns: ${({theme}) => theme.sizes.sideNav.expanded} calc(100% - ${({theme}) => theme.sizes.sideNav.expanded});
+			grid-template-columns: ${({ theme }) => theme.sizes.sideNav.expanded} calc(100% - ${({ theme }) => theme.sizes.sideNav.expanded});
 
 			${Profile.NameContainer},
 			${Brand.Link},

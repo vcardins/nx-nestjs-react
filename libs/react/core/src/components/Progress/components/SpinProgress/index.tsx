@@ -8,12 +8,12 @@ import {
 	Gap,
 	Left,
 	Right,
-	HalfCircle
+	HalfCircle,
 } from './styles';
 
 import { IProgressTypesProps } from '../IProgressTypesProps';
 
-export const SpinProgress = ({message}: IProgressTypesProps) => (
+export const SpinProgress = ({ message }: IProgressTypesProps) => (
 	<SpinProgressShape>
 		<Spinner>
 			<SpinnerContainer>

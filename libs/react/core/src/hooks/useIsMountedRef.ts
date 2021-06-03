@@ -1,4 +1,3 @@
-/* eslint-disable immutable/no-mutation */
 import { useEffect, useRef } from 'react';
 
 export function useIsMountedRef() {

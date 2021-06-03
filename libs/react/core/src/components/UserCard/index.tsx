@@ -13,7 +13,7 @@ import { Avatar } from '../Avatar';
 import { IUserCardProps } from './IUserCardProps';
 
 function UserCard(props: IUserCardProps) {
-	const { id, showAvatar = false, size, user} = props;
+	const { id, showAvatar = false, size, user } = props;
 	const avatar = showAvatar
 		? (
 			<Avatar

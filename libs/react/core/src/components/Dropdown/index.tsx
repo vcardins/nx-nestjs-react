@@ -50,11 +50,11 @@ export const DropdownList = React.memo(({
 		}
 	};
 
-	const hasTitle = options.some(({title}) => !!title);
+	const hasTitle = options.some(({ title }) => !!title);
 
 	return (
 		<DropdownListWrapper addSpacing={hasTitle}>
-			{ options.map(({id, title, icon, iconOnly, href, onClick }) => {
+			{ options.map(({ id, title, icon, iconOnly, href, onClick }) => {
 				const content = (
 					<>
 						{icon && (
@@ -90,7 +90,7 @@ export const DropdownList = React.memo(({
 	);
 });
 
-const Dropdown = (props: IDropdownProps) => {
+export const Dropdown = (props: IDropdownProps) => {
 	const {
 		children, hideChevron, size, label, disabled, options = [],
 		emptyValueLabel, highlightOnHover, position = 'right',
@@ -136,5 +136,3 @@ const Dropdown = (props: IDropdownProps) => {
 		</DropdownContainer>
 	);
 };
-
-export { Dropdown };

@@ -22,7 +22,7 @@ interface IDropdownWrapper {
 
 export const DropdownWrapper = styled.div<IDropdownWrapper>`
 	position: absolute;
-	${({position}) => position}: 0;
+	${({ position }) => position}: 0;
 	top: 20px;
 	border: 1px solid ${({ theme }) => theme.colors.tertiary.lighterGrey };
 	z-index: 999;
@@ -92,7 +92,7 @@ export const DropdownListWrapper = styled.ul<{ addSpacing?: boolean }>`
 	max-height: 175px;
 	width: 100%;
 	overflow: auto;
-	${({addSpacing}) => addSpacing && css`
+	${({ addSpacing }) => addSpacing && css`
 		margin-right: 1em;
 	`}
 `;
@@ -120,16 +120,16 @@ export const DropdownContainer = styled.div<IDropdownContainer>`
 		border: none;
 		background-color: transparent;
 		border-bottom: 1px dotted transparent;
-		${({highlightOnHover}) => highlightOnHover && css`
+		${({ highlightOnHover }) => highlightOnHover && css`
 			color: ${({ theme }) => theme.colors.primary.blue};
 		`};
-		${({hideChevron}) => !hideChevron && css`
+		${({ hideChevron }) => !hideChevron && css`
 			&::after {
 				content: '▾';
 				margin-left: 0.75em;
 			}
 		`}
-		${({highlightOnHover}) => !highlightOnHover && css`
+		${({ highlightOnHover }) => !highlightOnHover && css`
 			:hover {
 				border-bottom: 1px dotted ${({ theme }) => theme.colors.tertiary.grey};
 			}
@@ -137,7 +137,7 @@ export const DropdownContainer = styled.div<IDropdownContainer>`
 	}
 
 	${DropdownListWrapper} {
-		${({size, theme}) => css`
+		${({ size, theme }) => css`
 			font-size: ${theme.fontSizes[size === DropdownSizeStyle.Default ? 1 : 0]};
 		`};
 	}

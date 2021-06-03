@@ -24,7 +24,6 @@ export const CookieStorage: IStorage = {
 			date.setTime(date.getTime() + (time * 24 * 60 * 60 * 1000));
 			expires = `; expires=${date.toUTCString()}`;
 		}
-		// eslint-disable-next-line immutable/no-mutation
 		document.cookie = `${key}=${value}${expires}; path=/`;
 	},
 

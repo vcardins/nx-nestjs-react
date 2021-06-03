@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import DOMPurify from 'dompurify';
-import styled, {css} from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { useKeyPress } from '../../hooks/useKeyPress';
 import { useOnClickOutside } from '../../hooks/useOnClickOutside';
@@ -17,7 +17,7 @@ const textStyle = css`
 
 const InputTextField = styled.input<{isActive: boolean}>`
 	outline: none;
-	${({isActive}) => isActive
+	${({ isActive }) => isActive
 		? textStyle
 		: css`
 			display: none;
@@ -31,7 +31,7 @@ const InputTextCopy = styled.span<{isActive: boolean}>`
 	:hover {
 		border-bottom: 1px dashed #666666;
 	}
-	${({isActive}) => !isActive
+	${({ isActive }) => !isActive
 		? textStyle
 		: css`
 			display: none;

@@ -43,7 +43,6 @@ export const generateErrors = (fieldValues: FieldValues, fieldValidators: FieldV
 			const errorMessage = validator(fieldValues[fieldName], fieldValues);
 
 			if (errorMessage !== false && !fieldErrors[fieldName]) {
-				// eslint-disable-next-line immutable/no-mutation
 				fieldErrors[fieldName] = errorMessage;
 			}
 		});

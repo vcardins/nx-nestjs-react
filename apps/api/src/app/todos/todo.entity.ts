@@ -23,7 +23,6 @@ export class Todo extends BaseEntity {
 
 	@BeforeInsert()
 	doBeforeInsertion() {
-		// eslint-disable-next-line immutable/no-mutation
 		this.dateCreated = getUtcDate();
 		this.validate();
 	}

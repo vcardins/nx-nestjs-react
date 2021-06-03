@@ -1,3 +1,3 @@
 export interface IUploadResponse {
-  publicUrl: string;
+	publicUrl: string;
 }

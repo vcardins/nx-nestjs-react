@@ -1,27 +1,14 @@
-/* eslint-disable immutable/no-mutation */
 import { RestClient, RestMethod, IRestClientPayload } from '@xapp/shared/services';
 import { INotifier, Notifier } from '../components/Notifier';
-
-// const sanitizeId = (id: string) => (!id ? id : id.replace(/-/g, ''));
-
-export interface IDataContext<TOutput = any, TInputCreate = any, TInputUpdate = TInputCreate> {
-	readAll(payload?: IRestClientPayload<TInputCreate>): Promise<TOutput[]>;
-	read(payload?: IRestClientPayload<TInputCreate>): Promise<TOutput>;
-	create(payload: IRestClientPayload<TInputCreate>): Promise<TOutput>;
-	patch(payload: IRestClientPayload<TInputUpdate>): Promise<TOutput>;
-	update(payload: IRestClientPayload<TInputUpdate>): Promise<TOutput>;
-	delete(id: string |  number): Promise<TOutput>;
-	upload(payload: IRestClientPayload<TInputCreate>): Promise<TOutput>;
-}
 
 export interface IDataContextProps {
 	basePath?: string;
 	authHeader?: string;
 	refreshToken?: string;
-	handleUpdateAccessToken?: (accessToken: string) => void;
+	hydrateAccessToken?: (accessToken: string) => void;
 }
 
-export class DataContext<TOutput = any, TInputCreate = any, TInputUpdate = TInputCreate> implements IDataContext<TOutput, TInputCreate, TInputUpdate> {
+export class DataContext<TOutput = any, TInputCreate = any, TInputUpdate = TInputCreate> {
 	public readonly api: RestClient;
 	public readonly notifier: INotifier;
 	private basePath: string;
@@ -31,7 +18,7 @@ export class DataContext<TOutput = any, TInputCreate = any, TInputUpdate = TInpu
 	private onUpdateAccessToken: (accessToken: string) => void;
 
 	constructor(props?: IDataContextProps) {
-		const {basePath, authHeader, refreshToken, handleUpdateAccessToken} = props ?? ({} as IDataContextProps);
+		const { basePath, authHeader, refreshToken, hydrateAccessToken: handleUpdateAccessToken } = props ?? ({} as IDataContextProps);
 
 		this.notifier = new Notifier();
 		this.basePath = basePath;
@@ -100,7 +87,6 @@ export class DataContext<TOutput = any, TInputCreate = any, TInputUpdate = TInpu
 
 		// this.accessToken = newAccessToken;
 		// this.onUpdateAccessToken(newAccessToken);
-
 		// // Recall the action the previous actions
 		// return await this.api[method]<any>(updatedPayload);
 	}

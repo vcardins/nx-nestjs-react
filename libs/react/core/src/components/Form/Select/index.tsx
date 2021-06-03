@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { IHtmlField } from '@xapp/react/core';
 import { StyledSelect } from './styles';
 import { IKeyPair } from '@xapp/shared/interfaces';
 import { FieldSet } from '../FieldSet';
+import { IHtmlField } from '../../../interfaces/IHtmlField';
 
 type KeyType = string | number;
 
@@ -24,13 +24,14 @@ function getOptions<T extends KeyType> (items: T[] = [], keyValueProps: IKeyPair
 	const key = Object.keys(keyValueProps)[0];
 	const v = keyValueProps[key];
 
-	return items.map((option: any) =>
+	return items.map((option: any) => (
 		<option
 			key={option[key]}
 			value={option[key]}
 		>
 			{option[v]}
-		</option>,
+		</option>
+	),
 	);
 }
 

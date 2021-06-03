@@ -8,7 +8,6 @@ function getRoutes(config: IPageConfig, allowedGroups: UserGroup[] = null) {
 	return config.routes.reduce((result, route) => {
 		const auth = config.auth || allowedGroups;
 
-		// eslint-disable-next-line immutable/no-mutation
 		result[route.key] = {
 			...route,
 			layout: { ...defaultPageLayout, ...config.layout },

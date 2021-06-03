@@ -10,8 +10,8 @@ interface IProps {
 
 const showMessage = (message: string) => console.info(message);
 
-export const Authentication = ({ children, splashScreen: SplashScreen}: IProps) => {
-	const {onSignOut} = useAuth();
+export const Authentication = ({ children, splashScreen: SplashScreen }: IProps) => {
+	const { onSignOut } = useAuth();
 	const [waitAuthCheck, setWaitAuthCheck] = useState<boolean>(true);
 	const resolveAuthCheck = () => setWaitAuthCheck(false);
 

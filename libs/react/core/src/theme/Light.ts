@@ -63,7 +63,6 @@ const colors = {
 	secondary,
 	tertiary,
 	primaryTones: Object.keys(tones).reduce((acc, key) => {
-		// eslint-disable-next-line immutable/no-mutation
 		acc[key] = lighten(tones[key], primaryColor);
 		return acc;
 	}, {}),

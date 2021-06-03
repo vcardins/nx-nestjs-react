@@ -31,6 +31,6 @@ export const FieldLabel = styled.label`
 `;
 
 export const StyledError = styled(FieldError)`
-	color: ${({theme}) => theme.colors.secondary.red};
+	color: ${({ theme }) => theme.colors.secondary.red};
 	font-size: 11px;
 `;

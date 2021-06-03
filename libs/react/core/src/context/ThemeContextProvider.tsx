@@ -1,4 +1,4 @@
-import React, { Context, createContext, FC, ReactNode, useState} from 'react';
+import React, { Context, createContext, ReactNode, useState } from 'react';
 import { IThemeContext } from '../interfaces/IThemeContext';
 import { getTheme } from '../theme/getTheme';
 import { Themes } from '@xapp/shared/enums';
@@ -16,7 +16,7 @@ const themeContext: Context<IThemeContext> = createContext<IThemeContext>(
 
 const { Provider } = themeContext;
 
-const ThemeContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
+const ThemeContextProvider = ({ children }: { children: ReactNode }) => {
 	const [theme, setTheme] = useState<ITheme>(getTheme(appConfig.theme as Themes));
 
 	function handleChangeTheme(theme: Themes) {
@@ -24,10 +24,12 @@ const ThemeContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
 	}
 
 	return (
-		<Provider value={{
-			theme,
-			onChangeTheme: handleChangeTheme,
-		}}>
+		<Provider
+			value={{
+				theme,
+				onChangeTheme: handleChangeTheme,
+			}}
+		>
 			{children}
 		</Provider>
 	);

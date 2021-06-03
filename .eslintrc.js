@@ -25,6 +25,7 @@ const rules = {
 	'@typescript-eslint/no-extraneous-class': 'off', // Forbids the use of classes as namespaces (no-unnecessary-class from TSLint)
 	'@typescript-eslint/no-for-in-array': 'off', // Disallow iterating over an array with a for-in loop (no-for-in-array from TSLint)
 	'@typescript-eslint/no-inferrable-types': 'off', // Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean. (no-inferrable-types from TSLint)
+	'@typescript-eslint/no-unused-vars': 'error',
 	'@typescript-eslint/no-misused-new': 'off', // Enforce valid definition of new and constructor. (no-misused-new from TSLint)
 	'@typescript-eslint/no-namespace': 'off', // Disallow the use of custom TypeScript modules and namespaces (no-namespace from TSLint)
 	'@typescript-eslint/no-non-null-assertion': 'off', // Disallows non-null assertions using the ! postfix operator (no-non-null-assertion from TSLint)
@@ -60,7 +61,7 @@ const rules = {
 	'no-await-in-loop': 'off',
 	'no-compare-neg-zero': 'off',
 	'no-cond-assign': ['error', 'except-parens'],
-	'no-console': ['error', { 'allow': ['error'] }],
+	'no-console': ['warn', { 'allow': ['error'] }],
 	'no-constant-condition': 'off',
 	'no-control-regex': 'off',
 	'no-debugger': 'error',
@@ -186,7 +187,7 @@ const rules = {
 	'no-undef': 'error',
 	'no-undef-init': 'off',
 	'no-undefined': 'off',
-	'no-unused-vars': 'error',
+	'no-unused-vars': 'off',
 
 	// Node.js and CommonJS
 	// These rules relate to code running in Node.js, or in browsers with CommonJS:
@@ -542,6 +543,10 @@ const rules = {
 };
 
 module.exports = {
+	env: {
+		browser: true,
+		node: true
+	},
 	root: true,
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
@@ -553,22 +558,32 @@ module.exports = {
 	plugins: [
 		'@typescript-eslint',
 		'react',
-		'@nrwl/nx'
+		'@nrwl/nx',
+		'jest'
 	],
 	extends: [
 		'eslint:recommended',
 		'plugin:@typescript-eslint/eslint-recommended',
 		'plugin:@typescript-eslint/recommended',
+		'plugin:jest/recommended',
 		'prettier',
 	],
+	globals: {
+		document: false,
+		window: false,
+		setTimeout: false,
+		clearTimeout: false,
+	},
 	overrides: [
 		{
-			files: ['*.specs.ts', '*.specs.tsx'],
+			files: ['*.specs.ts', '*.specs.tsx', '*.test.ts', '*.test.tsx'],
 			globals: {
 				'shallow': false,
 				'mount': false,
 				'render': false,
-				'toJson': false
+				'toJson': false,
+				'document': false,
+				'window': false
 			}
 		},
 		{

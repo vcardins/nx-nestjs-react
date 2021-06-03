@@ -11,7 +11,7 @@ interface IProps extends IWrapperProps {
 }
 
 const Wrapper = styled.div`
-	width: ${({width, unit}: IWrapperProps) => `${width}${unit}`};
+	width: ${({ width, unit }: IWrapperProps) => `${width}${unit}`};
 	margin: 0 auto;
 	height: 100%;
 	display: flex;

@@ -129,8 +129,8 @@ export const Profile = {
 type TypeId = {id?: string};
 
 /* Link Styles */
-const ActionIcon = styled(Icon).attrs<TypeId>(({id}) => ({id}))`
-	${({inverse}) => !inverse && css`
+const ActionIcon = styled(Icon).attrs<TypeId>(({ id }) => ({ id }))`
+	${({ inverse }) => !inverse && css`
 		color: rgba(255, 255, 255, 0.75);
 	`}
 `;

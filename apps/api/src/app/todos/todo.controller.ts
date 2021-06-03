@@ -13,13 +13,13 @@ import { ITodoComplete } from './todo-complete.interface';
 
 const roles = [];
 const auth = {
-	count: {roles, permissions: [ModuleAction.Read]},
-	get: {roles, permissions: [ModuleAction.Read]},
-	getById: {roles, permissions: [ModuleAction.Read]},
-	create: {roles, permissions: [ModuleAction.Create]},
-	update: {roles, permissions: [ModuleAction.Update]},
-	updateOrCreate: {roles, permissions: [ModuleAction.Update]},
-	delete: {roles, permissions: [ModuleAction.Delete]},
+	count: { roles, permissions: [ModuleAction.Read] },
+	get: { roles, permissions: [ModuleAction.Read] },
+	getById: { roles, permissions: [ModuleAction.Read] },
+	create: { roles, permissions: [ModuleAction.Create] },
+	update: { roles, permissions: [ModuleAction.Update] },
+	updateOrCreate: { roles, permissions: [ModuleAction.Update] },
+	delete: { roles, permissions: [ModuleAction.Delete] },
 };
 
 const BaseController = baseAuthControllerFactory<Todo>({
@@ -39,7 +39,6 @@ export class TodoController extends BaseController {
 		super(service, socketService);
 	}
 	beforeCreate(body: Todo): Promise<void> {
-		// eslint-disable-next-line immutable/no-mutation
 		body.dateCreated = getUtcDate();
 		return;
 	}

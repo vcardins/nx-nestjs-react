@@ -77,12 +77,12 @@ class AuthService extends EventEmitter {
 	async getProviderUri(providerKey: string) {
 		const url = endpoints.providerUri.replace('{provider}', providerKey);
 		// eslint-disable-next-line camelcase
-		return await this.api.get<{redirect_uri: string}>({url});
+		return await this.api.get<{redirect_uri: string}>({ url });
 	}
 
 	async getOauthAccessToken(providerKey: string, code: string) {
 		const url = endpoints.providerSignin.replace('{provider}', providerKey);
-		return this.api.post<{token: string}>({url, data: { code }});
+		return this.api.post<{token: string}>({ url, data: { code } });
 	}
 
 	private async handleExceptionDisplay(

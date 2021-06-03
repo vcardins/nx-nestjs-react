@@ -18,7 +18,6 @@ export function randomString(length: number, chars: string) {
 	let cursor = 0;
 	for (let i = 0; i < length; i++) {
 		cursor += randomBytes[i];
-		// eslint-disable-next-line immutable/no-mutation
 		result[i] = chars[cursor % charsLength];
 	}
 

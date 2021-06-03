@@ -16,7 +16,7 @@ interface IProps extends IDateWrapperProps {
 }
 
 const DateWrapper = styled.span<IDateWrapperProps>`
-	width: ${({width = 'inherit', unit = 'px'}) => Number(width) === NaN ? width : `${width}${unit}`};
+	width: ${({ width = 'inherit', unit = 'px' }) => Number(width) === NaN ? width : `${width}${unit}`};
 	margin: 0 auto;
 	height: 100%;
 	display: flex;
@@ -29,7 +29,7 @@ const DateWrapper = styled.span<IDateWrapperProps>`
 export const formatDateTime = (value: IProps['value'], format = DEFAULT_FORMAT) =>
 	dayjs(value).format(format);
 
-export const DateFormatter = ({ value, width, unit, format = DEFAULT_FORMAT}: IProps) => {
+export const DateFormatter = ({ value, width, unit, format = DEFAULT_FORMAT }: IProps) => {
 	const date = value ? formatDateTime(value, format) : null;
 
 	return (

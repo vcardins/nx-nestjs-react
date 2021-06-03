@@ -4,7 +4,6 @@ function useTimeout(callback: () => void, delay: number = 0) {
 	const callbackRef = useRef(callback);
 
 	useEffect(() => {
-		// eslint-disable-next-line immutable/no-mutation
 		callbackRef.current = callback;
 	}, [callback]);
 

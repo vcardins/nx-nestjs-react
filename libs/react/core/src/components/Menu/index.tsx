@@ -45,7 +45,6 @@ export const Menu = (props: IMenuProps) => {
 	// 		}
 	// 	}
 	// }
-
 	function buildParentLevel(items: INavItem[], isHeading = false) {
 		const rootProps = isHeading && { className: `nav-main nav-main--${position} nav-main--${collapsed ? 'collapsed' : 'expanded'}` };
 
@@ -61,7 +60,7 @@ export const Menu = (props: IMenuProps) => {
 	}
 
 	function buildNavItem (item: INavItem) {
-		const { id, title, icon, isHidden, type, children = [] /*badge, */} = item;
+		const { id, title, icon, isHidden, type, children = [] /*badge, */ } = item;
 		if (isHidden) {
 			return null;
 		}

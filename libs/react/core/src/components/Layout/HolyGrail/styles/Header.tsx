@@ -14,7 +14,7 @@ const HeaderContainer = styled.header`
 type TypeId = {id?: string};
 
 /* Link Styles */
-export const SidebarToggle = styled(Icon).attrs<TypeId>(({id}) => ({id}))`
+export const SidebarToggle = styled(Icon).attrs<TypeId>(({ id }) => ({ id }))`
 	/* color: rgba(255, 255, 255, 0.75); */
 `;
 

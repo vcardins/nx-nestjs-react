@@ -1,4 +1,3 @@
-/* eslint-disable immutable/no-mutation */
 import React, { useContext } from 'react';
 import { ThemeContext } from 'styled-components';
 
@@ -58,7 +57,7 @@ export function Avatar(props: IAvatarProps) {
 		: inverse ? white : blue;
 	const src = url
 		? url
-		: buildLetterAvatar({ ...props, bgColor, fgColor});
+		: buildLetterAvatar({ ...props, bgColor, fgColor });
 
 	return (
 		<StyledAvatar

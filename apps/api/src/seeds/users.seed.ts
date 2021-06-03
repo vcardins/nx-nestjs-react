@@ -1,4 +1,3 @@
-/* eslint-disable immutable/no-mutation */
 import { Factory, Seeder } from 'typeorm-seeding';
 import { Connection, EntityTarget } from 'typeorm';
 import { plainToClass } from 'class-transformer';
@@ -48,7 +47,6 @@ const getPermissions = (modules: ModuleName[]) =>
 				title: `${toTitleCase(ModuleAction[action])} ${module}`,
 			}));
 
-		// eslint-disable-next-line no-param-reassign
 		return result.concat(allActions);
 	}, [] as Permission[]);
 
@@ -68,11 +66,11 @@ export default class SeedAuth implements Seeder {
 		const userGroup = getGroup(UserGroup.User, userPermissions);
 		await execSave(Group, userGroup);
 
-		const admin = await getUser(ADMIN, {firstName: 'Admin', lastName: 'User', locale: 'CA'}, [adminGroup], true);
+		const admin = await getUser(ADMIN, { firstName: 'Admin', lastName: 'User', locale: 'CA' }, [adminGroup], true);
 		await execSave(User, admin.user);
 		await execSave(UserProfile, admin.userProfile);
 
-		const demo = await getUser(DEMO, {firstName: 'Demo', lastName: 'User', locale: 'CA'}, [userGroup]);
+		const demo = await getUser(DEMO, { firstName: 'Demo', lastName: 'User', locale: 'CA' }, [userGroup]);
 		await execSave(User, demo.user);
 		await execSave(UserProfile, demo.userProfile);
 	}

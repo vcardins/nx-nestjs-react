@@ -1,13 +1,12 @@
 import React, { useEffect, useMemo } from 'react';
-import { useRoutes, useLocation } from 'react-router-dom';
+import { RouteObject } from 'react-router';
+import { useRoutes, useLocation, matchRoutes } from 'react-router-dom';
 
-import { matchRoutes } from './react-router';
 import { IAppConfig, ISignedUserOutput } from '@xapp/shared/interfaces';
 
 import { Layouts } from './layouts';
 import { IKeyedRoute, IRoute } from '../../interfaces/IRoute';
-import { PageKey } from '../../config/PageKey';
-import { RouteObject } from 'react-router';
+
 
 interface ILayoutProps {
 	routes: IKeyedRoute;
@@ -27,11 +26,9 @@ export const Layout = ({ config, routes, user, sideMenu, onSignOut }: ILayoutPro
 
 	useEffect(() => {
 		if (activeRoute) {
-			// eslint-disable-next-line immutable/no-mutation
 			document.title = activeRoute.title;
 		}
 
-		// eslint-disable-next-line immutable/no-mutation
 		return () => {
 			document.title = '';
 		};

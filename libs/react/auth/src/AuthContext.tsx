@@ -1,5 +1,7 @@
-import React, { useState, useMemo, useCallback, useContext } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
+
 import { ISignInInput } from '@xapp/shared/interfaces';
+
 import { IAuthContext } from './interfaces/IAuthContext';
 import { AuthService } from './services/AuthService';
 
@@ -25,7 +27,7 @@ export const useAuth = () => {
 	const handleSignIn = useCallback(async (props: ISignInInput) => {
 		const { email, password } = props;
 		// eslint-disable-next-line camelcase
-		const { user, access_token } = await AuthService.signInWithEmailAndPassword(email, password);
+		const { user, access_token } = await AuthService.signInWithEmailAndPassword({ email, password });
 		setUser(user);
 		setAccessToken(access_token);
 		return user;

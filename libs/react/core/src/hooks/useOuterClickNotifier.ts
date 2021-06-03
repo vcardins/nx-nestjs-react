@@ -19,16 +19,23 @@ export function useOuterClickNotifier(
 				return;
 			}
 
-			// only add listener, if the element exists
-			if (innerRef.current) {
-				// @ts-ignore
-				document.addEventListener('mousedown', handleClickOutside);
+			/**
+			 * Check whether there are whitelisted components allowed to be clickable
+			 *
+			 * @param {HTMLElement} node
+			 * @returns {boolean}
+			 */
+			function existAllowedOuterClickableElements(node: HTMLElement): boolean {
+				return allowedOuterElements.some((selector: string) => {
+					const el = document.querySelector(selector) as HTMLElement;
+
+					if (!el) {
+						return false;
+					}
+
+					return (el.isSameNode(node) || el.contains(node));
+				});
 			}
-
-			// unmount previous first in case input have changed
-			// @ts-ignore
-			return () => document.removeEventListener('mousedown', handleClickOutside);
-
 			/**
 			 * Handle document click
 			 *
@@ -48,23 +55,15 @@ export function useOuterClickNotifier(
 				}
 			}
 
-			/**
-			 * Check whether there are whitelisted components allowed to be clickable
-			 *
-			 * @param {HTMLElement} node
-			 * @returns {boolean}
-			 */
-			function existAllowedOuterClickableElements(node: HTMLElement): boolean {
-				return allowedOuterElements.some((selector: string) => {
-					const el = document.querySelector(selector) as HTMLElement;
-
-					if (!el) {
-						return false;
-					}
-
-					return (el.isSameNode(node) || el.contains(node));
-				});
+			// only add listener, if the element exists
+			if (innerRef.current) {
+				// @ts-ignore
+				document.addEventListener('mousedown', handleClickOutside);
 			}
+
+			// unmount previous first in case input have changed
+			// @ts-ignore
+			return () => document.removeEventListener('mousedown', handleClickOutside);
 		},
 		[onOuterClick, innerRef], // invoke again, if inputs have changed
 	);

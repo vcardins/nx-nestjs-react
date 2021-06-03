@@ -1,3 +1,8 @@
 export type IdType = string | number;
 
-export type SortDirection = 'ASC' | 'DESC';
+export enum SortDirection {
+	ASC = 'ASC',
+	DESC = 'DESC'
+};
+
+export type DefaultOptions = { sortBy: Record<string, SortDirection> };

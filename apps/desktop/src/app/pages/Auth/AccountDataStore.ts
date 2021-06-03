@@ -50,7 +50,7 @@ export class AccountStore extends DataContext {
 	}
 
 	async getUserProfile(): Promise<ISignedUserOutput> {
-		return this.read<ISignedUserOutput>({ url: this.endpoints.profile });
+		return this.read({ url: this.endpoints.profile });
 	}
 
 	async closeAccount(): Promise<IActionResponse> {

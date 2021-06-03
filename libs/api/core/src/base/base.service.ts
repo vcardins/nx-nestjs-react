@@ -118,17 +118,9 @@ export abstract class BaseService<T extends BaseEntity> implements IBaseService<
 			.cache(this.cache.find);
 
 		if (sortBy) {
-			const parts = sortBy.split('-');
-			let direction: SortDirection = 'ASC';
-			let field = parts[0];
-
-			if (parts.length > 1) {
-				direction = 'DESC';
-				field = parts[1];
-			}
-
-			// eslint-disable-next-line immutable/no-mutation
-			qb = qb.orderBy(`${this.modelName}.${field}`, direction);
+			Object.keys(sortBy).forEach((direction) => {
+				qb.addOrderBy(`${this.modelName}.${direction}`, sortBy[direction]);
+			});
 		}
 
 		if (filter) {

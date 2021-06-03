@@ -2,7 +2,7 @@ import { Controller, Patch, Body, Response, InternalServerErrorException } from 
 import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiBadRequestResponse, ApiOperation } from '@nestjs/swagger';
 import { Entity } from 'typeorm';
 
-import { SocketGateway, baseAuthControllerFactory, ModuleGroup, getUtcDate, Roles, Permissions, ApiException } from '@xapp/api/core';
+import { SocketGateway, baseAuthControllerFactory, ModuleGroup, getUtcDate, Roles, Permissions, ApiException, SortDirection } from '@xapp/api/core';
 import { getOperationId } from '@xapp/shared/utils';
 import { ModuleAction, ModuleName } from '@xapp/shared/enums';
 
@@ -36,9 +36,14 @@ export class TodoController extends BaseController {
 		private readonly service: TodoService,
 		private readonly socketService: SocketGateway,
 	) {
-		super(service, socketService);
+		super(
+			service,
+			socketService,
+			{ sortBy: { dateCompleted: SortDirection.DESC, dateCreated: SortDirection.DESC } },
+		);
 	}
 	beforeCreate(body: Todo): Promise<void> {
+		// eslint-disable-next-line immutable/no-mutation
 		body.dateCreated = getUtcDate();
 		return;
 	}

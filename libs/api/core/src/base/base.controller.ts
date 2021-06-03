@@ -32,7 +32,7 @@ import { formatEntityName } from './base.utils';
 import { IBaseControllerFactoryOpts, IPaginationQuery, IFindAndCountResult } from './base.interface';
 
 import { ParseIntWithDefaultPipe } from '../pipes/parse-int-with-default.pipe';
-import { IdType } from './base.type';
+import { DefaultOptions, IdType, SortDirection } from './base.type';
 import { SocketGateway } from '../socket/socket.gateway';
 
 import { getOperationId } from '../utils/get-operation-id';
@@ -70,10 +70,13 @@ export function baseControllerFactory<T extends BaseEntity>(options: IBaseContro
 		protected readonly _service: BaseService<T>;
 		protected readonly _socket: SocketGateway;
 
-		constructor(service: BaseService<T>, socketGateway?: SocketGateway) {
+		protected readonly _defaultOptions: DefaultOptions;
+
+		constructor(service: BaseService<T>, socketGateway?: SocketGateway, defaultOptions?: DefaultOptions) {
 			/* eslint-disable immutable/no-mutation */
 			this._service = service;
 			this._socket = socketGateway;
+			this._defaultOptions = defaultOptions;
 			/* eslint-enable immutable/no-mutation */
 		}
 
@@ -146,7 +149,13 @@ export function baseControllerFactory<T extends BaseEntity>(options: IBaseContro
 			@Response() response,
 		) {
 			try {
-				const query: IPaginationQuery = { pageNumber, pageSize, q, sortBy, filter: rawFilter };
+				const query: IPaginationQuery = {
+					pageNumber,
+					pageSize,
+					q,
+					sortBy: sortBy ? { [sortBy]: SortDirection.ASC } : (this._defaultOptions.sortBy ?? { id: SortDirection.ASC }),
+					filter: rawFilter,
+				};
 				const filter = query.filter ? JSON.parse(query.filter) : {};
 
 				if (this.beforePagination) {

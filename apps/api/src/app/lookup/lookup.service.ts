@@ -5,7 +5,7 @@ import { Injectable } from '@nestjs/common';
 export class LookupService {
 	async getAll(): Promise<LookupOutput> {
 		return new Promise((resolve) => {
-			const response = new LookupOutput();
+			const response = new LookupOutput({ dateFormats: ['YYY-MM-DD'] });
 			resolve(response);
 		});
 	}

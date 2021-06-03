@@ -12,7 +12,7 @@ export function getTypeOrmModule(entities: ConnectionOptions['entities'] ) {
 			...entities,
 			...getMetadataArgsStorage().tables.map((tbl) => tbl.target),
 		],
-	})
+	});
 }
 
 @Module({})
@@ -22,19 +22,19 @@ export class DatabaseModule {
 			global: true,
 			module: DatabaseModule,
 			imports: [
-				getTypeOrmModule(entities)
+				getTypeOrmModule(entities),
 			],
-		}
+		};
 	}
 
 	static forFeature(entities: EntityClassOrSchema[] = []): DynamicModule {
 		const imports = [
-			TypeOrmModule.forFeature(entities)
+			TypeOrmModule.forFeature(entities),
 		];
 		return {
 			module: DatabaseModule,
 			imports,
-			exports: imports
+			exports: imports,
 		};
 	}
 }

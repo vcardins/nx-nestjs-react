@@ -7,7 +7,6 @@ import { IAppConfig, ISignedUserOutput } from '@xapp/shared/interfaces';
 import { Layouts } from './layouts';
 import { IKeyedRoute, IRoute } from '../../interfaces/IRoute';
 
-
 interface ILayoutProps {
 	routes: IKeyedRoute;
 	user: ISignedUserOutput;

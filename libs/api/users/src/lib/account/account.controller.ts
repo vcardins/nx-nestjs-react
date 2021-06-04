@@ -86,7 +86,7 @@ Returns a JSON Web Token that can be used for authenticated requests.`,
 	})
 	async pathChangePassword(@Req() req, @Body() model: ChangePasswordInput) {
 		await this.accountService.changePassword(req.user?.id, model);
-		return { message: 'Your password was successfully updated'};
+		return { message: 'Your password was successfully updated' };
 	}
 
 	@Public()
@@ -99,7 +99,7 @@ Returns a JSON Web Token that can be used for authenticated requests.`,
 	})
 	async postForgotPassword(@Req() req, @Body() info: ForgotPasswordInput) {
 		await this.accountService.forgotPassword(info);
-		return { message: 'Please check your email'};
+		return { message: 'Please check your email' };
 	}
 
 	@Public()
@@ -112,7 +112,7 @@ Returns a JSON Web Token that can be used for authenticated requests.`,
 	})
 	async postResetPassword(@Req() req, @Body() info: ResetPasswordInput) {
 		await this.accountService.resetPassword(info);
-		return { message: 'Your password was successfully reset'};
+		return { message: 'Your password was successfully reset' };
 	}
 
 	@Public()
@@ -125,7 +125,7 @@ Returns a JSON Web Token that can be used for authenticated requests.`,
 	})
 	async patchVerifyAccountEmail(@Req() req, @Body() model: VerifyEmailInput) {
 		await this.accountService.verifyAccountEmail(model);
-		return { message: 'Your email has been successfully verified'};
+		return { message: 'Your email has been successfully verified' };
 	}
 
 	@Public()
@@ -138,7 +138,7 @@ Returns a JSON Web Token that can be used for authenticated requests.`,
 	})
 	async patchVerifyAccountPhoneNumber(@Req() req, @Body() model: VerifyPhoneNumberInput) {
 		await this.accountService.verifyAccountPhoneNumber(model);
-		return { message: 'Your phone number has been successfully verified'};
+		return { message: 'Your phone number has been successfully verified' };
 	}
 
 	@ApiBearerAuth()
@@ -152,7 +152,7 @@ Returns a JSON Web Token that can be used for authenticated requests.`,
 	})
 	async pathCloseAccount(@Req() req) {
 		await this.accountService.closeAccount(req.user?.id);
-		return { message: 'Your account was successfully closed'};
+		return { message: 'Your account was successfully closed' };
 	}
 
 	@Public()
@@ -165,7 +165,7 @@ Returns a JSON Web Token that can be used for authenticated requests.`,
 	})
 	async pathReopenAccount(@Req() req, @Body() signInDto: ReopenAccountInput) {
 		await this.accountService.reopenAccount(signInDto);
-		return { message: 'Your account was successfully reopened'};
+		return { message: 'Your account was successfully reopened' };
 	}
 
 	@ApiBearerAuth()

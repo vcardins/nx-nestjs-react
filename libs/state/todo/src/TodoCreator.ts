@@ -1,12 +1,13 @@
 import { StateCreator, UseStore } from 'zustand';
 
-import { IAuthState, ApiCallStatus, createStore } from '@xapp/state/shared';
+import { IAuthState, ApiCallStatus, createStore, setError, setLoading, setSuccess, setIdle } from '@xapp/state/shared';
 
 import { TodoInput } from './TodoInput';
 import { TodoOutput } from './TodoOutput';
 import { TodoStore } from './TodoStore';
 import { ITodoState } from './ITodoState';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createTodo: StateCreator<ITodoState> = (set, get, api) => ({
 	store: null,
 	status: ApiCallStatus.Idle,
@@ -23,22 +24,15 @@ export const createTodo: StateCreator<ITodoState> = (set, get, api) => ({
 			return;
 		}
 
-		set({ status: ApiCallStatus.Loading });
+		setLoading(set);
 
 		try {
 			const items = await store.readAll(filters);
 
-			set({
-				status: ApiCallStatus.Success,
-				items,
-				error: null,
-			});
-		} catch (error) {
-			set({
-				status: ApiCallStatus.Error,
-				items: [],
-				error,
-			});
+			setSuccess(set)({ items });
+		}
+		catch (error) {
+			setError(set)(error, { items: [] });
 		}
 	},
 	async save(data: TodoInput, id?: number) {
@@ -48,7 +42,7 @@ export const createTodo: StateCreator<ITodoState> = (set, get, api) => ({
 			return;
 		}
 
-		set({ status: ApiCallStatus.Loading });
+		setLoading(set);
 
 		try {
 			const isNew = !id;
@@ -63,11 +57,9 @@ export const createTodo: StateCreator<ITodoState> = (set, get, api) => ({
 				(state.status = ApiCallStatus.Success),
 				(state.error = null)
 			));
-		} catch (error) {
-			set({
-				status: ApiCallStatus.Error,
-				error,
-			});
+		}
+		catch (error) {
+			setError(set)(error);
 		}
 	},
 	async remove(id: number) {
@@ -77,21 +69,14 @@ export const createTodo: StateCreator<ITodoState> = (set, get, api) => ({
 			return;
 		}
 
-		set({ status: ApiCallStatus.Loading });
+		setLoading(set);
 
 		try {
 			await store.delete(id);
-
-			set({
-				status: ApiCallStatus.Success,
-				items: items.filter((item) => item.id !== id),
-				error: null,
-			});
-		} catch (error) {
-			set({
-				status: ApiCallStatus.Error,
-				error,
-			});
+			setSuccess(set)({ items: items.filter((item) => item.id !== id) });
+		}
+		catch (error) {
+			setError(set)(error);
 		}
 	},
 	async setComplete(todo: TodoOutput) {
@@ -101,7 +86,7 @@ export const createTodo: StateCreator<ITodoState> = (set, get, api) => ({
 			return;
 		}
 
-		set({ status: ApiCallStatus.Loading });
+		setLoading(set);
 
 		try {
 			const response = await store.complete(todo.id, !!todo.dateCompleted);
@@ -112,21 +97,15 @@ export const createTodo: StateCreator<ITodoState> = (set, get, api) => ({
 				(state.status = ApiCallStatus.Success),
 				(state.error = null)
 			));
-		} catch (error) {
-			set({
-				status: ApiCallStatus.Error,
-				error,
-			});
+		}
+		catch (error) {
+			setError(set)(error);
 		}
 	},
 	reset() {
-		set({
-			status: ApiCallStatus.Idle,
-			items: [],
-			error: null,
-		});
+		setIdle(set)({ items: [] });
 	},
 });
 
 export const useTodoState: UseStore<ReturnType<typeof createTodo>> =
-	createStore<ITodoState>((set, get, api) => createTodo(set, get, api))
+	createStore<ITodoState>((set, get, api) => createTodo(set, get, api));

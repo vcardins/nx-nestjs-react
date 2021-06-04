@@ -34,10 +34,11 @@ const getUserProfile = (set: SetState<IAccountState>, get: GetState<IAccountStat
 	try {
 		const userInfo = await store.getUserProfile();
 
-		setSuccess(set)({ userInfo })
+		setSuccess(set)({ userInfo });
 
 		return userInfo;
-	} catch (error) {
+	}
+	catch (error) {
 		setError(set)(error);
 	}
 };
@@ -54,8 +55,9 @@ const signUp = (set: SetState<IAccountState>, get: GetState<IAccountState>) => a
 	try {
 		const profile = await store.signUp(data);
 
-		setSuccess(set)({ userInfo: { ...userInfo, profile } })
-	} catch (error) {
+		setSuccess(set)({ userInfo: { ...userInfo, profile } });
+	}
+	catch (error) {
 		setError(set)(error);
 	}
 };
@@ -73,7 +75,8 @@ const verifyEmail = (set: SetState<IAccountState>, get: GetState<IAccountState>)
 		const response = await store.verifyEmail(data);
 
 		setSuccess(set)({ response });
-	} catch (error) {
+	}
+	catch (error) {
 		setError(set)(error);
 	}
 };
@@ -91,7 +94,8 @@ const verifyPhoneNumber = (set: SetState<IAccountState>, get: GetState<IAccountS
 		const response = await store.verifyPhoneNumber(data);
 
 		setSuccess(set)({ response });
-	} catch (error) {
+	}
+	catch (error) {
 		setError(set)(error);
 	}
 };
@@ -109,7 +113,8 @@ const forgotPassword = (set: SetState<IAccountState>, get: GetState<IAccountStat
 		const response = await store.forgotPassword(data);
 
 		setSuccess(set)({ response });
-	} catch (error) {
+	}
+	catch (error) {
 		setError(set)(error);
 	}
 };
@@ -131,7 +136,8 @@ const updateProfile = (set: SetState<IAccountState>, get: GetState<IAccountState
 			userInfo: { ...userInfo, profile },
 			error: null,
 		});
-	} catch (error) {
+	}
+	catch (error) {
 		setError(set)(error);
 	}
 };
@@ -149,7 +155,8 @@ const closeAccount = (set: SetState<IAccountState>, get: GetState<IAccountState>
 		const response = await store.closeAccount();
 
 		setSuccess(set)({ response });
-	} catch (error) {
+	}
+	catch (error) {
 		setError(set)(error);
 	}
 };
@@ -167,7 +174,8 @@ const reopenAccount = (set: SetState<IAccountState>, get: GetState<IAccountState
 		const response = await store.reopenAccount(data);
 
 		setSuccess(set)({ response });
-	} catch (error) {
+	}
+	catch (error) {
 		setError(set)(error);
 	}
 };
@@ -185,7 +193,8 @@ const changePhoneNumber = (set: SetState<IAccountState>, get: GetState<IAccountS
 		const response = await store.changePhoneNumber(data);
 
 		setSuccess(set)({ response });
-	} catch (error) {
+	}
+	catch (error) {
 		setError(set)(error);
 	}
 };
@@ -203,7 +212,8 @@ const changePassword = (set: SetState<IAccountState>, get: GetState<IAccountStat
 		const response = await store.changePassword(data);
 
 		setSuccess(set)({ response });
-	} catch (error) {
+	}
+	catch (error) {
 		setError(set)(error);
 	}
 };
@@ -221,7 +231,8 @@ const resetPassword = (set: SetState<IAccountState>, get: GetState<IAccountState
 		const response = await store.resetPassword(data);
 
 		setSuccess(set)({ response });
-	} catch (error) {
+	}
+	catch (error) {
 		setError(set)(error);
 	}
 };
@@ -247,4 +258,4 @@ export const createAccount: StateCreator<IAccountState> = (set, get) => ({
 });
 
 export const useAccountState: UseStore<ReturnType<typeof createAccount>> =
-	createStore<IAccountState>((set, get, api) => createAccount(set, get, api))
+	createStore<IAccountState>((set, get, api) => createAccount(set, get, api));

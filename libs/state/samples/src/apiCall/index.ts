@@ -1,4 +1,4 @@
-import { ApiCallStatus } from '@xapp/state/shared';
+import { ApiCallStatus, setError, setIdle, setLoading } from '@xapp/state/shared';
 import { StateCreator } from 'zustand';
 
 type Endpoint = string | (() => Promise<any>);
@@ -14,6 +14,7 @@ export interface IApiCallState<T = any> {
 	reset: () => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createApiCall: StateCreator<IApiCallState> = (set, get, api) => ({
 	status: ApiCallStatus.Idle,
 	data: null,
@@ -32,7 +33,7 @@ export const createApiCall: StateCreator<IApiCallState> = (set, get, api) => ({
 			throw new Error('URL is required');
 		}
 
-		set({ status: ApiCallStatus.Loading });
+		setLoading(set);
 
 		try {
 			let data: T[];
@@ -51,19 +52,12 @@ export const createApiCall: StateCreator<IApiCallState> = (set, get, api) => ({
 				(state.data = data),
 				(state.error = null)
 			));
-		} catch (error) {
-			set({
-				status: ApiCallStatus.Error,
-				data: null,
-				error,
-			});
+		}
+		catch (error) {
+			setError(set)(error, { data: null });
 		}
 	},
 	reset() {
-		set({
-			status: ApiCallStatus.Idle,
-			data: null,
-			error: null,
-		});
+		setIdle(set)({ data: null });
 	},
 });

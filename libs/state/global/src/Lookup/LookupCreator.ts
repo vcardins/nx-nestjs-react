@@ -1,10 +1,11 @@
 import { StateCreator, UseStore } from 'zustand';
 
-import { IAuthState, ApiCallStatus, createStore } from '@xapp/state/shared';
+import { IAuthState, ApiCallStatus, createStore, setError, setLoading, setSuccess } from '@xapp/state/shared';
 
 import { LookupStore } from './LookupStore';
 import { ILookupState } from './ILookupState';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createLookup: StateCreator<ILookupState> = (set, get, api) => ({
 	store: null,
 	status: ApiCallStatus.Idle,
@@ -21,24 +22,18 @@ export const createLookup: StateCreator<ILookupState> = (set, get, api) => ({
 			return;
 		}
 
-		set({ status: ApiCallStatus.Loading });
+		setLoading(set);
 
 		try {
 			const { dateFormats } = await store.read();
 
-			set({
-				status: ApiCallStatus.Success,
-				dateFormats,
-				error: null,
-			});
-		} catch (error) {
-			set({
-				status: ApiCallStatus.Error,
-				error,
-			});
+			setSuccess(set)({ dateFormats });
 		}
-	}
+		catch (error) {
+			setError(set)(error);
+		}
+	},
 });
 
 export const useLookupState: UseStore<ReturnType<typeof createLookup>> =
-	createStore<ILookupState>((set, get, api) => createLookup(set, get, api))
+	createStore<ILookupState>((set, get, api) => createLookup(set, get, api));

@@ -1,24 +1,19 @@
-import React, { memo, useContext, useRef } from 'react';
+import React, { memo, useRef } from 'react';
 
 import { Form, TextInput, Page, Submit, FieldGroup, DatePicker, formatDate, useForm } from '@xapp/react/core';
 import { IUserProfileInput } from '@xapp/shared/interfaces';
+import { useStore } from '@xapp/state';
 
-import { appContext, useApp } from '../../../context';
 import { validationSchema } from './schema';
 
 const UserProfilePage = memo(() => {
-	const { user, onUpdateUserProfile } = useContext(appContext);
-	const { dataContext } = useApp();
-	const api = dataContext?.account;
+	const { userInfo, updateProfile } = useStore((state) => state.account);
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<IUserProfileInput>({
-		initialValues: user?.profile ?? {} as IUserProfileInput,
+		initialValues: userInfo?.profile ?? {} as IUserProfileInput,
 		clearAfterSubmit: false,
-		onSubmit: async (data) => {
-			const response = await api?.updateProfile(data);
-			onUpdateUserProfile(response);
-		},
-	}, [user?.profile?.firstName]);
+		onSubmit: updateProfile,
+	}, [userInfo?.profile?.firstName]);
 
 	const handleDayChange = (dateOfBirth: Date) => {
 		handleChange({ ...formData, dateOfBirth: formatDate(dateOfBirth) });

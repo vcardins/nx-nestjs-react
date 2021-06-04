@@ -35,7 +35,13 @@
 			"@xapp/shared/services": ["libs/shared/services/src/index.ts"],
 			"@xapp/shared/utils": ["libs/shared/utils/src/index.ts"],
 			"@xapp/api/users": ["libs/api/users/src/index.ts"],
-			"@xapp/api/access-control": ["libs/api/access-control/src/index.ts"]
+			"@xapp/api/access-control": ["libs/api/access-control/src/index.ts"],
+			"@xapp/state": ["libs/state/src/index.ts"],
+			"@xapp/state/todo": ["libs/state/todo/src/index.ts"],
+			"@xapp/state/shared": ["libs/state/shared/src/index.ts"],
+			"@xapp/state/samples": ["libs/state/samples/src/index.ts"],
+			"@xapp/state/user": ["libs/state/user/src/index.ts"],
+			"@xapp/state/global": ["libs/state/global/src/index.ts"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]

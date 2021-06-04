@@ -3,19 +3,17 @@ import React, { memo, useRef } from 'react';
 import { Page, Form, TextInput, FieldGroup, Submit, IRoutedPageProps, useForm } from '@xapp/react/core';
 import { IChangePasswordInput } from '@xapp/shared/interfaces';
 import { validationSchema } from './schema';
-
-import { useApp } from '../../../context';
+import { useStore } from '@xapp/state';
 
 const ChangePasswordPage = memo((props: IRoutedPageProps) => {
-	const { dataContext } = useApp();
-	const api = dataContext?.account;
+	const { changePassword } = useStore((state) => state.account);
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<IChangePasswordInput>({
 		initialValues: {
 			oldPassword: '',
 			newPassword: '',
 		},
-		onSubmit: api?.changePassword,
+		onSubmit: changePassword,
 	});
 	const formRef = useRef({ valid: false });
 

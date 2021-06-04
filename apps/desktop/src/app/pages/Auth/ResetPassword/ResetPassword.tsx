@@ -5,7 +5,7 @@ import { Page, Form, TextInput, FieldGroup, Submit, IRoutedPageProps, useForm } 
 import { IResetPasswordInput } from '@xapp/shared/interfaces';
 
 import { validationSchema } from './schema';
-import { useApp } from '../../../context';
+import { useStore } from '@xapp/state';
 
 const initialValues: IResetPasswordInput = {
 	password: '',
@@ -14,12 +14,11 @@ const initialValues: IResetPasswordInput = {
 };
 
 const ResetPasswordPage = memo((props: IRoutedPageProps) => {
-	const { dataContext } = useApp();
-	const api = dataContext?.account;
+	const { resetPassword } = useStore((state) => state.account);
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<IResetPasswordInput>({
 		initialValues,
-		onSubmit: api.resetPassword,
+		onSubmit: resetPassword,
 	});
 
 	const [verificationKey, setVerificationKey] = useState<string>();

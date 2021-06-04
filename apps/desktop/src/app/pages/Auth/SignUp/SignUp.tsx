@@ -6,7 +6,8 @@ import { validationSchema } from './schema';
 import { Form, TextInput, FieldGroup, Submit, PageKey, useForm } from '@xapp/react/core';
 import { ISignUpInput } from '@xapp/shared/interfaces';
 
-import { appContext, useApp } from '../../../context';
+import { appContext } from '../../../context';
+import { useStore } from '@xapp/state';
 
 const initialValues: ISignUpInput = {
 	username: '',
@@ -19,12 +20,11 @@ const initialValues: ISignUpInput = {
 
 const SignUpPage = memo(() => {
 	const { routes } = useContext(appContext);
-	const { dataContext } = useApp();
-	const api = dataContext?.account;
+	const { signUp } = useStore((state) => state.account);
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<ISignUpInput>({
 		initialValues,
-		onSubmit: api.signUp,
+		onSubmit: signUp,
 	});
 	const formRef = useRef({ valid: false });
 

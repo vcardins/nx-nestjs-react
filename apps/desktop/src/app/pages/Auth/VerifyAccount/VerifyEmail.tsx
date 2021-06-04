@@ -1,19 +1,18 @@
 import React, { memo, useState, useEffect } from 'react';
 import { parse } from 'query-string';
-import { useApp } from '../../../context';
+import { useStore } from '@xapp/state';
 
 const VerifyEmailPage = memo(() => {
-	const { dataContext } = useApp();
-	const api = dataContext?.account;
+	const { verifyEmail } = useStore((state) => state.account);
 
 	const [submitting, setSubmitting] = useState(false);
 	const [, setSuccess] = useState(false);
 	const [message, setMessage] = useState('');
 
 	useEffect(() => {
-		const verifyEmail = async (key: string) => {
+		const handleVerifyEmail = async (key: string) => {
 			try {
-				const response = await api.verifyEmail({ key });
+				const response = await verifyEmail({ key });
 
 				if (response.message) {
 					setMessage(response.message);
@@ -34,9 +33,9 @@ const VerifyEmailPage = memo(() => {
 		const { key } = parse(document.location.search) || {};
 
 		if (key) {
-			verifyEmail(key as string);
+			handleVerifyEmail(key as string);
 		}
-	}, [api]);
+	}, [verifyEmail]);
 
 	if (submitting) {
 		return (

@@ -8,7 +8,7 @@ export interface IDataContextProps {
 	hydrateAccessToken?: (accessToken: string) => void;
 }
 
-export class DataContext<TOutput = any, TInputCreate = any, TInputUpdate = TInputCreate> {
+export class DataContext<TOutput = any, TInputCreate = any, TInputUpdate = TInputCreate & { id: number }, TFilter = any> {
 	public readonly api: RestClient;
 	public readonly notifier: INotifier;
 	private basePath: string;
@@ -33,19 +33,19 @@ export class DataContext<TOutput = any, TInputCreate = any, TInputUpdate = TInpu
 		});
 	}
 
-	readAll = <T>(payload?: IRestClientPayload<TInputCreate>): Promise<TOutput[]> =>
-		this.api.get<T | TInputCreate>(payload);
+	readAll = <T = TFilter>(payload?: T): Promise<TOutput[]> =>
+		this.api.get<T>(payload);
 
-	read = <T>(payload?: IRestClientPayload<TInputCreate>): Promise<TOutput> =>
-		this.api.get<T | TInputCreate>(payload);
+	read = <T = TFilter>(payload?: T): Promise<TOutput> =>
+		this.api.get<T>(payload);
 
-	create = <T>(payload?: IRestClientPayload<TInputCreate>): Promise<TOutput> =>
+	create = <T = TInputCreate>(payload?: IRestClientPayload<TInputCreate>): Promise<TOutput> =>
 		this.api.post<T | TInputCreate>(payload);
 
-	patch = <T>(payload?: IRestClientPayload<TInputUpdate>): Promise<TOutput> =>
+	patch = <T = TInputUpdate>(payload?: IRestClientPayload<TInputUpdate>): Promise<TOutput> =>
 		this.api.patch<T | TInputUpdate>(payload);
 
-	update = <T>(payload?: IRestClientPayload<TInputUpdate>): Promise<TOutput> =>
+	update = <T = TInputUpdate>(payload?: IRestClientPayload<TInputUpdate>): Promise<TOutput> =>
 		this.api.put<T | TInputUpdate>(payload);
 
 	delete = (id: string | number): Promise<TOutput> =>

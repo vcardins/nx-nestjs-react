@@ -5,7 +5,8 @@ import { Form, TextInput, FieldGroup, Submit, PageKey, useForm } from '@xapp/rea
 import { IForgotPasswordInput } from '@xapp/shared/interfaces';
 
 import { validationSchema } from './schema';
-import { appContext, useApp } from '../../../context';
+import { appContext } from '../../../context';
+import { useStore } from '@xapp/state';
 
 const initialValues: IForgotPasswordInput = {
 	email: '',
@@ -13,12 +14,11 @@ const initialValues: IForgotPasswordInput = {
 
 const ForgotPasswordPage = memo(() => {
 	const { routes } = useContext(appContext);
-	const { dataContext } = useApp();
-	const api = dataContext?.account;
+	const { forgotPassword } = useStore((state) => state.account);
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<IForgotPasswordInput>({
 		initialValues,
-		onSubmit: api.forgotPassword,
+		onSubmit: forgotPassword,
 	});
 	const formRef = useRef({ valid: false });
 

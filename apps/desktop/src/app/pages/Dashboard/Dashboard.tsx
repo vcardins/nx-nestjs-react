@@ -1,12 +1,5 @@
 import React, { memo } from 'react';
-<<<<<<< Updated upstream
 
-const DashboardPage = memo(() => (
-	<div>
-		<h1>Dashboard</h1>
-	</div>
-));
-=======
 import { Page } from '@xapp/react/core';
 
 const DashboardPage = memo(() => {
@@ -16,7 +9,6 @@ const DashboardPage = memo(() => {
 		</Page>
 	);
 });
->>>>>>> Stashed changes
 
 DashboardPage.displayName = 'DashboardPage';
 

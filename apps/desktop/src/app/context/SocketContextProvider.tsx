@@ -1,9 +1,9 @@
 import React, { FC, Context, createContext, useEffect, useState, useContext } from 'react'; // , Dispatch, useReducer
 import { io, Socket } from 'socket.io-client';
+import { toast } from 'react-toastify';
 
 import { appConfig } from '@xapp/shared/config';
 import { useAuth } from '@xapp/react/auth';
-import { toast } from 'react-toastify';
 
 type ISocketContext = Socket | null;
 

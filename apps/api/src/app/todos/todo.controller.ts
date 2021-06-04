@@ -43,7 +43,6 @@ export class TodoController extends BaseController {
 		);
 	}
 	beforeCreate(body: Todo): Promise<void> {
-		// eslint-disable-next-line immutable/no-mutation
 		body.dateCreated = getUtcDate();
 		return;
 	}

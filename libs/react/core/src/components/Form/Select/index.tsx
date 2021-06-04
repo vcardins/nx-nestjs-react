@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { StyledSelect } from './styles';
-import { IKeyPair } from '@xapp/shared/interfaces';
 import { FieldSet } from '../FieldSet';
 import { IHtmlField } from '../../../interfaces/IHtmlField';
 
@@ -10,10 +9,10 @@ type KeyType = string | number;
 export interface ISelectField<T extends KeyType> extends IHtmlField {
 	items: T[];
 	size?: number;
-	keyValueProps?: IKeyPair<T>;
+	keyValueProps?: Record<string, T>;
 }
 
-function getOptions<T extends KeyType> (items: T[] = [], keyValueProps: IKeyPair<T>) {
+function getOptions<T extends KeyType> (items: T[] = [], keyValueProps: Record<string, T>) {
 	if (!keyValueProps) {
 		throw new Error('keyValueProps is required for select components');
 	}

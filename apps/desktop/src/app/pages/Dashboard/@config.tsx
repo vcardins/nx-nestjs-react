@@ -23,5 +23,3 @@ export const DashboardPageConfig: IPageConfig = {
 		},
 	],
 };
-
-//React.lazy(() => import('./Dashboard'))

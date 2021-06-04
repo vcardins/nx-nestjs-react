@@ -22,5 +22,3 @@ export const StatePageConfig: IPageConfig = {
 		},
 	],
 };
-
-//React.lazy(() => import('./State'))

@@ -1,7 +1,4 @@
 export * from './lib/IAvailabilityStatus';
-export * from './lib/IDateFormat';
-export * from './lib/IDateRange';
-export * from './lib/IKeyPair';
 export * from './lib/IActionResponse';
 export * from './lib/IValidationError';
 export * from './lib/ILookup';

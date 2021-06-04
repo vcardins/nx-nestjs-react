@@ -1,4 +1,4 @@
-import { UserGroup } from '@xapp/shared/enums';
+import { UserGroup } from '@xapp/shared/auth';
 import { IRoute } from '../interfaces/IRoute';
 import { IPageLayout } from '../interfaces/IPageLayout';
 

@@ -1,11 +1,10 @@
-import { UserProfileDto } from '@xapp/api/users';
 import { Injectable, NotFoundException, Logger, BadRequestException } from '@nestjs/common';
 import { plainToClassFromExist, plainToClass } from 'class-transformer';
 
 import { IEvent, CustomError } from '@xapp/api/core';
 import { getUtcDate, randomAsciiString } from '@xapp/shared/utils';
-import { UserGroup, VerificationKeyPurpose } from '@xapp/shared/enums';
 import { MailService } from '@xapp/api/mail';
+import { UserGroup, VerificationKeyPurpose } from '@xapp/shared/auth';
 import { GroupService } from '@xapp/api/access-control';
 
 import {
@@ -31,6 +30,7 @@ import {
 import { UserService } from '../user.service';
 import { User } from '../entities/user.entity';
 import { UserProfile } from '../entities/user_profile.entity';
+import { UserProfileDto } from '../..';
 
 const USER_NOT_FOUND = 'User not found';
 const INVALID_CREDENTIALS = 'Invalid credentials';
@@ -197,7 +197,7 @@ export class AccountService { // implements IAccountService {
 			user.email,
 		);
 
-		const updatedUser = {...user, ...verificationInfo} as User;
+		const updatedUser = { ...user, ...verificationInfo } as User;
 
 		if (!user.dateAccountVerified) {
 			this.addEvent(new AccountCreatedEvent(updatedUser, verificationInfo.verificationKey));

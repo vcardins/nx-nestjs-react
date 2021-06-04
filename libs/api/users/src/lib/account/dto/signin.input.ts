@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, MaxLength } from 'class-validator';
 
-import { ISignInInput } from '@xapp/shared/interfaces';
+import { ISignInInput } from '@xapp/shared/auth';
 
 export class SignInInput implements ISignInInput {
 	@IsNotEmpty()

@@ -2,7 +2,7 @@ import React from 'react';
 import { ToastContainer, Slide } from 'react-toastify';
 
 import { Layout, Menu, SplashScreen } from '@xapp/react/core';
-import { IAppConfig } from '@xapp/shared/interfaces';
+import { IAppConfig } from '@xapp/shared/config';
 import { Authentication, Authorization, IAuthContext } from '@xapp/react/auth';
 
 import { AppProviders } from './AppProviders';

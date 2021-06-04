@@ -29,8 +29,7 @@
 		"api-mail": { "tags": ["type:library", "scope:api", "platform:server"] },
 		"react-core": { "tags": [] },
 		"react-auth": { "tags": [] },
-		"shared-interfaces": { "tags": [] },
-		"shared-enums": { "tags": [] },
+		"shared": { "tags": [] },
 		"shared-assets": { "tags": [] },
 		"shared-exceptions": { "tags": [] },
 		"shared-utils": { "tags": [] },
@@ -45,6 +44,7 @@
 		"state-shared": { "tags": [] },
 		"state-samples": { "tags": [] },
 		"state-account": { "tags": [] },
-		"state-global": { "tags": [] }
+		"state-global": { "tags": [] },
+		"shared-auth": { "tags": [] }
 	}
 }

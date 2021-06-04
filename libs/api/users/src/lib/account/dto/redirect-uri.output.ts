@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IRedirectUriOutput } from '@xapp/shared/interfaces';
+import { IRedirectUriOutput } from '@xapp/shared/auth';
 
 export class RedirectUriOutput implements IRedirectUriOutput {
 	@ApiProperty()

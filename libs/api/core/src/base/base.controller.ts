@@ -24,7 +24,7 @@ import {
 	ApiBearerAuth,
 } from '@nestjs/swagger';
 
-import { ModuleAction } from '@xapp/shared/enums';
+import { ModuleAction } from '@xapp/shared';
 
 import { ApiException } from '../dto/api-exception.dto';
 import { BaseService } from './base.service';

@@ -1,9 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, MaxLength, IsOptional/*, Matches*/ } from 'class-validator';
+import { MaxLength, IsOptional/*, Matches*/ } from 'class-validator';
 import { JSONSchema } from 'class-validator-jsonschema';
 
-import { IUserProfileInput } from '@xapp/shared/interfaces';
-import { Match } from '@xapp/api/core';
+import { IUserProfileInput } from '@xapp/shared/auth';
 
 @JSONSchema({
 	description: 'A user signup object',

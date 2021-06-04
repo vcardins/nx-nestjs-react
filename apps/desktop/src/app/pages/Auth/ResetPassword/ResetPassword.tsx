@@ -2,7 +2,7 @@ import React, { memo, useState, useRef, useEffect } from 'react';
 import { parse } from 'query-string';
 
 import { Page, Form, TextInput, FieldGroup, Submit, IRoutedPageProps, useForm } from '@xapp/react/core';
-import { IResetPasswordInput } from '@xapp/shared/interfaces';
+import { IResetPasswordInput } from '@xapp/shared/auth';
 
 import { validationSchema } from './schema';
 import { useStore } from '@xapp/state';

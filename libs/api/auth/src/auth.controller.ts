@@ -4,7 +4,7 @@ import { Body, Controller, Get, HttpCode, HttpStatus, Inject, Post, Req, Logger,
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { plainToClass } from 'class-transformer';
 
-import { OAuthProvider } from '@xapp/shared/enums';
+import { OAuthProvider } from '@xapp/shared/auth';
 import { CORE_CONFIG_TOKEN, ICoreConfig, /*AccountOutput, GroupDto, */Public, SocketGateway } from '@xapp/api/core';
 import { UserDto } from '@xapp/api/users';
 

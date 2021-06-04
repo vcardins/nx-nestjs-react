@@ -2,7 +2,7 @@ import React from 'react';
 
 import { IPageConfig, LayoutStyles, PageKey } from '@xapp/react/core';
 import { appConfig } from '@xapp/shared/config';
-import { AuthGroups } from '@xapp/shared/enums';
+import { AuthGroups } from '@xapp/shared/auth';
 
 import Page500 from './500';
 // const element = React.lazy(() => import('./500'));

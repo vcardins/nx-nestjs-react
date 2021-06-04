@@ -1,7 +1,7 @@
+import { AuthService } from '@xapp/shared/auth';
 import React, { useState, useEffect } from 'react';
 
 import { useAuth } from './AuthContextProvider';
-import { AuthService } from './services/AuthService';
 
 interface IProps {
 	splashScreen: any;

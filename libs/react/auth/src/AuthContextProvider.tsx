@@ -1,8 +1,7 @@
 import React, { useState, useMemo, useCallback, useContext } from 'react';
 
-import { ISignInInput } from '@xapp/shared/interfaces';
+import { ISignInInput, AuthService } from '@xapp/shared/auth';
 import { IAuthContext } from './interfaces/IAuthContext';
-import { AuthService } from './services/AuthService';
 
 const initialContext: IAuthContext = {
 	accessToken: null,

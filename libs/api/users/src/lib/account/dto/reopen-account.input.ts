@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, MaxLength } from 'class-validator';
 import { JSONSchema } from 'class-validator-jsonschema';
 
-import { ISignInInput } from '@xapp/shared/interfaces';
+import { ISignInInput } from '@xapp/shared/auth';
 import { BasePasswordInput } from './base-password.input';
 
 @JSONSchema({

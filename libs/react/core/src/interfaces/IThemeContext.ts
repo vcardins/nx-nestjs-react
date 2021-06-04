@@ -1,4 +1,4 @@
-import { Themes } from '@xapp/shared/enums';
+import { Themes } from '@xapp/shared';
 import { ITheme } from './ITheme';
 
 export interface IThemeContext {

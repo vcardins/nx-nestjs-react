@@ -1,9 +1,8 @@
-import { DataContext } from '@xapp/react/core';
+import { IActionResponse } from '@xapp/shared';
 import {
 	IUserProfileInput,
 	ISignedUserOutput,
 	IUserProfile,
-	IActionResponse,
 	IVerifyEmailInput,
 	IVerifyPhoneNumberInput,
 	ISignInInput,
@@ -11,9 +10,10 @@ import {
 	IChangePasswordInput,
 	IResetPasswordInput,
 	IForgotPasswordInput,
-	IEndpointsConfig,
 	ISignUpInput,
-} from '@xapp/shared/interfaces';
+} from '@xapp/shared/auth';
+import { IEndpointsConfig } from '@xapp/shared/config';
+import { DataContext } from '@xapp/state/shared';
 
 const options = { noAuthToken: true };
 

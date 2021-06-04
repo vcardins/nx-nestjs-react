@@ -16,7 +16,8 @@ import {
 } from 'typeorm';
 
 import { BaseEntity } from '@xapp/api/core';
-import { VerificationKeyPurpose, ModuleAction } from '@xapp/shared/enums';
+import { ModuleAction } from '@xapp/shared';
+import { VerificationKeyPurpose } from '@xapp/shared/auth';
 import { Group } from '@xapp/api/access-control';
 import { PublicFile } from '@xapp/api/files';
 
@@ -124,7 +125,7 @@ export class User extends BaseEntity {
 	public avatar?: PublicFile;
 
 
-	@ManyToMany('Group', {cascade: true})
+	@ManyToMany('Group', { cascade: true })
 	@JoinTable({
 		// not work on run cli migration:
 		name: 'user_groups',
@@ -139,7 +140,7 @@ export class User extends BaseEntity {
 	})
 	groups: Group[];
 
-	@OneToMany('LoggedIn', 'user', {cascade: true})
+	@OneToMany('LoggedIn', 'user', { cascade: true })
 	loggedIns: LoggedIn[];
 
 	@OneToOne(() => UserProfile, (userProfile) => userProfile.user, {

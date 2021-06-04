@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { IPageConfig, LayoutStyles, PageKey } from '@xapp/react/core';
-import { AuthGroups } from '@xapp/shared/enums';
+import { AuthGroups } from '@xapp/shared/auth';
 
 import State from './State';
 // const element = React.lazy(() => import('./State'));

@@ -24,7 +24,7 @@ import {
 	ApiBearerAuth,
 } from '@nestjs/swagger';
 
-import { ModuleAction } from '@xapp/shared/enums';
+import { ModuleAction } from '@xapp/shared';
 import { getOperationId } from '@xapp/shared/utils';
 
 import { IBaseAuthControllerFactoryOpts } from './base-auth.interface';

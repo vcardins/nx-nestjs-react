@@ -1,7 +1,7 @@
 import React, { memo, useRef } from 'react';
 
 import { Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react/core';
-import { IVerifyPhoneNumberInput } from '@xapp/shared/interfaces';
+import { IVerifyPhoneNumberInput } from '@xapp/shared/auth';
 
 import { validationSchema } from './schema';
 import { useStore } from '@xapp/state';

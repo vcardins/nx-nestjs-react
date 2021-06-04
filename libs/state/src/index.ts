@@ -6,7 +6,7 @@ import { createTodo }  from '@xapp/state/todo';
 import { createApiCall, createCounter, createForm } from '@xapp/state/samples';
 import { createLookup } from '@xapp/state/global';
 import { createAccount } from '@xapp/state/account';
-import { IEndpointsConfig } from '@xapp/shared/interfaces';
+import { IEndpointsConfig } from '@xapp/shared/config';
 
 export type AppState = {
 	counter: ReturnType<typeof createCounter>;

@@ -4,7 +4,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { plainToClass } from 'class-transformer';
 
 import { MessageOutput, Public, Roles, Permissions } from '@xapp/api/core';
-import { ModuleAction } from '@xapp/shared/enums';
+import { ModuleAction } from '@xapp/shared';
 
 import { SignUpInput } from './dto/signup.input';
 import { AccountOutput } from './dto/account.output';

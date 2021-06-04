@@ -3,10 +3,11 @@ import { Connection, EntityTarget } from 'typeorm';
 import { plainToClass } from 'class-transformer';
 
 import { toTitleCase, getUtcDate } from '@xapp/shared/utils';
-import { UserGroup, ModuleAction, ModuleName } from '@xapp/shared/enums';
+import { ModuleAction, ModuleName } from '@xapp/shared';
 import { UserProfile, User } from '@xapp/api/users';
 
 import { Group, Permission } from '@xapp/api/access-control';
+import { UserGroup } from '@xapp/shared/auth';
 
 const ADMIN = 'admin';
 const DEMO = 'demo';

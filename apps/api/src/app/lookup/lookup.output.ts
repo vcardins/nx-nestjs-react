@@ -1,10 +1,9 @@
-import { UserGroup } from '@xapp/shared/enums';
+import { ILookup } from '@xapp/shared';
 
-export class LookupOutput {
+export class LookupOutput implements ILookup {
 	dateFormats: Record<string, string>;
 	oAuthProviders: Record<string, string>;
-	authGroups: Record<string, UserGroup[]>;
-
+	authGroups: ILookup['authGroups'];
 	userGroups: Record<string, string>;
 
 	constructor(props: Partial<LookupOutput>) {

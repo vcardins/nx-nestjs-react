@@ -1,4 +1,4 @@
-import { IEndpointsConfig } from '@xapp/shared/interfaces';
+import { IEndpointsConfig } from '../interfaces';
 
 export const endpoints: IEndpointsConfig = {
 	signIn: 'auth/signin',

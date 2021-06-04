@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react';
 
-import { ISignInInput } from '@xapp/shared/interfaces';
+import { ISignInInput } from '@xapp/shared/auth';
 
 import { IAuthContext } from './interfaces/IAuthContext';
 import { AuthService } from './services/AuthService';

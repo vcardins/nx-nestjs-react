@@ -1,11 +1,11 @@
-import { UserGroup, VerificationKeyPurpose } from '@xapp/shared/enums';
+import { UserGroup, VerificationKeyPurpose } from '@xapp/shared/auth';
 /* eslint-disable camelcase */
 import { BadRequestException, HttpService, Inject, Injectable, Logger/*, NotFoundException*/ } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { stringify } from 'querystring';
 import { map } from 'rxjs/operators';
 
-import { OAuthProvider } from '@xapp/shared/enums';
+import { OAuthProvider } from '@xapp/shared/auth';
 import { CustomError } from '@xapp/shared/exceptions';
 import { getUtcDate } from '@xapp/shared/utils';
 import { ICoreConfig, CORE_CONFIG_TOKEN } from '@xapp/api/core';
@@ -40,7 +40,6 @@ export class AuthService {
 		private readonly groupService: GroupService,
 		private readonly tokenService: JwtTokenService,
 	) {
-		// eslint-disable-next-line immutable/no-mutation
 		this.localUri = `http://${this.coreConfig.domain}${this.coreConfig.port ? `:${this.coreConfig.port}` : ''}`;
 	}
 
@@ -98,7 +97,6 @@ export class AuthService {
 		const verificationKey = this.tokenService.encode(info);
 		// const verified = this.tokenService.validate(verificationKey);
 
-		/* eslint-disable immutable/no-mutation */
 		newUser.groups = [group];
 		newUser.dateJoined = getUtcDate();
 		newUser.verificationKey = verificationKey;

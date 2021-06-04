@@ -9,7 +9,10 @@ import { ILookupState } from './ILookupState';
 export const createLookup: StateCreator<ILookupState> = (set, get, api) => ({
 	store: null,
 	status: ApiCallStatus.Idle,
-	dateFormats: [],
+	dateFormats: null,
+	oAuthProviders: null,
+	authGroups: null,
+	userGroups: null,
 	error: null,
 	orderBy: { id: 'asc' },
 	init(props: IAuthState) {

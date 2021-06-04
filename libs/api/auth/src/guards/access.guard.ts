@@ -2,7 +2,7 @@ import { ExecutionContext, Injectable, Logger } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 
-import { ModuleName, ModuleAction } from '@xapp/shared/enums';
+import { ModuleName, ModuleAction } from '@xapp/shared';
 import { User } from '@xapp/api/users';
 import { AUTH_GUARD_TYPE } from '../constants';
 

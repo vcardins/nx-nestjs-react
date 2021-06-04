@@ -14,9 +14,9 @@ import {
 	IChangePasswordInput,
 	IResetPasswordInput,
 	IForgotPasswordInput,
-	IEndpointsConfig,
 	ISignUpInput,
-} from '@xapp/shared/interfaces';
+} from '@xapp/shared/auth';
+import { IEndpointsConfig } from '@xapp/shared/config';
 
 const init = (set: SetState<IAccountState>) => (props: IAuthState, endpoints: IEndpointsConfig) => {
 	set({ store: new AccountStore(props.authHeader, endpoints) });

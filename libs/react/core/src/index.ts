@@ -51,7 +51,6 @@ export * from './config/PageMeta';
 export * from './context/ThemeContextProvider';
 
 export * from './helpers/routes';
-export * from './helpers/DataContext';
 
 export * from './theme/getTheme';
 

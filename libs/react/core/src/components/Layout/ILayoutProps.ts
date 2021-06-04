@@ -1,5 +1,6 @@
 import React from 'react';
-import { IAppConfig, ISignedUserOutput } from '@xapp/shared/interfaces';
+import { ISignedUserOutput } from '@xapp/shared/auth';
+import { IAppConfig } from '@xapp/shared/config';
 import { IRoute } from '../../interfaces/IRoute';
 
 export interface ILayoutProps {

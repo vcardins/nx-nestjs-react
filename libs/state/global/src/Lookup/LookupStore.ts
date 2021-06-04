@@ -1,5 +1,5 @@
-import { DataContext } from '@xapp/react/core';
-import { ILookup } from '@xapp/shared/interfaces';
+import { ILookup } from '@xapp/shared';
+import { DataContext } from '@xapp/state/shared';
 
 export class LookupStore extends DataContext<ILookup> {
 	constructor(authHeader?: string) {

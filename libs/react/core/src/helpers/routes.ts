@@ -1,4 +1,4 @@
-import { UserGroup } from '@xapp/shared/enums';
+import { UserGroup } from '@xapp/shared/auth';
 
 import { IPageConfig } from '../interfaces/IPageConfig';
 import { IKeyedRoute } from '../interfaces/IRoute';

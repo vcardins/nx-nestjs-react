@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, MaxLength /* Matches*/ } from 'class-validator';
 import { JSONSchema } from 'class-validator-jsonschema';
 
-import { IChangePasswordInput } from '@xapp/shared/interfaces';
+import { IChangePasswordInput } from '@xapp/shared/auth';
 import { Unmatch } from '@xapp/api/core';
 
 @JSONSchema({
@@ -17,6 +17,6 @@ export class ChangePasswordInput implements IChangePasswordInput {
 
 	@MaxLength(128)
 	@ApiProperty()
-	@Unmatch('oldPassword', {message: 'password and confirm password don\'t match'} )
+	@Unmatch('oldPassword', { message: 'password and confirm password don\'t match' } )
 	newPassword: string;
 }

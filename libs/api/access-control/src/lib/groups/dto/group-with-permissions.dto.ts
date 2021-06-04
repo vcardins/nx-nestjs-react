@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { MaxLength } from 'class-validator';
 
-import { IGroupWithPermissions } from '@xapp/shared/interfaces';
+import { IGroupWithPermissions } from '@xapp/shared/auth';
 import { PermissionDto } from '../../permissions/dto/permission.dto';
 
 export class GroupWithPermissionsDto implements IGroupWithPermissions {

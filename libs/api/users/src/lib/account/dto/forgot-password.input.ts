@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, MaxLength } from 'class-validator';
 import { JSONSchema } from 'class-validator-jsonschema';
 
-import { IForgotPasswordInput } from '@xapp/shared/interfaces';
+import { IForgotPasswordInput } from '@xapp/shared/auth';
 
 @JSONSchema({
 	description: 'A forgot password object',

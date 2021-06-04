@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { MaxLength } from 'class-validator';
 
-import { IPermissionOutput } from '@xapp/shared/interfaces';
-import { ModuleName } from '@xapp/shared/enums';
+import { IPermissionOutput } from '@xapp/shared/auth';
+import { ModuleName } from '@xapp/shared';
 
 export class PermissionDto implements IPermissionOutput {
 	@ApiProperty({ type: Number })

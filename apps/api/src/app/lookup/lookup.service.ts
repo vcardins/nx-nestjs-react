@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { DateFormat, OAuthProvider, UserGroup, AuthGroups } from '@xapp/shared/enums';
+import { DateFormat } from '@xapp/shared';
+import { OAuthProvider, UserGroup, AuthGroups } from '@xapp/shared/auth';
 
 import { LookupOutput } from './lookup.output';
 

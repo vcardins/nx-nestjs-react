@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 
-import { ModuleAction, ModuleName } from '@xapp/shared/enums';
+import { ModuleAction, ModuleName } from '@xapp/shared';
 import { ModuleGroup, baseAuthControllerFactory } from '@xapp/api/core';
 
 import { Permission } from './permission.entity';

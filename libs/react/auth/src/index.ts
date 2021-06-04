@@ -1,6 +1,5 @@
 
 export * from './interfaces/IAuthContext';
-export * from './services/AuthService';
 export * from './helpers/routes';
 
 export * from './AuthContextProvider';

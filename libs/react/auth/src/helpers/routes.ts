@@ -1,5 +1,4 @@
-import { UserGroup } from '@xapp/shared/enums';
-import { IGroupWithPermissions } from '@xapp/shared/interfaces';
+import { UserGroup, IGroupWithPermissions } from '@xapp/shared/auth';
 
 export function hasRoutePermission(authArr: UserGroup[], userGroups: IGroupWithPermissions[] = []) {
 	/**

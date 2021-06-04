@@ -4,7 +4,7 @@ import { use } from 'passport';
 import { Strategy, StrategyOptionsWithRequest } from 'passport-google-oauth20';
 import { plainToClass } from 'class-transformer';
 
-import { OAuthProvider } from '@xapp/shared/enums';
+import { OAuthProvider } from '@xapp/shared/auth';
 import { GOOGLE_CONFIG_TOKEN } from '../configs/google.config';
 import { IGoogleConfig } from '../interfaces/google-config.interface';
 import { OauthTokensAccessTokenService } from '../oauth-tokens-access-token.service';

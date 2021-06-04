@@ -1,7 +1,7 @@
 import React, { Context, createContext, ReactNode, useState } from 'react';
 import { IThemeContext } from '../interfaces/IThemeContext';
 import { getTheme } from '../theme/getTheme';
-import { Themes } from '@xapp/shared/enums';
+import { Themes } from '@xapp/shared';
 import { appConfig } from '@xapp/shared/config';
 import { ITheme } from '../interfaces/ITheme';
 

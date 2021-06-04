@@ -1,7 +1,6 @@
-import { DataContext } from '@xapp/react/core';
-
 import { TodoOutput } from './TodoOutput';
 import { TodoInput } from './TodoInput';
+import { DataContext } from '@xapp/state/shared';
 
 export class TodoStore extends DataContext<TodoOutput, TodoInput> {
 	constructor(authHeader?: string) {

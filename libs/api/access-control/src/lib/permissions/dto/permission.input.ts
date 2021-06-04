@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 import { IsOptional, MaxLength } from 'class-validator';
-import { ModuleName } from '@xapp/shared/enums';
+import { ModuleName } from '@xapp/shared';
 
 export class PermissionInput {
 	@IsOptional()

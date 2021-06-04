@@ -1,5 +1,7 @@
-export * from './lib/CustomError';
-export * from './lib/CustomValidationError';
-export * from './lib/FieldValidationError';
-export * from './lib/UnauthorizedError';
-export * from './lib/ValidationError';
+export * from './CustomError';
+export * from './CustomValidationError';
+export * from './FieldValidationError';
+export * from './UnauthorizedError';
+export * from './ValidationError';
+
+export * from './interfaces/IValidationError';

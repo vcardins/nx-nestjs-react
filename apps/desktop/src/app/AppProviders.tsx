@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { AuthContextProvider } from '@xapp/react/auth';
 import { getTheme, IKeyedRoute } from '@xapp/react/core';
 import { appConfig } from '@xapp/shared/config';
-import { Themes } from '@xapp/shared/enums';
+import { Themes } from '@xapp/shared';
 
 import { AppContextProvider, SocketContextProvider } from './context';
 

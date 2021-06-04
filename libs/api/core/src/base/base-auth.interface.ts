@@ -1,4 +1,4 @@
-import { ModuleAction } from '@xapp/shared/enums';
+import { ModuleAction } from '@xapp/shared';
 import { IBaseControllerFactoryOpts } from './base.interface';
 
 type AuthConstraint = {

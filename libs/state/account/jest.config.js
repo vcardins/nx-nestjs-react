@@ -1,5 +1,5 @@
 module.exports = {
-	displayName: 'state-user',
+	displayName: 'state-account',
 	preset: '../../../jest.preset.js',
 	globals: {
 		'ts-jest': {
@@ -10,5 +10,5 @@ module.exports = {
 		'^.+\\.[tj]sx?$': 'ts-jest',
 	},
 	moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-	coverageDirectory: '../../../coverage/libs/state/user',
+	coverageDirectory: '../../../coverage/libs/state/account',
 };

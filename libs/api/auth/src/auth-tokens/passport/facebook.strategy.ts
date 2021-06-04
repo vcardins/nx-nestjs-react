@@ -3,7 +3,7 @@ import { plainToClass } from 'class-transformer';
 import { use } from 'passport';
 import FacebookTokenStrategy from 'passport-facebook-token';
 
-import { OAuthProvider } from '@xapp/shared/enums';
+import { OAuthProvider } from '@xapp/shared/auth';
 
 import { FACEBOOK_CONFIG_TOKEN } from '../configs/facebook.config';
 import { IFacebookConfig } from '../interfaces/facebook-config.interface';

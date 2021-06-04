@@ -2,7 +2,7 @@ import React, { memo, useContext, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Form, TextInput, FieldGroup, Submit, PageKey, useForm } from '@xapp/react/core';
-import { IForgotPasswordInput } from '@xapp/shared/interfaces';
+import { IForgotPasswordInput } from '@xapp/shared/auth';
 
 import { validationSchema } from './schema';
 import { appContext } from '../../../context';

@@ -10,7 +10,7 @@ import { IRoute, IKeyedRoute, PageKey } from '@xapp/react/core';
 import { useAuth } from './AuthContextProvider';
 import { hasRoutePermission } from './helpers/routes';
 import { IAuthContext } from './interfaces/IAuthContext';
-import { IAppConfig } from '@xapp/shared/interfaces';
+import { IAppConfig } from '@xapp/shared/config';
 import { RouteObject } from 'react-router';
 
 interface IAuthorizationProps {

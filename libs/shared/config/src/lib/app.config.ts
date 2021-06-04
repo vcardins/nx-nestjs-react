@@ -1,7 +1,7 @@
-import { IRouteUriConfig, IAppConfig } from '@xapp/shared/interfaces';
-import { Themes } from '@xapp/shared/enums';
 import { endpoints } from './endpoints.config';
 import { apiMeta } from './api-meta.config';
+import { IAppConfig, IRouteUriConfig } from '..';
+import { Themes } from '@xapp/shared';
 
 import { name, title, description, version } from '../../../../../package.json';
 

@@ -1,6 +1,6 @@
 import { RouteObject } from 'react-router';
 
-import { UserGroup } from '@xapp/shared/enums';
+import { UserGroup } from '@xapp/shared/auth';
 import { IPageLayout } from '../interfaces/IPageLayout';
 import { IPageMeta } from '../interfaces/IPageMeta';
 

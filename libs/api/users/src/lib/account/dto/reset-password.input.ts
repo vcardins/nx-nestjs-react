@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, MaxLength /* Matches*/ } from 'class-validator';
 import { JSONSchema } from 'class-validator-jsonschema';
 
-import { IResetPasswordInput } from '@xapp/shared/interfaces';
+import { IResetPasswordInput } from '@xapp/shared/auth';
 import { Match } from '@xapp/api/core';
 
 import { BasePasswordInput } from './base-password.input';
@@ -18,6 +18,6 @@ export class ResetPasswordInput extends BasePasswordInput implements IResetPassw
 
 	@MaxLength(128)
 	@ApiProperty()
-	@Match('oldPassword', {message: 'password and confirm password don\'t match'} )
+	@Match('oldPassword', { message: 'password and confirm password don\'t match' } )
 	confirmPassword: string;
 }

@@ -10,10 +10,10 @@ import {
 	IChangePasswordInput,
 	IResetPasswordInput,
 	IForgotPasswordInput,
-	IEndpointsConfig,
 	ISignUpInput,
-	IActionResponse,
-} from '@xapp/shared/interfaces';
+} from '@xapp/shared/auth';
+import { IActionResponse } from '@xapp/shared';
+import { IEndpointsConfig } from '@xapp/shared/config';
 
 export interface IAccountStateValues {
 	userInfo?: ISignedUserOutput;

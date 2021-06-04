@@ -12,7 +12,7 @@ export interface ISelectField<T extends KeyType> extends IHtmlField {
 	keyValueProps?: Record<string, T>;
 }
 
-function getOptions<T extends KeyType> (items: T[] = [], keyValueProps: Record<string, T>) {
+function getOptions<T extends KeyType> (keyValueProps: Record<string, T>, items: T[] = []) {
 	if (!keyValueProps) {
 		throw new Error('keyValueProps is required for select components');
 	}
@@ -36,7 +36,7 @@ function getOptions<T extends KeyType> (items: T[] = [], keyValueProps: Record<s
 
 export function Select<T extends KeyType> (props: ISelectField<T>) {
 	const { id, name, label, value, items = [], keyValueProps } = props;
-	const options = getOptions(items, keyValueProps);
+	const options = getOptions(keyValueProps, items);
 	const selectElement = (
 		<StyledSelect
 			id={id || name}

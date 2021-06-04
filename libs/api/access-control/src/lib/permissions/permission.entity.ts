@@ -9,7 +9,7 @@ import {
 	ManyToMany,
 } from 'typeorm';
 import { BaseEntity } from '@xapp/api/core';
-import { ModuleAction, ModuleName } from '@xapp/shared/enums';
+import { ModuleAction, ModuleName } from '@xapp/shared';
 
 import { Group } from '../groups/group.entity';
 

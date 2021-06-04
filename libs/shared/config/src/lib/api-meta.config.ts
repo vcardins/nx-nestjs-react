@@ -1,4 +1,4 @@
-import { IAppConfig } from '@xapp/shared/interfaces';
+import { IAppConfig } from '..';
 
 const CODE = 'app';
 const {

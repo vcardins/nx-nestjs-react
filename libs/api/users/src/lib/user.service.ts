@@ -236,7 +236,7 @@ export class UserService extends BaseService<User> {
 			username, email,
 			groups: groups.map((group) => ({
 				...group,
-				permissions: group.permissions.map(({action, module}) => ({
+				permissions: group.permissions.map(({ action, module }) => ({
 					action,
 					module,
 				})),

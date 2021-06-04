@@ -2,7 +2,7 @@ import { IsNotEmpty, MaxLength } from 'class-validator';
 import { BeforeInsert, BeforeUpdate, Column, Entity, JoinTable, ManyToMany } from 'typeorm';
 
 import { BaseEntity } from '@xapp/api/core';
-import { UserGroup } from '@xapp/shared/enums';
+import { UserGroup } from '@xapp/shared/auth';
 
 import { User } from '@xapp/api/users';
 import { Permission } from '../permissions/permission.entity';

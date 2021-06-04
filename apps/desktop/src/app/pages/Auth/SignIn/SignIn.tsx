@@ -4,8 +4,8 @@ import { Link/*, useLocation*/ } from 'react-router-dom';
 import { FieldGroup, Form, TextInput, Button, Submit, PageKey, useForm } from '@xapp/react/core';
 import { useAuth } from '@xapp/react/auth';
 
-import { OAuthProvider } from '@xapp/shared/enums';
-import { ISignInInput } from '@xapp/shared/interfaces';
+import { OAuthProvider } from '@xapp/shared/auth';
+import { ISignInInput } from '@xapp/shared/auth';
 
 import { validationSchema } from './schema';
 import { appContext } from '../../../context';

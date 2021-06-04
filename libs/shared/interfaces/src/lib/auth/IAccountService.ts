@@ -14,7 +14,7 @@ import {
 
 export interface IAccountService {
 	updateProfile(data: IUserProfileInput): Promise<IUserProfile>;
-	signUp(data: ISignUpInput): Promise<IActionResponse<IUserProfile>>;
+	signUp(data: ISignUpInput): Promise<IActionResponse>;
 	getUserProfile(): Promise<IUserProfile>;
 	verifyEmail(data: IVerifyEmailInput): Promise<IActionResponse>;
 	verifyPhoneNumber(data: IVerifyPhoneNumberInput): Promise<IActionResponse>;

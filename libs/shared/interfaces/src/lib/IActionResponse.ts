@@ -1,8 +1,5 @@
-import { IValidationError } from './IValidationError';
-
-export interface IActionResponse<T = any> {
+export interface IActionResponse {
 	redirect?: string;
 	message?: string;
-	errors?: IValidationError;
-	data?: T | null;
+	data?: any;
 }

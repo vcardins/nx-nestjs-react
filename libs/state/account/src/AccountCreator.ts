@@ -1,14 +1,12 @@
-import { StateCreator, UseStore } from 'zustand';
+import { GetState, SetState, StateCreator, UseStore } from 'zustand';
 
-import { IAuthState, ApiCallStatus, createStore } from '@xapp/state/shared';
+import { IAuthState, ApiCallStatus, createStore, setError, setLoading, setSuccess } from '@xapp/state/shared';
 
 import { AccountStore } from './AccountStore';
 import { IAccountState } from './IAccountState';
 import {
 	IUserProfileInput,
 	ISignedUserOutput,
-	IUserProfile,
-	IActionResponse,
 	IVerifyEmailInput,
 	IVerifyPhoneNumberInput,
 	ISignInInput,
@@ -20,211 +18,232 @@ import {
 	ISignUpInput,
 } from '@xapp/shared/interfaces';
 
-export const createAccount: StateCreator<IAccountState> = (set, get, api) => ({
+const init = (set: SetState<IAccountState>) => (props: IAuthState, endpoints: IEndpointsConfig) => {
+	set({ store: new AccountStore(props.authHeader, endpoints) });
+};
+
+const getUserProfile = (set: SetState<IAccountState>, get: GetState<IAccountState>) => async (): Promise<ISignedUserOutput> => {
+	const { status, store } = get();
+
+	if (status === ApiCallStatus.Loading) {
+		return;
+	}
+
+	setLoading(set);
+
+	try {
+		const userInfo = await store.getUserProfile();
+
+		setSuccess(set)({ userInfo })
+
+		return userInfo;
+	} catch (error) {
+		setError(set)(error);
+	}
+};
+
+const signUp = (set: SetState<IAccountState>, get: GetState<IAccountState>) => async (data: ISignUpInput): Promise<void> => {
+	const { status, store, userInfo } = get();
+
+	if (status === ApiCallStatus.Loading) {
+		return;
+	}
+
+	setLoading(set);
+
+	try {
+		const profile = await store.signUp(data);
+
+		setSuccess(set)({ userInfo: { ...userInfo, profile } })
+	} catch (error) {
+		setError(set)(error);
+	}
+};
+
+const verifyEmail = (set: SetState<IAccountState>, get: GetState<IAccountState>) => async (data: IVerifyEmailInput): Promise<void> => {
+	const { status, store } = get();
+
+	if (status === ApiCallStatus.Loading) {
+		return;
+	}
+
+	setLoading(set);
+
+	try {
+		const response = await store.verifyEmail(data);
+
+		setSuccess(set)({ response });
+	} catch (error) {
+		setError(set)(error);
+	}
+};
+
+const verifyPhoneNumber = (set: SetState<IAccountState>, get: GetState<IAccountState>) => async (data: IVerifyPhoneNumberInput): Promise<void> => {
+	const { status, store } = get();
+
+	if (status === ApiCallStatus.Loading) {
+		return;
+	}
+
+	setLoading(set);
+
+	try {
+		const response = await store.verifyPhoneNumber(data);
+
+		setSuccess(set)({ response });
+	} catch (error) {
+		setError(set)(error);
+	}
+};
+
+const forgotPassword = (set: SetState<IAccountState>, get: GetState<IAccountState>) => async (data: IForgotPasswordInput): Promise<void> => {
+	const { status, store } = get();
+
+	if (status === ApiCallStatus.Loading) {
+		return;
+	}
+
+	setLoading(set);
+
+	try {
+		const response = await store.forgotPassword(data);
+
+		setSuccess(set)({ response });
+	} catch (error) {
+		setError(set)(error);
+	}
+};
+
+const updateProfile = (set: SetState<IAccountState>, get: GetState<IAccountState>) => async (data: IUserProfileInput): Promise<void> => {
+	const { status, store, userInfo } = get();
+
+	if (status === ApiCallStatus.Loading) {
+		return;
+	}
+
+	setLoading(set);
+
+	try {
+		const profile = await store.updateProfile(data);
+
+		set({
+			status: ApiCallStatus.Success,
+			userInfo: { ...userInfo, profile },
+			error: null,
+		});
+	} catch (error) {
+		setError(set)(error);
+	}
+};
+
+const closeAccount = (set: SetState<IAccountState>, get: GetState<IAccountState>) => async (): Promise<void> => {
+	const { status, store } = get();
+
+	if (status === ApiCallStatus.Loading) {
+		return;
+	}
+
+	setLoading(set);
+
+	try {
+		const response = await store.closeAccount();
+
+		setSuccess(set)({ response });
+	} catch (error) {
+		setError(set)(error);
+	}
+};
+
+const reopenAccount = (set: SetState<IAccountState>, get: GetState<IAccountState>) => async (data: ISignInInput): Promise<void> => {
+	const { status, store } = get();
+
+	if (status === ApiCallStatus.Loading) {
+		return;
+	}
+
+	setLoading(set);
+
+	try {
+		const response = await store.reopenAccount(data);
+
+		setSuccess(set)({ response });
+	} catch (error) {
+		setError(set)(error);
+	}
+};
+
+const changePhoneNumber = (set: SetState<IAccountState>, get: GetState<IAccountState>) => async (data: IChangePhoneNumberInput): Promise<void> => {
+	const { status, store } = get();
+
+	if (status === ApiCallStatus.Loading) {
+		return;
+	}
+
+	setLoading(set);
+
+	try {
+		const response = await store.changePhoneNumber(data);
+
+		setSuccess(set)({ response });
+	} catch (error) {
+		setError(set)(error);
+	}
+};
+
+const changePassword = (set: SetState<IAccountState>, get: GetState<IAccountState>) => async (data: IChangePasswordInput): Promise<void> => {
+	const { status, store } = get();
+
+	if (status === ApiCallStatus.Loading) {
+		return;
+	}
+
+	setLoading(set);
+
+	try {
+		const response = await store.changePassword(data);
+
+		setSuccess(set)({ response });
+	} catch (error) {
+		setError(set)(error);
+	}
+};
+
+const resetPassword = (set: SetState<IAccountState>, get: GetState<IAccountState>) => async (data: IResetPasswordInput): Promise<void> => {
+	const { status, store } = get();
+
+	if (status === ApiCallStatus.Loading) {
+		return;
+	}
+
+	setLoading(set);
+
+	try {
+		const response = await store.resetPassword(data);
+
+		setSuccess(set)({ response });
+	} catch (error) {
+		setError(set)(error);
+	}
+};
+
+export const createAccount: StateCreator<IAccountState> = (set, get) => ({
 	store: null,
 	status: ApiCallStatus.Idle,
 	userInfo: null,
 	error: null,
 	orderBy: { id: 'asc' },
-	init: (props: IAuthState, endpoints: IEndpointsConfig) => {
-		set({ store: new AccountStore(props.authHeader, endpoints) });
-	},
-	signUp(data: ISignUpInput): Promise<IUserProfile> {
-		console.log(data);
-		return null;
-	},
-	verifyEmail(data: IVerifyEmailInput): Promise<IActionResponse> {
-		console.log(data);
-		return null;
-	},
-	verifyPhoneNumber(data: IVerifyPhoneNumberInput): Promise<IActionResponse> {
-		console.log(data);
-		return null;
-	},
-	forgotPassword(data: IForgotPasswordInput): Promise<IActionResponse> {
-		console.log(data);
-		return null;
-	},
-	async updateProfile(data: IUserProfileInput): Promise<void> {
-		const { status, store, userInfo } = get();
-
-		if (status === ApiCallStatus.Loading) {
-			return;
-		}
-
-		set({ status: ApiCallStatus.Loading });
-
-		try {
-			const profile = await store.updateProfile(data);
-
-			set({
-				status: ApiCallStatus.Success,
-				userInfo: { ...userInfo, profile },
-				error: null,
-			});
-		} catch (error) {
-			set({
-				status: ApiCallStatus.Error,
-				error,
-			});
-		}
-	},
-	async getUserProfile(): Promise<ISignedUserOutput> {
-		const { status, store } = get();
-
-		if (status === ApiCallStatus.Loading) {
-			return;
-		}
-
-		set({ status: ApiCallStatus.Loading });
-
-		try {
-			const userInfo = await store.getUserProfile();
-
-			set({
-				status: ApiCallStatus.Success,
-				userInfo,
-				error: null,
-			});
-
-			return userInfo;
-		} catch (error) {
-			set({
-				status: ApiCallStatus.Error,
-				userInfo: null,
-				error,
-			});
-		}
-	},
-	closeAccount(): Promise<IActionResponse> {
-		return null;
-	},
-	reopenAccount(data: ISignInInput): Promise<IActionResponse> {
-		console.log(data);
-		return null;
-	},
-	changePhoneNumber(data: IChangePhoneNumberInput): Promise<IActionResponse> {
-		console.log(data);
-		return null;
-	},
-	changePassword(data: IChangePasswordInput): Promise<IActionResponse> {
-		console.log(data);
-		return null;
-	},
-	resetPassword(data: IResetPasswordInput): Promise<IActionResponse> {
-		console.log(data);
-		return null;
-	},
-	// async read(filters?: IAccountState['filters']) {
-	// 	const { status, store } = get();
-
-	// 	if (status === ApiCallStatus.Loading) {
-	// 		return;
-	// 	}
-
-	// 	set({ status: ApiCallStatus.Loading });
-
-	// 	try {
-	// 		const items = await store.readAll(filters);
-
-	// 		set({
-	// 			status: ApiCallStatus.Success,
-	// 			items,
-	// 			error: null,
-	// 		});
-	// 	} catch (error) {
-	// 		set({
-	// 			status: ApiCallStatus.Error,
-	// 			items: [],
-	// 			error,
-	// 		});
-	// 	}
-	// },
-	// async save(data: AccountInput, id?: number) {
-	// 	const { store, status, items } = get();
-
-	// 	if (status === ApiCallStatus.Loading) {
-	// 		return;
-	// 	}
-
-	// 	set({ status: ApiCallStatus.Loading });
-
-	// 	try {
-	// 		const isNew = !id;
-	// 		const item = isNew
-	// 			? await store.create({ data })
-	// 			: await store.update({ data: { id, ...data } });
-
-	// 		const index = items.findIndex(({ id }) => id === item.id);
-
-	// 		set((state) => void (
-	// 			index === -1 ? (state.items = [item, ...items]) : (state.items[index] = item),
-	// 			(state.status = ApiCallStatus.Success),
-	// 			(state.error = null)
-	// 		));
-	// 	} catch (error) {
-	// 		set({
-	// 			status: ApiCallStatus.Error,
-	// 			error,
-	// 		});
-	// 	}
-	// },
-	// async remove(id: number) {
-	// 	const { store, status, items } = get();
-
-	// 	if (status === ApiCallStatus.Loading) {
-	// 		return;
-	// 	}
-
-	// 	set({ status: ApiCallStatus.Loading });
-
-	// 	try {
-	// 		await store.delete(id);
-
-	// 		set({
-	// 			status: ApiCallStatus.Success,
-	// 			items: items.filter((item) => item.id !== id),
-	// 			error: null,
-	// 		});
-	// 	} catch (error) {
-	// 		set({
-	// 			status: ApiCallStatus.Error,
-	// 			error,
-	// 		});
-	// 	}
-	// },
-	// async setComplete(todo: AccountOutput) {
-	// 	const { store, status, items } = get();
-
-	// 	if (status === ApiCallStatus.Loading) {
-	// 		return;
-	// 	}
-
-	// 	set({ status: ApiCallStatus.Loading });
-
-	// 	try {
-	// 		const response = await store.complete(todo.id, !!todo.dateCompleted);
-	// 		const index = items.findIndex(({ id }) => id === response.id);
-
-	// 		set((state) => void (
-	// 			(state.items[index] = response),
-	// 			(state.status = ApiCallStatus.Success),
-	// 			(state.error = null)
-	// 		));
-	// 	} catch (error) {
-	// 		set({
-	// 			status: ApiCallStatus.Error,
-	// 			error,
-	// 		});
-	// 	}
-	// },
-	// reset() {
-	// 	set({
-	// 		status: ApiCallStatus.Idle,
-	// 		items: [],
-	// 		error: null,
-	// 	});
-	// },
+	init: init(set),
+	signUp: signUp(set, get),
+	verifyEmail: verifyEmail(set, get),
+	verifyPhoneNumber: verifyPhoneNumber(set, get),
+	forgotPassword: forgotPassword(set, get),
+	updateProfile: updateProfile(set, get),
+	getUserProfile: getUserProfile(set, get),
+	closeAccount: closeAccount(set, get),
+	reopenAccount: reopenAccount(set, get),
+	changePhoneNumber: changePhoneNumber(set, get),
+	changePassword: changePassword(set, get),
+	resetPassword: resetPassword(set, get),
 });
 
 export const useAccountState: UseStore<ReturnType<typeof createAccount>> =

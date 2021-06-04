@@ -1,15 +1,23 @@
+import { SetState } from 'zustand';
 import { ApiCallStatus, IApiCallState } from '.';
 
-export const getSuccess = <T = any>(props: T & { items: T[] }): T & IApiCallState => ({
-	status: ApiCallStatus.Success,
-	error: null,
-	...props
-})
+export const setLoading = <TState extends IApiCallState>(set: SetState<TState>) => () => {
+	set({
+		status: ApiCallStatus.Loading,
+	});
+}
 
-export const getFailed = <T = any>(error: IApiCallState['error'], rest: T): T & IApiCallState => ({
-	status: ApiCallStatus.Error,
-	error,
-	...rest,
-})
+export const setError = <TState extends IApiCallState>(set: SetState<TState>) => (error: Error) => {
+	set({
+		status: ApiCallStatus.Error,
+		error,
+	});
+}
 
-export const getLoading = () => ({ status: ApiCallStatus.Loading });
+export const setSuccess = <TState extends IApiCallState, TValues = any>(set: SetState<TState>) => (props: TValues) => {
+	set({
+		status: ApiCallStatus.Success,
+		error: null,
+		...props
+	});
+}

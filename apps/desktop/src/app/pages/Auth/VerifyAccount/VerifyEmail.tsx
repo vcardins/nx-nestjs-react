@@ -3,7 +3,7 @@ import { parse } from 'query-string';
 import { useStore } from '@xapp/state';
 
 const VerifyEmailPage = memo(() => {
-	const { verifyEmail } = useStore((state) => state.account);
+	const store = useStore((state) => state.account);
 
 	const [submitting, setSubmitting] = useState(false);
 	const [, setSuccess] = useState(false);
@@ -12,10 +12,10 @@ const VerifyEmailPage = memo(() => {
 	useEffect(() => {
 		const handleVerifyEmail = async (key: string) => {
 			try {
-				const response = await verifyEmail({ key });
+				await store.verifyEmail({ key });
 
-				if (response.message) {
-					setMessage(response.message);
+				if (store.response.message) {
+					setMessage(store.response.message);
 				}
 				setSuccess(true);
 			}
@@ -35,7 +35,7 @@ const VerifyEmailPage = memo(() => {
 		if (key) {
 			handleVerifyEmail(key as string);
 		}
-	}, [verifyEmail]);
+	}, [store.verifyEmail]);
 
 	if (submitting) {
 		return (

@@ -170,13 +170,13 @@ class AuthService extends EventEmitter {
 		}
 	});
 
-	signOut(message?: any): Promise<IActionResponse<any>> {
+	signOut(message?: any): Promise<IActionResponse> {
 		return new Promise((resolve) => {
 			this.setSession(null);
 			resolve({
 				redirect: routes.signIn,
 				message: message || 'User successfully logged out',
-			} as IActionResponse<any>);
+			} as IActionResponse);
 		});
 	}
 }

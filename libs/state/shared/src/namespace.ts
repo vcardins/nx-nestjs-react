@@ -1,8 +1,9 @@
+/* eslint-disable no-param-reassign */
 import { State as ZustandState, StateCreator, SetState, GetState, StoreApi, Subscribe } from 'zustand';
 
 export function namespace<K extends string, T extends ZustandState>(
 	key: K,
-	creator: StateCreator<T>
+	creator: StateCreator<T>,
 ): (liftedSet: SetState<any>, liftedGet: GetState<any>, liftedApi: StoreApi<any>) => T {
 	return (liftedSet: SetState<any>, liftedGet: GetState<any>, liftedApi: StoreApi<any>) => {
 		const setState: any = (updates: any, replace?: boolean) => {
@@ -26,9 +27,8 @@ export function namespace<K extends string, T extends ZustandState>(
 		const subscribe = ((listener: any, selector: any, equalityFn?: any) => {
 			if (selector) {
 				return liftedApi.subscribe(listener, (state: any) => selector(state[key]), equalityFn);
-			} else {
-				return liftedApi.subscribe(listener, (state: any) => state[key]);
 			}
+			return liftedApi.subscribe(listener, (state: any) => state[key]);
 		}) as Subscribe<T>;
 		const destroy = () => {
 			// todo?

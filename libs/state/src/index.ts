@@ -3,9 +3,9 @@ import {  UseStore } from 'zustand';
 import { createStore, namespace, Namespaces, IAuthState } from '@xapp/state/shared';
 
 import { createTodo }  from '@xapp/state/todo';
-import { createApiCall, createCounter, createForm } from '../samples/src';
-import { createLookup } from '../global/src';
-import { createAccount } from '../account/src';
+import { createApiCall, createCounter, createForm } from '@xapp/state/samples';
+import { createLookup } from '@xapp/state/global';
+import { createAccount } from '@xapp/state/account';
 import { IEndpointsConfig } from '@xapp/shared/interfaces';
 
 export type AppState = {
@@ -28,7 +28,7 @@ export const useStore: UseStore<AppState> = createStore((set, get, api) => {
 	const account = namespace(Namespaces.Account, createAccount)(set, get, api);
 
 	const setAuthInfo = (props: IAuthState, endpoints: IEndpointsConfig) => {
-		todo.init(props)
+		todo.init(props);
 		lookup.init(props);
 		account.init(props, endpoints);
 	};

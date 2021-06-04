@@ -16,6 +16,7 @@ interface IFormState {
 
 // Woof on theses types.
 // TODO fix these types
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createForm: StateCreator<IFormState> = (set, get, api) => ({
 	data: {},
 	isReady: {},

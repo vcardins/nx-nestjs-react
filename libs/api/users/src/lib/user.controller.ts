@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 
-import { ModuleAction, ModuleName } from '@xapp/shared';
+import { ModuleAction, ModuleName } from '@xapp/shared/types';
 
 import { ModuleGroup, baseAuthControllerFactory } from '@xapp/api/core';
 import { UserService } from './user.service';

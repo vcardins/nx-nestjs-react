@@ -1,6 +1,6 @@
+import { IHtmlField } from '@xapp/shared/types';
 import React from 'react';
 
-import { IHtmlField } from '../../../interfaces/IHtmlField';
 import { FieldSet } from '../FieldSet';
 import { StyledInput } from './styles';
 

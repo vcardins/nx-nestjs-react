@@ -1,9 +1,9 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
-import { IPageConfig, LayoutStyles, PageKey } from '@xapp/react/core';
+import { IPageConfig, AuthGroups, LayoutStyles, PageKey } from '@xapp/shared/types';
 import { appConfig } from '@xapp/shared/config';
-import { AuthGroups } from '@xapp/shared/auth';
+
 
 import { AdminPageConfig } from './Admin/@config';
 import { DashboardPageConfig } from './Dashboard/@config';

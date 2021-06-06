@@ -1,17 +1,15 @@
 import React, { useEffect, useCallback } from 'react';
-import { Location } from 'history';
 
-import { useNavigate, useLocation, matchRoutes } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
-import { appConfig } from '@xapp/shared/config';
-import { IRoute, IKeyedRoute, PageKey } from '@xapp/react/core';
-
-import { useAuth } from './AuthContextProvider';
-import { hasRoutePermission } from './helpers/routes';
-import { IAuthContext } from './interfaces/IAuthContext';
-import { IAppConfig } from '@xapp/shared/config';
+import { Location } from 'history';
 import { RouteObject } from 'react-router';
+import { useNavigate, useLocation, matchRoutes } from 'react-router-dom';
+
+import { appConfig, IAppConfig } from '@xapp/shared/config';
+import { hasRoutePermission } from '@xapp/shared/auth';
+import { IRoute, IKeyedRoute, PageKey } from '@xapp/shared/types';
+
+import { IAuthContext, useAuth } from './AuthContextProvider';
 
 interface IAuthorizationProps {
 	children: (authContext: IAuthContext, config: IAppConfig) => React.ReactElement;

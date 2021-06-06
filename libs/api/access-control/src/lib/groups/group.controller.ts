@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 
 import { SocketGateway, ModuleGroup, baseAuthControllerFactory } from '@xapp/api/core';
-import { ModuleAction, ModuleName } from '@xapp/shared';
+import { ModuleAction, ModuleName } from '@xapp/shared/types';
 import { GroupService } from './group.service';
 import { Group } from './group.entity';
 import { GroupOutput } from './dto/group.output';
@@ -35,7 +35,7 @@ export class GroupController extends BaseController {
 }
 
 // import { IdType } from '../base/base.type';
-// import { Events } from '@xapp/shared';
+// import { Events } from '@xapp/shared/types';
 
 //afterDelete(id: IdType, data: any): Promise<void> {
 // 	this.emit(Events.Read);

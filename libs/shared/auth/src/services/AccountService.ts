@@ -1,3 +1,6 @@
+import { RestClient } from '@xapp/shared/utils';
+import { appConfig } from '@xapp/shared/config';
+import { IActionResponse } from '@xapp/shared/types';
 import {
 	IUserProfile,
 	IUserProfileInput,
@@ -11,9 +14,6 @@ import {
 	IVerifyPhoneNumberInput,
 	IAccountService,
 } from '../interfaces';
-import { appConfig } from '@xapp/shared/config';
-import { RestClient } from '@xapp/shared/services';
-import { IActionResponse } from '@xapp/shared';
 
 const { endpoints, routes } = appConfig;
 const api = new RestClient();

@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 
 import { validationSchema } from './schema';
 
-import { Form, TextInput, FieldGroup, Submit, PageKey, useForm } from '@xapp/react/core';
+import { Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react/core';
 import { ISignUpInput } from '@xapp/shared/auth';
+import { useStore } from '@xapp/state';
 
 import { appContext } from '../../../context';
-import { useStore } from '@xapp/state';
+import { PageKey } from '@xapp/shared/types';
 
 const initialValues: ISignUpInput = {
 	username: '',

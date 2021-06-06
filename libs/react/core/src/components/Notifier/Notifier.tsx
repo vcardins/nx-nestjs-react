@@ -10,8 +10,6 @@ import { Icon } from '../../components/Icon';
  * Notifier class
  */
 export class Notifier implements INotifier {
-	constructor() {}
-
 	/**
 	 * Report message
 	 * @param message Message
@@ -32,6 +30,8 @@ export class Notifier implements INotifier {
 			draggable: true,
 			progress: undefined,
 		});
+
+		callback?.();
 	}
 
 	/**
@@ -66,9 +66,13 @@ export class Notifier implements INotifier {
 				progress: undefined,
 			},
 		);
+
+		onClose?.();
 	}
 
 	public showLoading(show = true) {
-		throw Error('Not yet implemented');
+		if (show) {
+			toast.info('Loading ...');
+		}
 	}
 }

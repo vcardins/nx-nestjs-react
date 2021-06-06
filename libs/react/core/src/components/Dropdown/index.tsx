@@ -1,8 +1,8 @@
+/* eslint-disable react/display-name */
 import React, { useState, useRef } from 'react';
 
-import { IDropdownItem } from '../../interfaces/IDropdownItem';
+import { DropdownItemTypes, IDropdownItem } from '@xapp/shared/types';
 import { useOuterClickNotifier } from '../../hooks/useOuterClickNotifier';
-import { DropdownItemTypes } from '../../enums/DropdownItemTypes';
 import { DropdownSizeStyle } from './DropdownSizeStyle';
 import {
 	DropdownContainer,
@@ -15,6 +15,7 @@ import {
 	LabelWrapper,
 } from './styles';
 import { Icon } from '../../components/Icon';
+
 
 interface IDropdownListProps {
 	selectedItem?: string;

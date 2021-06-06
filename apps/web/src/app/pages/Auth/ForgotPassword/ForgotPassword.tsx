@@ -1,12 +1,13 @@
 import React, { memo, useContext, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Form, TextInput, FieldGroup, Submit, PageKey, useForm } from '@xapp/react/core';
+import { Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react/core';
 import { IForgotPasswordInput } from '@xapp/shared/auth';
+import { useStore } from '@xapp/state';
+import { PageKey } from '@xapp/shared/types';
 
 import { validationSchema } from './schema';
 import { appContext } from '../../../context';
-import { useStore } from '@xapp/state';
 
 const initialValues: IForgotPasswordInput = {
 	email: '',

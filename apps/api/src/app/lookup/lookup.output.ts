@@ -1,4 +1,4 @@
-import { ILookup } from '@xapp/shared';
+import { ILookup } from '@xapp/shared/types';
 
 export class LookupOutput implements ILookup {
 	dateFormats: Record<string, string>;

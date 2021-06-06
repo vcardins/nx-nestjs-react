@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { IPageConfig, LayoutStyles, PageKey } from '@xapp/react/core';
+import { AuthGroups, IPageConfig, LayoutStyles, PageKey } from '@xapp/shared/types';
 import { appConfig } from '@xapp/shared/config';
-import { AuthGroups } from '@xapp/shared/auth';
+
 
 import ChangePassword from './ChangePassword';
 // const element = React.lazy(() => import('./ChangePassword'));

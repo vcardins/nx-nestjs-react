@@ -1,7 +1,19 @@
 import React, { useState, useMemo, useCallback, useContext } from 'react';
 
-import { ISignInInput, AuthService } from '@xapp/shared/auth';
-import { IAuthContext } from './interfaces/IAuthContext';
+import { ISignInInput, AuthService, ISignedUserOutput } from '@xapp/shared/auth';
+import { IActionResponse } from '@xapp/shared/types';
+
+export interface IAuthContext {
+	accessToken: string | null;
+	user: ISignedUserOutput | null;
+	authHeader: string;
+	// eslint-disable-next-line camelcase
+	getProviderUri: (providerKey: string) => Promise<{ redirect_uri: string }>;
+	getOauthAccessToken?: (providerKey: string, code: string) => Promise<{token: string}>;
+	onSignIn: (props: ISignInInput) => Promise<ISignedUserOutput> | Promise<IActionResponse>;
+	onSignOut: (isTriggeredByExpiredSession?: boolean) => Promise<void>;
+	isSessionValid: () => boolean;
+}
 
 const initialContext: IAuthContext = {
 	accessToken: null,

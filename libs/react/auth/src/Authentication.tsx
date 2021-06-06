@@ -1,6 +1,6 @@
-import { AuthService } from '@xapp/shared/auth';
 import React, { useState, useEffect } from 'react';
 
+import { AuthService } from '@xapp/shared/auth';
 import { useAuth } from './AuthContextProvider';
 
 interface IProps {

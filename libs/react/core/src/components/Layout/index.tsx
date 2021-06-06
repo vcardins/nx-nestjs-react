@@ -4,9 +4,9 @@ import { useRoutes, useLocation, matchRoutes } from 'react-router-dom';
 
 import { ISignedUserOutput } from '@xapp/shared/auth';
 import { IAppConfig } from '@xapp/shared/config';
+import { IKeyedRoute, IRoute } from '@xapp/shared/types';
 
 import { Layouts } from './layouts';
-import { IKeyedRoute, IRoute } from '../../interfaces/IRoute';
 
 interface ILayoutProps {
 	routes: IKeyedRoute;

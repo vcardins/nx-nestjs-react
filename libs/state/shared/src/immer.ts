@@ -1,4 +1,4 @@
 import produce from 'immer';
 
-export const immer = (config: any) => (set, get) =>
+export const useImmer = (config: any) => (set, get) =>
 	config((fn: any) => set(produce(fn)), get);

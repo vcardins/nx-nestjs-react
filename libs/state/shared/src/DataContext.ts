@@ -1,4 +1,4 @@
-import { RestClient, RestMethod, IRestClientPayload } from '@xapp/shared/services';
+import { RestClient, RestMethod, IRestClientPayload } from '@xapp/shared/api';
 // import { INotifier, Notifier } from '../components/Notifier';
 
 export interface IDataContextProps {

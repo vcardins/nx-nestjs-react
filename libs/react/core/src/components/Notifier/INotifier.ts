@@ -2,7 +2,7 @@
  * Notifier callback function
  */
 export interface INotifierCallback {
-	(ok: boolean): void;
+	(ok?: boolean): void;
 }
 
 /**

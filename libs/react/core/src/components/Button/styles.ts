@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { ITheme } from '../../interfaces/ITheme';
+import { ITheme } from '@xapp/shared/types';
+
 import { IButtonProps } from './IButtonProps';
 
 export const StyledButton = styled.button<IButtonProps>`

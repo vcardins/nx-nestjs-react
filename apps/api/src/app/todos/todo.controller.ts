@@ -4,7 +4,7 @@ import { Entity } from 'typeorm';
 
 import { SocketGateway, baseAuthControllerFactory, ModuleGroup, getUtcDate, Roles, Permissions, ApiException, SortDirection } from '@xapp/api/core';
 import { getOperationId } from '@xapp/shared/utils';
-import { ModuleAction, ModuleName } from '@xapp/shared';
+import { ModuleAction, ModuleName } from '@xapp/shared/types';
 
 import { TodoService } from './todo.service';
 import { Todo } from './todo.entity';

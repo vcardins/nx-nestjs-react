@@ -2,7 +2,7 @@ import React from 'react';
 
 import { StyledCheckbox } from './styles';
 import { FieldSet } from '../FieldSet';
-import { IHtmlField } from '../../../interfaces/IHtmlField';
+import { IHtmlField } from '@xapp/shared/types';
 
 interface ICheckbox extends IHtmlField {}
 

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { StyledSelect } from './styles';
 import { FieldSet } from '../FieldSet';
-import { IHtmlField } from '../../../interfaces/IHtmlField';
+import { IHtmlField } from '@xapp/shared/types';
 
 type KeyType = string | number;
 

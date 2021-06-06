@@ -1,4 +1,4 @@
-import { ModuleAction } from '@xapp/shared';
+import { ModuleAction } from '@xapp/shared/types';
 import { IBaseControllerFactoryOpts } from './base.interface';
 
 type AuthConstraint = {

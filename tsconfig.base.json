@@ -27,11 +27,11 @@
 			"@xapp/api/files": ["libs/api/files/src/index.ts"],
 			"@xapp/react/auth": ["libs/react/auth/src/index.ts"],
 			"@xapp/react/core": ["libs/react/core/src/index.ts"],
-			"@xapp/shared": ["libs/shared/src/index.ts"],
 			"@xapp/shared/assets": ["libs/shared/assets/src/index.ts"],
 			"@xapp/shared/config": ["libs/shared/config/src/index.ts"],
 			"@xapp/shared/exceptions": ["libs/shared/exceptions/src/index.ts"],
-			"@xapp/shared/services": ["libs/shared/services/src/index.ts"],
+			"@xapp/shared/auth": ["libs/shared/auth/src/index.ts"],
+			"@xapp/shared/api": ["libs/shared/api/src/index.ts"],
 			"@xapp/shared/utils": ["libs/shared/utils/src/index.ts"],
 			"@xapp/api/users": ["libs/api/users/src/index.ts"],
 			"@xapp/api/access-control": ["libs/api/access-control/src/index.ts"],
@@ -41,7 +41,7 @@
 			"@xapp/state/samples": ["libs/state/samples/src/index.ts"],
 			"@xapp/state/account": ["libs/state/account/src/index.ts"],
 			"@xapp/state/global": ["libs/state/global/src/index.ts"],
-			"@xapp/shared/auth": ["libs/shared/auth/src/index.ts"]
+			"@xapp/shared/types": ["libs/shared/types/src/index.ts"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]

@@ -3,5 +3,3 @@ export * from './CustomValidationError';
 export * from './FieldValidationError';
 export * from './UnauthorizedError';
 export * from './ValidationError';
-
-export * from './interfaces/IValidationError';

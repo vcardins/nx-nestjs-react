@@ -12,7 +12,7 @@ import {
 	IForgotPasswordInput,
 	ISignUpInput,
 } from '@xapp/shared/auth';
-import { IActionResponse } from '@xapp/shared';
+import { IActionResponse } from '@xapp/shared/types';
 import { IEndpointsConfig } from '@xapp/shared/config';
 
 export interface IAccountStateValues {

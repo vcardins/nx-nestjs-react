@@ -1,10 +1,18 @@
 import React, { FC, Context, createContext, useEffect, useState, useRef, useMemo } from 'react'; // , Dispatch, useReducer
 
-import { IAppContext, INavItem } from '@xapp/react/core';
+import { IKeyedRoute, INavItem, IRoute } from '@xapp/shared/types';
 import { useAuth } from '@xapp/react/auth';
 import { appConfig } from '@xapp/shared/config';
-
 import { useStore } from '@xapp/state';
+
+export interface IAppContext {
+	activeRoute: IRoute;
+	routes: IKeyedRoute;
+
+	navigation: INavItem[];
+	onActivateRoute?: (value: IRoute, location: string) => void;
+	onSignOut: (isTriggeredByExpiredSession?: boolean) => Promise<void>;
+}
 
 const initialContext: IAppContext = {
 	routes: {},

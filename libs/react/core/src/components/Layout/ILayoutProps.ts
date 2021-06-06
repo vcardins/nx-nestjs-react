@@ -1,7 +1,7 @@
 import React from 'react';
 import { ISignedUserOutput } from '@xapp/shared/auth';
 import { IAppConfig } from '@xapp/shared/config';
-import { IRoute } from '../../interfaces/IRoute';
+import { IRoute } from '@xapp/shared/types';
 
 export interface ILayoutProps {
 	id: string;

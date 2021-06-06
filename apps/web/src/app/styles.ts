@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import { getTheme } from '@xapp/react/core';
+import { getTheme } from '@xapp/shared/config';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-jsonschema-form-validation/dist/react-jsonschema-form-validation.min.css';
 

@@ -1,4 +1,4 @@
-import { ILookup } from '@xapp/shared';
+import { ILookup } from '@xapp/shared/types';
 import { ICrudState } from '@xapp/state/shared';
 import { LookupStore } from '.';
 

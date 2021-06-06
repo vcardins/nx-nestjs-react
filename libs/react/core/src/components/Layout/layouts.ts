@@ -1,7 +1,7 @@
 import { CleanLayout } from './Clean';
 import { HolyGrailLayout } from './HolyGrail';
 import { AuthLayout } from './Auth';
-import { LayoutStyles }  from '../../enums/LayoutStyles';
+import { LayoutStyles } from '@xapp/shared/types';
 
 const Layouts = {
 	[LayoutStyles.Auth]: AuthLayout,

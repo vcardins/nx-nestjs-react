@@ -1,5 +1,3 @@
-import { IActionResponse } from '@xapp/shared';
-
 import {
 	IVerifyEmailInput,
 	IVerifyPhoneNumberInput,
@@ -12,6 +10,8 @@ import {
 	IResetPasswordInput,
 	IForgotPasswordInput,
 } from './';
+
+import { IActionResponse } from '@xapp/shared/types';
 
 export interface IAccountService {
 	updateProfile(data: IUserProfileInput): Promise<IUserProfile>;

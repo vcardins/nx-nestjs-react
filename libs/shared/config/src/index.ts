@@ -1,3 +1,5 @@
-export * from './lib/app.config';
+export * from './lib/appConfig';
 
 export * from './interfaces';
+export * from './ui';
+export * from './theme';

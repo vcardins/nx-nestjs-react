@@ -1,9 +1,11 @@
 import React, { memo, useRef } from 'react';
 
-import { Page, Form, TextInput, FieldGroup, Submit, IRoutedPageProps, useForm } from '@xapp/react/core';
+import { Page, Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react/core';
 import { IChangePasswordInput } from '@xapp/shared/auth';
-import { validationSchema } from './schema';
+import { IRoutedPageProps } from '@xapp/shared/types';
 import { useStore } from '@xapp/state';
+
+import { validationSchema } from './schema';
 
 const ChangePasswordPage = memo((props: IRoutedPageProps) => {
 	const { changePassword } = useStore((state) => state.account);

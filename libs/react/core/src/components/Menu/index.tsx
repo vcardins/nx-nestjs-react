@@ -1,7 +1,5 @@
+import { INavItem, NavItemTypes } from '@xapp/shared/types';
 import React from 'react';
-
-import { INavItem } from '../../interfaces/INavItem';
-import { NavItemTypes } from '../../enums/NavItemTypes';
 
 import {
 	MenuContainer,

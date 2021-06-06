@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { IPageConfig, LayoutStyles, PageKey } from '@xapp/react/core';
-import { AuthGroups } from '@xapp/shared/auth';
+import { AuthGroups, IPageConfig, LayoutStyles, PageKey } from '@xapp/shared/types';
 
 import Todo from './Todo';
 // const element = React.lazy(() => import('./Todo'));

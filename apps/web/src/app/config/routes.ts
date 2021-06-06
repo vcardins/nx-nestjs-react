@@ -1,5 +1,5 @@
-import { generateRoutes } from '@xapp/react/core';
-import { AuthGroups } from '@xapp/shared/auth';
+import { generateRoutes } from '@xapp/shared/utils';
+import { AuthGroups } from '@xapp/shared/types';
 
 import { pagesConfigs } from '../pages/@config';
 

@@ -2,9 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
+import { INavItem, NavItemTypes } from '@xapp/shared/types';
 import { Icon } from '../../components/Icon';
-import { NavItemTypes } from '../../enums/NavItemTypes';
-import { INavItem } from '../../interfaces/INavItem';
 
 interface IMenuItemContainerProps {
 	item: INavItem;

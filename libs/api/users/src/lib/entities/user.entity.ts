@@ -16,7 +16,7 @@ import {
 } from 'typeorm';
 
 import { BaseEntity } from '@xapp/api/core';
-import { ModuleAction } from '@xapp/shared';
+import { ModuleAction } from '@xapp/shared/types';
 import { VerificationKeyPurpose } from '@xapp/shared/auth';
 import { Group } from '@xapp/api/access-control';
 import { PublicFile } from '@xapp/api/files';

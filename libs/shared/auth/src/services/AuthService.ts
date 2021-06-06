@@ -1,4 +1,3 @@
-import { IActionResponse } from '@xapp/shared';
 /* eslint-disable camelcase */
 import jwtDecode from 'jwt-decode';
 import { EventEmitter } from 'fbemitter';
@@ -11,8 +10,10 @@ import {
 	ISignInInput,
 } from '../interfaces';
 import { UserGroup } from '../enums';
+
 import { appConfig } from '@xapp/shared/config';
-import { LocalStorage, RestClient } from '@xapp/shared/services';
+import { LocalStorage, RestClient } from '@xapp/shared/utils';
+import { IActionResponse } from '@xapp/shared/types';
 // import { INotifier, Notifier } from '@xapp/react/core';
 
 const {

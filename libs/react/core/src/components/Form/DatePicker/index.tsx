@@ -7,8 +7,8 @@ import 'react-day-picker/lib/style.css';
 import dateFnsFormat from 'date-fns/format';
 import dateFnsParse from 'date-fns/parse';
 
+import { IHtmlField } from '@xapp/shared/types';
 import { FieldSet } from '../FieldSet';
-import { IHtmlField } from '../../../interfaces/IHtmlField';
 
 export const DATE_FORMAT = 'YYYY-MM-DD';
 

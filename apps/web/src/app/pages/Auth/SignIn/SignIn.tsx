@@ -1,14 +1,15 @@
 import React, { memo, useContext, useRef } from 'react';
 import { Link /*, useLocation*/ } from 'react-router-dom';
 
-import { FieldGroup, Form, TextInput, Button, Submit, PageKey, useForm } from '@xapp/react/core';
+import { FieldGroup, Form, TextInput, Button, Submit, useForm } from '@xapp/react/core';
 import { useAuth } from '@xapp/react/auth';
 
-import { OAuthProvider } from '@xapp/shared/auth';
-import { ISignInInput } from '@xapp/shared/auth';
+import { OAuthProvider, ISignInInput } from '@xapp/shared/auth';
+import { PageKey } from '@xapp/shared/types';
 
 import { validationSchema } from './schema';
 import { appContext } from '../../../context';
+
 // import { GoogleLogo } from './logos';
 
 const initialValues: ISignInInput = {

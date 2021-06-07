@@ -1,7 +1,8 @@
-import { Column, Entity, BaseEntity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { Frequency } from './frequency.entity';
 import { TaskTemplate } from './task_template.entity';
 import { Category } from './category.entity';
+import { BaseEntity } from '@xapp/api/core';
 
 @Entity('category_task')
 export class CategoryTask extends BaseEntity {
@@ -23,9 +24,9 @@ export class CategoryTask extends BaseEntity {
 		(taskTemplate) => taskTemplate.categoryTasks,
 	)
 	@JoinColumn([{ name: 'task_template_id', referencedColumnName: 'id' }])
-	task: TaskTemplate;
+	taskTemplate: TaskTemplate;
 
-	@ManyToOne(() => Category, (category) => category.taskCategory)
+	@ManyToOne(() => Category, (category) => category.categoryTasks)
 	@JoinColumn([{ name: 'category_id', referencedColumnName: 'id' }])
 	category: Category;
 }

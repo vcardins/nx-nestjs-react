@@ -73,9 +73,6 @@ export class AccountService { // implements IAccountService {
 
 		await this.emailService.send(user.email, 'Your account has been created', `<p>${verification.verificationKey}</p>`);
 
-		// return {
-		// 	message: 'Your message has been sent',
-		// };
 
 		this.addEvent(new AccountCreatedEvent(user, verification.verificationKey));
 		this.raiseEvents();

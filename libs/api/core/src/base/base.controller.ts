@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/cognitive-complexity */
 /* tslint:disable:no-string-literal */
 import {
 	Body,
@@ -32,7 +31,7 @@ import { formatEntityName } from './base.utils';
 import { IBaseControllerFactoryOpts, IPaginationQuery, IFindAndCountResult } from './base.interface';
 
 import { ParseIntWithDefaultPipe } from '../pipes/parse-int-with-default.pipe';
-import { DefaultOptions, IdType, SortDirection } from './base.type';
+import { QueryOptions, IdType, SortDirection } from '@xapp/shared/types';
 import { SocketGateway } from '../socket/socket.gateway';
 
 import { getOperationId } from '../utils/get-operation-id';
@@ -70,14 +69,12 @@ export function baseControllerFactory<T extends BaseEntity>(options: IBaseContro
 		protected readonly _service: BaseService<T>;
 		protected readonly _socket: SocketGateway;
 
-		protected readonly _defaultOptions: DefaultOptions;
+		protected readonly _defaultOptions: QueryOptions;
 
-		constructor(service: BaseService<T>, socketGateway?: SocketGateway, defaultOptions?: DefaultOptions) {
-			/* eslint-disable immutable/no-mutation */
+		constructor(service: BaseService<T>, socketGateway?: SocketGateway, defaultOptions?: QueryOptions) {
 			this._service = service;
 			this._socket = socketGateway;
 			this._defaultOptions = defaultOptions;
-			/* eslint-enable immutable/no-mutation */
 		}
 
 		emit(event: ModuleAction, data?: any) {

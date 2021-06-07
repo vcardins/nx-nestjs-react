@@ -1,11 +1,19 @@
 import { BadGatewayException, Logger, NotFoundException, BadRequestException } from '@nestjs/common';
-import { Repository, FindOneOptions, SelectQueryBuilder, DeleteResult, /*UpdateResult,*/ FindConditions, FindManyOptions } from 'typeorm';
+import {
+	Repository,
+	FindOneOptions,
+	SelectQueryBuilder,
+	DeleteResult,
+	/*UpdateResult,*/ FindConditions,
+	FindManyOptions,
+} from 'typeorm';
 import { AutoMapper } from 'nestjsx-automapper';
 
+import { IdType } from '@xapp/shared/types';
 import { IPaginationQuery } from './base.interface';
-import { IdType, SortDirection } from './base.type';
 import { IBaseService, IBaseServiceOptions, IBaseServiceCache, IFindAndCountResult } from './base.interface';
 import { BaseEntity } from './base.entity';
+import { IEvent } from '../events/events.interface';
 
 export abstract class BaseService<T extends BaseEntity> implements IBaseService<T> {
 	public withMap: boolean;
@@ -13,13 +21,12 @@ export abstract class BaseService<T extends BaseEntity> implements IBaseService<
 	protected readonly mapper: AutoMapper;
 	protected queryBuilder?: SelectQueryBuilder<T>;
 	private cache: IBaseServiceCache;
+	events: IEvent[] = []
 
 	constructor(protected readonly repository: Repository<T>, mapper: AutoMapper, options: IBaseServiceOptions = {}) {
-		/* eslint-disable immutable/no-mutation */
 		this.withMap = !!options.mapping;
 		this.mapping = options.mapping;
 		this.mapper = mapper;
-		/* eslint-enable immutable/no-mutation */
 
 		this.cacheConfig(options.cache);
 
@@ -61,7 +68,7 @@ export abstract class BaseService<T extends BaseEntity> implements IBaseService<
 
 			entity = this.repository.merge(entity, model as any);
 
-			return await this.repository.save(entity as any) as T;
+			return (await this.repository.save(entity as any)) as T;
 		}
 		catch (error) {
 			throw new BadGatewayException(error);
@@ -102,20 +109,14 @@ export abstract class BaseService<T extends BaseEntity> implements IBaseService<
 
 	// ps: number, pn: number, filter: FindManyOptions<T>
 	public async findAndCount(options: IPaginationQuery = {}): Promise<IFindAndCountResult<T> | T[]>{
-		const { sortBy, filter, pageNumber, pageSize } = options;
+		const { sortBy, filter, pageNumber, pageSize } = options || {};
 
 		const isPaginated = pageSize > 0 && pageNumber > 0;
-		const skip = isPaginated
-			? pageSize * (pageNumber - 1)
-			: 0;
+		const skip = isPaginated ? pageSize * (pageNumber - 1) : 0;
 
-		let qb = this.queryBuilder || this.createQueryBuilder();;
+		let qb = this.queryBuilder || this.createQueryBuilder();
 
-		// eslint-disable-next-line immutable/no-mutation
-		qb = qb
-			.skip(skip)
-			.take(pageSize)
-			.cache(this.cache.find);
+		qb = qb.skip(skip).take(pageSize).cache(this.cache.find);
 
 		if (sortBy) {
 			Object.keys(sortBy).forEach((direction) => {

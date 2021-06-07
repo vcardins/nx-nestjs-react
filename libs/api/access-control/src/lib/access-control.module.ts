@@ -14,7 +14,7 @@ import { PermissionController } from './permissions/permission.controller';
 	imports: [
 		DatabaseModule.forFeature([
 			Group, Permission,
-		])
+		]),
 	],
 	controllers:[
 		GroupController,

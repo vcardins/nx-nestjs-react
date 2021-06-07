@@ -1,6 +1,7 @@
 import { SetState } from 'zustand';
 import { ApiCallStatus, IApiCallState } from '.';
 
+
 export const setLoading = <TState extends IApiCallState>(set: SetState<TState>) => () => {
 	set({
 		status: ApiCallStatus.Loading,

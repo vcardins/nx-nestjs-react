@@ -32,7 +32,6 @@ export * from './base/base.service';
 export * from './base/base.interface';
 export * from './base/base.entity';
 export * from './base/base.utils';
-export * from './base/base.type';
 
 export * from './exceptions/BadUserInputError';
 export * from './exceptions/CustomError';

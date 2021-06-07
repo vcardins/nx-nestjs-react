@@ -1,5 +1,4 @@
-import { TodoOutput } from './TodoOutput';
-import { TodoInput } from './TodoInput';
+import { TodoOutput, TodoInput } from '@xapp/shared/types';
 import { DataContext } from '@xapp/state/shared';
 
 export class TodoStore extends DataContext<TodoOutput, TodoInput> {

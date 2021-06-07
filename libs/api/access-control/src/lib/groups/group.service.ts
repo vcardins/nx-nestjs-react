@@ -4,12 +4,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
 import { InjectMapper } from 'nestjsx-automapper';
 
-import { BaseService, IdType, IFindAndCountResult, IPaginationQuery } from '@xapp/api/core';
+import { BaseService, IFindAndCountResult, IPaginationQuery } from '@xapp/api/core';
 import { Group } from './group.entity';
+import { IdType } from '@xapp/shared/types';
 
 @Injectable()
 export class GroupService extends BaseService<Group> {
-	items: Group[];
+	items: Group[] = [];
 
 	static modelName = 'groups';
 
@@ -42,7 +43,7 @@ export class GroupService extends BaseService<Group> {
 	}
 
 	getGroupByName(name: string) {
-		const groups = (this.items ? this.items : []).filter((group) => group.name === name);
+		const groups = this.items.filter((group) => group.name === name);
 
 		if (groups.length) {
 			return groups[0];

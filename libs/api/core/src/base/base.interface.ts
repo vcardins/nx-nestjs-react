@@ -1,7 +1,7 @@
 import { FindConditions, FindManyOptions, UpdateResult, DeleteResult } from 'typeorm';
 import { AutoMapper } from 'nestjsx-automapper';
 
-import { IdType, SortDirection } from './base.type';
+import { IdType, SortDirection } from '@xapp/shared/types';
 
 export interface IFindAndCountResult<T> {
 	data: Partial<T>[];

@@ -1,5 +1,6 @@
 import { StateCreator, UseStore } from 'zustand';
 
+import { SortDirection } from '@xapp/shared/types';
 import { IAuthState, ApiCallStatus, createStore, setError, setLoading, setSuccess } from '@xapp/state/shared';
 
 import { LookupStore } from './LookupStore';
@@ -14,7 +15,7 @@ export const createLookup: StateCreator<ILookupState> = (set, get, api) => ({
 	authGroups: null,
 	userGroups: null,
 	error: null,
-	orderBy: { id: 'asc' },
+	sortBy: { id: SortDirection.ASC },
 	init(props: IAuthState) {
 		set({ store: new LookupStore(props.authHeader) });
 	},

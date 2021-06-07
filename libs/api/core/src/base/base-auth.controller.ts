@@ -38,7 +38,7 @@ import { Permissions } from '../decorators/permissions.decorator';
 import { ApiException } from '../dto/api-exception.dto';
 import { ParseIntWithDefaultPipe } from '../pipes/parse-int-with-default.pipe';
 import { IPaginationQuery, IFindAndCountResult } from './base.interface';
-import { IdType, SortDirection, DefaultOptions } from './base.type';
+import { IdType, SortDirection, QueryOptions } from '@xapp/shared/types';
 import { BaseEntity } from './base.entity';
 
 const metadataKey = 'swagger/apiModelPropertiesArray';
@@ -72,9 +72,9 @@ export function baseAuthControllerFactory<T extends BaseEntity>(options: IBaseAu
 	abstract class BaseAuthController {
 		protected readonly _service: BaseService<T>;
 		protected readonly _socket: SocketGateway;
-		protected readonly _defaultOptions: DefaultOptions;
+		protected readonly _defaultOptions: QueryOptions;
 
-		constructor(service: BaseService<T>, socketGateway?: SocketGateway, defaultOptions?: DefaultOptions ) {
+		constructor(service: BaseService<T>, socketGateway?: SocketGateway, defaultOptions?: QueryOptions ) {
 			/* eslint-disable immutable/no-mutation */
 			this._service = service;
 			this._socket = socketGateway;
@@ -161,7 +161,7 @@ export function baseAuthControllerFactory<T extends BaseEntity>(options: IBaseAu
 					pageNumber,
 					pageSize,
 					q,
-					sortBy: sortBy ? { [sortBy]: SortDirection.ASC } : (this._defaultOptions.sortBy ?? { id: SortDirection.ASC }),
+					sortBy: sortBy ? { [sortBy]: SortDirection.ASC } : (this._defaultOptions?.sortBy ?? { id: SortDirection.ASC }),
 					filter: rawFilter,
 				};
 				const filter = query.filter ? JSON.parse(query.filter) : {};

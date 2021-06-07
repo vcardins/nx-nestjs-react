@@ -24,7 +24,7 @@ import {
 } from '@xapp/react/core';
 
 import { useStore } from '@xapp/state';
-import { TodoInput } from '@xapp/state/todo';
+import { TodoInput } from '@xapp/shared/types';
 
 import { validationSchema } from './schema';
 import { TodoList, TodoItem, TodoIcon } from './components';

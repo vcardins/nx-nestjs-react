@@ -41,7 +41,8 @@
 			"@xapp/state/samples": ["libs/state/samples/src/index.ts"],
 			"@xapp/state/account": ["libs/state/account/src/index.ts"],
 			"@xapp/state/global": ["libs/state/global/src/index.ts"],
-			"@xapp/shared/types": ["libs/shared/types/src/index.ts"]
+			"@xapp/shared/types": ["libs/shared/types/src/index.ts"],
+			"@xapp/state/household": ["libs/state/household/src/index.ts"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]

@@ -3,4 +3,5 @@ export enum ModuleName {
 	Group = 'group',
 	Permission = 'permission',
 	Todo = 'todo',
+	Household = 'household'
 }

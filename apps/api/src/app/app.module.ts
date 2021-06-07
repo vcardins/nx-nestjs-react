@@ -14,6 +14,7 @@ import { AUTH_GUARD_TYPE } from '@xapp/api/auth';
 
 import { TodoModule } from './todos/todo.module';
 import { LookupModule } from './lookup/lookup.module';
+import { HouseholdModule } from './household/household.module';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -39,6 +40,7 @@ export class AppModule {
 				AuthModule.forRoot(options),
 				TodoModule,
 				LookupModule,
+				HouseholdModule,
 				DatabaseModule.forRoot(),
 				AutomapperModule.withMapper(),
 			],

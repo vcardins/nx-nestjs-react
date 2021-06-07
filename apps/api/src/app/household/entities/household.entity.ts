@@ -30,6 +30,6 @@ export class Household extends BaseEntity {
 	)
 	householdInvitedMembers: HouseholdMemberInvitation[];
 
-	@OneToMany('Notification', ({ notification }) => notification)
-	notifications: Notification[];
+	// @OneToMany('Notification', ({ notification }) => notification)
+	// notifications: Notification[];
 }

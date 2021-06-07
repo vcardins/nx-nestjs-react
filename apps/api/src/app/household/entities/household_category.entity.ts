@@ -1,7 +1,9 @@
-import { Column, Entity, BaseEntity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Household } from './household.entity';
 import { Category } from '../../tasks/entities/category.entity';
 import { Task } from '../../tasks/entities/task.entity';
+
+import { BaseEntity } from '@xapp/api/core';
 
 @Entity('household_category')
 export class HouseholdCategory extends BaseEntity {

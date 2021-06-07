@@ -22,7 +22,7 @@ export class CategoryTask extends BaseEntity {
 		() => TaskTemplate,
 		(taskTemplate) => taskTemplate.categoryTasks,
 	)
-	@JoinColumn([{ name: 'task_id', referencedColumnName: 'id' }])
+	@JoinColumn([{ name: 'task_template_id', referencedColumnName: 'id' }])
 	task: TaskTemplate;
 
 	@ManyToOne(() => Category, (category) => category.taskCategory)

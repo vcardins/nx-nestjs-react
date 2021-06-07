@@ -610,6 +610,27 @@
 					}
 				}
 			}
+		},
+		"state-household": {
+			"root": "libs/state/household",
+			"sourceRoot": "libs/state/household/src",
+			"projectType": "library",
+			"architect": {
+				"lint": {
+					"builder": "@nrwl/linter:eslint",
+					"options": {
+						"lintFilePatterns": ["libs/state/household/**/*.ts"]
+					}
+				},
+				"test": {
+					"builder": "@nrwl/jest:jest",
+					"outputs": ["coverage/libs/state/household"],
+					"options": {
+						"jestConfig": "libs/state/household/jest.config.js",
+						"passWithNoTests": true
+					}
+				}
+			}
 		}
 	},
 	"cli": {

@@ -1,13 +1,14 @@
 import {
+	BeforeInsert,
 	Column,
 	Entity,
-	BaseEntity,
 	JoinColumn,
 	ManyToOne,
 	OneToMany,
 	OneToOne,
 } from 'typeorm';
 import { User } from '@xapp/api/users';
+import { BaseEntity, getUtcDate } from '@xapp/api/core';
 
 import { Household } from './household.entity';
 import { Task } from '../../tasks/entities/task.entity';
@@ -42,4 +43,10 @@ export class HouseholdMembers extends BaseEntity {
 
 	@OneToMany(() => Task, (task) => task.assignedUser)
 	assignedTasks: Task[];
+
+	@BeforeInsert()
+	doBeforeInsertion() {
+		this.dateCreated = getUtcDate();
+		this.validate();
+	}
 }

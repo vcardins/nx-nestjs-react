@@ -4,6 +4,8 @@ import { IGroupWithPermissions, hasRoutePermission } from '@xapp/shared/auth';
 import { ic_fingerprint } from 'react-icons-kit/md/ic_fingerprint';
 import { ic_person_pin } from 'react-icons-kit/md/ic_person_pin';
 import { ic_done } from 'react-icons-kit/md/ic_done';
+import { ic_chrome_reader_mode } from 'react-icons-kit/md/ic_chrome_reader_mode';
+import { ic_home } from 'react-icons-kit/md/ic_home';
 import { ic_security } from 'react-icons-kit/md/ic_security';
 /* eslint-enable camelcase */
 
@@ -44,8 +46,15 @@ export function getNavigation(routes: IKeyedRoute, userGroups: IGroupWithPermiss
 			id: getNavId('state'),
 			title: 'State Management',
 			type: NavItemTypes.Route,
-			icon: ic_done,
+			icon: ic_chrome_reader_mode,
 			route: routes[PageKey.State],
+		},
+		{
+			id: getNavId('household'),
+			title: 'Household',
+			type: NavItemTypes.Route,
+			icon: ic_home,
+			route: routes[PageKey.Household],
 		},
 		{
 			id: getNavId('todo'),

@@ -7,14 +7,17 @@ import { BaseEntity } from '@xapp/api/core';
 
 @Entity('task')
 export class Task extends BaseEntity {
+	@Column('varchar', { name: 'name', length: 60 })
+	name: string;
+
 	@Column('datetime', { name: 'date_created' })
 	dateCreated: Date;
 
 	@Column('datetime', { name: 'date_completed', nullable: true })
 	dateCompleted: Date | null;
 
-	@Column('text', { name: 'note', nullable: true })
-	note: string | null;
+	@Column('text', { name: 'description', nullable: true })
+	description: string | null;
 
 	@Column('time', { name: 'proposed_time', nullable: true })
 	proposedTime: boolean | null;

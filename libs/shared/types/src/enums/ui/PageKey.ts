@@ -12,6 +12,7 @@ export enum PageKey {
 	VerifyPhone = 'verify-account-phone',
 	Admin = 'admin',
 	State = 'state',
+	Household = 'household',
 	PageNotFound = 'not-found',
 	Error404 = 'error-404',
 	Error500 = 'error-500',

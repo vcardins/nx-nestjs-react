@@ -8,17 +8,37 @@ import { HouseholdMemberInvitation } from './entities/household_member_invitatio
 import { HouseholdMembers } from './entities/household_members.entity';
 
 import { HouseholdService } from './household.service';
+import { MailModule, MailService, TemplateService } from '@xapp/api/mail';
+import { HouseholdController } from './household.controller';
+import { User, UserModule, UserService } from '@xapp/api/users';
+import { FilesModule, FilesService, PublicFile } from '@xapp/api/files';
 
 @Module({
 	imports: [
+		MailModule,
+		UserModule,
+		FilesModule,
 		DatabaseModule.forFeature([
 			HouseholdCategory,
 			Household,
 			HouseholdMemberInvitation,
 			HouseholdMembers,
+			User,
+			PublicFile,
 		]),
 	],
-	providers: [HouseholdService],
-	exports: [HouseholdService],
+	providers: [
+		HouseholdService,
+		UserService,
+		FilesService,
+		MailService,
+		TemplateService,
+	],
+	exports: [
+		HouseholdService,
+	],
+	controllers: [
+		HouseholdController,
+	],
 })
 export class HouseholdModule {}

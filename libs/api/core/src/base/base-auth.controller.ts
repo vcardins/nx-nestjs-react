@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/cognitive-complexity */
 import {
 	Body,
 	Delete,
@@ -11,6 +10,7 @@ import {
 	Query,
 	Response,
 	Req,
+	UseInterceptors,
 } from '@nestjs/common';
 import {
 	ApiBadRequestResponse,
@@ -24,11 +24,11 @@ import {
 	ApiBearerAuth,
 } from '@nestjs/swagger';
 
-import { ModuleAction } from '@xapp/shared/types';
+import { ModuleAction, UserGroup, IdType, SortDirection, QueryOptions } from '@xapp/shared/types';
 import { getOperationId } from '@xapp/shared/utils';
 
-import { IBaseAuthControllerFactoryOpts } from './base-auth.interface';
-import { getAuthObj } from './base-auth.utils';
+import { AuthConstraint, IBaseAuthControllerFactoryOpts } from './base-auth.interface';
+import { getAuthConstraints } from './base-auth.utils';
 import { formatEntityName } from './base.utils';
 import { filterMetadata } from '../utils/filter-metadata-factory';
 import { BaseService } from './base.service';
@@ -38,14 +38,28 @@ import { Permissions } from '../decorators/permissions.decorator';
 import { ApiException } from '../dto/api-exception.dto';
 import { ParseIntWithDefaultPipe } from '../pipes/parse-int-with-default.pipe';
 import { IPaginationQuery, IFindAndCountResult } from './base.interface';
-import { IdType, SortDirection, QueryOptions } from '@xapp/shared/types';
 import { BaseEntity } from './base.entity';
+import { TransformInterceptor } from '../decorators';
 
 const metadataKey = 'swagger/apiModelPropertiesArray';
 const excludedCreateMetadata = [':id', ':createdAt', ':updatedAt'];
 const excludedUpdateMetadata = [':createdAt', ':updatedAt'];
 
+export const getDefaultPermissions = (roles: UserGroup[] = []): Record<string, AuthConstraint> => ({
+	count: { roles, permissions: [ModuleAction.Read] },
+	get: { roles, permissions: [ModuleAction.Read] },
+	getById: { roles, permissions: [ModuleAction.Read] },
+	create: { roles, permissions: [ModuleAction.Create] },
+	update: { roles, permissions: [ModuleAction.Update] },
+	updateOrCreate: { roles, permissions: [ModuleAction.Update] },
+	delete: { roles, permissions: [ModuleAction.Delete] },
+});
+
+
 export function baseAuthControllerFactory<T extends BaseEntity>(options: IBaseAuthControllerFactoryOpts<T>) {
+	if (!options.entity) {
+		console.log(options);
+	}
 	const Entity = options.entity;
 	const EntityOutput = options.entityOutput;
 	const createEntityName: string = options.entityCreateInput?.name || formatEntityName(EntityOutput);
@@ -54,7 +68,7 @@ export function baseAuthControllerFactory<T extends BaseEntity>(options: IBaseAu
 		options.entityCreateInput || filterMetadata(EntityOutput, metadataKey, excludedCreateMetadata, createEntityName);
 	const EntityUpdateInput =
 		options.entityUpdateInput || filterMetadata(EntityOutput, metadataKey, excludedUpdateMetadata, updateEntityName);
-	const auth = getAuthObj(options.auth);
+	const auth = options.auth ? getAuthConstraints(options.auth) : getDefaultPermissions();
 
 	class EntityCreateInputT extends EntityCreateInput {}
 	class EntityUpdateInputT extends EntityUpdateInput {}
@@ -75,11 +89,9 @@ export function baseAuthControllerFactory<T extends BaseEntity>(options: IBaseAu
 		protected readonly _defaultOptions: QueryOptions;
 
 		constructor(service: BaseService<T>, socketGateway?: SocketGateway, defaultOptions?: QueryOptions ) {
-			/* eslint-disable immutable/no-mutation */
 			this._service = service;
 			this._socket = socketGateway;
 			this._defaultOptions = defaultOptions;
-			/* eslint-enable immutable/no-mutation */
 		}
 
 		emit(event: ModuleAction, data?: any) {
@@ -148,6 +160,7 @@ export function baseAuthControllerFactory<T extends BaseEntity>(options: IBaseAu
 			isArray: true,
 		})
 		@ApiBadRequestResponse({ type: ApiException })
+		@UseInterceptors(new TransformInterceptor(EntityOutput))
 		public async get(@Req() req,
 			@Query('pageNumber', new ParseIntWithDefaultPipe(-1)) pageNumber: number = 0,
 			@Query('pageSize', new ParseIntWithDefaultPipe(-1)) pageSize: number = 0,
@@ -172,7 +185,7 @@ export function baseAuthControllerFactory<T extends BaseEntity>(options: IBaseAu
 
 				const isPaginated = pageSize > 0 && pageNumber > 0;
 
-				const result = await this._service.findAndCount({...query, filter });
+				const result = await this._service.findAndCount({ ...query, filter });
 
 				if (!isPaginated) {
 					return response.send(result);
@@ -292,7 +305,7 @@ export function baseAuthControllerFactory<T extends BaseEntity>(options: IBaseAu
 			}
 		}
 
-		@Put()
+		@Put(':id')
 		@Roles(...auth?.updateOrCreate?.roles)
 		@Permissions(...auth?.updateOrCreate?.permissions)
 		@ApiBody({
@@ -303,8 +316,12 @@ export function baseAuthControllerFactory<T extends BaseEntity>(options: IBaseAu
 		})
 		@ApiBadRequestResponse({ type: ApiException })
 		@ApiOperation(getOperationId(Entity.name, 'UpdateOrCreate'))
-		public async updateOrCreate(@Body() body: EntityUpdateInputT, @Response() response) {
-			const entity = await this._service.findById(body.id);
+		public async updateOrCreate(
+		@Param('id') id: IdType,
+			@Body() body: EntityUpdateInputT,
+			@Response() response,
+		) {
+			const entity = await this._service.findById(id);
 
 			if (!entity) {
 				try {
@@ -312,7 +329,7 @@ export function baseAuthControllerFactory<T extends BaseEntity>(options: IBaseAu
 						await this.beforeUpdateOrCreate(body);
 					}
 
-					const data = await this._service.create(body as any);
+					const data = await this._service.update(id, body);
 
 					if (this._service.withMap) {
 						const mappedData = await this._service.map(data);
@@ -341,7 +358,7 @@ export function baseAuthControllerFactory<T extends BaseEntity>(options: IBaseAu
 						await this.beforeUpdateOrCreate(body);
 					}
 
-					const data = await this._service.update(body.id, body as any);
+					const data = await this._service.update<typeof EntityUpdateInput>(id, body);
 
 					response.send(data);
 

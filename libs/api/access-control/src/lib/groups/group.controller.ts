@@ -1,25 +1,15 @@
 import { Controller } from '@nestjs/common';
 
-import { SocketGateway, ModuleGroup, baseAuthControllerFactory } from '@xapp/api/core';
-import { ModuleAction, ModuleName } from '@xapp/shared/types';
+import { SocketGateway, ModuleGroup, baseAuthControllerFactory, getDefaultPermissions } from '@xapp/api/core';
+import { ModuleName, UserGroup } from '@xapp/shared/types';
 import { GroupService } from './group.service';
 import { Group } from './group.entity';
 import { GroupOutput } from './dto/group.output';
 
-const roles = ['isSuperuser'];
-
 const BaseController = baseAuthControllerFactory<Group>({
 	entity: Group,
 	entityOutput: GroupOutput,
-	auth: {
-		count: {roles, permissions: [ModuleAction.Read]},
-		get: {roles, permissions: [ModuleAction.Read]},
-		getById: {roles, permissions: [ModuleAction.Read]},
-		create: {roles, permissions: [ModuleAction.Create]},
-		update: {roles, permissions: [ModuleAction.Update]},
-		updateOrCreate: {roles, permissions: [ModuleAction.Create]},
-		delete: {roles, permissions: [ModuleAction.Delete]},
-	},
+	auth: getDefaultPermissions([UserGroup.Admin]),
 });
 
 @Controller('/groups')

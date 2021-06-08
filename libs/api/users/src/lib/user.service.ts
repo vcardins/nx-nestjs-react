@@ -150,7 +150,6 @@ export class UserService extends BaseService<User> {
 				...model,
 				lastUpdated: getUtcDate(),
 			},
-			false,
 		);
 	}
 

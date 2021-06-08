@@ -2,25 +2,17 @@ import { Controller, Patch, Body, Response, InternalServerErrorException } from 
 import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiBadRequestResponse, ApiOperation } from '@nestjs/swagger';
 import { Entity } from 'typeorm';
 
-import { SocketGateway, baseAuthControllerFactory, ModuleGroup, getUtcDate, Roles, Permissions, ApiException } from '@xapp/api/core';
+import { SocketGateway, baseAuthControllerFactory, ModuleGroup, getUtcDate, Roles, Permissions, ApiException, getDefaultPermissions } from '@xapp/api/core';
 import { getOperationId } from '@xapp/shared/utils';
-import { ModuleAction, ModuleName, SortDirection } from '@xapp/shared/types';
+import { ModuleName, SortDirection, UserGroup } from '@xapp/shared/types';
 
 import { TodoService } from './todo.service';
 import { Todo } from './todo.entity';
 import { TodoOutput } from './dto/todo.output';
 import { ITodoComplete } from './todo-complete.interface';
 
-const roles = [];
-const auth = {
-	count: { roles, permissions: [ModuleAction.Read] },
-	get: { roles, permissions: [ModuleAction.Read] },
-	getById: { roles, permissions: [ModuleAction.Read] },
-	create: { roles, permissions: [ModuleAction.Create] },
-	update: { roles, permissions: [ModuleAction.Update] },
-	updateOrCreate: { roles, permissions: [ModuleAction.Update] },
-	delete: { roles, permissions: [ModuleAction.Delete] },
-};
+const roles: UserGroup[] = [];
+const auth = getDefaultPermissions();
 
 const BaseController = baseAuthControllerFactory<Todo>({
 	entity: Todo,
@@ -52,7 +44,6 @@ export class TodoController extends BaseController {
 	@Permissions(...auth?.update?.permissions)
 	@ApiBody({
 		type: Todo,
-		description: 'Data for entity update',
 		required: true,
 		isArray: false,
 	})

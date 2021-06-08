@@ -1,12 +1,9 @@
-import { ILookup } from '@xapp/shared/types';
-
-export class LookupOutput implements ILookup {
+import { FrequencyOutput, UserGroup, RoomTypeOutput } from '@xapp/shared/types';
+export class LookupOutput {
 	dateFormats: Record<string, string>;
 	oAuthProviders: Record<string, string>;
-	authGroups: ILookup['authGroups'];
+	authGroups: Record<string, UserGroup[]>;
 	userGroups: Record<string, string>;
-
-	constructor(props: Partial<LookupOutput>) {
-		Object.assign(this, props);
-	}
+	frequencies: FrequencyOutput[];
+	roomTypes: RoomTypeOutput[];
 }

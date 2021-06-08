@@ -1,6 +1,6 @@
 import { ConnectionString } from 'connection-string';
 
-const connectionString = new ConnectionString(process.env.DATABASE_URL || 'sqlite://database/sqlitedb.db');
+const connectionString = new ConnectionString(process.env.DATABASE_URL || 'sqlite://db/local.db');
 const logging = (process.env.DATABASE_LOGGING || '').split(',');
 
 export const DatabaseConfig = () => {

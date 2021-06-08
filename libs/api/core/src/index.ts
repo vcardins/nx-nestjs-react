@@ -1,13 +1,7 @@
 export * from './core.module';
 export * from './configs/core.config';
 
-export * from './decorators/module.decorator';
-export * from './decorators/api-swagger-operation.decorator';
-export * from './decorators/match.decorator';
-export * from './decorators/permissions.decorator';
-export * from './decorators/public.decorator';
-export * from './decorators/roles.decorator';
-export * from './decorators/unmatch.decorator';
+export * from './decorators';
 
 export * from './dto/api-exception.dto';
 export * from './dto/search-params.input';

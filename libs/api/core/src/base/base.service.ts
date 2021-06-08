@@ -15,6 +15,10 @@ import { IBaseService, IBaseServiceOptions, IBaseServiceCache, IFindAndCountResu
 import { BaseEntity } from './base.entity';
 import { IEvent } from '../events/events.interface';
 
+// interface ClassType<T> {
+// 	new (): T;
+// }
+
 export abstract class BaseService<T extends BaseEntity> implements IBaseService<T> {
 	public withMap: boolean;
 	private readonly mapping: (config: AutoMapper) => void;
@@ -53,22 +57,17 @@ export abstract class BaseService<T extends BaseEntity> implements IBaseService<
 		}
 	}
 
-	async update(id: IdType, model: any, checkIfExist = true): Promise<T> {
+	async update<TUpdate = any>(id: IdType, model: TUpdate): Promise<T> {
 		try {
 			let entity: T;
-			if (checkIfExist) {
-				entity = await this.repository.findOne(id);
-				if (!entity) {
-					throw new BadGatewayException('Entity could not be found');
-				}
-			}
-			else {
-				entity = model;
+			entity = await this.repository.findOne(id);
+			if (!entity) {
+				throw new BadGatewayException('Entity could not be found');
 			}
 
 			entity = this.repository.merge(entity, model as any);
 
-			return (await this.repository.save(entity as any)) as T;
+			return this.repository.save(entity as any);
 		}
 		catch (error) {
 			throw new BadGatewayException(error);
@@ -153,28 +152,14 @@ export abstract class BaseService<T extends BaseEntity> implements IBaseService<
 	}
 
 	private cacheConfig(cache: IBaseServiceCache | boolean): void {
-		if (!cache) {
-			// eslint-disable-next-line immutable/no-mutation
-			this.cache = {
-				find: false,
-				findById: false,
-				findOne: false,
-				findAndCount: false,
-			};
-		}
-
-		if (cache === true) {
-			// eslint-disable-next-line immutable/no-mutation
-			this.cache = {
-				find: true,
-				findById: true,
-				findOne: true,
-				findAndCount: true,
-			};
-		}
+		this.cache = {
+			find: !!cache,
+			findById: !!cache,
+			findOne: !!cache,
+			findAndCount: !!cache,
+		};
 
 		if (typeof cache === 'object') {
-			// eslint-disable-next-line immutable/no-mutation
 			this.cache = cache;
 		}
 	}

@@ -2,20 +2,21 @@ import {
 	BeforeInsert,
 	Column,
 	Entity,
+	BaseEntity,
 	JoinColumn,
 	ManyToOne,
 	OneToMany,
 	OneToOne,
 } from 'typeorm';
 import { User } from '@xapp/api/users';
-import { BaseEntity, getUtcDate } from '@xapp/api/core';
+import { getUtcDate } from '@xapp/api/core';
 
 import { Household } from './household.entity';
 import { Task } from '../../tasks/entities/task.entity';
 
 @Entity('household_member')
 export class HouseholdMembers extends BaseEntity {
-	@Column('int', { primary: true, name: 'user_id', unique: true })
+	@Column('integer', { primary: true, name: 'user_id', unique: true })
 	userId: number;
 
 	@Column('datetime', { name: 'date_created' })
@@ -34,7 +35,7 @@ export class HouseholdMembers extends BaseEntity {
 	@JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
 	user: User;
 
-	@ManyToOne(() => Household, (household) => household.householdMembers)
+	@ManyToOne(() => Household, (household) => household.members)
 	@JoinColumn([{ name: 'household_id', referencedColumnName: 'id' }])
 	household: Household;
 
@@ -47,6 +48,6 @@ export class HouseholdMembers extends BaseEntity {
 	@BeforeInsert()
 	doBeforeInsertion() {
 		this.dateCreated = getUtcDate();
-		this.validate();
+		// this.validate();
 	}
 }

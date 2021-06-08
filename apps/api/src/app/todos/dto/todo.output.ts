@@ -3,4 +3,6 @@ export class TodoOutput {
 	title: string;
 	dateCreated: Date;
 	dateCompleted: Date;
+
+	intruder = false;
 }

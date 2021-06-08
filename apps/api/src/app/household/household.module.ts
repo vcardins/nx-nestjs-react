@@ -1,17 +1,16 @@
 import { Module } from '@nestjs/common';
 
 import { DatabaseModule } from '@xapp/api/database';
-
-import { HouseholdCategory } from './entities/household_category.entity';
-import { Household } from './entities/household.entity';
-import { HouseholdMemberInvitation } from './entities/household_member_invitation.entity';
-import { HouseholdMembers } from './entities/household_members.entity';
-
-import { HouseholdService } from './household.service';
 import { MailModule, MailService, TemplateService } from '@xapp/api/mail';
-import { HouseholdController } from './household.controller';
 import { User, UserModule, UserService } from '@xapp/api/users';
 import { FilesModule, FilesService, PublicFile } from '@xapp/api/files';
+
+import { Household } from './entities/household.entity';
+import { HouseholdMembers } from './entities/household_members.entity';
+import { HouseholdRoom } from './entities/household_room.entity';
+import { HouseholdMemberInvitation } from './entities/household_member_invitation.entity';
+import { HouseholdController } from './household.controller';
+import { HouseholdService } from './household.service';
 
 @Module({
 	imports: [
@@ -19,7 +18,7 @@ import { FilesModule, FilesService, PublicFile } from '@xapp/api/files';
 		UserModule,
 		FilesModule,
 		DatabaseModule.forFeature([
-			HouseholdCategory,
+			HouseholdRoom,
 			Household,
 			HouseholdMemberInvitation,
 			HouseholdMembers,

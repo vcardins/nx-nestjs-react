@@ -1,5 +1,13 @@
 # Momentum
 
+## The steps below assumes that the entity exists.
+
+1. Add the domain key to the ModuleName enum: libs/shared/types/src/enums/ModuleName.ts
+2. Create the domain service, eg. api/src/app/tasks/task.service.ts
+3. Create the domain controller, eg. api/src/app/tasks/task.controller.ts
+4. Create the domain input and output files, eg. api/src/app/tasks/task.controller.ts
+5. Add/Or update the api domain to update all dependencies. eg: apps/api/src/app/tasks/tasks.module.ts
+
 ## Inspirations
 1. https://github.com/lujakob/nestjs-realworld-example-app
 1. https://blog.nrwl.io/building-angular-and-react-applications-together-with-nx-78b5578de598

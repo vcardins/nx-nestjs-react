@@ -1,10 +1,9 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
-import { Frequency } from './frequency.entity';
-import { HouseholdMembers } from '../../household/entities/household_members.entity';
-import { HouseholdCategory } from '../../household/entities/household_category.entity';
 import { BaseEntity } from '@xapp/api/core';
-
+import { HouseholdRoom } from './../../household/entities/household_room.entity';
+import { Frequency } from './../../shared/entities/frequency.entity';
+import { HouseholdMembers } from './../../household/entities/household_members.entity';
 @Entity('task')
 export class Task extends BaseEntity {
 	@Column('varchar', { name: 'name', length: 60 })
@@ -24,26 +23,26 @@ export class Task extends BaseEntity {
 
 	@ManyToOne(
 		() => HouseholdMembers,
-		(householdMembers) => householdMembers.executedTasks,
+		({ executedTasks }) => executedTasks,
 	)
 	@JoinColumn([{ name: 'executor_user_id', referencedColumnName: 'userId' }])
 	executorUser?: HouseholdMembers;
 
 	@ManyToOne(
 		() => HouseholdMembers,
-		(householdMembers) => householdMembers.assignedTasks,
+		({ assignedTasks }) => assignedTasks,
 	)
 	@JoinColumn([{ name: 'assigned_user_id', referencedColumnName: 'userId' }])
 	assignedUser?: HouseholdMembers;
 
-	@ManyToOne(() => Frequency, (frequency) => frequency.tasks)
+	@ManyToOne(() => Frequency, ({ tasks }) => tasks)
 	@JoinColumn([{ name: 'frequency_id', referencedColumnName: 'id' }])
 	frequency: Frequency;
 
-	@ManyToOne(() => HouseholdCategory, (householdCategory) => householdCategory.tasks)
+	@ManyToOne(() => HouseholdRoom, ({ tasks }) => tasks)
 	@JoinColumn([
 		{ name: 'household_id', referencedColumnName: 'householdId' },
-		{ name: 'category_id', referencedColumnName: 'categoryId' },
+		{ name: 'room_type_id', referencedColumnName: 'roomTypeId' },
 	])
-	householdCategory: HouseholdCategory;
+	householdRoom: HouseholdRoom;
 }

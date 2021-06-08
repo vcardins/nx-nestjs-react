@@ -1,10 +1,11 @@
-import { BaseEntity } from '@xapp/api/core';
 import { Column, Entity, OneToMany } from 'typeorm';
-import { CategoryTask } from './category_task.entity';
+
+import { BaseEntity } from '@xapp/api/core';
+import { RoomTask } from '../../shared/entities/room_task.entity';
 
 @Entity('task_template')
 export class TaskTemplate extends BaseEntity {
-	@Column('varchar', { name: 'name', length: 255 })
+	@Column('varchar', { name: 'name', length: 60 })
 	name: string;
 
 	@Column('text', { name: 'description', nullable: true })
@@ -19,6 +20,6 @@ export class TaskTemplate extends BaseEntity {
 	@Column('integer', { name: 'reward_points', nullable: true })
 	rewardPoints: number | null;
 
-	@OneToMany(() => CategoryTask, (categoryTask) => categoryTask.taskTemplate)
-	categoryTasks: CategoryTask[];
+	@OneToMany(() => RoomTask, ({ taskTemplate }) => taskTemplate)
+	roomTasks: RoomTask[];
 }

@@ -14,7 +14,7 @@ export const defaultAuthObj: IDefaultAuthObj = {
 	count: defaultAuthConstraint,
 };
 
-export const getAuthObj = (authObj: IDefaultAuthObj | null = null): IDefaultAuthObj => {
+export const getAuthConstraints = (authObj: IDefaultAuthObj | null = null): IDefaultAuthObj => {
 	let auth = null;
 
 	if (authObj !== null) {

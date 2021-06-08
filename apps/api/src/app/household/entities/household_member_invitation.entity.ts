@@ -18,7 +18,7 @@ export class HouseholdMemberInvitation extends BaseEntity {
 	@Column('datetime', { name: 'date_accepted', nullable: true })
 	dateAccepted: Date | null;
 
-	@ManyToOne(() => Household, (household) => household.householdInvitedMembers)
+	@ManyToOne(() => Household, (household) => household.invitedMembers)
 	@JoinColumn([{ name: 'household_id', referencedColumnName: 'id' }])
 	household: Household;
 

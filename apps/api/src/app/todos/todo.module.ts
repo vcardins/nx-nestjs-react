@@ -6,11 +6,9 @@ import { TodoController } from './todo.controller';
 import { TodoService } from './todo.service';
 import { Todo } from './todo.entity';
 
-const entities = [Todo];
-
 @Module({
 	imports: [
-		DatabaseModule.forFeature(entities),
+		DatabaseModule.forFeature([Todo]),
 	],
 	controllers: [TodoController],
 	providers: [TodoService],

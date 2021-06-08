@@ -4,20 +4,23 @@ import { AutomapperModule } from 'nestjsx-automapper';
 import { ScheduleModule } from '@nestjs/schedule';
 
 import { CoreModule } from '@xapp/api/core';
-import { AuthModule } from '@xapp/api/auth';
+import { AuthModule, AUTH_GUARD_TYPE } from '@xapp/api/auth';
 import { AccessControlModule } from '@xapp/api/access-control';
 import { UserModule } from '@xapp/api/users';
 import { DatabaseModule } from '@xapp/api/database';
 import { FilesModule } from '@xapp/api/files';
 import { ConfigModule } from '@xapp/api/config';
-import { AUTH_GUARD_TYPE } from '@xapp/api/auth';
 
 import { TodoModule } from './todos/todo.module';
 import { LookupModule } from './lookup/lookup.module';
 import { HouseholdModule } from './household/household.module';
+import { TaskModule } from './tasks/tasks.module';
+
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { RoomTypeModule } from './shared/room_type.module';
+import { FrequencyModule } from './shared/frequency.module';
 
 interface IAppModuleProps{
 	providers: Provider[];
@@ -40,7 +43,10 @@ export class AppModule {
 				AuthModule.forRoot(options),
 				TodoModule,
 				LookupModule,
+				TaskModule,
 				HouseholdModule,
+				FrequencyModule,
+				RoomTypeModule,
 				DatabaseModule.forRoot(),
 				AutomapperModule.withMapper(),
 			],

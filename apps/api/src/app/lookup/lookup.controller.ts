@@ -1,8 +1,8 @@
-import { Controller, Response, InternalServerErrorException, Get } from '@nestjs/common';
+import { Controller, Response, InternalServerErrorException, Get, UseInterceptors } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiBadRequestResponse, ApiOperation } from '@nestjs/swagger';
 import { Entity } from 'typeorm';
 
-import { ApiException } from '@xapp/api/core';
+import { ApiException, TransformInterceptor } from '@xapp/api/core';
 import { getOperationId } from '@xapp/shared/utils';
 
 import { LookupService } from './lookup.service';
@@ -24,11 +24,11 @@ export class LookupController {
 	})
 	@ApiOkResponse({ type: LookupOutput })
 	@ApiBadRequestResponse({ type: ApiException })
+	@UseInterceptors(new TransformInterceptor(LookupOutput))
 	@ApiOperation(getOperationId(Entity.name, 'Complete Lookup'))
 	public async getAll(@Response() response) {
 		try {
 			const data = await this.service.getAll();
-
 			response.send(data);
 		}
 		catch (e) {

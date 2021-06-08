@@ -34,6 +34,6 @@
 		"GOOGLE_CLIENT_ID": "none",
 		"GOOGLE_CLIENT_SECRET": "none",
 		"GOOGLE_OAUTH_REDIRECT_URI": "http://localhost:5000/",
-		"DATABASE_URL": "sqlite://database/sqlitedb.db"
+		"DATABASE_URL": "sqlite://db/local.db"
 	}
 }

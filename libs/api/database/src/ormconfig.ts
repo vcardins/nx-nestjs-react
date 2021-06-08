@@ -87,7 +87,7 @@ const defaultApp = projects[defaultProject];
 
 const entities = getFilesByFolder(`${isFromMigration ? '/**' : ''}/**/*.entity`);
 
-const connectionString = new ConnectionString(process.env.DATABASE_URL || 'sqlite://db/local.db');
+const connectionString = new ConnectionString(process.env.DATABASE_URL || 'sqlite://database/sqlitedb.db');
 
 const [migrations, subscribers, seeds] = ['migrations', 'subscribers', 'seeds'].map((folder) =>
 	getFilesByFolder(`/**/${folder}/**/*`),

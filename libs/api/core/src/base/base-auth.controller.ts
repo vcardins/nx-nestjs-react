@@ -10,7 +10,8 @@ import {
 	Query,
 	Response,
 	Req,
-	UseInterceptors,
+	// import { TransformInterceptor } from '../decorators';
+	// UseInterceptors, @UseInterceptors(new TransformInterceptor(EntityOutput)) // It causing the server to blow, investigate
 } from '@nestjs/common';
 import {
 	ApiBadRequestResponse,
@@ -39,7 +40,6 @@ import { ApiException } from '../dto/api-exception.dto';
 import { ParseIntWithDefaultPipe } from '../pipes/parse-int-with-default.pipe';
 import { IPaginationQuery, IFindAndCountResult } from './base.interface';
 import { BaseEntity } from './base.entity';
-import { TransformInterceptor } from '../decorators';
 
 const metadataKey = 'swagger/apiModelPropertiesArray';
 const excludedCreateMetadata = [':id', ':createdAt', ':updatedAt'];
@@ -57,9 +57,6 @@ export const getDefaultPermissions = (roles: UserGroup[] = []): Record<string, A
 
 
 export function baseAuthControllerFactory<T extends BaseEntity>(options: IBaseAuthControllerFactoryOpts<T>) {
-	if (!options.entity) {
-		console.log(options);
-	}
 	const Entity = options.entity;
 	const EntityOutput = options.entityOutput;
 	const createEntityName: string = options.entityCreateInput?.name || formatEntityName(EntityOutput);
@@ -160,10 +157,9 @@ export function baseAuthControllerFactory<T extends BaseEntity>(options: IBaseAu
 			isArray: true,
 		})
 		@ApiBadRequestResponse({ type: ApiException })
-		@UseInterceptors(new TransformInterceptor(EntityOutput))
 		public async get(@Req() req,
-			@Query('pageNumber', new ParseIntWithDefaultPipe(-1)) pageNumber: number = 0,
-			@Query('pageSize', new ParseIntWithDefaultPipe(-1)) pageSize: number = 0,
+			@Query('pageNumber', new ParseIntWithDefaultPipe(0)) pageNumber: number,
+			@Query('pageSize', new ParseIntWithDefaultPipe(0)) pageSize: number,
 			@Query('q') q?: string,
 			@Query('sortBy') sortBy?: string,
 			@Query('filter') rawFilter?: string,
@@ -218,6 +214,7 @@ export function baseAuthControllerFactory<T extends BaseEntity>(options: IBaseAu
 				}
 			}
 			catch (e) {
+				console.log(e);
 				throw new InternalServerErrorException(e);
 			}
 		}
@@ -358,7 +355,7 @@ export function baseAuthControllerFactory<T extends BaseEntity>(options: IBaseAu
 						await this.beforeUpdateOrCreate(body);
 					}
 
-					const data = await this._service.update<typeof EntityUpdateInput>(id, body);
+					const data = await this._service.update<typeof EntityUpdateInput>(id, body as any);
 
 					response.send(data);
 

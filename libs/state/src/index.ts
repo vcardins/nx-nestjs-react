@@ -13,7 +13,7 @@ export type AppState = {
 	lookup: ReturnType<typeof createLookup>;
 	account: ReturnType<typeof createAccount>;
 	household: ReturnType<typeof createHousehold>;
-	setAuthInfo: (props: IAuthState, endpoints: IEndpointsConfig) => void;
+	init: (props: IAuthState, endpoints: IEndpointsConfig) => void;
 	resetAuthInfo: () => void;
 };
 
@@ -23,7 +23,7 @@ export const useStore: UseStore<AppState> = createStore((set, get, api) => {
 	const account = namespace(Namespaces.Account, createAccount)(set, get, api);
 	const household = namespace(Namespaces.Household, createHousehold)(set, get, api);
 
-	const setAuthInfo = (props: IAuthState, endpoints: IEndpointsConfig) => {
+	const init = (props: IAuthState, endpoints: IEndpointsConfig) => {
 		todo.init(props);
 		lookup.init(props);
 		household.init(props);
@@ -39,7 +39,7 @@ export const useStore: UseStore<AppState> = createStore((set, get, api) => {
 		lookup,
 		account,
 		household,
-		setAuthInfo,
+		init,
 		resetAuthInfo,
 	};
 });

@@ -65,7 +65,7 @@ export abstract class BaseService<T extends BaseEntity> implements IBaseService<
 				throw new BadGatewayException('Entity could not be found');
 			}
 
-			entity = this.repository.merge(entity, model as any);
+			entity = this.repository.merge(entity, model as TUpdate);
 
 			return this.repository.save(entity as any);
 		}

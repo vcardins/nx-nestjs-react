@@ -2,16 +2,15 @@ import { Controller, Patch, Body, Response, InternalServerErrorException } from 
 import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiBadRequestResponse, ApiOperation } from '@nestjs/swagger';
 import { Entity } from 'typeorm';
 
-import { SocketGateway, baseAuthControllerFactory, ModuleGroup, getUtcDate, Roles, Permissions, ApiException, getDefaultPermissions } from '@xapp/api/core';
+import { SocketGateway, baseAuthControllerFactory, ModuleGroup, Permissions, ApiException, getDefaultPermissions } from '@xapp/api/core';
 import { getOperationId } from '@xapp/shared/utils';
-import { ModuleName, SortDirection, UserGroup } from '@xapp/shared/types';
+import { ModuleName, SortDirection } from '@xapp/shared/types';
 
 import { TodoService } from './todo.service';
 import { Todo } from './todo.entity';
 import { TodoOutput } from './dto/todo.output';
 import { ITodoComplete } from './todo-complete.interface';
 
-const roles: UserGroup[] = [];
 const auth = getDefaultPermissions();
 
 const BaseController = baseAuthControllerFactory<Todo>({
@@ -34,13 +33,8 @@ export class TodoController extends BaseController {
 			{ sortBy: { dateCompleted: SortDirection.DESC, dateCreated: SortDirection.DESC } },
 		);
 	}
-	beforeCreate(body: Todo): Promise<void> {
-		body.dateCreated = getUtcDate();
-		return;
-	}
 
 	@Patch('complete')
-	@Roles(...roles)
 	@Permissions(...auth?.update?.permissions)
 	@ApiBody({
 		type: Todo,

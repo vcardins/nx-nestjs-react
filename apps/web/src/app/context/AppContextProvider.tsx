@@ -46,7 +46,7 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 			}
 
 			if (accessToken) {
-				dataStore.setAuthInfo({ authHeader }, appConfig.endpoints);
+				dataStore.init({ authHeader }, appConfig.endpoints);
 
 				await dataStore.account.getUserProfile();
 				await dataStore.lookup.read();
@@ -69,7 +69,7 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 		dataStore.resetAuthInfo,
 		dataStore.account.getUserProfile,
 		dataStore.lookup.read,
-		dataStore.setAuthInfo,
+		dataStore.init,
 	]);
 
 	const value = useMemo<IAppContext>(

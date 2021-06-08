@@ -39,7 +39,6 @@
 		"shared-utils": { "tags": [] },
 		"state-account": { "tags": [] },
 		"state-global": { "tags": [] },
-		"state-samples": { "tags": [] },
 		"state-shared": { "tags": [] },
 		"state-todo": { "tags": [] },
 		"state": { "tags": [] },

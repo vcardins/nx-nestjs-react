@@ -381,27 +381,6 @@
 				}
 			}
 		},
-		"state-samples": {
-			"root": "libs/state/samples",
-			"sourceRoot": "libs/state/samples/src",
-			"projectType": "library",
-			"architect": {
-				"lint": {
-					"builder": "@nrwl/linter:eslint",
-					"options": {
-						"lintFilePatterns": ["libs/state/samples/**/*.ts"]
-					}
-				},
-				"test": {
-					"builder": "@nrwl/jest:jest",
-					"outputs": ["coverage/libs/state/samples"],
-					"options": {
-						"jestConfig": "libs/state/samples/jest.config.js",
-						"passWithNoTests": true
-					}
-				}
-			}
-		},
 		"state-account": {
 			"root": "libs/state/account",
 			"sourceRoot": "libs/state/account/src",

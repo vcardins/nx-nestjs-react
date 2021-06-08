@@ -43,13 +43,6 @@ export function getNavigation(routes: IKeyedRoute, userGroups: IGroupWithPermiss
 			route: routes[PageKey.Admin],
 		},
 		{
-			id: getNavId('state'),
-			title: 'State Management',
-			type: NavItemTypes.Route,
-			icon: ic_chrome_reader_mode,
-			route: routes[PageKey.State],
-		},
-		{
 			id: getNavId('household'),
 			title: 'Household',
 			type: NavItemTypes.Route,

@@ -4,10 +4,8 @@ import { Navigate } from 'react-router-dom';
 import { IPageConfig, AuthGroups, LayoutStyles, PageKey } from '@xapp/shared/types';
 import { appConfig } from '@xapp/shared/config';
 
-
 import { AdminPageConfig } from './Admin/@config';
 import { DashboardPageConfig } from './Dashboard/@config';
-import { StatePageConfig } from './State/@config';
 import { Error404PageConfig } from './Errors/404/@config';
 import { Error500PageConfig } from './Errors/500/@config';
 import { TodoPageConfig } from './Todo/@config';
@@ -43,7 +41,6 @@ const DefaultPageConfig: IPageConfig = {
 export const pagesConfigs = [
 	...authPagesConfigs,
 	DashboardPageConfig,
-	StatePageConfig,
 	AdminPageConfig,
 	Error404PageConfig,
 	Error500PageConfig,

@@ -1,7 +1,7 @@
 import {MigrationInterface, QueryRunner} from "typeorm";
 
-export class InitialSchema1623186512622 implements MigrationInterface {
-    name = 'InitialSchema1623186512622'
+export class InitialSchema1623187823693 implements MigrationInterface {
+    name = 'InitialSchema1623187823693'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE "public_file" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "url" varchar NOT NULL, "key" varchar NOT NULL)`);
@@ -13,7 +13,7 @@ export class InitialSchema1623186512622 implements MigrationInterface {
         await queryRunner.query(`CREATE TABLE "oauth_tokens_access_token" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "provider" varchar(20) NOT NULL, "provider_client_id" varchar(200) NOT NULL, "granted_at" datetime NOT NULL DEFAULT (datetime('now')), "access_token" varchar(500) NOT NULL, "refresh_token" varchar(200), "expires_at" datetime, "token_type" varchar(200), "scope" varchar(512), "user_id" integer)`);
         await queryRunner.query(`CREATE TABLE "household_member" ("user_id" integer PRIMARY KEY NOT NULL, "date_created" datetime NOT NULL, "is_default" boolean, "is_owner" boolean NOT NULL, "description" varchar(40), "household_id" integer, CONSTRAINT "UQ_66898819f7c858a081a9dcff3fc" UNIQUE ("user_id"), CONSTRAINT "REL_66898819f7c858a081a9dcff3f" UNIQUE ("user_id"))`);
         await queryRunner.query(`CREATE TABLE "task" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(60) NOT NULL, "date_created" datetime NOT NULL, "date_completed" datetime, "description" text, "proposed_time" time, "executor_user_id" integer, "assigned_user_id" integer, "frequency_id" integer, "household_id" integer, "room_type_id" integer)`);
-        await queryRunner.query(`CREATE TABLE "frequency" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(20) NOT NULL, "days_apart" integer NOT NULL, CONSTRAINT "UQ_3c0ef2aca8cb1bdf78434dafcb0" UNIQUE ("id"))`);
+        await queryRunner.query(`CREATE TABLE "frequency" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(20) NOT NULL, "days_apart" integer NOT NULL)`);
         await queryRunner.query(`CREATE TABLE "task_template" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(60) NOT NULL, "description" text, "is_active" boolean, "estimated_time" integer, "reward_points" integer)`);
         await queryRunner.query(`CREATE TABLE "room_task" ("room_type_id" integer NOT NULL, "task_id" integer NOT NULL, "relevance" integer, "frequency_id" integer, "task_template_id" integer, PRIMARY KEY ("room_type_id", "task_id"))`);
         await queryRunner.query(`CREATE TABLE "room_type" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(40) NOT NULL, "description" varchar(255), CONSTRAINT "UQ_abd0f8a4c8a444a84fa2b343353" UNIQUE ("id"))`);

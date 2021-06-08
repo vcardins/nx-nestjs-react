@@ -7,9 +7,6 @@ import { Task } from '../../tasks/entities/task.entity';
 
 @Entity('frequency')
 export class Frequency extends BaseEntity {
-	@Column('int', { primary: true, name: 'id', unique: true })
-	id: number;
-
 	@Column('varchar', { name: 'name', length: 20 })
 	name: string;
 

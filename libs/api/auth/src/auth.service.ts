@@ -1,11 +1,11 @@
-import { UserGroup, VerificationKeyPurpose } from '@xapp/shared/auth';
+import { UserGroup, VerificationKeyPurpose } from '@xapp/shared/types';
 /* eslint-disable camelcase */
 import { BadRequestException, HttpService, Inject, Injectable, Logger/*, NotFoundException*/ } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { stringify } from 'querystring';
 import { map } from 'rxjs/operators';
 
-import { OAuthProvider } from '@xapp/shared/auth';
+import { OAuthProvider } from '@xapp/shared/types';
 import { CustomError } from '@xapp/shared/exceptions';
 import { getUtcDate } from '@xapp/shared/utils';
 import { ICoreConfig, CORE_CONFIG_TOKEN } from '@xapp/api/core';

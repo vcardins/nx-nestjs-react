@@ -1,5 +1,5 @@
-import { IActionResponse } from '@xapp/shared/types';
 import {
+	IActionResponse,
 	IUserProfileInput,
 	ISignedUserOutput,
 	IUserProfile,
@@ -11,10 +11,9 @@ import {
 	IResetPasswordInput,
 	IForgotPasswordInput,
 	ISignUpInput,
-} from '@xapp/shared/auth';
+} from '@xapp/shared/types';
 import { IEndpointsConfig } from '@xapp/shared/config';
 import { DataContext } from '@xapp/state/shared';
-
 const options = { noAuthToken: true };
 
 export class AccountStore extends DataContext {

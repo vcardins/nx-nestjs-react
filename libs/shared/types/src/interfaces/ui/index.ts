@@ -15,4 +15,4 @@ export * from './IRoutedPageProps';
 export * from './IRouteUriConfig';
 export * from './ITheme';
 export * from './IToolbar';
-export * from './IUserPreferences';
+export * from './INotifier';

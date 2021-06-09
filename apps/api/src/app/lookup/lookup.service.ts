@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { OAuthProvider, UserGroup, AuthGroups } from '@xapp/shared/auth';
+import { OAuthProvider, UserGroup, AuthGroups } from '@xapp/shared/types';
 import { DateFormat, FrequencyOutput, RoomTypeOutput } from '@xapp/shared/types';
 
 import { FrequencyService } from '../shared/frequency.service';

@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, MaxLength /* Matches*/ } from 'class-validator';
 import { JSONSchema } from 'class-validator-jsonschema';
 
-import { IChangePasswordInput } from '@xapp/shared/auth';
+import { IChangePasswordInput } from '@xapp/shared/types';
 import { Unmatch } from '@xapp/api/core';
 
 @JSONSchema({

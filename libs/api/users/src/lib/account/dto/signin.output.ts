@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { MaxLength } from 'class-validator';
-import { ISignedUserOutput } from '@xapp/shared/auth';
+import { ISignedUserOutput } from '@xapp/shared/types';
 
 import { GroupWithPermissionsDto } from '@xapp/api/access-control';
 import { UserProfileDto } from '../../dto/user-profile.dto';

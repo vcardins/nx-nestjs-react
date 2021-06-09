@@ -4,7 +4,7 @@ import { plainToClassFromExist, plainToClass } from 'class-transformer';
 import { IEvent, CustomError } from '@xapp/api/core';
 import { getUtcDate, randomAsciiString } from '@xapp/shared/utils';
 import { MailService } from '@xapp/api/mail';
-import { UserGroup, VerificationKeyPurpose } from '@xapp/shared/auth';
+import { UserGroup, VerificationKeyPurpose } from '@xapp/shared/types';
 import { GroupService } from '@xapp/api/access-control';
 
 import {

@@ -2,10 +2,8 @@ import React, { useEffect, useMemo } from 'react';
 import { RouteObject } from 'react-router';
 import { useRoutes, useLocation, matchRoutes } from 'react-router-dom';
 
-import { ISignedUserOutput } from '@xapp/shared/auth';
+import { IKeyedRoute, IRoute, ISignedUserOutput } from '@xapp/shared/types';
 import { IAppConfig } from '@xapp/shared/config';
-import { IKeyedRoute, IRoute } from '@xapp/shared/types';
-
 import { Layouts } from './layouts';
 
 interface ILayoutProps {

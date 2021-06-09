@@ -2,9 +2,8 @@ import React, { memo, useContext, useRef } from 'react';
 import { Link /*, useLocation*/ } from 'react-router-dom';
 
 import { FieldGroup, Form, TextInput, Button, Submit, useForm } from '@xapp/react/core';
-import { useAuth } from '@xapp/react/auth';
 
-import { OAuthProvider, ISignInInput } from '@xapp/shared/auth';
+import { OAuthProvider, ISignInInput } from '@xapp/shared/types';
 import { PageKey } from '@xapp/shared/types';
 
 import { validationSchema } from './schema';

@@ -1,5 +1,7 @@
 import { IKeyedRoute, INavItem, NavItemTypes, PageKey } from '@xapp/shared/types';
-import { IGroupWithPermissions, hasRoutePermission } from '@xapp/shared/auth';
+import { IGroupWithPermissions } from '@xapp/shared/types';
+import { hasRoutePermission } from '@xapp/shared/utils'
+;
 /* eslint-disable camelcase */
 import { ic_fingerprint } from 'react-icons-kit/md/ic_fingerprint';
 import { ic_person_pin } from 'react-icons-kit/md/ic_person_pin';

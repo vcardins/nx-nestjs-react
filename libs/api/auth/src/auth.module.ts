@@ -5,7 +5,7 @@ import { authenticate } from 'passport';
 import { CoreModule } from '@xapp/api/core';
 import { MailModule } from '@xapp/api/mail';
 import { FilesModule } from '@xapp/api/files';
-import { OAuthProvider } from '@xapp/shared/auth';
+import { OAuthProvider } from '@xapp/shared/types';
 import { DatabaseModule } from '@xapp/api/database';
 import { UserModule } from '@xapp/api/users';
 import { AccessControlModule } from '@xapp/api/access-control';

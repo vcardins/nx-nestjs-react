@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 import { JSONSchema } from 'class-validator-jsonschema';
 
-import { IVerifyPhoneNumberInput } from '@xapp/shared/auth';
+import { IVerifyPhoneNumberInput } from '@xapp/shared/types';
 
 @JSONSchema({
 	description: 'A verify email object',

@@ -6,10 +6,8 @@ import { RouteObject } from 'react-router';
 import { useNavigate, useLocation, matchRoutes } from 'react-router-dom';
 
 import { appConfig, IAppConfig } from '@xapp/shared/config';
-import { hasRoutePermission } from '@xapp/shared/auth';
-import { IRoute, IKeyedRoute, PageKey } from '@xapp/shared/types';
-
-import { IAuthContext, useAuth } from './AuthContextProvider';
+import { IRoute, IKeyedRoute, PageKey, ISignedUserOutput } from '@xapp/shared/types';
+import { hasRoutePermission } from '@xapp/shared/utils';
 
 interface IAuthorizationProps {
 	children: (authContext: IAuthContext, config: IAppConfig) => React.ReactElement;

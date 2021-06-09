@@ -1,7 +1,7 @@
 import { MaxLength, IsOptional/*, Matches*/ } from 'class-validator';
 import { JSONSchema } from 'class-validator-jsonschema';
 
-import { IUserProfileInput } from '@xapp/shared/auth';
+import { IUserProfileInput } from '@xapp/shared/types';
 
 @JSONSchema({
 	description: 'A user signup object',

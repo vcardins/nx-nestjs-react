@@ -1,5 +1,5 @@
 import React from 'react';
-import { ISignedUserOutput } from '@xapp/shared/auth';
+import { ISignedUserOutput } from '@xapp/shared/types';
 import { IAppConfig } from '@xapp/shared/config';
 import { IRoute } from '@xapp/shared/types';
 

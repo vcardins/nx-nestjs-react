@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { MaxLength } from 'class-validator';
 
-import { IUserProfile } from '@xapp/shared/auth';
+import { IUserProfile } from '@xapp/shared/types';
 
 export class UserProfileDto implements IUserProfile {
 	@ApiProperty()

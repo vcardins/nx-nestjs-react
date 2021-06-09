@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, MaxLength /* Matches*/ } from 'class-validator';
 import { JSONSchema } from 'class-validator-jsonschema';
 
-import { IResetPasswordInput } from '@xapp/shared/auth';
+import { IResetPasswordInput } from '@xapp/shared/types';
 import { Match } from '@xapp/api/core';
 
 import { BasePasswordInput } from './base-password.input';

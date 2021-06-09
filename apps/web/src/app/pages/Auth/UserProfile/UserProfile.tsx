@@ -1,7 +1,7 @@
 import React, { memo, useRef } from 'react';
 
 import { Form, TextInput, Page, Submit, FieldGroup, DatePicker, formatDate, useForm } from '@xapp/react/core';
-import { IUserProfileInput } from '@xapp/shared/auth';
+import { IUserProfileInput } from '@xapp/shared/types';
 import { useStore } from '@xapp/state';
 
 import { validationSchema } from './schema';

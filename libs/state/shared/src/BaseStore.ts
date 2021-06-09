@@ -35,7 +35,7 @@ export function createBaseStore<
 				return;
 			}
 
-			setLoading(set);
+			setLoading(set)();
 
 			try {
 				const items = await store.readAll(filters);
@@ -53,7 +53,7 @@ export function createBaseStore<
 				return;
 			}
 
-			setLoading(set);
+			setLoading(set)();
 
 			try {
 				const item = !id
@@ -81,7 +81,7 @@ export function createBaseStore<
 				return;
 			}
 
-			setLoading(set);
+			setLoading(set)();
 
 			try {
 				await store.delete(id);

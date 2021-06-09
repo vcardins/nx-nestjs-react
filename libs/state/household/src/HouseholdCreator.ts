@@ -20,7 +20,7 @@ export const createHousehold: StateCreator<IHouseholdState> = createBaseStore<IH
 				return;
 			}
 
-			setLoading(set);
+			setLoading(set)();
 
 			try {
 				const response = await store.addMember(model);

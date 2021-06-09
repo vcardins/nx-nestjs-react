@@ -26,7 +26,7 @@ export const createLookup: StateCreator<ILookupState> = (set, get, api) => ({
 			return;
 		}
 
-		setLoading(set);
+		setLoading(set)();
 
 		try {
 			const { dateFormats } = await store.read();

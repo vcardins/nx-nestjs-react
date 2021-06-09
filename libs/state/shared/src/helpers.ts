@@ -34,3 +34,8 @@ export const setSuccess = <TState extends IApiCallState, TValues = Partial<TStat
 			...props,
 		});
 	};
+
+export const setReset = <TState extends IApiCallState>(set: SetState<TState>) =>
+	() => {
+		set({ });
+	};

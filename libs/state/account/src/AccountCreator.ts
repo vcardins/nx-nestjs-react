@@ -29,7 +29,7 @@ const getUserProfile = (set: SetState<IAccountState>, get: GetState<IAccountStat
 		return;
 	}
 
-	setLoading(set);
+	setLoading(set)();
 
 	try {
 		const userInfo = await store.getUserProfile();
@@ -50,7 +50,7 @@ const signUp = (set: SetState<IAccountState>, get: GetState<IAccountState>) => a
 		return;
 	}
 
-	setLoading(set);
+	setLoading(set)();
 
 	try {
 		const profile = await store.signUp(data);
@@ -69,7 +69,7 @@ const verifyEmail = (set: SetState<IAccountState>, get: GetState<IAccountState>)
 		return;
 	}
 
-	setLoading(set);
+	setLoading(set)();
 
 	try {
 		const response = await store.verifyEmail(data);
@@ -88,7 +88,7 @@ const verifyPhoneNumber = (set: SetState<IAccountState>, get: GetState<IAccountS
 		return;
 	}
 
-	setLoading(set);
+	setLoading(set)();
 
 	try {
 		const response = await store.verifyPhoneNumber(data);
@@ -107,7 +107,7 @@ const forgotPassword = (set: SetState<IAccountState>, get: GetState<IAccountStat
 		return;
 	}
 
-	setLoading(set);
+	setLoading(set)();
 
 	try {
 		const response = await store.forgotPassword(data);
@@ -126,7 +126,7 @@ const updateProfile = (set: SetState<IAccountState>, get: GetState<IAccountState
 		return;
 	}
 
-	setLoading(set);
+	setLoading(set)();
 
 	try {
 		const profile = await store.updateProfile(data);
@@ -149,7 +149,7 @@ const closeAccount = (set: SetState<IAccountState>, get: GetState<IAccountState>
 		return;
 	}
 
-	setLoading(set);
+	setLoading(set)();
 
 	try {
 		const response = await store.closeAccount();
@@ -168,7 +168,7 @@ const reopenAccount = (set: SetState<IAccountState>, get: GetState<IAccountState
 		return;
 	}
 
-	setLoading(set);
+	setLoading(set)();
 
 	try {
 		const response = await store.reopenAccount(data);
@@ -187,7 +187,7 @@ const changePhoneNumber = (set: SetState<IAccountState>, get: GetState<IAccountS
 		return;
 	}
 
-	setLoading(set);
+	setLoading(set)();
 
 	try {
 		const response = await store.changePhoneNumber(data);
@@ -206,7 +206,7 @@ const changePassword = (set: SetState<IAccountState>, get: GetState<IAccountStat
 		return;
 	}
 
-	setLoading(set);
+	setLoading(set)();
 
 	try {
 		const response = await store.changePassword(data);
@@ -225,7 +225,7 @@ const resetPassword = (set: SetState<IAccountState>, get: GetState<IAccountState
 		return;
 	}
 
-	setLoading(set);
+	setLoading(set)();
 
 	try {
 		const response = await store.resetPassword(data);

@@ -26,7 +26,7 @@ export interface ITodoState extends ICrudState<TodoStore, TodoOutput> {
 // 			return;
 // 		}
 
-// 		setLoading(set);
+// 		setLoading(set)();
 
 // 		try {
 // 			const items = await store.readAll(filters);
@@ -44,7 +44,7 @@ export interface ITodoState extends ICrudState<TodoStore, TodoOutput> {
 // 			return;
 // 		}
 
-// 		setLoading(set);
+// 		setLoading(set)();
 
 // 		try {
 // 			const isNew = !id;
@@ -71,7 +71,7 @@ export interface ITodoState extends ICrudState<TodoStore, TodoOutput> {
 // 			return;
 // 		}
 
-// 		setLoading(set);
+// 		setLoading(set)();
 
 // 		try {
 // 			await store.delete(id);
@@ -88,7 +88,7 @@ export interface ITodoState extends ICrudState<TodoStore, TodoOutput> {
 // 			return;
 // 		}
 
-// 		setLoading(set);
+// 		setLoading(set)();
 
 // 		try {
 // 			const response = await store.complete(todo.id, !!todo.dateCompleted);
@@ -121,7 +121,7 @@ export const createTodo: StateCreator<ITodoState> = createBaseStore<ITodoState, 
 				return;
 			}
 
-			setLoading(set);
+			setLoading(set)();
 
 			try {
 				const response = await store.complete(todo.id, !!todo.dateCompleted);

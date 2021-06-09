@@ -1,9 +1,6 @@
 import { GetState, SetState, StateCreator, UseStore } from 'zustand';
 
-import { IAuthState, ApiCallStatus, createStore, setError, setLoading, setSuccess } from '@xapp/state/shared';
-
-import { AccountStore } from './AccountStore';
-import { IAccountState } from './IAccountState';
+import { IAuthState, ApiCallStatus, createStore, setError, setLoading, setSuccess, IStoreState } from '@xapp/state/shared';
 import {
 	IUserProfileInput,
 	ISignedUserOutput,
@@ -15,11 +12,36 @@ import {
 	IResetPasswordInput,
 	IForgotPasswordInput,
 	ISignUpInput,
-} from '@xapp/shared/auth';
-import { IEndpointsConfig } from '@xapp/shared/config';
+	IActionResponse,
+	IEndpointsConfig,
+} from '@xapp/shared/types';
+import { AccountStore } from './AccountStore';
+
+interface IAccountStateValues {
+	userInfo?: ISignedUserOutput;
+	response?: IActionResponse;
+}
+
+export interface IAccountState extends IAccountStateValues, Omit<IStoreState<AccountStore>, 'init'> {
+	init: (props: IAuthState, endpoints: IEndpointsConfig) => void;
+
+	signUp(data: ISignUpInput): Promise<void>;
+	verifyEmail(data: IVerifyEmailInput): Promise<void>;
+	verifyPhoneNumber(data: IVerifyPhoneNumberInput): Promise<void>;
+	forgotPassword(data: IForgotPasswordInput): Promise<void>;
+	updateProfile(data: IUserProfileInput): Promise<void>;
+	getUserProfile(): Promise<ISignedUserOutput>;
+	closeAccount(): Promise<void>;
+	reopenAccount(data: ISignInInput): Promise<void>;
+	changePhoneNumber(data: IChangePhoneNumberInput): Promise<void>;
+	changePassword(data: IChangePasswordInput): Promise<void>;
+	resetPassword(data: IResetPasswordInput): Promise<void>;
+}
 
 const init = (set: SetState<IAccountState>) => (props: IAuthState, endpoints: IEndpointsConfig) => {
-	set({ store: new AccountStore(props.authHeader, endpoints) });
+	set({
+		store: new AccountStore(props.authHeader, endpoints),
+	});
 };
 
 const getUserProfile = (set: SetState<IAccountState>, get: GetState<IAccountState>) => async (): Promise<ISignedUserOutput> => {

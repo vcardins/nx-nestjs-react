@@ -1,9 +1,9 @@
 import React, { FC, Context, createContext, useEffect, useState, useRef, useMemo } from 'react'; // , Dispatch, useReducer
 
 import { IKeyedRoute, INavItem, IRoute } from '@xapp/shared/types';
-import { useAuth } from '@xapp/react/auth';
-import { appConfig } from '@xapp/shared/config';
 import { useStore } from '@xapp/state';
+import { useNotifier } from '@xapp/react/core';
+import { appConfig } from '@xapp/shared/config';
 
 export interface IAppContext {
 	activeRoute: IRoute;
@@ -11,7 +11,6 @@ export interface IAppContext {
 
 	navigation: INavItem[];
 	onActivateRoute?: (value: IRoute, location: string) => void;
-	onSignOut: (isTriggeredByExpiredSession?: boolean) => Promise<void>;
 }
 
 const initialContext: IAppContext = {
@@ -19,7 +18,6 @@ const initialContext: IAppContext = {
 	activeRoute: null,
 	navigation: null,
 	onActivateRoute: () => null,
-	onSignOut: () => null,
 };
 
 const AppContext: Context<IAppContext> = createContext<IAppContext>(initialContext);
@@ -30,11 +28,12 @@ interface IAppContextProviderProps {
 }
 
 const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: IAppContextProviderProps) => {
-	const { accessToken, onSignOut, authHeader } = useAuth();
+	const { accessToken, authHeader } = useStore((state) => state.auth);
 
 	const [activeRoute, setActiveRoute] = useState(null);
 	const [navigation, setNavigation] = useState<INavItem[]>([]);
 	const dataStore = useStore();
+	const notifier = useNotifier();
 
 	const ref = useRef(null);
 
@@ -46,8 +45,7 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 			}
 
 			if (accessToken) {
-				dataStore.init({ authHeader }, appConfig.endpoints);
-
+				await dataStore.init(appConfig, notifier, { authHeader });
 				await dataStore.account.getUserProfile();
 				await dataStore.lookup.read();
 			} else {
@@ -63,6 +61,7 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 		return () => {
 			dataStore.resetAuthInfo();
 		};
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		accessToken,
 		authHeader,
@@ -78,9 +77,8 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 			activeRoute,
 			navigation,
 			onActivateRoute: setActiveRoute,
-			onSignOut,
 		}),
-		[routes, activeRoute, navigation, onSignOut]
+		[routes, activeRoute, navigation]
 	);
 
 	return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

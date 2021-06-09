@@ -14,6 +14,7 @@ export interface IRouteUriConfig {
 	verifyAccount: string;
 	resetPassword: string;
 	changePassword: string;
+	changePhoneNumber: string;
 	updateProfile: string;
 	userProfile: string;
 	notFound: string;

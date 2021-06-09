@@ -3,24 +3,18 @@ import { toast } from 'react-toastify';
 
 import { ic_close } from 'react-icons-kit/md/ic_close';
 
-import { INotifier, INotifierCallback } from './INotifier';
+import { INotifier, INotifierCallback } from '@xapp/shared/types';
 import { Icon } from '../../components/Icon';
 
 /**
  * Notifier class
  */
-export class Notifier implements INotifier {
-	/**
-	 * Report message
-	 * @param message Message
-	 * @param title Title
-	 * @param callback Callback
-	 */
-	public report(
+export const useNotifier = (): INotifier => ({
+	info: (
 		message: string,
 		title?: string,
 		callback?: INotifierCallback,
-	) {
+	) => {
 		toast.info(title, {
 			position: 'bottom-right',
 			autoClose: 2500,
@@ -32,14 +26,27 @@ export class Notifier implements INotifier {
 		});
 
 		callback?.();
-	}
+	},
 
-	/**
-	 * Report error
-	 * @param error Error message
-	 * @param callback Callback
-	 */
-	public reportError(error: string, onClose?: INotifierCallback) {
+	success: (
+		message: string,
+		title?: string,
+		callback?: INotifierCallback,
+	) => {
+		toast.info(title, {
+			position: 'bottom-right',
+			autoClose: 2500,
+			hideProgressBar: true,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+		});
+
+		callback?.();
+	},
+
+	error: (error: string, onClose?: INotifierCallback) => {
 		toast.error(
 			<>
 				<Icon
@@ -68,11 +75,11 @@ export class Notifier implements INotifier {
 		);
 
 		onClose?.();
-	}
+	},
 
-	public showLoading(show = true) {
+	showLoading: (show = true) => {
 		if (show) {
 			toast.info('Loading ...');
 		}
-	}
-}
+	},
+});

@@ -5,12 +5,13 @@ import { Location } from 'history';
 import { RouteObject } from 'react-router';
 import { useNavigate, useLocation, matchRoutes } from 'react-router-dom';
 
-import { appConfig, IAppConfig } from '@xapp/shared/config';
-import { IRoute, IKeyedRoute, PageKey, ISignedUserOutput } from '@xapp/shared/types';
+import { appConfig } from '@xapp/shared/config';
+import { IRoute, IKeyedRoute, PageKey } from '@xapp/shared/types';
 import { hasRoutePermission } from '@xapp/shared/utils';
+import { useStore } from '@xapp/state';
 
 interface IAuthorizationProps {
-	children: (authContext: IAuthContext, config: IAppConfig) => React.ReactElement;
+	children: React.ReactElement;
 	routes: IKeyedRoute;
 	onActivateRoute?: (route: IRoute, pathname: string) => void;
 }
@@ -38,7 +39,7 @@ interface IState {
 export const Authorization = ({ children, routes }: IAuthorizationProps) => {
 	const location = useLocation() as Location<IState>; // <{ redirectUrl?: string }>
 	const navigate = useNavigate();
-	const { user, isSessionValid, onSignOut } = useAuth();
+	const { user, isSessionValid, onSignOut } = useStore((state) => state.auth);
 	const notLoginLocation = location.pathname !== appConfig.routes.signIn;
 
 	const getMatchedRoute = useCallback((pathname: string): IRoute => {
@@ -86,7 +87,14 @@ export const Authorization = ({ children, routes }: IAuthorizationProps) => {
 		if (pathname && pathname !== location.pathname) {
 			navigate(pathname, { state });
 		}
-	}, [navigate, isAccessAllowed, notLoginLocation, location.pathname, location?.state?.redirectUrl, user?.groups?.length]);
+	}, [
+		navigate,
+		isAccessAllowed,
+		notLoginLocation,
+		location.pathname,
+		location?.state?.redirectUrl,
+		user?.groups?.length,
+	]);
 
 	useEffect(() => {
 		// It listen route changes in order to:
@@ -113,7 +121,16 @@ export const Authorization = ({ children, routes }: IAuthorizationProps) => {
 		historyListener();
 
 	// 	// return () => historyListener();
-	}, [getMatchedRoute, notLoginLocation, navigate, isAccessAllowed, isSessionValid, location.pathname, onSignOut, user]);
+	}, [
+		getMatchedRoute,
+		notLoginLocation,
+		navigate,
+		isAccessAllowed,
+		isSessionValid,
+		location.pathname,
+		onSignOut,
+		user,
+	]);
 
 	useEffect(() => {
 		handleRouteRedirection();
@@ -125,5 +142,5 @@ export const Authorization = ({ children, routes }: IAuthorizationProps) => {
 		return hasRoutePermission(route.auth, user?.groups);
 	}
 
-	return children(useAuth(), appConfig);
+	return children;
 };

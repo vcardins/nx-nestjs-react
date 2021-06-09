@@ -11,8 +11,8 @@ import {
 	IResetPasswordInput,
 	IForgotPasswordInput,
 	ISignUpInput,
+	IEndpointsConfig,
 } from '@xapp/shared/types';
-import { IEndpointsConfig } from '@xapp/shared/config';
 import { DataContext } from '@xapp/state/shared';
 const options = { noAuthToken: true };
 

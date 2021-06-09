@@ -8,6 +8,7 @@ import { PageKey } from '@xapp/shared/types';
 
 import { validationSchema } from './schema';
 import { appContext } from '../../../context';
+import { useStore } from '@xapp/state';
 
 // import { GoogleLogo } from './logos';
 
@@ -22,7 +23,7 @@ const normalizePath = (path: string | string[]): string => (Array.isArray(path) 
 const SignInPage = memo(() => {
 	// const location = useLocation();
 	const { routes } = useContext(appContext);
-	const { onSignIn, getProviderUri } = useAuth(); // getOauthAccessToken
+	const { onSignIn, getProviderUri } = useStore((state) => state.auth); // getOauthAccessToken
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<ISignInInput>({
 		initialValues,
 		onSubmit: onSignIn,

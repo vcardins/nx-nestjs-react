@@ -1,5 +1,4 @@
 import { RestClient, RestMethod, IRestClientPayload } from '@xapp/shared/api';
-// import { INotifier, Notifier } from '../components/Notifier';
 
 export interface IDataContextProps {
 	basePath?: string;
@@ -10,7 +9,6 @@ export interface IDataContextProps {
 
 export class DataContext<TOutput = any, TInputCreate = any, TInputUpdate = TInputCreate & { id: number }, TFilter = any> {
 	public readonly api: RestClient;
-	// public readonly notifier: INotifier;
 	private basePath: string;
 	private accessToken: string;
 	private refreshToken: string;
@@ -20,7 +18,6 @@ export class DataContext<TOutput = any, TInputCreate = any, TInputUpdate = TInpu
 	constructor(props?: IDataContextProps) {
 		const { basePath, authHeader, refreshToken, hydrateAccessToken: handleUpdateAccessToken } = props ?? ({} as IDataContextProps);
 
-		// this.notifier = new Notifier();
 		this.basePath = basePath;
 		this.refreshToken = refreshToken;
 		this.onUpdateAccessToken = handleUpdateAccessToken;

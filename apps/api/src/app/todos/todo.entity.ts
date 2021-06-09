@@ -1,10 +1,10 @@
 import { Column, Entity, JoinColumn, ManyToOne, BeforeInsert } from 'typeorm';
 
 import { User } from '@xapp/api/users';
-import { BaseEntity, getUtcDate } from '@xapp/api/core';
+import { BaseEntity, getUtcDate, IBaseEntity } from '@xapp/api/core';
 
 @Entity('todo')
-export class Todo extends BaseEntity {
+export class Todo extends BaseEntity implements IBaseEntity {
 	@Column({ name: 'title', length: 255 })
 	title: string;
 

@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { Icon } from '@xapp/react/core';
 
 export const HouseholdItem = styled.li`

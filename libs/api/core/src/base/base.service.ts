@@ -12,14 +12,14 @@ import { AutoMapper } from 'nestjsx-automapper';
 import { IdType } from '@xapp/shared/types';
 import { IPaginationQuery } from './base.interface';
 import { IBaseService, IBaseServiceOptions, IBaseServiceCache, IFindAndCountResult } from './base.interface';
-import { BaseEntity } from './base.entity';
+import { IBaseEntity } from './base.entity';
 import { IEvent } from '../events/events.interface';
 
 // interface ClassType<T> {
 // 	new (): T;
 // }
 
-export abstract class BaseService<T extends BaseEntity> implements IBaseService<T> {
+export abstract class BaseService<T extends IBaseEntity> implements IBaseService<T> {
 	public withMap: boolean;
 	private readonly mapping: (config: AutoMapper) => void;
 	protected readonly mapper: AutoMapper;

@@ -6,3 +6,5 @@ export * from './Themes';
 export * from './auth';
 export * from './ui';
 export * from './SortDirection';
+export * from './RoomTypes';
+export * from './Frequencies';

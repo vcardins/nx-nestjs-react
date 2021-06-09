@@ -70,7 +70,11 @@ export function useForm<T>(props: IUseFormProps<T>, dependencies: string[] | num
 		}
 	};
 
-	useEffect(() => setFormData(initialValues), dependencies);
+	useEffect(() => {
+		setFormData(initialValues);
+
+		return () => setFormData(null);
+	}, dependencies);
 
 	const handleReset = () => setFormData(initialValues);
 

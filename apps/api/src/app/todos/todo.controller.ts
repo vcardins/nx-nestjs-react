@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiBadRequestResponse, ApiOperat
 import { Entity } from 'typeorm';
 
 import { SocketGateway, baseAuthControllerFactory, ModuleGroup, Permissions, ApiException, getDefaultPermissions } from '@xapp/api/core';
-import { getOperationId } from '@xapp/shared/utils';
+import { getOperationId, getUtcDate } from '@xapp/shared/utils';
 import { ModuleName, SortDirection } from '@xapp/shared/types';
 
 import { TodoService } from './todo.service';
@@ -32,6 +32,11 @@ export class TodoController extends BaseController {
 			socketService,
 			{ sortBy: { dateCompleted: SortDirection.DESC, dateCreated: SortDirection.DESC } },
 		);
+	}
+
+	beforeCreate(body: Todo): Promise<void> {
+		body.dateCreated = getUtcDate();
+		return;
 	}
 
 	@Patch('complete')

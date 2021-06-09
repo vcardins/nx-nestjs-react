@@ -3,12 +3,19 @@ import { validateSync } from 'class-validator';
 
 import { CustomValidationError } from '../exceptions/CustomValidationError';
 
-export abstract class BaseEntity extends BaseOrmEntity {
+export interface IBaseEntity {
+	id: number;
+	doBeforeInsertion?(): void;
+	doBeforeUpdate?(): void;
+	validate?(): void;
+}
+
+export abstract class BaseEntity extends BaseOrmEntity implements IBaseEntity {
 	@PrimaryGeneratedColumn()
 	@Column('int', { primary: true })
 	id: number = undefined;
 
-	static get modelName(): string {
+	static get entityName(): string {
 		return this.name;
 	}
 

@@ -15,15 +15,15 @@ export class RoomTask extends BaseEntity {
 	@Column('int', { name: 'relevance', nullable: true })
 	relevance: number | null;
 
-	@ManyToOne(() => Frequency, (frequency) => frequency.roomTasks)
+	@ManyToOne(() => Frequency, ({ roomTasks }) => roomTasks)
 	@JoinColumn([{ name: 'frequency_id', referencedColumnName: 'id' }])
 	frequency: Frequency;
 
 	@ManyToOne(() => TaskTemplate, ({ roomTasks }) => roomTasks)
 	@JoinColumn([{ name: 'task_template_id', referencedColumnName: 'id' }])
-	taskTemplate: TaskTemplate;
+	taskTemplate?: TaskTemplate;
 
-	@ManyToOne(() => RoomType, (roomType) => roomType.tasks)
+	@ManyToOne(() => RoomType, ({ tasks }) => tasks)
 	@JoinColumn([{ name: 'room_type_id', referencedColumnName: 'id' }])
 	roomType: RoomType;
 }

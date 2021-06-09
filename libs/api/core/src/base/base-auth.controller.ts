@@ -39,7 +39,7 @@ import { Permissions } from '../decorators/permissions.decorator';
 import { ApiException } from '../dto/api-exception.dto';
 import { ParseIntWithDefaultPipe } from '../pipes/parse-int-with-default.pipe';
 import { IPaginationQuery, IFindAndCountResult } from './base.interface';
-import { BaseEntity } from './base.entity';
+import { IBaseEntity } from './base.entity';
 
 const metadataKey = 'swagger/apiModelPropertiesArray';
 const excludedCreateMetadata = [':id', ':createdAt', ':updatedAt'];
@@ -56,7 +56,7 @@ export const getDefaultPermissions = (roles: UserGroup[] = []): Record<string, A
 });
 
 
-export function baseAuthControllerFactory<T extends BaseEntity>(options: IBaseAuthControllerFactoryOpts<T>) {
+export function baseAuthControllerFactory<T extends IBaseEntity>(options: IBaseAuthControllerFactoryOpts<T>) {
 	const Entity = options.entity;
 	const EntityOutput = options.entityOutput;
 	const createEntityName: string = options.entityCreateInput?.name || formatEntityName(EntityOutput);

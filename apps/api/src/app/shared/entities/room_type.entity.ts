@@ -1,6 +1,5 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, OneToMany, BaseEntity } from 'typeorm';
 
-import { BaseEntity } from '@xapp/api/core';
 import { RoomTask } from './room_task.entity';
 import { HouseholdRoom } from '../../household/entities/household_room.entity';
 

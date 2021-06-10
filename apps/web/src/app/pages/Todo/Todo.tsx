@@ -28,7 +28,6 @@ import { TodoInput } from '@xapp/shared/types';
 
 import { validationSchema } from './schema';
 import { TodoList, TodoItem, TodoIcon } from './components';
-
 const initialValues: TodoInput = { title: '' };
 const dateFormat = 'MMM D, YYYY h:mm A';
 

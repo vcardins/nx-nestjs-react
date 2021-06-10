@@ -17,7 +17,7 @@ export type AppState = {
 	lookup: ReturnType<typeof createLookup>;
 	todo: ReturnType<typeof createTodo>;
 	init: (appConfig: IAppConfig, notifier: INotifier, authState: IAuthState) => Promise<void>;
-	resetAuthInfo: () => void;
+	reset: () => void;
 };
 
 export const useStore: UseStore<AppState> = createStore((set, get, api) => {
@@ -43,8 +43,8 @@ export const useStore: UseStore<AppState> = createStore((set, get, api) => {
 		});
 	};
 
-	const resetAuthInfo = () => {
-		todo.reset();
+	const resetAppState = () => {
+		account.reset();
 	};
 
 	return {
@@ -56,6 +56,6 @@ export const useStore: UseStore<AppState> = createStore((set, get, api) => {
 		auth,
 		account,
 		household,
-		resetAuthInfo,
+		reset: resetAppState,
 	};
 });

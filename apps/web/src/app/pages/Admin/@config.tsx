@@ -2,7 +2,6 @@ import React from 'react';
 
 import { IPageConfig, AuthGroups, LayoutStyles, PageKey } from '@xapp/shared/types';
 
-
 import Admin from './Admin';
 // const element = React.lazy(() => import('./Admin'));
 

@@ -18,12 +18,12 @@ import {
 	Icon,
 	InlineEdit,
 } from '@xapp/react/core';
+import { HouseholdInput } from '@xapp/shared/types';
 
 import { useStore } from '@xapp/state';
 
 import { validationSchema } from './schema';
 import { HouseholdList, HouseholdItem, HouseholdIcon } from './components';
-import { HouseholdInput } from '@xapp/shared/types';
 
 const initialValues: HouseholdInput = { name: '' };
 

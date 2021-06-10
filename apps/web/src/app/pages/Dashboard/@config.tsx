@@ -3,7 +3,6 @@ import React from 'react';
 import { IPageConfig, AuthGroups, LayoutStyles, PageKey } from '@xapp/shared/types';
 import { appConfig } from '@xapp/shared/config';
 
-
 import Dashboard from './Dashboard';
 // const element = React.lazy(() => import('./Dashboard'));
 

@@ -50,7 +50,7 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 				await dataStore.lookup.read();
 			} else {
 				setNavigation([]);
-				dataStore.resetAuthInfo();
+				dataStore.reset();
 			}
 
 			ref.current = accessToken;
@@ -59,13 +59,13 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 		bootstrap();
 
 		return () => {
-			dataStore.resetAuthInfo();
+			dataStore.reset();
 		};
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		accessToken,
 		authHeader,
-		dataStore.resetAuthInfo,
+		dataStore.reset,
 		dataStore.account.getUserProfile,
 		dataStore.lookup.read,
 		dataStore.init,

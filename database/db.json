@@ -1,0 +1,1202 @@
+{
+	"frequencies": [
+        {
+            "id": 1,
+            "name": "Daily",
+            "daysApart": 1
+        },
+        {
+            "id": 2,
+            "name": "Every other dat",
+            "daysApart": 2
+        },
+        {
+            "id": 3,
+            "name": "Weekly",
+            "daysApart": 7
+        },
+        {
+            "id": 4,
+            "name": "Biweekly",
+            "daysApart": 14
+        },
+        {
+            "id": 5,
+            "name": "Monthly",
+            "daysApart": 30
+        },
+        {
+            "id": 6,
+            "name": "Biweekly",
+            "daysApart": 60
+        },
+        {
+            "id": 7,
+            "name": "Quarterly",
+            "daysApart": 90
+        },
+        {
+            "id": 8,
+            "name": "Every six months",
+            "daysApart": 180
+        },
+        {
+            "id": 9,
+            "name": "Annually",
+            "daysApart": 360
+        }
+    ],
+    "roomTypes": [
+        {
+            "id": 1,
+            "name": "Living Room",
+            "description": "Living Room"
+        },
+        {
+            "id": 2,
+            "name": "Bedroom",
+            "description": "Bedroom"
+        },
+        {
+            "id": 3,
+            "name": "Kitchen",
+            "description": "Kitchen"
+        },
+        {
+            "id": 4,
+            "name": "Dining Room",
+            "description": "Dining Room"
+        },
+        {
+            "id": 5,
+            "name": "Family Room",
+            "description": "Family Room"
+        },
+        {
+            "id": 6,
+            "name": "Guest Room",
+            "description": "Guest Room"
+        },
+        {
+            "id": 7,
+            "name": "Bathroom",
+            "description": "Bathroom"
+        },
+        {
+            "id": 8,
+            "name": "Game Room",
+            "description": "Game Room"
+        },
+        {
+            "id": 9,
+            "name": "Basement",
+            "description": "Basement"
+        },
+        {
+            "id": 10,
+            "name": "Home Office",
+            "description": "Home Office"
+        },
+        {
+            "id": 11,
+            "name": "Nursery",
+            "description": "Nursery"
+        },
+        {
+            "id": 12,
+            "name": "Playroom",
+            "description": "Playroom"
+        },
+        {
+            "id": 13,
+            "name": "Storage Room",
+            "description": "Storage Room"
+        },
+        {
+            "id": 14,
+            "name": "Garage",
+            "description": "Garage"
+        },
+        {
+            "id": 15,
+            "name": "Laundry room",
+            "description": "Laundry room"
+        }
+    ],
+	"userGroups": [
+			{
+			"id": 1,
+			"name": "admin",
+			"title": "Admin",
+			"permissions": [
+				{
+					"id": 1,
+					"title": "Read user",
+					"action": 1
+				},
+				{
+					"id": 2,
+					"title": "Create user",
+					"action": 2
+				},
+				{
+					"id": 3,
+					"title": "Update user",
+					"action": 3
+				},
+				{
+					"id": 4,
+					"title": "Delete user",
+					"action": 4
+				},
+				{
+					"id": 5,
+					"title": "Approve user",
+					"action": 5
+				},
+				{
+					"id": 6,
+					"title": "Reject user",
+					"action": 6
+				},
+				{
+					"id": 7,
+					"title": "Read group",
+					"action": 1
+				},
+				{
+					"id": 8,
+					"title": "Create group",
+					"action": 2
+				},
+				{
+					"id": 9,
+					"title": "Update group",
+					"action": 3
+				},
+				{
+					"id": 10,
+					"title": "Delete group",
+					"action": 4
+				},
+				{
+					"id": 11,
+					"title": "Approve group",
+					"action": 5
+				},
+				{
+					"id": 12,
+					"title": "Reject group",
+					"action": 6
+				},
+				{
+					"id": 13,
+					"title": "Read permission",
+					"action": 1
+				},
+				{
+					"id": 14,
+					"title": "Create permission",
+					"action": 2
+				},
+				{
+					"id": 15,
+					"title": "Update permission",
+					"action": 3
+				},
+				{
+					"id": 16,
+					"title": "Delete permission",
+					"action": 4
+				},
+				{
+					"id": 17,
+					"title": "Approve permission",
+					"action": 5
+				},
+				{
+					"id": 18,
+					"title": "Reject permission",
+					"action": 6
+				},
+				{
+					"id": 19,
+					"title": "Read todo",
+					"action": 1
+				},
+				{
+					"id": 20,
+					"title": "Create todo",
+					"action": 2
+				},
+				{
+					"id": 21,
+					"title": "Update todo",
+					"action": 3
+				},
+				{
+					"id": 22,
+					"title": "Delete todo",
+					"action": 4
+				},
+				{
+					"id": 23,
+					"title": "Approve todo",
+					"action": 5
+				},
+				{
+					"id": 24,
+					"title": "Reject todo",
+					"action": 6
+				},
+				{
+					"id": 25,
+					"title": "Read household",
+					"action": 1
+				},
+				{
+					"id": 26,
+					"title": "Create household",
+					"action": 2
+				},
+				{
+					"id": 27,
+					"title": "Update household",
+					"action": 3
+				},
+				{
+					"id": 28,
+					"title": "Delete household",
+					"action": 4
+				},
+				{
+					"id": 29,
+					"title": "Approve household",
+					"action": 5
+				},
+				{
+					"id": 30,
+					"title": "Reject household",
+					"action": 6
+				},
+				{
+					"id": 31,
+					"title": "Read task",
+					"action": 1
+				},
+				{
+					"id": 32,
+					"title": "Create task",
+					"action": 2
+				},
+				{
+					"id": 33,
+					"title": "Update task",
+					"action": 3
+				},
+				{
+					"id": 34,
+					"title": "Delete task",
+					"action": 4
+				},
+				{
+					"id": 35,
+					"title": "Approve task",
+					"action": 5
+				},
+				{
+					"id": 36,
+					"title": "Reject task",
+					"action": 6
+				},
+				{
+					"id": 37,
+					"title": "Read taskTemplate",
+					"action": 1
+				},
+				{
+					"id": 38,
+					"title": "Create taskTemplate",
+					"action": 2
+				},
+				{
+					"id": 39,
+					"title": "Update taskTemplate",
+					"action": 3
+				},
+				{
+					"id": 40,
+					"title": "Delete taskTemplate",
+					"action": 4
+				},
+				{
+					"id": 41,
+					"title": "Approve taskTemplate",
+					"action": 5
+				},
+				{
+					"id": 42,
+					"title": "Reject taskTemplate",
+					"action": 6
+				},
+				{
+					"id": 43,
+					"title": "Read roomType",
+					"action": 1
+				},
+				{
+					"id": 44,
+					"title": "Create roomType",
+					"action": 2
+				},
+				{
+					"id": 45,
+					"title": "Update roomType",
+					"action": 3
+				},
+				{
+					"id": 46,
+					"title": "Delete roomType",
+					"action": 4
+				},
+				{
+					"id": 47,
+					"title": "Approve roomType",
+					"action": 5
+				},
+				{
+					"id": 48,
+					"title": "Reject roomType",
+					"action": 6
+				},
+				{
+					"id": 49,
+					"title": "Read frequency",
+					"action": 1
+				},
+				{
+					"id": 50,
+					"title": "Create frequency",
+					"action": 2
+				},
+				{
+					"id": 51,
+					"title": "Update frequency",
+					"action": 3
+				},
+				{
+					"id": 52,
+					"title": "Delete frequency",
+					"action": 4
+				},
+				{
+					"id": 53,
+					"title": "Approve frequency",
+					"action": 5
+				},
+				{
+					"id": 54,
+					"title": "Reject frequency",
+					"action": 6
+				},
+				{
+					"id": 55,
+					"title": "Read room",
+					"action": 1
+				},
+				{
+					"id": 56,
+					"title": "Create room",
+					"action": 2
+				},
+				{
+					"id": 57,
+					"title": "Update room",
+					"action": 3
+				},
+				{
+					"id": 58,
+					"title": "Delete room",
+					"action": 4
+				},
+				{
+					"id": 59,
+					"title": "Approve room",
+					"action": 5
+				},
+				{
+					"id": 60,
+					"title": "Reject room",
+					"action": 6
+				}
+			]
+		},
+		{
+			"id": 2,
+			"name": "user",
+			"title": "User",
+			"permissions": [
+				{
+					"id": 19,
+					"title": "Read todo",
+					"action": 1
+				},
+				{
+					"id": 20,
+					"title": "Create todo",
+					"action": 2
+				},
+				{
+					"id": 21,
+					"title": "Update todo",
+					"action": 3
+				},
+				{
+					"id": 22,
+					"title": "Delete todo",
+					"action": 4
+				},
+				{
+					"id": 23,
+					"title": "Approve todo",
+					"action": 5
+				},
+				{
+					"id": 24,
+					"title": "Reject todo",
+					"action": 6
+				}
+			]
+		}
+	],
+	"users": [
+		{
+			"id": 1,
+			"username": "admin",
+			"email": "admin@xapp.com",
+			"hashedPassword": "$argon2i$v=19$m=4096,t=3,p=1$DsqzEBJJX6jCL5M7n2ZUDQ$d77eaorXRDYcNZkntlEluA4mIZaGQOJGiPDqbDfDSS0",
+			"isSuperuser": true,
+			"isActive": true,
+			"phoneVerificationCodeDateSent": null,
+			"lastLogin": null,
+			"lastFailedLogin": null,
+			"dateAccountVerified": "2021-06-08T21:30:52.000Z",
+			"dateJoined": "2021-06-08T21:30:52.000Z",
+			"requiresPasswordReset": false,
+			"phoneNumber": null,
+			"phoneVerificationCode": null,
+			"verificationKey": null,
+			"dateVerificationKeySent": null,
+			"verificationKeyPurpose": null,
+			"verificationStorage": null,
+			"createIp": null,
+			"dateAccountLocked": null,
+			"dateAccountClosed": null,
+			"lastPasswordChanged": null,
+			"lastFailedPasswordReset": null,
+			"failedPasswordResetCount": null,
+			"failedLoginCount": null,
+			"currentHashedRefreshToken": null,
+			"lastUpdateIp": null,
+			"lastUpdated": null,
+			"userGroups": [
+				{
+					"id": 1,
+					"name": "admin",
+					"title": "Admin",
+					"permissions": [
+						{
+							"id": 1,
+							"title": "Read user",
+							"action": 1
+						},
+						{
+							"id": 2,
+							"title": "Create user",
+							"action": 2
+						},
+						{
+							"id": 3,
+							"title": "Update user",
+							"action": 3
+						},
+						{
+							"id": 4,
+							"title": "Delete user",
+							"action": 4
+						},
+						{
+							"id": 5,
+							"title": "Approve user",
+							"action": 5
+						},
+						{
+							"id": 6,
+							"title": "Reject user",
+							"action": 6
+						},
+						{
+							"id": 7,
+							"title": "Read group",
+							"action": 1
+						},
+						{
+							"id": 8,
+							"title": "Create group",
+							"action": 2
+						},
+						{
+							"id": 9,
+							"title": "Update group",
+							"action": 3
+						},
+						{
+							"id": 10,
+							"title": "Delete group",
+							"action": 4
+						},
+						{
+							"id": 11,
+							"title": "Approve group",
+							"action": 5
+						},
+						{
+							"id": 12,
+							"title": "Reject group",
+							"action": 6
+						},
+						{
+							"id": 13,
+							"title": "Read permission",
+							"action": 1
+						},
+						{
+							"id": 14,
+							"title": "Create permission",
+							"action": 2
+						},
+						{
+							"id": 15,
+							"title": "Update permission",
+							"action": 3
+						},
+						{
+							"id": 16,
+							"title": "Delete permission",
+							"action": 4
+						},
+						{
+							"id": 17,
+							"title": "Approve permission",
+							"action": 5
+						},
+						{
+							"id": 18,
+							"title": "Reject permission",
+							"action": 6
+						},
+						{
+							"id": 19,
+							"title": "Read todo",
+							"action": 1
+						},
+						{
+							"id": 20,
+							"title": "Create todo",
+							"action": 2
+						},
+						{
+							"id": 21,
+							"title": "Update todo",
+							"action": 3
+						},
+						{
+							"id": 22,
+							"title": "Delete todo",
+							"action": 4
+						},
+						{
+							"id": 23,
+							"title": "Approve todo",
+							"action": 5
+						},
+						{
+							"id": 24,
+							"title": "Reject todo",
+							"action": 6
+						},
+						{
+							"id": 25,
+							"title": "Read household",
+							"action": 1
+						},
+						{
+							"id": 26,
+							"title": "Create household",
+							"action": 2
+						},
+						{
+							"id": 27,
+							"title": "Update household",
+							"action": 3
+						},
+						{
+							"id": 28,
+							"title": "Delete household",
+							"action": 4
+						},
+						{
+							"id": 29,
+							"title": "Approve household",
+							"action": 5
+						},
+						{
+							"id": 30,
+							"title": "Reject household",
+							"action": 6
+						},
+						{
+							"id": 31,
+							"title": "Read task",
+							"action": 1
+						},
+						{
+							"id": 32,
+							"title": "Create task",
+							"action": 2
+						},
+						{
+							"id": 33,
+							"title": "Update task",
+							"action": 3
+						},
+						{
+							"id": 34,
+							"title": "Delete task",
+							"action": 4
+						},
+						{
+							"id": 35,
+							"title": "Approve task",
+							"action": 5
+						},
+						{
+							"id": 36,
+							"title": "Reject task",
+							"action": 6
+						},
+						{
+							"id": 37,
+							"title": "Read taskTemplate",
+							"action": 1
+						},
+						{
+							"id": 38,
+							"title": "Create taskTemplate",
+							"action": 2
+						},
+						{
+							"id": 39,
+							"title": "Update taskTemplate",
+							"action": 3
+						},
+						{
+							"id": 40,
+							"title": "Delete taskTemplate",
+							"action": 4
+						},
+						{
+							"id": 41,
+							"title": "Approve taskTemplate",
+							"action": 5
+						},
+						{
+							"id": 42,
+							"title": "Reject taskTemplate",
+							"action": 6
+						},
+						{
+							"id": 43,
+							"title": "Read roomType",
+							"action": 1
+						},
+						{
+							"id": 44,
+							"title": "Create roomType",
+							"action": 2
+						},
+						{
+							"id": 45,
+							"title": "Update roomType",
+							"action": 3
+						},
+						{
+							"id": 46,
+							"title": "Delete roomType",
+							"action": 4
+						},
+						{
+							"id": 47,
+							"title": "Approve roomType",
+							"action": 5
+						},
+						{
+							"id": 48,
+							"title": "Reject roomType",
+							"action": 6
+						},
+						{
+							"id": 49,
+							"title": "Read frequency",
+							"action": 1
+						},
+						{
+							"id": 50,
+							"title": "Create frequency",
+							"action": 2
+						},
+						{
+							"id": 51,
+							"title": "Update frequency",
+							"action": 3
+						},
+						{
+							"id": 52,
+							"title": "Delete frequency",
+							"action": 4
+						},
+						{
+							"id": 53,
+							"title": "Approve frequency",
+							"action": 5
+						},
+						{
+							"id": 54,
+							"title": "Reject frequency",
+							"action": 6
+						},
+						{
+							"id": 55,
+							"title": "Read room",
+							"action": 1
+						},
+						{
+							"id": 56,
+							"title": "Create room",
+							"action": 2
+						},
+						{
+							"id": 57,
+							"title": "Update room",
+							"action": 3
+						},
+						{
+							"id": 58,
+							"title": "Delete room",
+							"action": 4
+						},
+						{
+							"id": 59,
+							"title": "Approve room",
+							"action": 5
+						},
+						{
+							"id": 60,
+							"title": "Reject room",
+							"action": 6
+						}
+					]
+				}
+			],
+			"userProfile": {
+				"firstName": "Admin",
+				"lastName": "User",
+				"userId": 1,
+				"pictureUrl": null,
+				"bio": null,
+				"dateOfBirth": null,
+				"locale": "CA"
+			}
+		},
+		{
+			"id": 2,
+			"username": "demo",
+			"email": "demo@xapp.com",
+			"hashedPassword": "$argon2i$v=19$m=4096,t=3,p=1$ejSECuUzROd3yz7r4MOgAQ$ivjNjfOGSjpC7d4UdtiGdhwZJQLVtdL9ecyFOggq9L4",
+			"isSuperuser": false,
+			"isActive": true,
+			"phoneVerificationCodeDateSent": null,
+			"lastLogin": "2021-06-09T22:39:28.000Z",
+			"lastFailedLogin": null,
+			"dateAccountVerified": "2021-06-08T21:30:52.000Z",
+			"dateJoined": "2021-06-08T21:30:52.000Z",
+			"requiresPasswordReset": false,
+			"phoneNumber": null,
+			"phoneVerificationCode": null,
+			"verificationKey": null,
+			"dateVerificationKeySent": null,
+			"verificationKeyPurpose": null,
+			"verificationStorage": null,
+			"createIp": null,
+			"dateAccountLocked": null,
+			"dateAccountClosed": null,
+			"lastPasswordChanged": null,
+			"lastFailedPasswordReset": null,
+			"failedPasswordResetCount": null,
+			"failedLoginCount": null,
+			"currentHashedRefreshToken": null,
+			"lastUpdateIp": null,
+			"lastUpdated": "2021-06-09T22:39:28.000Z",
+			"userGroups": [
+				{
+					"id": 2,
+					"name": "user",
+					"title": "User",
+					"permissions": [
+						{
+							"id": 19,
+							"title": "Read todo",
+							"action": 1
+						},
+						{
+							"id": 20,
+							"title": "Create todo",
+							"action": 2
+						},
+						{
+							"id": 21,
+							"title": "Update todo",
+							"action": 3
+						},
+						{
+							"id": 22,
+							"title": "Delete todo",
+							"action": 4
+						},
+						{
+							"id": 23,
+							"title": "Approve todo",
+							"action": 5
+						},
+						{
+							"id": 24,
+							"title": "Reject todo",
+							"action": 6
+						}
+					]
+				}
+			],
+			"userProfile": {
+				"firstName": "Demo",
+				"lastName": "User",
+				"userId": 2,
+				"pictureUrl": null,
+				"bio": null,
+				"dateOfBirth": null,
+				"locale": "CA"
+			}
+		}
+	],
+	"permissions": [
+		{
+			"id": 1,
+			"title": "Read user",
+			"action": 1
+		},
+		{
+			"id": 2,
+			"title": "Create user",
+			"action": 2
+		},
+		{
+			"id": 3,
+			"title": "Update user",
+			"action": 3
+		},
+		{
+			"id": 4,
+			"title": "Delete user",
+			"action": 4
+		},
+		{
+			"id": 5,
+			"title": "Approve user",
+			"action": 5
+		},
+		{
+			"id": 6,
+			"title": "Reject user",
+			"action": 6
+		},
+		{
+			"id": 7,
+			"title": "Read group",
+			"action": 1
+		},
+		{
+			"id": 8,
+			"title": "Create group",
+			"action": 2
+		},
+		{
+			"id": 9,
+			"title": "Update group",
+			"action": 3
+		},
+		{
+			"id": 10,
+			"title": "Delete group",
+			"action": 4
+		},
+		{
+			"id": 11,
+			"title": "Approve group",
+			"action": 5
+		},
+		{
+			"id": 12,
+			"title": "Reject group",
+			"action": 6
+		},
+		{
+			"id": 13,
+			"title": "Read permission",
+			"action": 1
+		},
+		{
+			"id": 14,
+			"title": "Create permission",
+			"action": 2
+		},
+		{
+			"id": 15,
+			"title": "Update permission",
+			"action": 3
+		},
+		{
+			"id": 16,
+			"title": "Delete permission",
+			"action": 4
+		},
+		{
+			"id": 17,
+			"title": "Approve permission",
+			"action": 5
+		},
+		{
+			"id": 18,
+			"title": "Reject permission",
+			"action": 6
+		},
+		{
+			"id": 19,
+			"title": "Read todo",
+			"action": 1
+		},
+		{
+			"id": 20,
+			"title": "Create todo",
+			"action": 2
+		},
+		{
+			"id": 21,
+			"title": "Update todo",
+			"action": 3
+		},
+		{
+			"id": 22,
+			"title": "Delete todo",
+			"action": 4
+		},
+		{
+			"id": 23,
+			"title": "Approve todo",
+			"action": 5
+		},
+		{
+			"id": 24,
+			"title": "Reject todo",
+			"action": 6
+		},
+		{
+			"id": 25,
+			"title": "Read household",
+			"action": 1
+		},
+		{
+			"id": 26,
+			"title": "Create household",
+			"action": 2
+		},
+		{
+			"id": 27,
+			"title": "Update household",
+			"action": 3
+		},
+		{
+			"id": 28,
+			"title": "Delete household",
+			"action": 4
+		},
+		{
+			"id": 29,
+			"title": "Approve household",
+			"action": 5
+		},
+		{
+			"id": 30,
+			"title": "Reject household",
+			"action": 6
+		},
+		{
+			"id": 31,
+			"title": "Read task",
+			"action": 1
+		},
+		{
+			"id": 32,
+			"title": "Create task",
+			"action": 2
+		},
+		{
+			"id": 33,
+			"title": "Update task",
+			"action": 3
+		},
+		{
+			"id": 34,
+			"title": "Delete task",
+			"action": 4
+		},
+		{
+			"id": 35,
+			"title": "Approve task",
+			"action": 5
+		},
+		{
+			"id": 36,
+			"title": "Reject task",
+			"action": 6
+		},
+		{
+			"id": 37,
+			"title": "Read taskTemplate",
+			"action": 1
+		},
+		{
+			"id": 38,
+			"title": "Create taskTemplate",
+			"action": 2
+		},
+		{
+			"id": 39,
+			"title": "Update taskTemplate",
+			"action": 3
+		},
+		{
+			"id": 40,
+			"title": "Delete taskTemplate",
+			"action": 4
+		},
+		{
+			"id": 41,
+			"title": "Approve taskTemplate",
+			"action": 5
+		},
+		{
+			"id": 42,
+			"title": "Reject taskTemplate",
+			"action": 6
+		},
+		{
+			"id": 43,
+			"title": "Read roomType",
+			"action": 1
+		},
+		{
+			"id": 44,
+			"title": "Create roomType",
+			"action": 2
+		},
+		{
+			"id": 45,
+			"title": "Update roomType",
+			"action": 3
+		},
+		{
+			"id": 46,
+			"title": "Delete roomType",
+			"action": 4
+		},
+		{
+			"id": 47,
+			"title": "Approve roomType",
+			"action": 5
+		},
+		{
+			"id": 48,
+			"title": "Reject roomType",
+			"action": 6
+		},
+		{
+			"id": 49,
+			"title": "Read frequency",
+			"action": 1
+		},
+		{
+			"id": 50,
+			"title": "Create frequency",
+			"action": 2
+		},
+		{
+			"id": 51,
+			"title": "Update frequency",
+			"action": 3
+		},
+		{
+			"id": 52,
+			"title": "Delete frequency",
+			"action": 4
+		},
+		{
+			"id": 53,
+			"title": "Approve frequency",
+			"action": 5
+		},
+		{
+			"id": 54,
+			"title": "Reject frequency",
+			"action": 6
+		},
+		{
+			"id": 55,
+			"title": "Read room",
+			"action": 1
+		},
+		{
+			"id": 56,
+			"title": "Create room",
+			"action": 2
+		},
+		{
+			"id": 57,
+			"title": "Update room",
+			"action": 3
+		},
+		{
+			"id": 58,
+			"title": "Delete room",
+			"action": 4
+		},
+		{
+			"id": 59,
+			"title": "Approve room",
+			"action": 5
+		},
+		{
+			"id": 60,
+			"title": "Reject room",
+			"action": 6
+		}
+	]
+}

@@ -26,7 +26,7 @@ export class Group extends BaseEntity {
 		// not work on run cli migration:
 		name: 'user_permissions',
 		joinColumn: {
-			name: 'group_id',
+			name: 'user_group_id',
 			referencedColumnName: 'id',
 		},
 		inverseJoinColumn: {
@@ -41,7 +41,7 @@ export class Group extends BaseEntity {
 		// not work on run cli migration:
 		name: 'user_groups',
 		joinColumn: {
-			name: 'group_id',
+			name: 'user_group_id',
 			referencedColumnName: 'id',
 		},
 		inverseJoinColumn: {

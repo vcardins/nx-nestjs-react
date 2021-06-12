@@ -134,7 +134,7 @@ export class User extends BaseEntity {
 			referencedColumnName: 'id',
 		},
 		inverseJoinColumn: {
-			name: 'group_id',
+			name: 'user_group_id',
 			referencedColumnName: 'id',
 		},
 	})

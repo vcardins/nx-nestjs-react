@@ -3,7 +3,7 @@ import { Type } from 'class-transformer';
 
 import { MetaDto } from '@xapp/api/core';
 
-import { GroupWithPermissionsDto } from '../dto/group-with-permissions.dto';
+import { GroupWithPermissionsDto } from '../dto/user-group-with-permissions.dto';
 
 export class GroupsOutput {
 	@Type(() => GroupWithPermissionsDto)

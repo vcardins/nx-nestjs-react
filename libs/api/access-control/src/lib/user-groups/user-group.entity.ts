@@ -7,7 +7,7 @@ import { UserGroup } from '@xapp/shared/types';
 import { User } from '@xapp/api/users';
 import { Permission } from '../permissions/permission.entity';
 
-@Entity({ name: 'group' })
+@Entity({ name: 'user_group' })
 export class Group extends BaseEntity {
 	@Column({ type: 'simple-enum', enum: UserGroup, unique: true })
 	@IsNotEmpty()
@@ -24,7 +24,7 @@ export class Group extends BaseEntity {
 	})
 	@JoinTable({
 		// not work on run cli migration:
-		name: 'group_permissions',
+		name: 'user_permissions',
 		joinColumn: {
 			name: 'group_id',
 			referencedColumnName: 'id',

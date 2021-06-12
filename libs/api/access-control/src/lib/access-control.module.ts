@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 
 import { DatabaseModule } from '@xapp/api/database';
 
-import { Group } from './groups/group.entity';
-import { GroupService } from './groups/group.service';
-import { GroupController } from './groups/group.controller';
+import { Group } from './user-groups/user-group.entity';
+import { GroupService } from './user-groups/user-group.service';
+import { GroupController } from './user-groups/user-group.controller';
 
 import { Permission } from './permissions/permission.entity';
 import { PermissionService } from './permissions/permission.service';

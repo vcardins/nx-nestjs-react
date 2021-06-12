@@ -1,10 +1,10 @@
-export * from './lib/groups/group.controller';
-export * from './lib/groups/group.entity';
-export * from './lib/groups/group.service';
-export * from './lib/groups/dto/group-with-permissions.dto';
-export * from './lib/groups/dto/group.dto';
-export * from './lib/groups/dto/group.output';
-export * from './lib/groups/dto/groups.output';
+export * from './lib/user-groups/user-group.controller';
+export * from './lib/user-groups/user-group.entity';
+export * from './lib/user-groups/user-group.service';
+export * from './lib/user-groups/dto/user-group-with-permissions.dto';
+export * from './lib/user-groups/dto/user-group.dto';
+export * from './lib/user-groups/dto/user-group.output';
+export * from './lib/user-groups/dto/user-groups.output';
 
 export * from './lib/permissions/permission.controller';
 export * from './lib/permissions/permission.entity';

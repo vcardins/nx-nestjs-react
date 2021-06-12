@@ -11,7 +11,7 @@ import {
 import { BaseEntity } from '@xapp/api/core';
 import { ModuleAction, ModuleName } from '@xapp/shared/types';
 
-import { Group } from '../groups/group.entity';
+import { Group } from '../user-groups/user-group.entity';
 
 @Entity({ name: 'permission' })
 export class Permission extends BaseEntity {
@@ -30,7 +30,7 @@ export class Permission extends BaseEntity {
 	@ManyToMany((type) => Group)
 	@JoinTable({
 		// not work on run cli migration:
-		name: 'group_permissions',
+		name: 'user_permissions',
 		joinColumn: {
 			name: 'permission_id',
 			referencedColumnName: 'id',

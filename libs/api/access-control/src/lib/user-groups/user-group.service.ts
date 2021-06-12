@@ -5,7 +5,7 @@ import { plainToClass } from 'class-transformer';
 import { InjectMapper } from 'nestjsx-automapper';
 
 import { BaseService, IFindAndCountResult, IPaginationQuery } from '@xapp/api/core';
-import { Group } from './group.entity';
+import { Group } from './user-group.entity';
 import { IdType } from '@xapp/shared/types';
 
 @Injectable()

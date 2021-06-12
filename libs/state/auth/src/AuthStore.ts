@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import jwtDecode from 'jwt-decode';
 
-import { IActionResponse, IGroupWithPermissions, IJwtPayload, INotifier, ISignedUserOutput, ISignInInput, IUserToken, UserGroup } from '@xapp/shared/types';
+import { IActionResponse, IGroupWithPermissions, IJwtPayload, INotifier, ISignedUserOutput, ISignInInput, IUserToken, UserRole } from '@xapp/shared/types';
 import { appConfig } from '@xapp/shared/config';
 import { LocalStorage, RestClient } from '@xapp/shared/utils';
 
@@ -63,7 +63,7 @@ export class AuthStore {
 		return (user || null) as ISignedUserOutput;
 	}
 
-	isAuthorized(allowedGroups: UserGroup[] = []): boolean { // accessLevel: AccessLevel,
+	isAuthorized(allowedGroups: UserRole[] = []): boolean { // accessLevel: AccessLevel,
 		const userGroups = this.getUserGroup();
 		return allowedGroups.some((r) => userGroups.find((group) => group.name.indexOf(r) >= 0));
 	}

@@ -3,7 +3,7 @@ import { Connection, EntityTarget } from 'typeorm';
 import { plainToClass } from 'class-transformer';
 
 import { toTitleCase, getUtcDate } from '@xapp/shared/utils';
-import { ModuleAction, ModuleName, UserGroup } from '@xapp/shared/types';
+import { ModuleAction, ModuleName, UserRole } from '@xapp/shared/types';
 import { UserProfile, User } from '@xapp/api/users';
 
 import { Group, Permission } from '@xapp/api/access-control';
@@ -29,7 +29,7 @@ const getUser = async (username: string, profile: Partial<UserProfile>, groups: 
 	return { user, userProfile };
 };
 
-const getGroup = (name: UserGroup, permissions: Permission[]) => plainToClass(Group, {
+const getGroup = (name: UserRole, permissions: Permission[]) => plainToClass(Group, {
 	name,
 	title: toTitleCase(name),
 	permissions,
@@ -58,12 +58,12 @@ export default class SeedAuth implements Seeder {
 		const permissions = getPermissions(Object.values(ModuleName));
 		await execSave(Permission, permissions);
 
-		const adminGroup = getGroup(UserGroup.Admin, permissions);
+		const adminGroup = getGroup(UserRole.Admin, permissions);
 		await execSave(Group, adminGroup);
 
 		const userPermissions = permissions.filter((p) => p.module === ModuleName.Todo);
 
-		const userGroup = getGroup(UserGroup.User, userPermissions);
+		const userGroup = getGroup(UserRole.User, userPermissions);
 		await execSave(Group, userGroup);
 
 		const admin = await getUser(ADMIN, { firstName: 'Admin', lastName: 'User', locale: 'CA' }, [adminGroup], true);

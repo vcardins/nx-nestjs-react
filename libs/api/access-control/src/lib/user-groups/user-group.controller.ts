@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 
 import { SocketGateway, ModuleGroup, baseAuthControllerFactory, getDefaultPermissions } from '@xapp/api/core';
-import { ModuleName, UserGroup } from '@xapp/shared/types';
+import { ModuleName, UserRole } from '@xapp/shared/types';
 import { GroupService } from './user-group.service';
 import { Group } from './user-group.entity';
 import { GroupOutput } from './dto/user-group.output';
@@ -9,7 +9,7 @@ import { GroupOutput } from './dto/user-group.output';
 const BaseController = baseAuthControllerFactory<Group>({
 	entity: Group,
 	entityOutput: GroupOutput,
-	auth: getDefaultPermissions([UserGroup.Admin]),
+	auth: getDefaultPermissions([UserRole.Admin]),
 });
 
 @Controller('/user-groups')

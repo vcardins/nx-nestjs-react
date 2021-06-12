@@ -2,7 +2,7 @@ import { Controller } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
 import { SocketGateway, baseAuthControllerFactory, ModuleGroup, getDefaultPermissions } from '@xapp/api/core';
-import { ModuleName, HouseholdOutput, UserGroup } from '@xapp/shared/types';
+import { ModuleName, HouseholdOutput, UserRole } from '@xapp/shared/types';
 
 import { Household } from './entities/household.entity';
 import { HouseholdService } from './household.service';
@@ -10,7 +10,7 @@ import { HouseholdService } from './household.service';
 const BaseController = baseAuthControllerFactory<Household>({
 	entity: Household,
 	entityOutput: HouseholdOutput,
-	auth: getDefaultPermissions([UserGroup.User]),
+	auth: getDefaultPermissions([UserRole.User]),
 });
 
 @ApiBearerAuth()

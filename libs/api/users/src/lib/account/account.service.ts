@@ -4,7 +4,7 @@ import { plainToClassFromExist, plainToClass } from 'class-transformer';
 import { IEvent, CustomError } from '@xapp/api/core';
 import { getUtcDate, randomAsciiString } from '@xapp/shared/utils';
 import { MailService } from '@xapp/api/mail';
-import { UserGroup, VerificationKeyPurpose } from '@xapp/shared/types';
+import { UserRole, VerificationKeyPurpose } from '@xapp/shared/types';
 import { GroupService } from '@xapp/api/access-control';
 
 import {
@@ -54,7 +54,7 @@ export class AccountService { // implements IAccountService {
 
 		await this.userService.assertUsernameAndEmail(data.email, data.username);
 
-		const group = this.groupService.getGroupByName(UserGroup.User);
+		const group = this.groupService.getGroupByName(UserRole.User);
 		const verification = this.setVerificationKey(VerificationKeyPurpose.ChangeEmail, data.email);
 		const newUser = await plainToClass(User, {
 			...data,

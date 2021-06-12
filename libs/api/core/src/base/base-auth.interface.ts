@@ -1,8 +1,8 @@
-import { ModuleAction, UserGroup } from '@xapp/shared/types';
+import { ModuleAction, UserRole } from '@xapp/shared/types';
 import { IBaseControllerFactoryOpts } from './base.interface';
 
 export type AuthConstraint = {
-	roles?: UserGroup[];
+	roles?: UserRole[];
 	permissions: ModuleAction[];
 }
 

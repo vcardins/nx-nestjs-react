@@ -1,4 +1,4 @@
-import { UserGroup, VerificationKeyPurpose } from '@xapp/shared/types';
+import { UserRole, VerificationKeyPurpose } from '@xapp/shared/types';
 /* eslint-disable camelcase */
 import { BadRequestException, HttpService, Inject, Injectable, Logger/*, NotFoundException*/ } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
@@ -87,7 +87,7 @@ export class AuthService {
 
 		await this.userService.assertUsernameAndEmail(userInfo.email, userInfo.username);
 
-		const group = this.groupService.getGroupByName(UserGroup.User);
+		const group = this.groupService.getGroupByName(UserRole.User);
 		const newUser = await plainToClass(User, userInfo).setPassword(userInfo.password);
 		const info = {
 			email: userInfo.email,

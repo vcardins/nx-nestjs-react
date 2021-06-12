@@ -1,9 +1,9 @@
-import { UserGroup } from '@xapp/shared/types';
+import { UserRole } from '@xapp/shared/types';
 import { IRoute } from './IRoute';
 import { IPageLayout } from './IPageLayout';
 
 export interface IPageConfig {
-	auth?: UserGroup[];
+	auth?: UserRole[];
 	routes: IRoute[];
 	layout: IPageLayout;
 }

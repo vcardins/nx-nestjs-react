@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 
-import { ModuleName, UserGroup } from '@xapp/shared/types';
+import { ModuleName, UserRole } from '@xapp/shared/types';
 
 import { ModuleGroup, baseAuthControllerFactory, getDefaultPermissions } from '@xapp/api/core';
 import { UserService } from './user.service';
@@ -10,7 +10,7 @@ import { UserOutput } from './dto/user.output';
 const BaseController = baseAuthControllerFactory<User>({
 	entity: User,
 	entityOutput: UserOutput,
-	auth: getDefaultPermissions([UserGroup.Admin]),
+	auth: getDefaultPermissions([UserRole.Admin]),
 });
 
 @Controller('/users')

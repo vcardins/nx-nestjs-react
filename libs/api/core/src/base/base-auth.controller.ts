@@ -25,7 +25,7 @@ import {
 	ApiBearerAuth,
 } from '@nestjs/swagger';
 
-import { ModuleAction, UserGroup, IdType, SortDirection, QueryOptions } from '@xapp/shared/types';
+import { ModuleAction, UserRole, IdType, SortDirection, QueryOptions } from '@xapp/shared/types';
 import { getOperationId } from '@xapp/shared/utils';
 
 import { AuthConstraint, IBaseAuthControllerFactoryOpts } from './base-auth.interface';
@@ -45,7 +45,7 @@ const metadataKey = 'swagger/apiModelPropertiesArray';
 const excludedCreateMetadata = [':id', ':createdAt', ':updatedAt'];
 const excludedUpdateMetadata = [':createdAt', ':updatedAt'];
 
-export const getDefaultPermissions = (roles: UserGroup[] = []): Record<string, AuthConstraint> => ({
+export const getDefaultPermissions = (roles: UserRole[] = []): Record<string, AuthConstraint> => ({
 	count: { roles, permissions: [ModuleAction.Read] },
 	get: { roles, permissions: [ModuleAction.Read] },
 	getById: { roles, permissions: [ModuleAction.Read] },

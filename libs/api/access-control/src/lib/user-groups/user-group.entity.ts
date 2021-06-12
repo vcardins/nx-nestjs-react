@@ -2,17 +2,17 @@ import { IsNotEmpty, MaxLength } from 'class-validator';
 import { BeforeInsert, BeforeUpdate, Column, Entity, JoinTable, ManyToMany } from 'typeorm';
 
 import { BaseEntity } from '@xapp/api/core';
-import { UserGroup } from '@xapp/shared/types';
+import { UserRole } from '@xapp/shared/types';
 
 import { User } from '@xapp/api/users';
 import { Permission } from '../permissions/permission.entity';
 
 @Entity({ name: 'user_group' })
 export class Group extends BaseEntity {
-	@Column({ type: 'simple-enum', enum: UserGroup, unique: true })
+	@Column({ type: 'simple-enum', enum: UserRole, unique: true })
 	@IsNotEmpty()
 	@MaxLength(100)
-	name: UserGroup = undefined;
+	name: UserRole = undefined;
 
 	@Column({ length: 255, unique: true })
 	@IsNotEmpty()

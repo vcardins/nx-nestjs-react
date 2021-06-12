@@ -1,7 +1,7 @@
 import { defaultPageLayout } from '@xapp/shared/config';
-import { UserGroup, IPageConfig, IKeyedRoute, IGroupWithPermissions } from '@xapp/shared/types';
+import { UserRole, IPageConfig, IKeyedRoute, IGroupWithPermissions } from '@xapp/shared/types';
 
-function getRoutes(config: IPageConfig, allowedGroups: UserGroup[] = null) {
+function getRoutes(config: IPageConfig, allowedGroups: UserRole[] = null) {
 	return config.routes.reduce((result, route) => {
 		const auth = config.auth || allowedGroups;
 
@@ -17,7 +17,7 @@ function getRoutes(config: IPageConfig, allowedGroups: UserGroup[] = null) {
 	}, {} as IKeyedRoute);
 }
 
-export function hasRoutePermission(authArr: UserGroup[], userGroups: IGroupWithPermissions[] = []) {
+export function hasRoutePermission(authArr: UserRole[], userGroups: IGroupWithPermissions[] = []) {
 	/**
 	 * If auth array is not defined
 	 * Pass and allow
@@ -55,7 +55,7 @@ export function hasRoutePermission(authArr: UserGroup[], userGroups: IGroupWithP
 	return authArr.some((r) => userGroups.find((group) => group.name.indexOf(r) >= 0));
 }
 
-export function generateRoutes(pagesConfig: IPageConfig[], allowedGroups: UserGroup[]) {
+export function generateRoutes(pagesConfig: IPageConfig[], allowedGroups: UserRole[]) {
 	// We could have used Array.flatMap instead but it doesn't work on IE
 	return pagesConfig.reduce((result: IKeyedRoute, config: IPageConfig) => {
 		const routes = getRoutes(config, allowedGroups);

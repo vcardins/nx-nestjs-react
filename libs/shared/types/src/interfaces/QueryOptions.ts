@@ -1,5 +1,5 @@
-import { SortDirection } from '..';
+import { SortDirections } from '..';
 
 export interface QueryOptions {
-	sortBy: Record<string, SortDirection>
+	sortBy: Record<string, SortDirections>
 };

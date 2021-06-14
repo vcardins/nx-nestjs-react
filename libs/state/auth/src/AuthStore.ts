@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import jwtDecode from 'jwt-decode';
 
-import { IActionResponse, IGroupWithPermissions, IJwtPayload, INotifier, ISignedUserOutput, ISignInInput, IUserToken, UserRole } from '@xapp/shared/types';
+import { IActionResponse, IRoleWithPermissions, IJwtPayload, INotifier, ISignedUserOutput, ISignInInput, IUserToken, UserRole } from '@xapp/shared/types';
 import { appConfig } from '@xapp/shared/config';
 import { LocalStorage, RestClient } from '@xapp/shared/utils';
 
@@ -34,9 +34,9 @@ export class AuthStore {
 
 	getAuthHeader = (): string => `${authToken} ${this.getAccessToken()}`;
 
-	getUserGroup(): IGroupWithPermissions[] {
+	getUserGroup(): IRoleWithPermissions[] {
 		const user = this.getUser();
-		return user?.groups;
+		return user?.roles;
 	}
 
 	async getProviderUri(providerKey: string):Promise<string> {
@@ -64,8 +64,8 @@ export class AuthStore {
 	}
 
 	isAuthorized(allowedGroups: UserRole[] = []): boolean { // accessLevel: AccessLevel,
-		const userGroups = this.getUserGroup();
-		return allowedGroups.some((r) => userGroups.find((group) => group.name.indexOf(r) >= 0));
+		const userRoles = this.getUserGroup();
+		return allowedGroups.some((r) => userRoles.find((group) => group.name.indexOf(r) >= 0));
 	}
 
 	isUserSessionValid(): boolean {

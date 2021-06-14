@@ -1,4 +1,4 @@
 import { SetMetadata } from '@nestjs/common';
-import { ModuleAction } from '@xapp/shared/types';
+import { Operations } from '@xapp/shared/types';
 
-export const Permissions = (...permissions: ModuleAction[]) => SetMetadata('permissions', permissions);
+export const Permissions = (...permissions: Operations[]) => SetMetadata('permissions', permissions);

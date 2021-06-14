@@ -2,10 +2,10 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { MaxLength } from 'class-validator';
 
-import { IGroupWithPermissions } from '@xapp/shared/types';
-import { PermissionDto } from '../../permissions/dto/permission.dto';
+import { IRoleWithPermissions } from '@xapp/shared/types';
+import { PermissionDto } from '../../permission/dto/permission.dto';
 
-export class GroupWithPermissionsDto implements IGroupWithPermissions {
+export class RoleWithPermissionsDto implements IRoleWithPermissions {
 	@ApiProperty({ type: Number })
 	id: number;
 

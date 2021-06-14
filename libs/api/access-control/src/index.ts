@@ -1,17 +1,21 @@
-export * from './lib/user-groups/user-group.controller';
-export * from './lib/user-groups/user-group.entity';
-export * from './lib/user-groups/user-group.service';
-export * from './lib/user-groups/dto/user-group-with-permissions.dto';
-export * from './lib/user-groups/dto/user-group.dto';
-export * from './lib/user-groups/dto/user-group.output';
-export * from './lib/user-groups/dto/user-groups.output';
+export * from './role/role.controller';
+export * from './role/role.entity';
+export * from './role/role.service';
+export * from './role/dto/role-with-permissions.dto';
+export * from './role/dto/role.dto';
+export * from './role/dto/role.output';
+export * from './role/dto/roles.output';
 
-export * from './lib/permissions/permission.controller';
-export * from './lib/permissions/permission.entity';
-export * from './lib/permissions/permission.service';
-export * from './lib/permissions/dto/permission.dto';
-export * from './lib/permissions/dto/permission.input';
-export * from './lib/permissions/dto/permission.output';
-export * from './lib/permissions/dto/permissions.output';
+export * from './permission/permission.controller';
+export * from './permission/permission.entity';
+export * from './permission/permission.service';
+export * from './permission/dto/permission.dto';
+export * from './permission/dto/permission.input';
+export * from './permission/dto/permission.output';
+export * from './permission/dto/permissions.output';
 
-export * from './lib/access-control.module';
+
+export * from './resource/resource.entity';
+export * from './operation/operation.entity';
+
+export * from './access-control.module';

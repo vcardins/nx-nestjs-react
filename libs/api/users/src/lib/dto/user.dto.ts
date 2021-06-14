@@ -2,7 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { MaxLength } from 'class-validator';
 import { UserProfileDto } from './user-profile.dto';
-import { GroupDto } from '@xapp/api/access-control';
+import { RoleDto } from '../..';
 
 export class UserDto {
 	@ApiProperty({ type: Number })
@@ -28,9 +28,9 @@ export class UserDto {
 	@ApiProperty({ type: String })
 	dateJoined: Date;
 
-	@Type(() => GroupDto)
-	@ApiProperty({ type: GroupDto, isArray: true })
-	groups: GroupDto[];
+	@Type(() => RoleDto)
+	@ApiProperty({ type: RoleDto, isArray: true })
+	roles: RoleDto[];
 
 	@Type(() => UserProfileDto)
 	@ApiProperty({ type: UserProfileDto })

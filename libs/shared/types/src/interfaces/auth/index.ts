@@ -1,7 +1,7 @@
 export * from './IChangePasswordInput';
 export * from './IChangePhoneNumberInput';
 export * from './IForgotPasswordInput';
-export * from './IGroupWithPermissions';
+export * from './IRoleWithPermissions';
 export * from './IJwtPayload';
 export * from './IOAuthSignInInput';
 export * from './IPermissionOutput';
@@ -9,6 +9,7 @@ export * from './IRedirectUriOutput';
 export * from './IResetPasswordInput';
 export * from './ISignInInput';
 export * from './ISignedUserOutput';
+export * from './IRoleWithPermissions';
 export * from './ISignUpInput';
 export * from './IUserPreferences';
 export * from './IUserProfile';

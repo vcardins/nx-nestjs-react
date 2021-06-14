@@ -19,7 +19,6 @@ import { JwtTokenService } from './auth-tokens/jwt-token.service';
 import { UserTokenOutput } from './auth-tokens/dto/user-token.output';
 import { OAuthSignInInput } from './auth-tokens/dto/oauth-signIn.input';
 
-
 @ApiTags('auth')
 @Controller('/auth')
 @Public()
@@ -38,7 +37,7 @@ export class AuthController {
 	}
 
 	private emit(event: string, data?: any) {
-		this.socketService?.server.emit('events', { module: 'Auth', event, data });
+		this.socketService?.server.emit('events', { resource: 'Auth', event, data });
 	}
 
 	private getHost(req: Request) {

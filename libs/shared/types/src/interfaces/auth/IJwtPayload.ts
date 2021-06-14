@@ -1,7 +1,7 @@
 export interface IJwtPayload {
 	id: number;
 	email: string;
-	groups?: string[];
+	roles?: string[];
 	role: string;
 	isSuperuser: boolean;
 	iat: number;

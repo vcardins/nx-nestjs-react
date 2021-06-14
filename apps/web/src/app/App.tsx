@@ -27,7 +27,7 @@ export const App = () => {
 					user={user}
 					config={appConfig}
 					sideMenu={
-						<Menu items={getNavigation(routes, user?.groups)} />
+						<Menu items={getNavigation(routes, user?.roles)} />
 					}
 					onSignOut={onSignOut}
 				/>

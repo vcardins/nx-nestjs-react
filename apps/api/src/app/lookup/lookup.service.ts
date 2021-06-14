@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { OAuthProvider, UserRole, AuthGroups } from '@xapp/shared/types';
+import { OAuthProvider, UserRoles, AuthRoles } from '@xapp/shared/types';
 import { DateFormat, FrequencyOutput, RoomTypeOutput } from '@xapp/shared/types';
 
 import { FrequencyService } from '../shared/frequency.service';
@@ -17,16 +17,16 @@ export class LookupService {
 	async getAll(): Promise<LookupOutput> {
 		const dateFormats = this.convertEnum(DateFormat);
 		const oAuthProviders = this.convertEnum(OAuthProvider);
-		const authGroups = this.convertEnum(AuthGroups);
-		const userGroups = this.convertEnum(UserRole);
+		const authRoles = this.convertEnum(AuthRoles);
+		const userRoles = this.convertEnum(UserRoles);
 		const frequencies = await this.frequencyService.find() as FrequencyOutput[];
 		const roomTypes = await this.roomTypeService.find() as RoomTypeOutput[];
 
 		return {
 			dateFormats,
 			oAuthProviders,
-			authGroups,
-			userGroups,
+			authRoles,
+			userRoles,
 			frequencies,
 			roomTypes,
 		};

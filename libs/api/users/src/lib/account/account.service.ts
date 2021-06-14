@@ -4,8 +4,8 @@ import { plainToClassFromExist, plainToClass } from 'class-transformer';
 import { IEvent, CustomError } from '@xapp/api/core';
 import { getUtcDate, randomAsciiString } from '@xapp/shared/utils';
 import { MailService } from '@xapp/api/mail';
-import { UserRole, VerificationKeyPurpose } from '@xapp/shared/types';
-import { GroupService } from '@xapp/api/access-control';
+import { UserRoles, VerificationKeyPurpose } from '@xapp/shared/types';
+import { RoleService } from '@xapp/api/access-control';
 
 import {
 	AccountCreatedEvent,
@@ -40,28 +40,28 @@ export class AccountService { // implements IAccountService {
 	events: IEvent[] = []
 	constructor(
 		private readonly userService: UserService,
-		private readonly groupService: GroupService,
+		private readonly roleService: RoleService,
 		private readonly emailService: MailService,
 	) {}
 
 	async createAccount(data: Omit<SignUpInput, 'confirmPassword'>): Promise<User> {
 		try {
-			await this.groupService.preloadAll();
+			await this.roleService.preloadAll();
 		}
 		catch (error) {
-			throw new BadRequestException('Error in load groups');
+			throw new BadRequestException('Error in load roles');
 		}
 
 		await this.userService.assertUsernameAndEmail(data.email, data.username);
 
-		const group = this.groupService.getGroupByName(UserRole.User);
+		const role = this.roleService.getRoleByName(UserRoles.User);
 		const verification = this.setVerificationKey(VerificationKeyPurpose.ChangeEmail, data.email);
 		const newUser = await plainToClass(User, {
 			...data,
 			...verification,
 		}).setPassword(data.password);
 
-		newUser.groups = [group];
+		newUser.roles = [role];
 		newUser.dateJoined = getUtcDate();
 
 		const userProfile = new UserProfile();

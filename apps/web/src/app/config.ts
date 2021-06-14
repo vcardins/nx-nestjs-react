@@ -7,17 +7,17 @@ import { ic_security } from 'react-icons-kit/md/ic_security';
 /* eslint-enable camelcase */
 
 import {
-	IKeyedRoute, INavItem, IGroupWithPermissions,
-	NavItemTypes, PageKey, AuthGroups,
+	IKeyedRoute, INavItem, IRoleWithPermissions,
+	NavItemTypes, PageKey, AuthRoles,
 } from '@xapp/shared/types';
 import { hasRoutePermission, generateRoutes } from '@xapp/shared/utils';
 
 import { pagesConfigs } from './pages/@config';
 
-export const routes = generateRoutes(pagesConfigs, AuthGroups.user);
+export const routes = generateRoutes(pagesConfigs, AuthRoles.user);
 
 const getNavId = (key: string) => `nav-item-${key}`;
-export function getNavigation(routes: IKeyedRoute, userGroups: IGroupWithPermissions[]) {
+export function getNavigation(routes: IKeyedRoute, userRoles: IRoleWithPermissions[]) {
 	const navigation: INavItem[] = [
 		{
 			id: getNavId('user-account'),
@@ -66,13 +66,13 @@ export function getNavigation(routes: IKeyedRoute, userGroups: IGroupWithPermiss
 
 	return navigation.reduce((result: INavItem[], nav: INavItem) => {
 		if (nav?.route?.auth) {
-			if (hasRoutePermission(nav.route.auth, userGroups)) {
+			if (hasRoutePermission(nav.route.auth, userRoles)) {
 				result.push(nav);
 			}
 		} else {
 			if (nav?.children) {
 				nav.children = nav.children.filter((childNav) =>
-					childNav?.route?.auth ? hasRoutePermission(childNav.route.auth, userGroups) : true
+					childNav?.route?.auth ? hasRoutePermission(childNav.route.auth, userRoles) : true
 				);
 			}
 			result.push(nav);

@@ -2,7 +2,7 @@
 
 ## The steps below assumes that the entity exists.
 
-1. Add the domain key to the ModuleName enum: libs/shared/types/src/enums/ModuleName.ts
+1. Add the domain key to the Resources enum: libs/shared/types/src/enums/Resources.ts
 2. Create the domain service, eg. api/src/app/tasks/task.service.ts
 3. Create the domain controller, eg. api/src/app/tasks/task.controller.ts
 4. Create the domain input and output files, eg. api/src/app/tasks/task.controller.ts

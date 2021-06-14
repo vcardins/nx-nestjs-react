@@ -3,7 +3,7 @@ import { Type } from 'class-transformer';
 import { MaxLength } from 'class-validator';
 import { ISignedUserOutput } from '@xapp/shared/types';
 
-import { GroupWithPermissionsDto } from '@xapp/api/access-control';
+import { RoleWithPermissionsDto } from '@xapp/api/access-control';
 import { UserProfileDto } from '@xapp/api/users';
 
 export class SignInOutput implements ISignedUserOutput {
@@ -30,9 +30,9 @@ export class SignInOutput implements ISignedUserOutput {
 	@ApiProperty({ type: String })
 	dateJoined: Date;
 
-	@Type(() => GroupWithPermissionsDto)
-	@ApiProperty({ type: GroupWithPermissionsDto, isArray: true })
-	groups: GroupWithPermissionsDto[];
+	@Type(() => RoleWithPermissionsDto)
+	@ApiProperty({ type: RoleWithPermissionsDto, isArray: true })
+	roles: RoleWithPermissionsDto[];
 
 	@Type(() => UserProfileDto)
 	@ApiProperty({ type: UserProfileDto })

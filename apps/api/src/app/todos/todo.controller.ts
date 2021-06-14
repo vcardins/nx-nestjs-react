@@ -2,9 +2,9 @@ import { Controller, Patch, Body, Response, InternalServerErrorException } from 
 import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiBadRequestResponse, ApiOperation } from '@nestjs/swagger';
 import { Entity } from 'typeorm';
 
-import { SocketGateway, baseAuthControllerFactory, ModuleGroup, Permissions, ApiException, getDefaultPermissions } from '@xapp/api/core';
+import { SocketGateway, baseAuthControllerFactory, ResourceGroup, Permissions, ApiException, getDefaultPermissions } from '@xapp/api/core';
 import { getOperationId, getUtcDate } from '@xapp/shared/utils';
-import { ModuleName, SortDirection } from '@xapp/shared/types';
+import { Resources, SortDirections } from '@xapp/shared/types';
 
 import { TodoService } from './todo.service';
 import { Todo } from './todo.entity';
@@ -21,7 +21,7 @@ const BaseController = baseAuthControllerFactory<Todo>({
 
 @ApiBearerAuth()
 @Controller('/todo')
-@ModuleGroup(ModuleName.Todo)
+@ResourceGroup(Resources.Todo)
 export class TodoController extends BaseController {
 	constructor(
 		private readonly service: TodoService,
@@ -30,7 +30,7 @@ export class TodoController extends BaseController {
 		super(
 			service,
 			socketService,
-			{ sortBy: { dateCompleted: SortDirection.DESC, dateCreated: SortDirection.DESC } },
+			{ sortBy: { dateCompleted: SortDirections.DESC, dateCreated: SortDirections.DESC } },
 		);
 	}
 

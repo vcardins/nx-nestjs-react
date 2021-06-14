@@ -1,7 +1,7 @@
 import { defaultPageLayout } from '@xapp/shared/config';
-import { UserRole, IPageConfig, IKeyedRoute, IGroupWithPermissions } from '@xapp/shared/types';
+import { UserRoles, IPageConfig, IKeyedRoute, IRoleWithPermissions } from '@xapp/shared/types';
 
-function getRoutes(config: IPageConfig, allowedGroups: UserRole[] = null) {
+function getRoutes(config: IPageConfig, allowedGroups: UserRoles[] = null) {
 	return config.routes.reduce((result, route) => {
 		const auth = config.auth || allowedGroups;
 
@@ -17,7 +17,7 @@ function getRoutes(config: IPageConfig, allowedGroups: UserRole[] = null) {
 	}, {} as IKeyedRoute);
 }
 
-export function hasRoutePermission(authArr: UserRole[], userGroups: IGroupWithPermissions[] = []) {
+export function hasRoutePermission(authArr: UserRoles[], userRoles: IRoleWithPermissions[] = []) {
 	/**
 	 * If auth array is not defined
 	 * Pass and allow
@@ -32,7 +32,7 @@ export function hasRoutePermission(authArr: UserRole[], userGroups: IGroupWithPe
 	 */
 	else if ( authArr.length === 0 ) {
 		// console.info("auth is empty[]:", authArr);
-		return userGroups.length === 0;
+		return userRoles.length === 0;
 	}
 	/**
 	 * Check if user has grants
@@ -45,17 +45,17 @@ export function hasRoutePermission(authArr: UserRole[], userGroups: IGroupWithPe
 		return true;
 	}
 
-	if ( !userGroups.length ) {
+	if ( !userRoles.length ) {
 		return false;
 	}
 
 	/*
 	Check if user role is array,
 	*/
-	return authArr.some((r) => userGroups.find((group) => group.name.indexOf(r) >= 0));
+	return authArr.some((r) => userRoles.find((role) => role.id === r));
 }
 
-export function generateRoutes(pagesConfig: IPageConfig[], allowedGroups: UserRole[]) {
+export function generateRoutes(pagesConfig: IPageConfig[], allowedGroups: UserRoles[]) {
 	// We could have used Array.flatMap instead but it doesn't work on IE
 	return pagesConfig.reduce((result: IKeyedRoute, config: IPageConfig) => {
 		const routes = getRoutes(config, allowedGroups);

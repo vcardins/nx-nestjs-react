@@ -16,12 +16,11 @@ import {
 } from 'typeorm';
 
 import { BaseEntity } from '@xapp/api/core';
-import { ModuleAction } from '@xapp/shared/types';
-import { VerificationKeyPurpose } from '@xapp/shared/types';
-import { Group } from '@xapp/api/access-control';
+import { Operations, VerificationKeyPurpose, Resources } from '@xapp/shared/types';
+import { Role } from '@xapp/api/access-control';
 import { PublicFile } from '@xapp/api/files';
 
-import { LoggedIn } from './logged_in.entity';
+import { UserSession } from './user_session.entity';
 import { UserProfile } from './user_profile.entity';
 
 @Entity({ name: 'user' })
@@ -125,23 +124,23 @@ export class User extends BaseEntity {
 	public avatar?: PublicFile;
 
 
-	@ManyToMany('Group', { cascade: true })
+	@ManyToMany(() => Role, { cascade: true })
 	@JoinTable({
 		// not work on run cli migration:
-		name: 'user_groups',
+		name: 'user_role',
 		joinColumn: {
 			name: 'user_id',
 			referencedColumnName: 'id',
 		},
 		inverseJoinColumn: {
-			name: 'user_group_id',
+			name: 'role_id',
 			referencedColumnName: 'id',
 		},
 	})
-	groups: Group[];
+	roles: Role[];
 
-	@OneToMany('LoggedIn', 'user', { cascade: true })
-	loggedIns: LoggedIn[];
+	@OneToMany(() => UserSession, 'user', { cascade: true })
+	sessions: UserSession[];
 
 	@OneToOne(() => UserProfile, (userProfile) => userProfile.user, {
 		cascade: true,
@@ -174,11 +173,11 @@ export class User extends BaseEntity {
 		return this;
 	}
 
-	checkPermissions(permissions: ModuleAction[]) { // , module: ModuleName
+	checkPermissions(operations: Operations[], resource: Resources) { //
 		return (
-			(this.groups || []).filter((group) =>
-				(group.permissions  || []).filter(
-					(permission) => permissions.includes(permission.action), // && permission.module === module,
+			(this.roles || []).filter((role) =>
+				(role.permissions  || []).filter(
+					(permission) => operations.includes(permission.operation?.name) && resource === permission.resource.name, //
 				).length > 0,
 			).length > 0
 		);

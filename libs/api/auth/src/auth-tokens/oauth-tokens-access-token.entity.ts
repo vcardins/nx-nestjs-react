@@ -13,7 +13,7 @@ import {
 import { BaseEntity } from '@xapp/api/core';
 import { User } from '@xapp/api/users';
 
-@Entity({ name: 'oauth_tokens_access_token' })
+@Entity({ name: 'oauth_access_token' })
 export class OauthTokensAccessToken extends BaseEntity {
 	@Column({ length: 20 })
 	@IsNotEmpty()

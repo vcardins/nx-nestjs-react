@@ -8,7 +8,7 @@ export interface IAuthService {
 	getAuthHeader(): string;
 	getRole(): string;
 	getUser(): IUserProfile;
-	isAuthorized(allowedRoles: string[]): boolean;
+	isAuthorized(allowedUserRoles: string[]): boolean;
 	isUserSessionValid(accessToken: string): boolean;
 	setSession(accessToken: string): void;
 	setUser(user: any): void;

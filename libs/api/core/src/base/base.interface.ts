@@ -1,7 +1,7 @@
 import { FindConditions, FindManyOptions, UpdateResult, DeleteResult } from 'typeorm';
 import { AutoMapper } from 'nestjsx-automapper';
 
-import { IdType, SortDirection } from '@xapp/shared/types';
+import { IdType, SortDirections } from '@xapp/shared/types';
 
 export interface IFindAndCountResult<T> {
 	data: Partial<T>[];
@@ -21,7 +21,7 @@ export interface IPaginationQuery {
 	pageSize?: number;
 	pageNumber?: number;
 	filter?: string;
-	sortBy?: Record<string, SortDirection>;
+	sortBy?: Record<string, SortDirections>;
 	q?: string;
 }
 

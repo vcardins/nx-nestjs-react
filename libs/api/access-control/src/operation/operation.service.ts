@@ -1,27 +1,28 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Repository, FindOneOptions } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
 import { InjectMapper } from 'nestjsx-automapper';
 
-import { BaseService, IFindAndCountResult, IPaginationQuery } from '@xapp/api/core';
-import { Group } from './user-group.entity';
 import { IdType } from '@xapp/shared/types';
+import { BaseService, IFindAndCountResult, IPaginationQuery } from '@xapp/api/core';
+
+import { Operation } from './operation.entity';
 
 @Injectable()
-export class GroupService extends BaseService<Group> {
-	items: Group[] = [];
+export class OperationService extends BaseService<Operation> {
+	items: Operation[] = [];
 
-	static modelName = 'groups';
+	static modelName = 'operations';
 
 	constructor(
-		@InjectRepository(Group) protected readonly repository: Repository<Group>,
+		@InjectRepository(Operation) protected readonly repository: Repository<Operation>,
 		@InjectMapper() autoMapper,
 	) {
 		super(repository, autoMapper);
 	}
 
-	async findAndCount (options: IPaginationQuery): Promise<IFindAndCountResult<Group> | Group[]> {
+	async findAndCount (options: IPaginationQuery): Promise<IFindAndCountResult<Operation> | Operation[]> {
 		this.queryBuilder = this.createQueryBuilder();
 		this.queryBuilder = this.queryBuilder.leftJoinAndSelect(`${this.modelName}.permissions`, 'permission');
 
@@ -35,34 +36,24 @@ export class GroupService extends BaseService<Group> {
 		return super.findAndCount(options);
 	}
 
-	async findById(id: IdType, options?: FindOneOptions): Promise<Group> {
+	async findById(id: IdType, options?: FindOneOptions): Promise<Operation> {
 		this.queryBuilder = this.createQueryBuilder();
 		this.queryBuilder = this.queryBuilder.leftJoinAndSelect(`${this.modelName}.permissions`, 'permission');
 
 		return super.findById(id, options);
 	}
 
-	getGroupByName(name: string) {
-		const groups = this.items.filter((group) => group.name === name);
-
-		if (groups.length) {
-			return groups[0];
-		}
-
-		throw new NotFoundException(`Group with name "${name}" does not exists`);
-	}
-
 	async preloadAll() {
 		if (!this.items) {
 			const qb = this.createQueryBuilder();
-			const groups = await qb
+			const operations = await qb
 				.leftJoinAndSelect(`${this.modelName}.permissions`, 'permission')
 				.getMany();
 
 
-			this.items = plainToClass(Group, groups);
+			this.items = plainToClass(Operation, operations);
 
-			// Logger.log(JSON.stringify(groups.map((group) => group.name)), GroupService.name);
+			// Logger.log(JSON.stringify(operations.map((group) => group.name)), OperationService.name);
 
 			return this.items;
 		}

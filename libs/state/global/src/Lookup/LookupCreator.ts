@@ -12,8 +12,8 @@ export const createLookup: StateCreator<ILookupState> = (set, get, api) => ({
 	status: ApiCallStatus.Idle,
 	dateFormats: null,
 	oAuthProviders: null,
-	authGroups: null,
-	userGroups: null,
+	authRoles: null,
+	userRoles: null,
 	error: null,
 	sortBy: { id: SortDirection.ASC },
 	init(props: IAuthState) {

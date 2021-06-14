@@ -3,15 +3,15 @@ import { Connection, EntityTarget } from 'typeorm';
 import { plainToClass } from 'class-transformer';
 
 import { toTitleCase, getUtcDate } from '@xapp/shared/utils';
-import { ModuleAction, ModuleName, UserRole } from '@xapp/shared/types';
+import { Operations, Resources, UserRoles } from '@xapp/shared/types';
 import { UserProfile, User } from '@xapp/api/users';
 
-import { Group, Permission } from '@xapp/api/access-control';
+import { Role, Permission, Operation, Resource } from '@xapp/api/access-control';
 
 const ADMIN = 'admin';
 const DEMO = 'demo';
 
-const getUser = async (username: string, profile: Partial<UserProfile>, groups: Group[] = [], isSuperuser = false) => {
+const getUser = async (username: string, profile: Partial<UserProfile>, roles: Role[] = [], isSuperuser = false) => {
 	const user = plainToClass(User, {
 		username,
 		email: `${username}@xapp.com`,
@@ -20,7 +20,7 @@ const getUser = async (username: string, profile: Partial<UserProfile>, groups: 
 		isActive: true,
 		dateJoined: getUtcDate(),
 		hashedPassword: await User.createPassword(username),
-		groups,
+		roles,
 	});
 
 	const userProfile = plainToClass(UserProfile, profile);
@@ -29,48 +29,64 @@ const getUser = async (username: string, profile: Partial<UserProfile>, groups: 
 	return { user, userProfile };
 };
 
-const getGroup = (name: UserRole, permissions: Permission[]) => plainToClass(Group, {
-	name,
-	title: toTitleCase(name),
-	permissions,
-});
-
-const getPermissions = (modules: ModuleName[]) =>
-	modules.reduce((result, module) => {
-		const allActions = Object
-			.keys(ModuleAction)
-			.filter((key) => isNaN(Number(ModuleAction[key])))
-			.filter(Number)
-			.map((action) => plainToClass(Permission, {
-				action: Number(action) as ModuleAction,
-				module,
-				title: `${toTitleCase(ModuleAction[action])} ${module}`,
-			}));
+const getPermissions = (resources: Resource[], operations: Operation[]) =>
+	resources.reduce((result, resource) => {
+		const allActions = operations.map((operation) =>
+			plainToClass(Permission, {
+				resource,
+				operation,
+				name: `${toTitleCase(operation.name)} ${resource.name}`,
+			}),
+		);
 
 		return result.concat(allActions);
 	}, [] as Permission[]);
 
 export default class SeedAuth implements Seeder {
 	public async run(factory: Factory, connection: Connection): Promise<any> {
-		const execSave = async <T>(entity: EntityTarget<T>, values: any) => await connection
-			.manager.save(entity, values) as Promise<T>;
+		const execSave = async <T>(entity: EntityTarget<T>, values: any) =>
+			(await connection.manager.save(entity, values)) as Promise<T[]>;
+		const execGet = async <T>(entity: EntityTarget<T>) => connection.manager.find(entity);
+		const operationsModels = Object.keys(Operations).map((description) => ({
+			name: Operations[description],
+			description,
+		}));
+		const operations = await execSave(Operation, operationsModels); // (await execGet(Operation)) ?? (
 
-		const permissions = getPermissions(Object.values(ModuleName));
-		await execSave(Permission, permissions);
+		const resourcesModels = Object.keys(Resources).map((description) => ({ name: Resources[description], description }));
+		const resources = await execSave(Resource, resourcesModels); // (await execGet(Resource)) ?? (
 
-		const adminGroup = getGroup(UserRole.Admin, permissions);
-		await execSave(Group, adminGroup);
+		const adminPermissions = getPermissions(resources, operations);
 
-		const userPermissions = permissions.filter((p) => p.module === ModuleName.Todo);
+		await execSave(Permission, adminPermissions);
 
-		const userGroup = getGroup(UserRole.User, userPermissions);
-		await execSave(Group, userGroup);
+		const rolesModels = Object.keys(UserRoles)
+			.filter(Number)
+			.map((id) => ({
+				id: Number(id),
+				name: UserRoles[id] as string,
+				permissions: adminPermissions,
+			}));
 
-		const admin = await getUser(ADMIN, { firstName: 'Admin', lastName: 'User', locale: 'CA' }, [adminGroup], true);
+		const roles = await execSave(Role, rolesModels);
+
+		const adminRole = roles.find(({ id }) => id === UserRoles.Admin);
+		// await execSave(Role, adminRole);
+		const userRole = roles.find(({ id }) => id === UserRoles.User);
+		//{
+		// 	...roles.find(({ id }) => id === UserRoles.User),
+		// 	permissions: adminPermissions.filter(()),
+		// };
+		// await execSave(Role, userRole);
+
+		// const userRole = getRole(UserRoles.User, userPermissions);
+		// await execSave(Role, userRole);
+
+		const admin = await getUser(ADMIN, { firstName: 'Admin', lastName: 'User', locale: 'CA' }, [adminRole], true);
 		await execSave(User, admin.user);
 		await execSave(UserProfile, admin.userProfile);
 
-		const demo = await getUser(DEMO, { firstName: 'Demo', lastName: 'User', locale: 'CA' }, [userGroup]);
+		const demo = await getUser(DEMO, { firstName: 'Demo', lastName: 'User', locale: 'CA' }, [userRole]);
 		await execSave(User, demo.user);
 		await execSave(UserProfile, demo.userProfile);
 	}

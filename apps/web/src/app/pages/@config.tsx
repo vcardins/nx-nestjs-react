@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
-import { IPageConfig, AuthGroups, LayoutStyles, PageKey } from '@xapp/shared/types';
+import { IPageConfig, AuthRoles, LayoutStyles, PageKey } from '@xapp/shared/types';
 import { appConfig } from '@xapp/shared/config';
 
 import { AdminPageConfig } from './Admin/@config';
@@ -20,7 +20,7 @@ const DefaultPageConfig: IPageConfig = {
 	layout: {
 		style: LayoutStyles.Clean,
 	},
-	auth: AuthGroups.everyone,
+	auth: AuthRoles.everyone,
 	routes: [
 		{
 			key: PageKey.Home,

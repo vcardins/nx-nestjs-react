@@ -15,7 +15,7 @@ import { UserDto } from './dto/user.dto';
 import { UserProfileDto } from './dto/user-profile.dto';
 // import { UserDto } from '../dto/user.dto';
 
-const userAuthRelations = ['groups', 'groups.permissions', 'userProfile'];
+const userAuthRelations = ['roles', 'roles.permissions', 'userProfile'];
 
 @Injectable()
 export class UserService extends BaseService<User> {
@@ -71,18 +71,18 @@ export class UserService extends BaseService<User> {
 
 	getSelect() {
 		return this.queryBuilder
-			.leftJoinAndSelect(`${this.modelName}.groups`, 'group')
+			.leftJoinAndSelect(`${this.modelName}.roles`, 'role')
 			.leftJoinAndSelect(`${this.modelName}.userProfile`, 'userProfile')
-			.leftJoinAndSelect('group.permissions', 'permission');
+			.leftJoinAndSelect('role.permissions', 'permission');
 	}
 
-	async findAndCount(options: IPaginationQuery & { group: string }): Promise<IFindAndCountResult<User> | User[]> {
+	async findAndCount(options: IPaginationQuery & { role: string }): Promise<IFindAndCountResult<User> | User[]> {
 		this.queryBuilder = this.createQueryBuilder();
 
-		if (options.group) {
+		if (options.role) {
 			this.queryBuilder = this.queryBuilder
-				.leftJoinAndSelect(`${this.modelName}.groups`, 'group')
-				.where('group.id = :group', { group: options.group });
+				.leftJoinAndSelect(`${this.modelName}.roles`, 'role')
+				.where('role.id = :role', { role: options.role });
 		}
 		else {
 			this.queryBuilder = this.getSelect();
@@ -228,17 +228,17 @@ export class UserService extends BaseService<User> {
 	}
 
 	getUserDto(user: User): UserDto {
-		const { userProfile, groups = [], id, dateJoined, isActive, isSuperuser, lastLogin, username, email, phoneNumber } = user;
+		const { userProfile, roles = [], id, dateJoined, isActive, isSuperuser, lastLogin, username, email, phoneNumber } = user;
 
 		return plainToClass(UserDto, {
 			id, dateJoined, isActive, isSuperuser, lastLogin,
 			username, email,
-			groups: groups.map((group) => ({
-				...group,
-				permissions: group.permissions.map(({ action, module }) => ({
-					action,
-					module,
-				})),
+			roles: roles.map((role) => ({
+				...role,
+				// permissions: role.permissions.map(({ operation, module }) => ({
+				// 	operation,
+				// 	module,
+				// })),
 			})),
 			profile: plainToClass(UserProfileDto, { ...userProfile, phoneNumber }),
 		});

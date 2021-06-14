@@ -1,13 +1,13 @@
 import { RouteObject } from 'react-router';
 
-import { UserRole } from '@xapp/shared/types';
+import { UserRoles } from '@xapp/shared/types';
 import { IPageLayout } from './IPageLayout';
 import { IPageMeta } from './IPageMeta';
 
 type IMetaRoute = RouteObject & IPageMeta;
 
 export interface IRoute extends Omit<IMetaRoute, 'path'> {
-	auth?: UserRole[];
+	auth?: UserRoles[];
 	path?: string;
 	layout?: IPageLayout;
 	action?: () => void;

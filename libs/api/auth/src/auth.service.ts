@@ -1,4 +1,4 @@
-import { UserRole, VerificationKeyPurpose } from '@xapp/shared/types';
+import { UserRoles, VerificationKeyPurpose } from '@xapp/shared/types';
 /* eslint-disable camelcase */
 import { BadRequestException, HttpService, Inject, Injectable, Logger/*, NotFoundException*/ } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
@@ -9,7 +9,7 @@ import { OAuthProvider } from '@xapp/shared/types';
 import { CustomError } from '@xapp/shared/exceptions';
 import { getUtcDate } from '@xapp/shared/utils';
 import { ICoreConfig, CORE_CONFIG_TOKEN } from '@xapp/api/core';
-import { GroupService } from '@xapp/api/access-control';
+import { RoleService } from '@xapp/api/access-control';
 
 import { FACEBOOK_CONFIG_TOKEN } from './auth-tokens/configs/facebook.config';
 import { IFacebookConfig } from './auth-tokens/interfaces/facebook-config.interface';
@@ -37,7 +37,7 @@ export class AuthService {
 		@Inject(GOOGLE_CONFIG_TOKEN) private readonly googleConfig: IGoogleConfig,
 		private readonly httpService: HttpService,
 		private readonly userService: UserService,
-		private readonly groupService: GroupService,
+		private readonly groupService: RoleService,
 		private readonly tokenService: JwtTokenService,
 	) {
 		this.localUri = `http://${this.coreConfig.domain}${this.coreConfig.port ? `:${this.coreConfig.port}` : ''}`;
@@ -70,9 +70,9 @@ export class AuthService {
 			throw new CustomError('You have too many failed signin tries. Your account is locked');
 		}
 
-		const { userProfile, groups, ...rest } = user;
+		const { userProfile, roles, ...rest } = user;
 
-		await this.userService.update(user.id, {...rest, lastLogin: getUtcDate()});
+		await this.userService.update(user.id, { ...rest, lastLogin: getUtcDate() });
 
 		return this.userService.getUserDto(user);
 	}
@@ -82,12 +82,12 @@ export class AuthService {
 			await this.groupService.preloadAll();
 		}
 		catch (error) {
-			throw new BadRequestException('Error in load groups');
+			throw new BadRequestException('Error in load roles');
 		}
 
 		await this.userService.assertUsernameAndEmail(userInfo.email, userInfo.username);
 
-		const group = this.groupService.getGroupByName(UserRole.User);
+		const group = this.groupService.getRoleByName(UserRoles.User);
 		const newUser = await plainToClass(User, userInfo).setPassword(userInfo.password);
 		const info = {
 			email: userInfo.email,
@@ -97,7 +97,7 @@ export class AuthService {
 		const verificationKey = this.tokenService.encode(info);
 		// const verified = this.tokenService.validate(verificationKey);
 
-		newUser.groups = [group];
+		newUser.roles = [group];
 		newUser.dateJoined = getUtcDate();
 		newUser.verificationKey = verificationKey;
 		newUser.dateVerificationKeySent = getUtcDate();
@@ -108,7 +108,6 @@ export class AuthService {
 		userProfile.lastName = userInfo.lastName;
 		newUser.userProfile = userProfile;
 
-		/* eslint-enable immutable/no-mutation */
 		const user = await this.userService.create(newUser);
 
 		// TODO: Email user with verification key details

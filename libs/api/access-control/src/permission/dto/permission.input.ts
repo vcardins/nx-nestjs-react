@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 import { IsOptional, MaxLength } from 'class-validator';
-import { ModuleName } from '@xapp/shared/types';
+import { Resources } from '@xapp/shared/types';
 
 export class PermissionInput {
 	@IsOptional()
@@ -16,5 +16,5 @@ export class PermissionInput {
 	title: string;
 
 	@ApiProperty()
-	module: ModuleName;
+	resource: Resources;
 }

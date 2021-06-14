@@ -13,12 +13,12 @@ import { UserService } from './user.service';
 
 import { User } from './entities/user.entity';
 import { UserProfile } from './entities/user_profile.entity';
-import { LoggedIn } from './entities/logged_in.entity';
+import { UserSession } from './entities/user_session.entity';
 
 const entities = [
 	User,
 	UserProfile,
-	LoggedIn,
+	UserSession,
 ];
 
 const providers = [

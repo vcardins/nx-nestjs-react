@@ -1,23 +1,23 @@
 // import { FindOneOptions } from 'typeorm';
-// import { Module, Group, Permission, User, UserProfile, Notification, LoggedIn, NotificationRead } from '@xapp/api/auth';
+// import { Resource, Role, Permission, User, UserProfile, Notification, UserSession, NotificationRead } from '@xapp/api/auth';
 // import { generateErrors } from './validation';
 // // import { EntityNotFoundError, BadUserInputError } from '@xapp/api/core';
 
-// type EntityConstructor = typeof Module
+// type EntityConstructor = typeof Resource
 // 	| typeof User
-// 	| typeof Group
+// 	| typeof Role
 // 	| typeof Permission
 // 	| typeof UserProfile
 // 	| typeof Notification
-// 	| typeof LoggedIn
+// 	| typeof UserSession
 // 	| typeof NotificationRead;
 
-// type EntityInstance = Module | User | Group | Permission | UserProfile | Notification | LoggedIn | NotificationRead;
+// type EntityInstance = Resource | User | Role | Permission | UserProfile | Notification | UserSession | NotificationRead;
 
 // const entities: { [key: string]: EntityConstructor } = {
 // 	Permission,
-// 	Group,
-// 	Module,
+// 	Role,
+// 	Resource,
 // 	User,
 // 	UserProfile,
 // };

@@ -4,7 +4,7 @@ export * from './lib/user.module';
 
 export * from './lib/entities/user_profile.entity';
 export * from './lib/entities/user.entity';
-export * from './lib/entities/logged_in.entity';
+export * from './lib/entities/user_session.entity';
 
 export * from './lib/dto/user-profile.dto';
 export * from './lib/dto/user.dto';

@@ -56,7 +56,7 @@ export const Authorization = ({ children, routes }: IAuthorizationProps) => {
 		/*
 		User is guest, redirect to Login Page
 		*/
-		if (!user?.groups?.length) {
+		if (!user?.roles?.length) {
 			// If the requested location is NOT login and the access is not allowed redirect to login
 			if (notLoginLocation || !isAccessAllowed()) {
 				pathname = appConfig.routes.signIn;
@@ -93,7 +93,7 @@ export const Authorization = ({ children, routes }: IAuthorizationProps) => {
 		notLoginLocation,
 		location.pathname,
 		location?.state?.redirectUrl,
-		user?.groups?.length,
+		user?.roles?.length,
 	]);
 
 	useEffect(() => {
@@ -139,7 +139,7 @@ export const Authorization = ({ children, routes }: IAuthorizationProps) => {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	function isAccessAllowed() {
 		const route = getMatchedRoute(location.pathname);
-		return hasRoutePermission(route.auth, user?.groups);
+		return hasRoutePermission(route.auth, user?.roles);
 	}
 
 	return children;

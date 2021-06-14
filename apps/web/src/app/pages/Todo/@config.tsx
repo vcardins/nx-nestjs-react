@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AuthGroups, IPageConfig, LayoutStyles, PageKey } from '@xapp/shared/types';
+import { AuthRoles, IPageConfig, LayoutStyles, PageKey } from '@xapp/shared/types';
 
 import Todo from './Todo';
 // const element = React.lazy(() => import('./Todo'));
@@ -10,7 +10,7 @@ export const TodoPageConfig: IPageConfig = {
 		style: LayoutStyles.Viewport,
 		config: {},
 	},
-	auth: AuthGroups.user,
+	auth: AuthRoles.user,
 	routes: [
 		{
 			key: PageKey.Todo,

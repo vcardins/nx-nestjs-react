@@ -1,9 +1,9 @@
-import { ModuleAction, UserRole } from '@xapp/shared/types';
+import { Operations, UserRoles } from '@xapp/shared/types';
 import { IBaseControllerFactoryOpts } from './base.interface';
 
 export type AuthConstraint = {
-	roles?: UserRole[];
-	permissions: ModuleAction[];
+	roles?: UserRoles[];
+	permissions: Operations[];
 }
 
 export interface IDefaultAuthObj {

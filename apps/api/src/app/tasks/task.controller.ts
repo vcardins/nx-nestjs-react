@@ -1,20 +1,20 @@
 import { Controller } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
-import { SocketGateway, baseAuthControllerFactory, ModuleGroup, getDefaultPermissions } from '@xapp/api/core';
-import { ModuleName, TaskOutput, UserRole } from '@xapp/shared/types';
+import { SocketGateway, baseAuthControllerFactory, ResourceGroup, getDefaultPermissions } from '@xapp/api/core';
+import { Resources, TaskOutput, UserRoles } from '@xapp/shared/types';
 import { Task } from './entities/task.entity';
 import { TaskService } from './task.service';
 
 const BaseController = baseAuthControllerFactory<Task>({
 	entity: Task,
 	entityOutput: TaskOutput,
-	auth: getDefaultPermissions([UserRole.User]),
+	auth: getDefaultPermissions([UserRoles.User]),
 });
 
 @ApiBearerAuth()
 @Controller('/task')
-@ModuleGroup(ModuleName.Task)
+@ResourceGroup(Resources.Task)
 export class TaskController extends BaseController {
 	constructor(
 		// private readonly configService: ConfigService,

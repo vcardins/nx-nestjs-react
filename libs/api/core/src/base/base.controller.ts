@@ -23,7 +23,7 @@ import {
 	ApiBearerAuth,
 } from '@nestjs/swagger';
 
-import { ModuleAction } from '@xapp/shared/types';
+import { Operations } from '@xapp/shared/types';
 
 import { ApiException } from '../dto/api-exception.dto';
 import { BaseService } from './base.service';
@@ -31,7 +31,7 @@ import { formatEntityName } from './base.utils';
 import { IBaseControllerFactoryOpts, IPaginationQuery, IFindAndCountResult } from './base.interface';
 
 import { ParseIntWithDefaultPipe } from '../pipes/parse-int-with-default.pipe';
-import { QueryOptions, IdType, SortDirection } from '@xapp/shared/types';
+import { QueryOptions, IdType, SortDirections } from '@xapp/shared/types';
 import { SocketGateway } from '../socket/socket.gateway';
 
 import { getOperationId } from '../utils/get-operation-id';
@@ -77,8 +77,8 @@ export function baseControllerFactory<T extends BaseEntity>(options: IBaseContro
 			this._defaultOptions = defaultOptions;
 		}
 
-		emit(event: ModuleAction, data?: any) {
-			this._socket?.server.emit('events', { module: Entity.name, event, data });
+		emit(event: Operations, data?: any) {
+			this._socket?.server.emit('events', { resource: Entity.name, event, data });
 		}
 
 		@ApiBadRequestResponse({ type: ApiException })
@@ -150,7 +150,7 @@ export function baseControllerFactory<T extends BaseEntity>(options: IBaseContro
 					pageNumber,
 					pageSize,
 					q,
-					sortBy: sortBy ? { [sortBy]: SortDirection.ASC } : (this._defaultOptions.sortBy ?? { id: SortDirection.ASC }),
+					sortBy: sortBy ? { [sortBy]: SortDirections.ASC } : (this._defaultOptions.sortBy ?? { id: SortDirections.ASC }),
 					filter: rawFilter,
 				};
 				const filter = query.filter ? JSON.parse(query.filter) : {};

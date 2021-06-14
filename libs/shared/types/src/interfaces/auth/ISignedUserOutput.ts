@@ -1,5 +1,5 @@
 import { IUserProfile } from './IUserProfile';
-import { IGroupWithPermissions } from './IGroupWithPermissions';
+import { IRoleWithPermissions } from './IRoleWithPermissions';
 
 export interface ISignedUserOutput {
 	id: number;
@@ -9,6 +9,6 @@ export interface ISignedUserOutput {
 	email: string;
 	isActive: boolean;
 	dateJoined: Date
-	groups: IGroupWithPermissions[];
+	roles: IRoleWithPermissions[];
 	profile: IUserProfile;
 }

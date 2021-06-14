@@ -21,7 +21,7 @@ export class JwtTokenService {
 				lastLogin: user.lastLogin,
 				isActive: user.isActive,
 				isSuperuser: user.isSuperuser,
-				groups: user.groups,
+				roles: user.roles,
 			},
 			{
 				secret: this.jwtConfig.secretKey,
@@ -50,12 +50,12 @@ export class JwtTokenService {
 
 	createSecretKey(user: User) {
 		const { id, isActive, isSuperuser } = user;
-		let userGroups = '';
+		let userRoles = '';
 		let key = '';
 
 		if (user) {
-			userGroups = user.groups?.map(({ name }) => `$${name}`).join('');
-			key = `$${id}$${isActive}$${isSuperuser}${userGroups}`;
+			userRoles = user.roles?.map(({ name }) => `$${name}`).join('');
+			key = `$${id}$${isActive}$${isSuperuser}${userRoles}`;
 		}
 
 		return `${this.jwtConfig.secretKey}${key}`;

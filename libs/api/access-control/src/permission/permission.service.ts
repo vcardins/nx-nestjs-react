@@ -20,11 +20,11 @@ export class PermissionService extends BaseService<Permission> {
 		return super.findById(id);
 	}
 
-	async findAndCount (options: IPaginationQuery & { group: string; module: string }): Promise<IFindAndCountResult<Permission> | Permission[]> {
+	async findAndCount (options: IPaginationQuery & { role: string; resource: string }): Promise<IFindAndCountResult<Permission> | Permission[]> {
 		this.queryBuilder = this.createQueryBuilder();
 
-		if (options.group) {
-			this.queryBuilder = this.queryBuilder.leftJoin(`${this.modelName}.groups', 'group').where('group.id = :group`, options.group);
+		if (options.role) {
+			this.queryBuilder = this.queryBuilder.leftJoin(`${this.modelName}.roles', 'role').where('role.id = :role`, options.role);
 		}
 
 		if (options.q) {
@@ -34,9 +34,9 @@ export class PermissionService extends BaseService<Permission> {
 			});
 		}
 
-		if (options.module) {
-			this.queryBuilder = this.queryBuilder.where('module = :module', {
-				module: options.module,
+		if (options.resource) {
+			this.queryBuilder = this.queryBuilder.where('resource = :resource', {
+				resource: options.resource,
 			});
 		}
 

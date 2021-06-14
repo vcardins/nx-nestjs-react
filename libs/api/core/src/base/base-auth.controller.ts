@@ -25,7 +25,7 @@ import {
 	ApiBearerAuth,
 } from '@nestjs/swagger';
 
-import { ModuleAction, UserRole, IdType, SortDirection, QueryOptions } from '@xapp/shared/types';
+import { Operations, UserRoles, IdType, SortDirections, QueryOptions } from '@xapp/shared/types';
 import { getOperationId } from '@xapp/shared/utils';
 
 import { AuthConstraint, IBaseAuthControllerFactoryOpts } from './base-auth.interface';
@@ -45,14 +45,14 @@ const metadataKey = 'swagger/apiModelPropertiesArray';
 const excludedCreateMetadata = [':id', ':createdAt', ':updatedAt'];
 const excludedUpdateMetadata = [':createdAt', ':updatedAt'];
 
-export const getDefaultPermissions = (roles: UserRole[] = []): Record<string, AuthConstraint> => ({
-	count: { roles, permissions: [ModuleAction.Read] },
-	get: { roles, permissions: [ModuleAction.Read] },
-	getById: { roles, permissions: [ModuleAction.Read] },
-	create: { roles, permissions: [ModuleAction.Create] },
-	update: { roles, permissions: [ModuleAction.Update] },
-	updateOrCreate: { roles, permissions: [ModuleAction.Update] },
-	delete: { roles, permissions: [ModuleAction.Delete] },
+export const getDefaultPermissions = (roles: UserRoles[] = []): Record<string, AuthConstraint> => ({
+	count: { roles, permissions: [Operations.Read] },
+	get: { roles, permissions: [Operations.Read] },
+	getById: { roles, permissions: [Operations.Read] },
+	create: { roles, permissions: [Operations.Create] },
+	update: { roles, permissions: [Operations.Update] },
+	updateOrCreate: { roles, permissions: [Operations.Update] },
+	delete: { roles, permissions: [Operations.Delete] },
 });
 
 
@@ -91,8 +91,8 @@ export function baseAuthControllerFactory<T extends IBaseEntity>(options: IBaseA
 			this._defaultOptions = defaultOptions;
 		}
 
-		emit(event: ModuleAction, data?: any) {
-			this._socket?.server.emit('events', { module: Entity.name, event, data });
+		emit(event: Operations, data?: any) {
+			this._socket?.server.emit('events', { resource: Entity.name, event, data });
 		}
 
 		@Get('count')
@@ -170,7 +170,7 @@ export function baseAuthControllerFactory<T extends IBaseEntity>(options: IBaseA
 					pageNumber,
 					pageSize,
 					q,
-					sortBy: sortBy ? { [sortBy]: SortDirection.ASC } : (this._defaultOptions?.sortBy ?? { id: SortDirection.ASC }),
+					sortBy: sortBy ? { [sortBy]: SortDirections.ASC } : (this._defaultOptions?.sortBy ?? { id: SortDirections.ASC }),
 					filter: rawFilter,
 				};
 				const filter = query.filter ? JSON.parse(query.filter) : {};

@@ -1,6 +1,6 @@
 import React, { memo, useRef } from 'react';
 
-import { Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react/core';
+import { Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react';
 import { IVerifyPhoneNumberInput } from '@xapp/shared/types';
 
 import { validationSchema } from './schema';

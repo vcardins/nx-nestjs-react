@@ -28,7 +28,7 @@
 		"api-files": { "tags": ["type:library", "scope:api", "platform:server"] },
 		"api-mail": { "tags": ["type:library", "scope:api", "platform:server"] },
 		"api": { "tags": ["type:library", "scope:api", "platform:server"] },
-		"react-core": { "tags": [] },
+		"react": { "tags": [] },
 		"shared-api": { "tags": [] },
 		"shared-assets": { "tags": [] },
 		"shared-config": { "tags": [] },

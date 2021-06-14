@@ -1,6 +1,6 @@
 import React, { memo, useRef } from 'react';
 
-import { Page, Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react/core';
+import { Page, Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react';
 import { IChangePasswordInput, IRoutedPageProps } from '@xapp/shared/types';
 import { useStore } from '@xapp/state';
 

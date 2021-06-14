@@ -1,7 +1,7 @@
 import React, { memo, useState, useRef, useEffect } from 'react';
 import { parse } from 'query-string';
 
-import { Page, Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react/core';
+import { Page, Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react';
 import { IResetPasswordInput } from '@xapp/shared/types';
 
 import { validationSchema } from './schema';

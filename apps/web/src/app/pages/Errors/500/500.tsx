@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Error } from '@xapp/react/core';
+import { Error } from '@xapp/react';
 
 const Error500Page = memo(() => <Error code="500" message="An error has occurred, please contact the administrator" />);
 

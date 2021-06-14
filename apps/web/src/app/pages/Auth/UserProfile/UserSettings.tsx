@@ -1,5 +1,5 @@
 import React from 'react';
-import { Page } from '@xapp/react/core';
+import { Page } from '@xapp/react';
 
 function UserSettingsPage() {
 	return <Page title="User Settings" />;

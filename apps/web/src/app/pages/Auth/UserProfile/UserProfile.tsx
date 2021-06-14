@@ -1,6 +1,6 @@
 import React, { memo, useRef } from 'react';
 
-import { Form, TextInput, Page, Submit, FieldGroup, DatePicker, formatDate, useForm } from '@xapp/react/core';
+import { Form, TextInput, Page, Submit, FieldGroup, DatePicker, formatDate, useForm } from '@xapp/react';
 import { IUserProfileInput } from '@xapp/shared/types';
 import { useStore } from '@xapp/state';
 

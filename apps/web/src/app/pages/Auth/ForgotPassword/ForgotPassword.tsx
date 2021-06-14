@@ -1,7 +1,7 @@
 import React, { memo, useContext, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react/core';
+import { Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react';
 import { IForgotPasswordInput } from '@xapp/shared/types';
 import { useStore } from '@xapp/state';
 import { PageKey } from '@xapp/shared/types';

@@ -2,7 +2,7 @@ import React, { FC, Context, createContext, useEffect, useState, useRef, useMemo
 
 import { IKeyedRoute, INavItem, IRoute } from '@xapp/shared/types';
 import { useStore } from '@xapp/state';
-import { useNotifier } from '@xapp/react/core';
+import { useNotifier } from '@xapp/react';
 import { appConfig } from '@xapp/shared/config';
 
 export interface IAppContext {

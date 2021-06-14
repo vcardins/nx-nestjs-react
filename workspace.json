@@ -230,9 +230,9 @@
 				}
 			}
 		},
-		"react-core": {
-			"root": "libs/react/core",
-			"sourceRoot": "libs/react/core/src",
+		"react": {
+			"root": "libs/react",
+			"sourceRoot": "libs/react/src",
 			"projectType": "library",
 			"schematics": {},
 			"architect": {
@@ -240,14 +240,14 @@
 					"builder": "@nrwl/linter:lint",
 					"options": {
 						"linter": "eslint",
-						"tsConfig": ["libs/react/core/tsconfig.lib.json", "libs/react/core/tsconfig.spec.json"],
-						"exclude": ["**/node_modules/**", "!libs/react/core/**/*"]
+						"tsConfig": ["libs/react/tsconfig.lib.json", "libs/react/tsconfig.spec.json"],
+						"exclude": ["**/node_modules/**", "!libs/react/**/*"]
 					}
 				},
 				"test": {
 					"builder": "@nrwl/jest:jest",
 					"options": {
-						"jestConfig": "libs/react/core/jest.config.js",
+						"jestConfig": "libs/react/jest.config.js",
 						"passWithNoTests": true
 					}
 				}

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Icon } from '@xapp/react/core';
+import { Icon } from '@xapp/react';
 
 export const HouseholdItem = styled.li`
 	display: grid;

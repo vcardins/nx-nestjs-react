@@ -21,7 +21,7 @@ import {
 	DateFormatter,
 	formatDateTime,
 	InlineEdit,
-} from '@xapp/react/core';
+} from '@xapp/react';
 
 import { useStore } from '@xapp/state';
 import { TodoInput } from '@xapp/shared/types';

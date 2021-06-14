@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { Icon } from '@xapp/react/core';
+import { Icon } from '@xapp/react';
 
 export const TodoItem = styled.li<{ isCompleted: boolean }>`
 	display: grid;

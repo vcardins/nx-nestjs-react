@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Error } from '@xapp/react/core';
+import { Error } from '@xapp/react';
 
 const Error404Page = memo(() => <Error code="404" message="Page could not be found" />);
 

@@ -17,7 +17,7 @@ import {
 	Button,
 	Icon,
 	InlineEdit,
-} from '@xapp/react/core';
+} from '@xapp/react';
 import { HouseholdInput } from '@xapp/shared/types';
 
 import { useStore } from '@xapp/state';

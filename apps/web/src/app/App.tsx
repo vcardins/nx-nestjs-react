@@ -3,7 +3,7 @@ import { ThemeProvider } from 'styled-components';
 import { ToastContainer, Slide } from 'react-toastify';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import { Layout, Menu } from '@xapp/react/core';
+import { Layout, Menu } from '@xapp/react';
 import { appConfig, getTheme } from '@xapp/shared/config';
 import { useStore } from '@xapp/state';
 import { IKeyedRoute, Themes } from '@xapp/shared/types';

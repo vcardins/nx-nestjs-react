@@ -1,5 +1,5 @@
 module.exports = {
-	name: 'react-core',
+	name: 'react',
 	preset: '../../../jest.config.js',
 	globals: {
 		'ts-jest': {
@@ -10,5 +10,5 @@ module.exports = {
 		'^.+\\.[tj]sx?$': 'ts-jest',
 	},
 	moduleFileExtensions: ['ts', 'tsx'],
-	coverageDirectory: '../../../coverage/libs/react/core',
+	coverageDirectory: '../../../coverage/libs/react',
 };

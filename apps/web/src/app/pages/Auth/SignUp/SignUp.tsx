@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { validationSchema } from './schema';
 
-import { Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react/core';
+import { Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react';
 import { ISignUpInput } from '@xapp/shared/types';
 import { useStore } from '@xapp/state';
 

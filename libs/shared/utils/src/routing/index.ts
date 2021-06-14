@@ -1,9 +1,9 @@
 import { defaultPageLayout } from '@xapp/shared/config';
 import { UserRoles, IPageConfig, IKeyedRoute, IRoleWithPermissions } from '@xapp/shared/types';
 
-function getRoutes(config: IPageConfig, allowedGroups: UserRoles[] = null) {
+function getRoutes(config: IPageConfig, allowedRoles: UserRoles[] = null) {
 	return config.routes.reduce((result, route) => {
-		const auth = config.auth || allowedGroups;
+		const auth = config.auth || allowedRoles;
 
 		result[route.key] = {
 			...route,
@@ -55,10 +55,10 @@ export function hasRoutePermission(authArr: UserRoles[], userRoles: IRoleWithPer
 	return authArr.some((r) => userRoles.find((role) => role.id === r));
 }
 
-export function generateRoutes(pagesConfig: IPageConfig[], allowedGroups: UserRoles[]) {
+export function generateRoutes(pagesConfig: IPageConfig[], allowedRoles: UserRoles[]) {
 	// We could have used Array.flatMap instead but it doesn't work on IE
 	return pagesConfig.reduce((result: IKeyedRoute, config: IPageConfig) => {
-		const routes = getRoutes(config, allowedGroups);
+		const routes = getRoutes(config, allowedRoles);
 		// eslint-disable-next-line no-param-reassign
 		result = {
 			...result,

@@ -43,7 +43,7 @@ export const useStore: UseStore<AppState> = createStore((set, get, api) => {
 		});
 	};
 
-	const resetAppState = () => {
+	const reset = () => {
 		account.reset();
 	};
 
@@ -56,6 +56,6 @@ export const useStore: UseStore<AppState> = createStore((set, get, api) => {
 		auth,
 		account,
 		household,
-		reset: resetAppState,
+		reset,
 	};
 });

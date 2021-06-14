@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import jwtDecode from 'jwt-decode';
 
-import { IActionResponse, IRoleWithPermissions, IJwtPayload, INotifier, ISignedUserOutput, ISignInInput, IUserToken, UserRole } from '@xapp/shared/types';
+import { IActionResponse, IRoleWithPermissions, IJwtPayload, INotifier, ISignedUserOutput, ISignInInput, IUserToken, UserRoles } from '@xapp/shared/types';
 import { appConfig } from '@xapp/shared/config';
 import { LocalStorage, RestClient } from '@xapp/shared/utils';
 
@@ -34,7 +34,7 @@ export class AuthStore {
 
 	getAuthHeader = (): string => `${authToken} ${this.getAccessToken()}`;
 
-	getUserGroup(): IRoleWithPermissions[] {
+	getUserRole(): IRoleWithPermissions[] {
 		const user = this.getUser();
 		return user?.roles;
 	}
@@ -63,9 +63,9 @@ export class AuthStore {
 		return (user || null) as ISignedUserOutput;
 	}
 
-	isAuthorized(allowedGroups: UserRole[] = []): boolean { // accessLevel: AccessLevel,
-		const userRoles = this.getUserGroup();
-		return allowedGroups.some((r) => userRoles.find((group) => group.name.indexOf(r) >= 0));
+	isAuthorized(allowedRoles: UserRoles[] = []): boolean { // accessLevel: AccessLevel,
+		const userRoles = this.getUserRole();
+		return allowedRoles.some((r) => userRoles.find((group) => group.id === r));
 	}
 
 	isUserSessionValid(): boolean {

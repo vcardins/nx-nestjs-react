@@ -2,7 +2,7 @@ import { ExecutionContext, Injectable, Logger } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 
-import { Operations, Resources } from '@xapp/shared/types';
+import { Operations, Resources, UserRoles } from '@xapp/shared/types';
 import { User } from '@xapp/api/access-control';
 import { AUTH_GUARD_TYPE } from '../constants';
 
@@ -30,7 +30,7 @@ export class AccessGuard extends AuthGuard(AUTH_GUARD_TYPE) {
 		}
 
 		const resource = this.reflector.get<Resources>('resource', context.getClass());
-		const roles = this.reflector.get<string[]>('roles', context.getHandler()) || [];
+		const roles = this.reflector.get<UserRoles[]>('roles', context.getHandler()) || [];
 		const operations = this.reflector.get<Operations[]>('permissions', context.getHandler()) || [];
 
 		const user: User = request.user || null;
@@ -39,14 +39,15 @@ export class AccessGuard extends AuthGuard(AUTH_GUARD_TYPE) {
 			return true;
 		}
 
+		// TODO: Fix checkPermissions method
 		const hasRoutePermission = operations
 			? user instanceof User && user.checkPermissions(operations, resource)
 			: null;
 
-		const hasGroup = roles
-			? roles.filter((roleName) => user instanceof User && user[roleName]).length > 0
+		const hasRole = roles
+			? roles.some((role) => user instanceof User && user.roles.some(({ id }) => id === role))
 			: null;
 
-		return hasGroup === true || hasRoutePermission === true || (hasGroup === null && hasRoutePermission === null);
+		return hasRole === true || hasRoutePermission === true || (hasRole === null && hasRoutePermission === null);
 	}
 }

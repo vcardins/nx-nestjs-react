@@ -24,7 +24,6 @@ interface IAccountStateValues {
 
 export interface IAccountState extends IAccountStateValues, Omit<IStoreState<AccountStore>, 'init'> {
 	init: (props: IAuthState, endpoints: IEndpointsConfig) => void;
-
 	signUp(data: ISignUpInput): Promise<void>;
 	verifyEmail(data: IVerifyEmailInput): Promise<void>;
 	verifyPhoneNumber(data: IVerifyPhoneNumberInput): Promise<void>;
@@ -41,6 +40,12 @@ export interface IAccountState extends IAccountStateValues, Omit<IStoreState<Acc
 const init = (set: SetState<IAccountState>) => (props: IAuthState, endpoints: IEndpointsConfig) => {
 	set({
 		store: new AccountStore(props.authHeader, endpoints),
+	});
+};
+
+const reset = (set: SetState<IAccountState>) => () => {
+	set({
+		store: null,
 	});
 };
 
@@ -266,6 +271,7 @@ export const createAccount: StateCreator<IAccountState> = (set, get) => ({
 	error: null,
 	orderBy: { id: 'asc' },
 	init: init(set),
+	reset: reset(set),
 	signUp: signUp(set, get),
 	verifyEmail: verifyEmail(set, get),
 	verifyPhoneNumber: verifyPhoneNumber(set, get),

@@ -1,4 +1,4 @@
-import { SortDirection } from '@xapp/shared/types';
+import { SortDirections } from '@xapp/shared/types';
 import { GetState, SetState } from 'zustand';
 import { ApiCallStatus, IAuthState, ICrudState, setError, setIdle, setLoading, setSuccess } from '.';
 import { DataContext } from './DataContext';
@@ -21,7 +21,7 @@ export function createBaseStore<
 	return (set: SetState<TState>, get: GetState<TState>) => ({
 		status: ApiCallStatus.Idle,
 		items: [] as TOutput[],
-		sortBy: { id: SortDirection.ASC },
+		sortBy: { id: SortDirections.ASC },
 		...initialStateValues,
 		error: null,
 		store: null,

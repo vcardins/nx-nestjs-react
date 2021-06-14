@@ -1,4 +1,3 @@
-/* eslint-disable immutable/no-mutation */
 import {
 	WebSocketGateway,
 	OnGatewayInit,

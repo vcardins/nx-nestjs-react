@@ -36,6 +36,20 @@ const oauthConfig = OAuthConfig();
 const envName = process.env.NODE_ENV || 'development';
 let envFile = '';
 
+export function getRootPath() {
+	return envName === 'development' ? '../../../' : '../../';
+}
+export function resolveRootFile(fileName: string) {
+	return path.resolve(__dirname, getRootPath(), fileName);
+}
+
+export function loadRootJson<T = any>(fileName: string) {
+	const file = resolveRootFile(fileName);
+	const json = fs.readFileSync(file).toString();
+
+	return JSON.parse(json) as T;
+}
+
 try {
 	envFile = resolveRootFile(`.env.${envName}`);
 	fs.accessSync(envFile);
@@ -123,20 +137,6 @@ export const ApiConfig = (): IRestApiConfig => ({
 	},
 });
 
-export function getRootPath() {
-	return envName === 'development' ? '../../../' : '../../';
-}
-export function resolveRootFile(fileName: string) {
-	return path.resolve(__dirname, getRootPath(), fileName);
-}
-
-export function loadRootJson<T = any>(fileName: string) {
-	const file = resolveRootFile(fileName);
-	const json = fs.readFileSync(file).toString();
-
-	return JSON.parse(json) as T;
-}
-
 const apiConfig = ApiConfig();
 
-export { apiConfig }
+export { apiConfig };

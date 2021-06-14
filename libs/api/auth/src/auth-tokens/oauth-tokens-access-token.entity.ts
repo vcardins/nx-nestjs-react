@@ -1,4 +1,3 @@
-// import { CustomValidationError, User } from '@xapp/api/core';
 import { IsNotEmpty, IsOptional, MaxLength } from 'class-validator';
 import {
 	BeforeInsert,
@@ -62,7 +61,6 @@ export class OauthTokensAccessToken extends BaseEntity {
 	}
 
 	@BeforeUpdate()
-	// eslint-disable-next-line sonarjs/no-identical-functions
 	doBeforeUpdate() {
 		this.validate();
 	}

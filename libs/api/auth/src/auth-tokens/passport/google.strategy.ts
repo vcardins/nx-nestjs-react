@@ -21,7 +21,6 @@ export class GoogleStrategy { //extends PassportStrategy(Strategy, 'google') {
 		private readonly oauthTokensAccessTokenService: OauthTokensAccessTokenService,
 		private readonly authService: AuthService,
 	) {
-		// eslint-disable-next-line immutable/no-mutation
 		this.options = {
 			clientID: this.googleConfig.clientID,
 			clientSecret: this.googleConfig.clientSecret,
@@ -58,12 +57,12 @@ export class GoogleStrategy { //extends PassportStrategy(Strategy, 'google') {
 	// 			const user = await this.authService.signUp(plainToClass(SignUpInput, googleUser));
 	// 			const newOauthTokensAccessToken = new OauthTokensAccessToken();
 
-	// 			/* eslint-disable immutable/no-mutation */
+	//
 	// 			newOauthTokensAccessToken.user = user;
 	// 			newOauthTokensAccessToken.providerClientId = id;
 	// 			newOauthTokensAccessToken.provider = provider;
 	// 			newOauthTokensAccessToken.accessToken = accessToken;
-	// 			/* eslint-enable immutable/no-mutation */
+	//
 
 	// 			await this.oauthTokensAccessTokenService.create(newOauthTokensAccessToken);
 	// 			done(null, user);
@@ -110,12 +109,12 @@ export class GoogleStrategy { //extends PassportStrategy(Strategy, 'google') {
 								}),
 							);
 							const newOauthTokensAccessToken = new OauthTokensAccessToken();
-							/* eslint-disable immutable/no-mutation */
+
 							newOauthTokensAccessToken.user = user;
 							newOauthTokensAccessToken.providerClientId = profile.id;
 							newOauthTokensAccessToken.provider = profile.provider;
 							newOauthTokensAccessToken.accessToken = accessToken;
-							/* eslint-enable immutable/no-mutation */
+
 
 							await this.oauthTokensAccessTokenService.create(newOauthTokensAccessToken);
 							done(null, user);

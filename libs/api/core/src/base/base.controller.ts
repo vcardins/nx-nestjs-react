@@ -160,7 +160,7 @@ export function baseControllerFactory<T extends BaseEntity>(options: IBaseContro
 				}
 				const isPaginated = pageSize > 0 && pageNumber > 0;
 
-				const result = await this._service.findAndCount({...query, filter });
+				const result = await this._service.findAndCount({ ...query, filter });
 
 				if (!isPaginated) {
 					response.send(result);

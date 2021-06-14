@@ -70,6 +70,7 @@ export class AuthService {
 			throw new CustomError('You have too many failed signin tries. Your account is locked');
 		}
 
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { userProfile, roles, ...rest } = user;
 
 		await this.userService.update(user.id, { ...rest, lastLogin: getUtcDate() });

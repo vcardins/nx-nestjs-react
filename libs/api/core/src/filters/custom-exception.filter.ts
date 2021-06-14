@@ -37,7 +37,6 @@ export class CustomExceptionFilter implements ExceptionFilter {
 			exception.errors.forEach((error: ValidationError) => {
 				Object.keys(error.constraints).forEach((key: string) => {
 					if (!errors[error.property]) {
-						// eslint-disable-next-line immutable/no-mutation
 						errors[error.property] = [];
 					}
 					errors[error.property].push(error.constraints[key]);

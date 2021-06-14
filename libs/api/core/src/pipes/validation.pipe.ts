@@ -42,9 +42,8 @@ export class ValidationPipe implements PipeTransform<any> {
 		// TODO: Convert to reduce
 		errors.forEach((el) => {
 			Object.entries(el.constraints).forEach((constraint) => {
-				// eslint-disable-next-line immutable/no-mutation
 				result[el.property] = constraint[1];
-				// eslint-disable-next-line immutable/no-mutation
+
 				// result[el.property] = constraint;
 				// {
 				// 	message: constraint[1],

@@ -7,7 +7,6 @@ export class MessageOutput {
 	message: string;
 
 	constructor(message: string) {
-		// eslint-disable-next-line immutable/no-mutation
 		this.message = message;
 	}
 }

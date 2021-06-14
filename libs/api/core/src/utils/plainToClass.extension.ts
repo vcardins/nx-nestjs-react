@@ -35,7 +35,6 @@ const strip = (container: MetadataStorage, type: new () => any, input: any) => {
 	return input;
 };
 
-// eslint-disable-next-line immutable/no-mutation
 ClassTransformer.prototype.plainToClass = <T extends Object, V extends any[]>(
 	cls: ClassType<T>,
 	plain: V,

@@ -1,6 +1,6 @@
-import { UserRoles } from '@xapp/shared/types';
 import { IRoute } from './IRoute';
 import { IPageLayout } from './IPageLayout';
+import { UserRoles } from '../../enums';
 
 export interface IPageConfig {
 	auth?: UserRoles[];

@@ -3,10 +3,8 @@ import { Column, Entity, JoinTable, ManyToMany, BaseEntity } from 'typeorm';
 
 import { UserRoles } from '@xapp/shared/types';
 
-import {  } from '@xapp/api/core';
-import { User } from '@xapp/api/access-control';
-
 import { Permission } from '../permission/permission.entity';
+import { User } from '../user/entities/user.entity';
 
 @Entity({ name: 'role' })
 export class Role extends BaseEntity {

@@ -29,5 +29,5 @@ export const DatabaseConfig = () => {
 		username: connectionString.user,
 		password: connectionString.password,
 		database,
-	}
+	};
 };

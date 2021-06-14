@@ -15,4 +15,4 @@ export const MailConfig = () => ({
 	from: process.env.MAIL_FROM,
 	username: process.env.MAIL_USERNAME,
 	password: process.env.MAIL_PASSWORD,
-  })
+});

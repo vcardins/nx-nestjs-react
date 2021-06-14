@@ -1,4 +1,4 @@
-/* eslint-disable immutable/no-mutation */
+
 module.exports = {
 	name: 'api-auth',
 	preset: '../../../jest.config.js',

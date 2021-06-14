@@ -214,7 +214,6 @@ export function baseAuthControllerFactory<T extends IBaseEntity>(options: IBaseA
 				}
 			}
 			catch (e) {
-				console.log(e);
 				throw new InternalServerErrorException(e);
 			}
 		}

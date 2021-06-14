@@ -1,5 +1,5 @@
 import * as packageJson from '../../../../../package.json';
-const { name, title, description, version} = packageJson;
+const { name, title, description, version } = packageJson;
 
 export const AppConfig = () => {
 	const {
@@ -53,5 +53,5 @@ export const AppConfig = () => {
 		jwtSecretKey: JWT_SECRET_KEY,
 		jwtExpirationDelta: JWT_EXPIRATION_DELTA,
 		jwtAuthHeaderPrefix: JWT_AUTH_HEADER_PREFIX,
-	}
+	};
 };

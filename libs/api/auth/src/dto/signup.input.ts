@@ -30,7 +30,7 @@ export class SignUpInput implements ISignUpInput {
 	@IsNotEmpty()
 	@MaxLength(128)
 	@ApiProperty()
-	@Match('password', {message: 'password and confirm password don\'t match'} )
+	@Match('password', { message: 'password and confirm password don\'t match' } )
 	confirmPassword: string;
 
 	@MaxLength(30)

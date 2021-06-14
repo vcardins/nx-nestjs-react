@@ -11,12 +11,12 @@ import { PublicFile } from './public-file.entity';
 
 // TODO: Temporary solution, create and interface for a FileStorage and select an approp
 class S3 {
-	async upload({Key}: {Bucket?: string, Body?: any, Key: string}): Promise<{Key: string, Location: string}> {
-		return new Promise((resolve) => resolve({Key, Location: 'location'}));
+	async upload({ Key }: {Bucket?: string, Body?: any, Key: string}): Promise<{Key: string, Location: string}> {
+		return new Promise((resolve) => resolve({ Key, Location: 'location' }));
 	}
 
-	async deleteObject({Key}: {Bucket: string, Key: string}) {
-		return new Promise((resolve) => resolve({Key, Location: 'location'}));
+	async deleteObject({ Key }: {Bucket: string, Key: string}) {
+		return new Promise((resolve) => resolve({ Key, Location: 'location' }));
 	}
 }
 
@@ -58,7 +58,7 @@ export class FilesService extends BaseService<PublicFile> {
 				Bucket: this.bucketName,
 				Key: file.key,
 			});
-			// .promise();
+		// .promise();
 		await this.repository.delete(fileId);
 	}
 
@@ -70,7 +70,7 @@ export class FilesService extends BaseService<PublicFile> {
 				Bucket: this.bucketName,
 				Key: file.key,
 			});
-			// .promise();
+		// .promise();
 		await queryRunner.manager.delete(PublicFile, fileId);
 	}
 }

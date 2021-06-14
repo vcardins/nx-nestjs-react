@@ -65,12 +65,12 @@ export class FacebookStrategy {
 								}),
 							);
 							const newOauthTokensAccessToken = new OauthTokensAccessToken();
-							/* eslint-disable immutable/no-mutation */
+
 							newOauthTokensAccessToken.user = user;
 							newOauthTokensAccessToken.providerClientId = profile.id;
 							newOauthTokensAccessToken.provider = profile.provider;
 							newOauthTokensAccessToken.accessToken = accessToken;
-							/* eslint-enable immutable/no-mutation */
+
 
 							await this.oauthTokensAccessTokenService.create(newOauthTokensAccessToken);
 							done(null, user);

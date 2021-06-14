@@ -71,7 +71,7 @@ export class DataContext<TOutput = any, TInputCreate = any, TInputUpdate = TInpu
 		if (!this.refreshToken) {
 			return;
 		}
-		console.log(method, payload);
+		throw new Error(`${method} ${payload} Not implemented`);
 		// const oldAccessToken = this.accessToken;
 		// const newAccessToken = await this.fetchAccessToken(
 		// 	this.refreshToken,

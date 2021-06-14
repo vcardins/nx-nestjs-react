@@ -1,6 +1,6 @@
 import { RouteObject } from 'react-router';
 
-import { UserRoles } from '@xapp/shared/types';
+import { UserRoles } from '../../enums';
 import { IPageLayout } from './IPageLayout';
 import { IPageMeta } from './IPageMeta';
 
@@ -13,4 +13,4 @@ export interface IRoute extends Omit<IMetaRoute, 'path'> {
 	action?: () => void;
 }
 
-export interface IKeyedRoute extends Record<string, IRoute> {}
+export type IKeyedRoute = Record<string, IRoute>

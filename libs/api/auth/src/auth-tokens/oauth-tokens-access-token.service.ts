@@ -26,10 +26,8 @@ export class OauthTokensAccessTokenService extends BaseService<OauthTokensAccess
 	}
 
 	async findAndCount (options: IPaginationQuery): Promise<IFindAndCountResult<OauthTokensAccessToken> | OauthTokensAccessToken[]> {
-		// eslint-disable-next-line immutable/no-mutation
 		this.queryBuilder = this.createQueryBuilder();
 		if (options.q) {
-			// eslint-disable-next-line immutable/no-mutation
 			this.queryBuilder = this.queryBuilder.where(`${this.modelName}.name like :q or ${this.modelName}.title like :q or ${this.modelName}.id = :id`, {
 				q: `%${options.q}%`,
 				id: +options.q,

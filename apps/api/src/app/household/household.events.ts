@@ -1,5 +1,5 @@
 import { IEvent } from '@xapp/api/core';
-import { User } from '@xapp/api/users';
+import { User } from '@xapp/api/access-control';
 import { Household } from './entities/household.entity';
 
 abstract class UserHouseholdEvent implements IEvent {

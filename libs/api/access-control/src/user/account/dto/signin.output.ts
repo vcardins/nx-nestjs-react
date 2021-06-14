@@ -3,8 +3,8 @@ import { Type } from 'class-transformer';
 import { MaxLength } from 'class-validator';
 import { ISignedUserOutput } from '@xapp/shared/types';
 
-import { RoleWithPermissionsDto } from '@xapp/api/access-control';
 import { UserProfileDto } from '../../dto/user-profile.dto';
+import { RoleWithPermissionsDto } from '../../../role/dto/role-with-permissions.dto';
 
 export class SignInOutput implements ISignedUserOutput {
 	@ApiProperty({ type: Number })

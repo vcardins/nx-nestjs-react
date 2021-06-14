@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { IJwtPayload } from '@xapp/shared/types';
-import { User, UserDto } from '@xapp/api/users';
+import { User, UserDto } from '@xapp/api/access-control';
 
 import { JWT_CONFIG_TOKEN } from './configs/jwt.config';
 import { IJwtConfig } from './interfaces/jwt-config.interface';

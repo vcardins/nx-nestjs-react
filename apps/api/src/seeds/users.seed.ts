@@ -4,7 +4,7 @@ import { plainToClass } from 'class-transformer';
 
 import { toTitleCase, getUtcDate } from '@xapp/shared/utils';
 import { Operations, Resources, UserRoles } from '@xapp/shared/types';
-import { UserProfile, User } from '@xapp/api/users';
+import { UserProfile, User } from '@xapp/api/access-control';
 
 import { Role, Permission, Operation, Resource } from '@xapp/api/access-control';
 

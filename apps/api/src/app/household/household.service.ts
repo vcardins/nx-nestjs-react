@@ -10,7 +10,7 @@ import { HouseholdMembers } from './entities/household_members.entity';
 import { HouseholdMemberInput } from '@xapp/shared/types';
 import { plainToClass } from 'class-transformer';
 import { MailService } from '@xapp/api/mail';
-import { UserService } from '@xapp/api/users';
+import { UserService } from '@xapp/api/access-control';
 import { MemberAddedEvent } from './household.events';
 
 @Injectable()

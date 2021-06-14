@@ -17,9 +17,9 @@ import {
 
 import { BaseEntity } from '@xapp/api/core';
 import { Operations, VerificationKeyPurpose, Resources } from '@xapp/shared/types';
-import { Role } from '@xapp/api/access-control';
 import { PublicFile } from '@xapp/api/files';
 
+import { Role } from '../../role/role.entity';
 import { UserSession } from './user_session.entity';
 import { UserProfile } from './user_profile.entity';
 

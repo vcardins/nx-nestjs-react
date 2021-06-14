@@ -6,7 +6,7 @@ import { plainToClass } from 'class-transformer';
 
 import { OAuthProvider } from '@xapp/shared/types';
 import { CORE_CONFIG_TOKEN, ICoreConfig, /*AccountOutput, GroupDto, */Public, SocketGateway } from '@xapp/api/core';
-import { UserDto } from '@xapp/api/users';
+import { UserDto } from '@xapp/api/access-control';
 
 // import { FacebookTokenOutput } from '../dto/facebook-token.output';
 // import { FacebookSignInInput } from '../dto/facebook-signIn.input';

@@ -7,7 +7,7 @@ import { MailModule } from '@xapp/api/mail';
 import { FilesModule } from '@xapp/api/files';
 import { OAuthProvider } from '@xapp/shared/types';
 import { DatabaseModule } from '@xapp/api/database';
-import { UserModule } from '@xapp/api/users';
+import { UserModule } from '@xapp/api/access-control';
 import { AccessControlModule } from '@xapp/api/access-control';
 
 import { OauthTokensAccessToken } from './auth-tokens/oauth-tokens-access-token.entity';

@@ -5,7 +5,7 @@ import { IEvent, CustomError } from '@xapp/api/core';
 import { getUtcDate, randomAsciiString } from '@xapp/shared/utils';
 import { MailService } from '@xapp/api/mail';
 import { UserRoles, VerificationKeyPurpose } from '@xapp/shared/types';
-import { RoleService } from '@xapp/api/access-control';
+import { RoleService } from '../../role/role.service';
 
 import {
 	AccountCreatedEvent,

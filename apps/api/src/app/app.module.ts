@@ -6,7 +6,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { CoreModule } from '@xapp/api/core';
 import { AuthModule, AUTH_GUARD_TYPE } from '@xapp/api/auth';
 import { AccessControlModule } from '@xapp/api/access-control';
-import { UserModule } from '@xapp/api/users';
+import { UserModule } from '@xapp/api/access-control';
 import { DatabaseModule } from '@xapp/api/database';
 import { FilesModule } from '@xapp/api/files';
 import { ConfigModule } from '@xapp/api/config';

@@ -8,7 +8,7 @@ import {
 	OneToMany,
 	OneToOne,
 } from 'typeorm';
-import { User } from '@xapp/api/users';
+import { User } from '@xapp/api/access-control';
 import { getUtcDate } from '@xapp/api/core';
 
 import { Household } from './household.entity';

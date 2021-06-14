@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { RoleWithPermissionsDto } from '@xapp/api/access-control';
+import { RoleWithPermissionsDto } from '../../../role/dto/role-with-permissions.dto';
 
 import { UserDto } from '../../dto/user.dto';
 

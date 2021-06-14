@@ -3,7 +3,7 @@ import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 
 import { Operations, Resources } from '@xapp/shared/types';
-import { User } from '@xapp/api/users';
+import { User } from '@xapp/api/access-control';
 import { AUTH_GUARD_TYPE } from '../constants';
 
 @Injectable()

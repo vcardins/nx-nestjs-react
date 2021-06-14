@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 
 import { DatabaseModule } from '@xapp/api/database';
 import { MailModule, MailService, TemplateService } from '@xapp/api/mail';
-import { User, UserModule, UserService } from '@xapp/api/users';
+import { User, UserModule, UserService } from '@xapp/api/access-control';
 import { FilesModule, FilesService, PublicFile } from '@xapp/api/files';
 
 import { Household } from './entities/household.entity';

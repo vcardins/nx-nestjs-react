@@ -1,4 +1,4 @@
-import { User } from '@xapp/api/users';
+import { User } from '@xapp/api/access-control';
 
 export class TodoInput {
 	title: string;

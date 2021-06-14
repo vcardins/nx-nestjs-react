@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 
 import { BaseEntity } from '@xapp/api/core';
-import { User } from '@xapp/api/users';
+import { User } from '@xapp/api/access-control';
 
 @Entity({ name: 'oauth_access_token' })
 export class OauthTokensAccessToken extends BaseEntity {

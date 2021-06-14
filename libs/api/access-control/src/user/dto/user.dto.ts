@@ -2,7 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { MaxLength } from 'class-validator';
 import { UserProfileDto } from './user-profile.dto';
-import { RoleDto } from '../..';
+import { RoleDto } from '../../role/dto/role.dto';
 
 export class UserDto {
 	@ApiProperty({ type: Number })

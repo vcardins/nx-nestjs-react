@@ -17,7 +17,7 @@ import { GOOGLE_CONFIG_TOKEN } from './auth-tokens/configs/google.config';
 import { IGoogleConfig } from './auth-tokens/interfaces/google-config.interface';
 import { JwtTokenService } from './auth-tokens/jwt-token.service';
 
-import { User, UserDto, UserProfile, UserService } from '@xapp/api/users';
+import { User, UserDto, UserProfile, UserService } from '@xapp/api/access-control';
 import { RedirectUriOutput } from './dto/redirect-uri.output';
 import { SignInInput, SignUpInput } from './dto';
 

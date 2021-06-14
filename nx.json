@@ -20,30 +20,29 @@
 		}
 	},
 	"projects": {
-		"api-access-control": { "tags": [] },
+		"api-access-control": { "tags": ["type:library", "scope:api", "platform:server"] },
 		"api-auth": { "tags": ["type:library", "scope:api", "platform:server"] },
 		"api-config": { "tags": ["type:library", "scope:api", "platform:server"] },
 		"api-core": { "tags": ["type:library", "scope:api", "platform:server"] },
 		"api-database": { "tags": ["type:library", "scope:api", "platform:server"] },
 		"api-files": { "tags": ["type:library", "scope:api", "platform:server"] },
 		"api-mail": { "tags": ["type:library", "scope:api", "platform:server"] },
-		"api-users": { "tags": [] },
 		"api": { "tags": ["type:library", "scope:api", "platform:server"] },
 		"react-core": { "tags": [] },
 		"shared-api": { "tags": [] },
 		"shared-assets": { "tags": [] },
 		"shared-config": { "tags": [] },
 		"shared-exceptions": { "tags": [] },
+		"shared-types": { "tags": [] },
 		"shared-utils": { "tags": [] },
 		"state-account": { "tags": [] },
 		"state-auth": { "tags": [] },
 		"state-global": { "tags": [] },
+		"state-household": { "tags": [] },
 		"state-shared": { "tags": [] },
 		"state-todo": { "tags": [] },
 		"state": { "tags": [] },
 		"web-e2e": { "tags": [], "implicitDependencies": ["web"] },
-		"web": { "tags": [] },
-		"shared-types": { "tags": [] },
-		"state-household": { "tags": [] }
+		"web": { "tags": [] }
 	}
 }

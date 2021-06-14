@@ -3,13 +3,15 @@ import { Module } from '@nestjs/common';
 import { DatabaseModule } from '@xapp/api/database';
 import { FilesModule } from '@xapp/api/files';
 import { MailModule } from '@xapp/api/mail';
-import { AccessControlModule } from '@xapp/api/access-control';
 
 import { AccountController } from './account/account.controller';
 import { AccountService } from './account/account.service';
 
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
+
+import { RoleService } from '../role/role.service';
+import { Role } from '../role/role.entity';
 
 import { User } from './entities/user.entity';
 import { UserProfile } from './entities/user_profile.entity';
@@ -19,16 +21,17 @@ const entities = [
 	User,
 	UserProfile,
 	UserSession,
+	Role,
 ];
 
 const providers = [
 	UserService,
+	RoleService,
 	AccountService,
 ];
 
 @Module({
 	imports: [
-		AccessControlModule,
 		FilesModule,
 		MailModule,
 		DatabaseModule.forFeature(entities),

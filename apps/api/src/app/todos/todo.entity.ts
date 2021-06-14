@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, BeforeInsert } from 'typeorm';
 
-import { User } from '@xapp/api/users';
+import { User } from '@xapp/api/access-control';
 import { BaseEntity, getUtcDate, IBaseEntity } from '@xapp/api/core';
 
 @Entity('todo')

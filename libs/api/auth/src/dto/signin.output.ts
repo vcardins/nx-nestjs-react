@@ -4,7 +4,7 @@ import { MaxLength } from 'class-validator';
 import { ISignedUserOutput } from '@xapp/shared/types';
 
 import { RoleWithPermissionsDto } from '@xapp/api/access-control';
-import { UserProfileDto } from '@xapp/api/users';
+import { UserProfileDto } from '@xapp/api/access-control';
 
 export class SignInOutput implements ISignedUserOutput {
 	@ApiProperty({ type: Number })

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { AccountDto } from '@xapp/api/users';
+import { AccountDto } from '@xapp/api/access-control';
 
 export class UserTokenOutput {
 	@ApiProperty()

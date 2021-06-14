@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 import { BaseEntity } from '@xapp/api/core';
-import { User } from '@xapp/api/users';
+import { User } from '@xapp/api/access-control';
 import { Household } from './household.entity';
 
 @Entity('household_member_invitation')

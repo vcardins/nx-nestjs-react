@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, JoinColumn, ManyToOne } from 'typeorm';
 
-import { User } from '@xapp/api/users';
+import { User } from '@xapp/api/access-control';
 import { BaseEntity } from '@xapp/api/core';
 
 import { HouseholdRoom } from './household_room.entity';

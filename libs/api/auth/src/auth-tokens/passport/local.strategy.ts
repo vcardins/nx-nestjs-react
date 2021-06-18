@@ -33,7 +33,6 @@ export class LocalStrategySignUp extends PassportStrategy(Strategy, 'signup') {
 		return await this.authService.signUp({
 			email,
 			password,
-			username: req.body.username,
 		});
 	}
 }

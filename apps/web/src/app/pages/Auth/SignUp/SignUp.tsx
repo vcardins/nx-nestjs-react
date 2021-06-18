@@ -44,7 +44,6 @@ const SignUpPage = memo(() => {
 			onSubmit={handleSubmit}
 			schema={validationSchema}
 		>
-			<TextInput label="Username" name="username" value={formData.username} error={errors?.['username']} />
 			<TextInput label="Email" name="email" value={formData.email} error={errors?.['email']} />
 			<TextInput
 				type="password"

@@ -25,10 +25,6 @@ import { UserProfile } from './user_profile.entity';
 
 @Entity({ name: 'user' })
 export class User extends BaseEntity {
-	@Column({ length: 150, unique: true })
-	@MaxLength(150)
-	username: string = undefined;
-
 	@Column({ length: 254, unique: true })
 	@IsNotEmpty()
 	@IsEmail()

@@ -1,7 +1,7 @@
-import { Injectable, NotFoundException, Logger, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { plainToClassFromExist, plainToClass } from 'class-transformer';
 
-import { IEvent, CustomError } from '@xapp/api/core';
+import { CustomError, EventService } from '@xapp/api/core';
 import { getUtcDate, randomAsciiString } from '@xapp/shared/utils';
 import { MailService } from '@xapp/api/mail';
 import { UserRoles, VerificationKeyPurpose } from '@xapp/shared/types';
@@ -36,13 +36,14 @@ const USER_NOT_FOUND = 'User not found';
 const INVALID_CREDENTIALS = 'Invalid credentials';
 
 @Injectable()
-export class AccountService { // implements IAccountService {
-	events: IEvent[] = []
+export class AccountService extends EventService { // implements IAccountService {
 	constructor(
 		private readonly userService: UserService,
 		private readonly roleService: RoleService,
 		private readonly emailService: MailService,
-	) {}
+	) {
+		super();
+	}
 
 	async createAccount(data: Omit<SignUpInput, 'confirmPassword'>): Promise<User> {
 		try {
@@ -52,7 +53,7 @@ export class AccountService { // implements IAccountService {
 			throw new BadRequestException('Error in load roles');
 		}
 
-		await this.userService.assertUsernameAndEmail(data.email, data.username);
+		await this.userService.assertEmail(data.email);
 
 		const role = this.roleService.getRoleByName(UserRoles.User);
 		const verification = this.setVerificationKey(VerificationKeyPurpose.ChangeEmail, data.email);
@@ -253,14 +254,13 @@ export class AccountService { // implements IAccountService {
 	}
 
 	async update(id: number, user: User) {
-		await this.userService.assertUsernameAndEmail(user.email, user.username, id);
+		await this.userService.assertEmail(user.email, id);
 
 		const foundUser = await this.userService.findById(id);
 
 		const updatedUser = plainToClassFromExist(foundUser, {
 			email: foundUser.email,
 			hashedPassword: foundUser.hashedPassword,
-			username: foundUser.username,
 			firstName: foundUser.userProfile.firstName,
 			lastName: foundUser.userProfile.lastName,
 		});
@@ -293,30 +293,5 @@ export class AccountService { // implements IAccountService {
 			verificationKeyPurpose,
 			verificationStorage: state,
 		};
-	}
-
-	private addEvent(event: IEvent) {
-		this.events.push(event);
-	}
-
-	private raiseEvents() {
-		this.events.forEach((event) => {
-			if (event instanceof AccountCreatedEvent) {
-				Logger.log(event.verificationKey, 'VerificationKey');
-				return Logger.log(event.user, 'AccountCreatedEvent');
-			}
-
-			if (event instanceof EmailVerifiedEvent) {
-				return Logger.log(event.user.email, 'EmailVerifiedEvent');
-			}
-
-			if (event instanceof PasswordResetRequestedEvent) {
-				return Logger.log(`Email ${event.user.email} with ${event.verificationKey}`, 'PasswordResetRequestedEvent');
-			}
-
-			if (event instanceof AccountReopenedEvent) {
-				return Logger.log(`Email ${event.user.email} with ${event.verificationKey}`, 'AccountReopenedEvent');
-			}
-		});
 	}
 }

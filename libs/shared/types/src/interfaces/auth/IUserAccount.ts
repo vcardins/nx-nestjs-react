@@ -1,7 +1,6 @@
 import { VerificationKeyPurpose } from '../enums';
 
 export interface IUserAccount {
-	username: string;
 	email: string;
 	hashedPassword: string;
 	isSuperuser: boolean;

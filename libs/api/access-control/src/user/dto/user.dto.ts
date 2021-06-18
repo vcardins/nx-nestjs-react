@@ -14,10 +14,6 @@ export class UserDto {
 	@ApiPropertyOptional({ type: Boolean })
 	isSuperuser: boolean;
 
-	@MaxLength(150)
-	@ApiProperty()
-	username: string;
-
 	@MaxLength(254)
 	@ApiProperty()
 	email: string;

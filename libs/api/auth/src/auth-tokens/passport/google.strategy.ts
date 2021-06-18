@@ -46,7 +46,6 @@ export class GoogleStrategy { //extends PassportStrategy(Strategy, 'google') {
 	// 		}
 	// 		catch (err) {
 	// 			const googleUser = {
-	// 				username: `google_${id}`,
 	// 				password: `google_${id}`,
 	// 				email: emails[0].value,
 	// 				firstName: name?.givenName || `google_${id}`,
@@ -95,14 +94,12 @@ export class GoogleStrategy { //extends PassportStrategy(Strategy, 'google') {
 							const email = profile?.emails?.[0]?.value
 								? profile.emails[0].value
 								: `${profile.id}@google.com`;
-							const username = `google_${profile.id}`;
 							const firstName = profile.name ? profile.name.givenName : `google_${profile.id}`;
 							const lastName = profile.name ? profile.name.familyName : `google_${profile.id}`;
 							const password = `google_${profile.id}`;
 							const user = await this.authService.signUp(
 								plainToClass(SignUpInput, {
 									email,
-									username,
 									password,
 									firstName,
 									lastName,

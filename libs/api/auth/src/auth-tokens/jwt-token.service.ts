@@ -17,7 +17,6 @@ export class JwtTokenService {
 		return this.jwtService.sign(
 			{
 				id: user.id,
-				username: user.username,
 				lastLogin: user.lastLogin,
 				isActive: user.isActive,
 				isSuperuser: user.isSuperuser,

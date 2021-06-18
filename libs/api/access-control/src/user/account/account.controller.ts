@@ -35,7 +35,7 @@ export class AccountController {
 	@ApiResponse({
 		status: HttpStatus.OK,
 		type: MessageOutput,
-		description: `API View that receives a POST with a user's username and password.
+		description: `API View that receives a POST with a user's email and password.
 Returns a JSON Web Token that can be used for authenticated requests.`,
 	})
 	async createAccount(@Body() signUpDto: SignUpInput) {

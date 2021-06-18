@@ -27,7 +27,7 @@ export class UserService extends BaseService<User> {
 		super(repository, autoMapper);
 	}
 
-	async assertUsernameAndEmail(email: string, username: string, id?: number) {
+	async assertEmail(email: string, id?: number) {
 		if (email) {
 			let userOfEmail: User;
 			try {
@@ -40,23 +40,6 @@ export class UserService extends BaseService<User> {
 				throw new ConflictException({
 					errors: {
 						email: `User with email "${email}" already exists`,
-					},
-				});
-			}
-		}
-
-		if (username) {
-			let userOfUsername: User;
-			try {
-				userOfUsername = await this.findByUserName(username);
-			}
-			catch (error) {
-				userOfUsername = undefined;
-			}
-			if (userOfUsername?.id !== id) {
-				throw new ConflictException({
-					errors: {
-						username: `User with username "${username}" already exists`,
 					},
 				});
 			}
@@ -89,7 +72,7 @@ export class UserService extends BaseService<User> {
 		}
 
 		if (options.q) {
-			this.queryBuilder = this.queryBuilder.where(`${this.modelName}.username or ${this.modelName}.id = :id`, {
+			this.queryBuilder = this.queryBuilder.where(`${this.modelName}.id = :id`, {
 				// like :q or ${this.tableName}.title like :q
 				q: `%${options.q}%`,
 				id: +options.q,
@@ -104,16 +87,6 @@ export class UserService extends BaseService<User> {
 			where: { email },
 			relations: userAuthRelations,
 		});
-	}
-
-	async findByUserName(username: string) {
-		return this.repository.findOne(
-			{
-				where: { username },
-				relations: userAuthRelations,
-			},
-			// `User with username "${username}" not found`,
-		);
 	}
 
 	async findByPhoneNumber(phoneNumber: string) {
@@ -138,12 +111,12 @@ export class UserService extends BaseService<User> {
 	}
 
 	async create(user: User) {
-		await this.assertUsernameAndEmail(user.email, user.username, user.id);
+		await this.assertEmail(user.email, user.id);
 		return super.create(user);
 	}
 
 	async update(id: number, model: Partial<User>) {
-		await this.assertUsernameAndEmail(model.email, model.username, model.id);
+		await this.assertEmail(model.email, model.id);
 		return await super.update(
 			id,
 			{
@@ -228,11 +201,11 @@ export class UserService extends BaseService<User> {
 	}
 
 	getUserDto(user: User): UserDto {
-		const { userProfile, roles = [], id, dateJoined, isActive, isSuperuser, lastLogin, username, email, phoneNumber } = user;
+		const { userProfile, roles = [], id, dateJoined, isActive, isSuperuser, lastLogin, email, phoneNumber } = user;
 
 		return plainToClass(UserDto, {
 			id, dateJoined, isActive, isSuperuser, lastLogin,
-			username, email,
+			email,
 			roles: roles.map((role) => ({
 				...role,
 				// permissions: role.permissions.map(({ operation, module }) => ({

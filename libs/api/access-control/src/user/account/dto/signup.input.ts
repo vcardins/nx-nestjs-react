@@ -17,11 +17,6 @@ export class SignUpInput implements ISignUpInput {
 	email: string;
 
 	@IsNotEmpty()
-	@MaxLength(150)
-	@ApiProperty()
-	username: string;
-
-	@IsNotEmpty()
 	@MaxLength(128)
 	@ApiProperty()
 	// @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {message: 'password too weak'})

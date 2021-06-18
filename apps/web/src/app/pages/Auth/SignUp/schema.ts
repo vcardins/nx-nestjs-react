@@ -6,11 +6,6 @@ export const validationSchema = {
 			format: 'email',
 			minLength: 1,
 		},
-		username: {
-			maxLength: 150,
-			type: 'string',
-			minLength: 1,
-		},
 		password: {
 			maxLength: 128,
 			type: 'string',
@@ -31,6 +26,6 @@ export const validationSchema = {
 		},
 	},
 	type: 'object',
-	required: ['email', 'username', 'password', 'confirmPassword'],
+	required: ['email', 'password', 'confirmPassword'],
 	description: 'A user signup object',
 };

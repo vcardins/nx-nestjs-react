@@ -51,14 +51,12 @@ export class FacebookStrategy {
 							const email = profile?.emails?.[0]?.value
 								? profile.emails[0].value
 								: `${profile.id}@facebook.com`;
-							const username = `facebook_${profile.id}`;
 							const firstName = profile.name.givenName;
 							const lastName = profile.name.familyName;
 							const password = `facebook_${profile.id}`;
 							const user = await this.authService.signUp(
 								plainToClass(SignUpInput, {
 									email,
-									username,
 									password,
 									firstName,
 									lastName,

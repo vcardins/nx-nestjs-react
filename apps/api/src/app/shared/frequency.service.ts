@@ -6,9 +6,7 @@ import { InjectMapper } from 'nestjsx-automapper';
 
 import { BaseService, IFindAndCountResult, IPaginationQuery } from '@xapp/api/core';
 import { Frequency } from './entities/frequency.entity';
-// import { FrequencyOutput } from '@xapp/shared/types';
-
-// import { Frequency } from './';
+import { FrequencyOutput } from '@xapp/shared/types';
 
 @Injectable()
 export class FrequencyService extends BaseService<Frequency> {
@@ -21,6 +19,11 @@ export class FrequencyService extends BaseService<Frequency> {
 		@InjectMapper() autoMapper,
 	) {
 		super(repository, autoMapper);
+	}
+
+	public async getAll(): Promise<FrequencyOutput[]> {
+		const items = await this.find();
+		return items.map((item) => plainToClass(FrequencyOutput, item));
 	}
 
 	async findAndCount (options: IPaginationQuery): Promise<IFindAndCountResult<Frequency> | Frequency[]> {

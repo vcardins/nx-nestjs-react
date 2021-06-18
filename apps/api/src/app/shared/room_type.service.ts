@@ -5,6 +5,8 @@ import { InjectMapper } from 'nestjsx-automapper';
 
 import { BaseService } from '@xapp/api/core';
 import { RoomType } from './entities/room_type.entity';
+import { plainToClass } from 'class-transformer';
+import { RoomTypeOutput } from '@xapp/shared/types';
 
 @Injectable()
 export class RoomTypeService extends BaseService<RoomType> {
@@ -17,5 +19,10 @@ export class RoomTypeService extends BaseService<RoomType> {
 		@InjectMapper() autoMapper,
 	) {
 		super(repository, autoMapper);
+	}
+
+	public async getAll(): Promise<RoomTypeOutput[]> {
+		const items = await this.find();
+		return items.map((roomType) => plainToClass(RoomTypeOutput, roomType));
 	}
 }

@@ -9,9 +9,12 @@ export enum RoomTypes {
 	GameRoom = 8,
 	Basement = 9,
 	HomeOffice = 10,
-	Nursery = 11,
-	Playroom = 12,
-	StorageRoom = 13,
-	Garage = 14,
-	LaundryRoom = 15
+	Hallway = 11,
+	Nursery = 12,
+	Playroom = 13,
+	StorageRoom = 14,
+	Garage = 15,
+	LaundryRoom = 16,
+	Patio = 17,
+	Stairs = 18,
 }

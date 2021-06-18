@@ -8,3 +8,4 @@ export * from './RoomTypes';
 export * from './SortDirections';
 export * from './Themes';
 export * from './ui';
+export * from './household';

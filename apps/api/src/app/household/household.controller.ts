@@ -1,16 +1,44 @@
-import { Controller } from '@nestjs/common';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { Body, Controller, Response, InternalServerErrorException, Req, Post, Get, Param, BadRequestException } from '@nestjs/common';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { User, UserService } from '@xapp/api/access-control';
 
-import { SocketGateway, baseAuthControllerFactory, ResourceGroup, getDefaultPermissions } from '@xapp/api/core';
-import { Resources, HouseholdOutput, UserRoles } from '@xapp/shared/types';
+import {
+	SocketGateway,
+	baseAuthControllerFactory,
+	ResourceGroup,
+	getDefaultPermissions,
+	// Permissions,
+	ApiException,
+	Public,
+	Roles,
+} from '@xapp/api/core';
+import {
+	Resources,
+	HouseholdOutput,
+	UserRoles,
+	HouseholdInvitationInput,
+	HouseholdInvitationOutput,
+	HouseholdInvitationAcceptance,
+	HouseholdMemberSignup,
+	HouseholdInput,
+	HouseholdType,
+} from '@xapp/shared/types';
+import { getOperationId } from '@xapp/shared/utils';
+import { plainToClass } from 'class-transformer';
+import { Entity } from 'typeorm';
 
 import { Household } from './entities/household.entity';
+import { HouseholdMember } from './entities/household_member.entity';
 import { HouseholdService } from './household.service';
+import { HouseholdMemberService } from './household_member.service';
+
+const auth = getDefaultPermissions([UserRoles.Admin]);
 
 const BaseController = baseAuthControllerFactory<Household>({
 	entity: Household,
 	entityOutput: HouseholdOutput,
-	auth: getDefaultPermissions([UserRoles.User]),
+	entityCreateInput: HouseholdInput,
+	auth,
 });
 
 @ApiBearerAuth()
@@ -19,8 +47,143 @@ const BaseController = baseAuthControllerFactory<Household>({
 export class HouseholdController extends BaseController {
 	constructor(
 		private readonly service: HouseholdService,
+		private readonly userService: UserService,
+		private readonly householdMemberService: HouseholdMemberService,
 		private readonly socketService: SocketGateway,
 	) {
 		super(service, socketService);
+	}
+
+	@Post()
+	@Roles(...auth?.create?.roles)
+	// @Permissions(...auth?.create?.permissions)
+	@ApiBody({
+		type: HouseholdInput,
+		description: 'Data for entity creation',
+		required: true,
+		isArray: false,
+	})
+	@ApiCreatedResponse({ type: HouseholdOutput })
+	@ApiBadRequestResponse({ type: ApiException })
+	@ApiOperation(getOperationId(Entity.name, 'Create'))
+	public async create(@Req() req: { user: User }, @Body() body: HouseholdInput, @Response() response) {
+		try {
+			const found = await this.service.findByName(body.name);
+
+			if (found) {
+				throw new BadRequestException('A household with this name already exists');
+			}
+
+			const userId = req.user.id;
+			const user = await this.userService.findById(userId);
+
+			const newHousehold = plainToClass(Household, { ...body, ownerUser: user });
+			const household = await this.service.create(newHousehold);
+
+			const member = plainToClass(HouseholdMember, {
+				type: HouseholdType.Head,
+				isDefault: true,
+				user,
+				household,
+			});
+			await this.householdMemberService.create(member);
+
+			response.send(household);
+		}
+		catch (e) {
+			throw new InternalServerErrorException(e);
+		}
+	}
+
+	@Post('invite')
+	// @Permissions(...auth?.update?.permissions)
+	@ApiBody({
+		type: HouseholdInvitationInput,
+		required: true,
+		isArray: false,
+	})
+	@ApiOkResponse({ type: HouseholdInvitationOutput })
+	@ApiBadRequestResponse({ type: ApiException })
+	@ApiOperation(getOperationId(Entity.name, 'Send Invitation'))
+	public async invite(@Req() req, @Body() model: HouseholdInvitationInput, @Response() response) {
+		try {
+			const payload = { ...model, inviterId: Number(req.user?.id) };
+
+			const data = await this.householdMemberService.sendInvitation(payload);
+			response.send(data);
+		}
+		catch (e) {
+			throw new InternalServerErrorException(e);
+		}
+	}
+
+	// afterCreate(body: HouseholdInvitationInput, userId: number): Promise<void> {
+	// 	return new Promise((resolve) => {
+	// 		body.inviterId = userId;
+	// 		resolve();
+	// 	});
+	// }
+
+	@Post('invitation/accept')
+	// @Permissions(...auth?.update?.permissions)
+	@ApiBody({
+		type: HouseholdInvitationInput,
+		required: true,
+		isArray: false,
+	})
+	@ApiOkResponse({ type: HouseholdInvitationOutput })
+	@ApiBadRequestResponse({ type: ApiException })
+	@ApiOperation(getOperationId(Entity.name, 'Send Invitation'))
+	public async acceptInvitation(@Req() req, @Body() model: HouseholdInvitationAcceptance, @Response() response) {
+		try {
+			const userId = req.user?.id ? Number(req.user?.id) : null;
+			const payload = { ...model, inviterId: userId };
+
+			const data = await this.householdMemberService.acceptInvitation(payload);
+			response.send(data);
+		}
+		catch (e) {
+			throw new InternalServerErrorException(e);
+		}
+	}
+
+	@Public()
+	@Get('invitation/:code')
+	// @Permissions(...auth?.update?.permissions)
+	@ApiBody({
+		required: true,
+		isArray: false,
+	})
+	// @ApiOkResponse({ type: HouseholdInvitationOutput })
+	@ApiBadRequestResponse({ type: ApiException })
+	@ApiOperation(getOperationId(Entity.name, 'Request Invitation info'))
+	public async getInvitation(@Param('code') code: string, @Req() req, @Response() response) {
+		try {
+			const data = await this.householdMemberService.findInvitationByCode(code);
+			response.send(data);
+		}
+		catch (e) {
+			throw new InternalServerErrorException(e);
+		}
+	}
+
+	@Public()
+	@Post('signup')
+	// @Permissions(...auth?.update?.permissions)
+	@ApiBody({
+		required: true,
+		isArray: false,
+	})
+	// @ApiOkResponse({ type: ISignedUserOutput })
+	@ApiBadRequestResponse({ type: ApiException })
+	@ApiOperation(getOperationId(Entity.name, 'Request Invitation info'))
+	public async signUp(@Body() model: HouseholdMemberSignup, @Response() response) {
+		try {
+			const data = await this.householdMemberService.addMemberByInvitation(model);
+			response.send(data);
+		}
+		catch (e) {
+			throw new InternalServerErrorException(e);
+		}
 	}
 }

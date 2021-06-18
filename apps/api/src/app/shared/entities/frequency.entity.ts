@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, BaseEntity } from 'typeorm';
 
-import { RoomTask } from './room_task.entity';
 import { Task } from '../../tasks/entities/task.entity';
+import { TaskTemplate } from './../../tasks/entities/task_template.entity';
 import { IBaseEntity } from '@xapp/api/core';
 
 @Entity('frequency')
@@ -14,8 +14,8 @@ export class Frequency extends BaseEntity implements IBaseEntity {
 	@Column('int', { name: 'days_apart' })
 	daysApart: number;
 
-	@OneToMany(() => RoomTask, ({ frequency }) => frequency)
-	roomTasks: RoomTask[];
+	@OneToMany(() => TaskTemplate, ({ frequency }) => frequency)
+	tasksTemplates: TaskTemplate[];
 
 	@OneToMany(() => Task, ({ frequency }) => frequency)
 	tasks: Task[];

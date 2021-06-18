@@ -1,4 +1,5 @@
 export enum Frequencies {
+	SingleTime = 0,
 	Daily = 1,
 	EveryOtherDay = 2,
 	Weekly = 3,

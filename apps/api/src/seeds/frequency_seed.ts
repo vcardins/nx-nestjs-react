@@ -4,12 +4,13 @@ import { Connection, EntityTarget } from 'typeorm';
 import { Frequency } from '../app/shared/entities/frequency.entity';
 import { Frequencies } from '@xapp/shared/types';
 
-export default class SeedFrequency implements Seeder {
+export class SeedFrequency implements Seeder {
 	public async run(factory: Factory, connection: Connection): Promise<any> {
 		const execSave = async <T>(entity: EntityTarget<T>, values: any) => await connection
 			.manager.save(entity, values) as Promise<T>;
 
 		const data = [
+			{ id: Frequencies.SingleTime, name: 'SingleTime', daysApart: 0 },
 			{ id: Frequencies.Daily, name: 'Daily', daysApart: 1 },
 			{ id: Frequencies.EveryOtherDay, name: 'Every other day', daysApart: 2 },
 			{ id: Frequencies.Weekly, name: 'Weekly', daysApart: 7 },

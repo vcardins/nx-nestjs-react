@@ -12,7 +12,7 @@ export * from './filters/custom-exception.filter';
 export * from './filters/index';
 export * from './interfaces/config/core-config.interface';
 export * from './interfaces/config/rest-api-config.interface';
-export * from './events/events.interface';
+export * from './events';
 
 export * from './pipes/index';
 export * from './pipes/parse-int-with-default.pipe';

@@ -1,33 +1,64 @@
-import React, { memo, useContext, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { memo, useContext, useEffect, useRef } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 
 import { validationSchema } from './schema';
 
 import { Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react';
-import { ISignUpInput } from '@xapp/shared/types';
+import { HouseholdMemberSignup, PageKey } from '@xapp/shared/types';
 import { useStore } from '@xapp/state';
 
 import { appContext } from '../../../context';
-import { PageKey } from '@xapp/shared/types';
+import { toast } from 'react-toastify';
 
-const initialValues: ISignUpInput = {
-	username: '',
+const initialValues: HouseholdMemberSignup = {
 	firstName: '',
 	lastName: '',
 	email: '',
 	password: '',
 	confirmPassword: '',
+	invitationCode: null
 };
 
 const SignUpPage = memo(() => {
+	// const location = useLocation<{ verificationCode: string }>();
+	const [params] = useSearchParams();
+	const invitationCode = params.get('invitationCode');
+
 	const { routes } = useContext(appContext);
 	const { signUp } = useStore((state) => state.account);
-
-	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<ISignUpInput>({
-		initialValues,
-		onSubmit: signUp,
-	});
+	const { getInvitation, signUpMember, invitation, error, store } = useStore((state) => state.household);
 	const formRef = useRef({ valid: false });
+
+	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<HouseholdMemberSignup>({
+		initialValues,
+		onSubmit: !invitationCode ? signUp : signUpMember,
+	});
+
+	useEffect(() => {
+		if (invitationCode && store) {
+			getInvitation(invitationCode);
+		}
+	}, [getInvitation, invitationCode, store]);
+
+	useEffect(() => {
+		if (invitation) {
+			handleChange({
+				firstName: invitation?.invitee?.firstName,
+				lastName: '',
+				email: invitation?.invitee?.email ,
+				password: '',
+				confirmPassword: '',
+				invitationCode,
+			});
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [invitation]);
+
+	useEffect(() => {
+		if (error) {
+			toast.error(error)
+		}
+	}, [error]);
 
 	const route = {
 		signIn: routes[PageKey.SignIn],
@@ -44,7 +75,28 @@ const SignUpPage = memo(() => {
 			onSubmit={handleSubmit}
 			schema={validationSchema}
 		>
-			<TextInput label="Email" name="email" value={formData.email} error={errors?.['email']} />
+			{ invitation && !invitation?.dateAccepted && (
+				<div>
+					<p>
+						Hello <b>{invitation.invitee.firstName} {invitation.inviter.lastName}</b> has invited your to join the {invitation.household} household!<br/>
+						Please, enter the information below to signup and join our community.
+					</p>
+				</div>
+			)}
+			{ invitation?.dateAccepted && (
+				<div>
+					<p>
+						Hello <b>{invitation.invitee.firstName}</b>, this invitation has expired.
+					</p>
+				</div>
+			)}
+			<TextInput
+				label="Email"
+				name="email"
+				disabled={!!invitation}
+				value={formData.email}
+				error={errors?.['email']}
+			/>
 			<TextInput
 				type="password"
 				label="Password"
@@ -59,8 +111,25 @@ const SignUpPage = memo(() => {
 				value={formData.confirmPassword}
 				error={errors?.['confirmPassword']}
 			/>
-			<TextInput label="First Name" name="firstName" value={formData.firstName} error={errors?.['firstName']} />
-			<TextInput label="Last Name" name="lastName" value={formData.lastName} error={errors?.['lastName']} />
+			<FieldGroup sided>
+				<TextInput
+					label="First Name"
+					name="firstName"
+					value={formData.firstName}
+					error={errors?.['firstName']}
+				/>
+				<TextInput
+					label="Last Name"
+					name="lastName"
+					value={formData.lastName}
+					error={errors?.['lastName']}
+				/>
+			</FieldGroup>
+			<TextInput
+				type="hidden"
+				name="invitationCode"
+				value={invitationCode}
+			/>
 			<FieldGroup sided>
 				<Submit loading={submitting} success={success} />
 			</FieldGroup>

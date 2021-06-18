@@ -9,7 +9,7 @@ import { Permission } from '../permission/permission.entity';
 
 @Entity({ name: 'resource' })
 export class Resource extends BaseEntity {
-	@Column({ length: 100, type: 'simple-enum', enum: Resources, unique: true })
+	@Column({ length: 100, type: 'simple-enum', enum: Resources, unique: true, nullable: false })
 	@IsNotEmpty()
 	@MaxLength(100)
 	name: Resources;

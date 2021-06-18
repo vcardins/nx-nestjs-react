@@ -13,7 +13,6 @@ const DEMO = 'demo';
 
 const getUser = async (username: string, profile: Partial<UserProfile>, roles: Role[] = [], isSuperuser = false) => {
 	const user = plainToClass(User, {
-		username,
 		email: `${username}@xapp.com`,
 		isSuperuser,
 		dateAccountVerified: getUtcDate(),
@@ -42,11 +41,11 @@ const getPermissions = (resources: Resource[], operations: Operation[]) =>
 		return result.concat(allActions);
 	}, [] as Permission[]);
 
-export default class SeedAuth implements Seeder {
+export class SeedUsersAndAcl implements Seeder {
 	public async run(factory: Factory, connection: Connection): Promise<any> {
 		const execSave = async <T>(entity: EntityTarget<T>, values: any) =>
 			(await connection.manager.save(entity, values)) as Promise<T[]>;
-		const execGet = async <T>(entity: EntityTarget<T>) => connection.manager.find(entity);
+		// const execGet = async <T>(entity: EntityTarget<T>) => connection.manager.find(entity);
 		const operationsModels = Object.keys(Operations).map((description) => ({
 			name: Operations[description],
 			description,

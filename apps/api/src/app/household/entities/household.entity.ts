@@ -1,10 +1,10 @@
-import { Column, Entity, OneToMany, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, OneToMany, JoinColumn, ManyToOne, BeforeInsert } from 'typeorm';
 
 import { User } from '@xapp/api/access-control';
-import { BaseEntity } from '@xapp/api/core';
+import { BaseEntity, getUtcDate } from '@xapp/api/core';
 
 import { HouseholdRoom } from './household_room.entity';
-import { HouseholdMembers } from './household_members.entity';
+import { HouseholdMember } from './household_member.entity';
 import { HouseholdMemberInvitation } from './household_member_invitation.entity';
 
 @Entity('household')
@@ -12,24 +12,41 @@ export class Household extends BaseEntity {
 	@Column('varchar', { name: 'name', length: 100 })
 	name: string;
 
-	@OneToMany(() => HouseholdRoom, ({ household }) => household)
+	@Column('datetime', { name: 'date_created' })
+	dateCreated: Date;
+
+	@Column('varchar', { name: 'description', nullable: true, length: 255 })
+	description?: string | null;
+
+	@OneToMany(
+		() => HouseholdRoom,
+		({ household }) => household,
+		{ cascade: true,  onDelete: 'CASCADE' },
+	)
 	rooms: HouseholdRoom[];
 
 	@OneToMany(
-		() => HouseholdMembers,
+		() => HouseholdMember,
 		({ household }) => household,
+		{ cascade: true,  onDelete: 'CASCADE' },
 	)
-	members: HouseholdMembers[];
+	members: HouseholdMember[];
 
-	@ManyToOne('User', 'household')
-	@JoinColumn([{ name: 'main_user_id', referencedColumnName: 'id' }])
-	mainUser: User;
+	@ManyToOne(() => User, 'household', { nullable: false })
+	@JoinColumn([{ name: 'owner_user_id', referencedColumnName: 'id' }])
+	ownerUser: User;
 
 	@OneToMany(
 		() => HouseholdMemberInvitation,
 		({ household }) => household,
+		{ cascade: true,  onDelete: 'CASCADE' },
 	)
 	invitedMembers: HouseholdMemberInvitation[];
+
+	@BeforeInsert()
+	doBeforeInsertion() {
+		this.dateCreated = getUtcDate();
+	}
 
 	// @OneToMany('Notification', ({ notification }) => notification)
 	// notifications: Notification[];

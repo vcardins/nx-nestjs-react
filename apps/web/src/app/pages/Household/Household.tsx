@@ -23,22 +23,24 @@ import { HouseholdInput } from '@xapp/shared/types';
 import { useStore } from '@xapp/state';
 
 import { validationSchema } from './schema';
-import { HouseholdList, HouseholdItem, HouseholdIcon } from './components';
+import { HouseholdList, HouseholdItem, HouseholdIcon, HouseholdItemInfo, HouseholdItemInvite } from './components';
 
 const initialValues: HouseholdInput = { name: '' };
 
 const HouseholdPage = memo(() => {
 	const formRef = useRef({ valid: false });
-	const { items, read, save, remove, error } = useStore((state) => state.household);
+	const { items, store, read, save, remove, invite, error } = useStore((state) => state.household);
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<HouseholdInput>({
 		initialValues,
 		onSubmit: save,
 	});
 
-	useEffect(() => {
-		read();
-	}, [read]);
+	useEffect(() => {;
+		if (store){
+			read();
+		}
+	}, [read, store]);
 
 	if (error) {
 		toast.error(error.message);
@@ -71,16 +73,27 @@ const HouseholdPage = memo(() => {
 				</FieldGroup>
 			</Form>
 			<HouseholdList>
-				{items.map((household) => {
-					const { id, name } = household;
-
-					return (
-						<HouseholdItem key={id}>
-							<InlineEdit text={name} onSetText={(name) => save({ ...household, name }, id)} />
-							<HouseholdIcon icon={ic_delete} onClick={() => remove(id)} />
-						</HouseholdItem>
-					);
-				})}
+				{items.map((household) => (
+					<HouseholdItem key={household.id}>
+						<HouseholdItemInfo>
+							<InlineEdit text={household.name} onSetText={(name) => save({ ...household, name }, household.id)} />
+							<HouseholdIcon icon={ic_delete} onClick={() => remove(household.id)} />
+						</HouseholdItemInfo>
+						{/* <HouseholdItemInvite>
+							<input
+								type="text"
+								name="invitation-firstName"
+								value={formData.invitation.firstName}
+							/>
+							<input
+								type="text"
+								name="invitation-email"
+								value={formData.invitation.email}
+							/>
+							<HouseholdIcon icon={ic_send} onClick={() => invite({ householdId: household.id, ...formData.invitation })} />
+						</HouseholdItemInvite> */}
+					</HouseholdItem>
+				))}
 			</HouseholdList>
 		</Page>
 	);

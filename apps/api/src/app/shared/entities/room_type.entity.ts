@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, BaseEntity } from 'typeorm';
 
-import { RoomTask } from './room_task.entity';
 import { HouseholdRoom } from '../../household/entities/household_room.entity';
+import { TaskTemplate } from '../../tasks/entities/task_template.entity';
 
 @Entity('room_type')
 export class RoomType extends BaseEntity {
@@ -17,6 +17,6 @@ export class RoomType extends BaseEntity {
 	@OneToMany(() => HouseholdRoom, ({ roomType }) => roomType)
 	rooms: HouseholdRoom[];
 
-	@OneToMany(() => RoomTask, ({ roomType }) => roomType)
-	tasks: RoomTask[];
+	@OneToMany(() => TaskTemplate, ({ roomType }) => roomType)
+	tasksTemplates: TaskTemplate[];
 }

@@ -30,6 +30,7 @@ interface IAppModuleProps{
 @Module({})
 export class AppModule {
 	static forRoot(options: IAppModuleProps): DynamicModule {
+		const authModule = AuthModule.forRoot(options);
 		return {
 			module: AppModule,
 			imports: [
@@ -40,11 +41,11 @@ export class AppModule {
 				FilesModule,
 				ScheduleModule.forRoot(),
 				CoreModule.forRoot(options),
-				AuthModule.forRoot(options),
+				authModule,
 				TodoModule,
 				LookupModule,
 				TaskModule,
-				HouseholdModule,
+				HouseholdModule.forFeature(authModule),
 				FrequencyModule,
 				RoomTypeModule,
 				DatabaseModule.forRoot(),

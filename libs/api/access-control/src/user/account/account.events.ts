@@ -1,8 +1,11 @@
+import { Logger } from '@nestjs/common';
 import { IEvent } from '@xapp/api/core';
 import { User } from '../entities/user.entity';
 
 abstract class UserAccountEvent implements IEvent {
 	constructor(public user: User){}
+
+	run() {}
 }
 
 export class AccountCreatedEvent extends UserAccountEvent {
@@ -15,17 +18,33 @@ export class AccountCreatedEvent extends UserAccountEvent {
 	) {
 		super(user);
 	}
-}
 
-export class EmailVerifiedEvent  extends UserAccountEvent {
-	constructor(user: User, public isNewAccount?: boolean) {
-		super(user);
+	run() {
+		Logger.log(this.verificationKey, 'VerificationKey');
 	}
 }
 
-export class AccountUnlockedEvent  extends UserAccountEvent {}
+export class EmailVerifiedEvent  extends UserAccountEvent {
+	constructor(user: User, public email?: string) {
+		super(user);
+	}
 
-export class PasswordResetFailedEvent  extends UserAccountEvent {}
+	run() {
+		Logger.log(this.email, 'Email verified');
+	}
+}
+
+export class AccountUnlockedEvent  extends UserAccountEvent {
+	run() {
+
+	}
+}
+
+export class PasswordResetFailedEvent  extends UserAccountEvent {
+	run() {
+
+	}
+}
 
 export class PasswordResetRequestedEvent  extends UserAccountEvent {
 	constructor(
@@ -34,10 +53,16 @@ export class PasswordResetRequestedEvent  extends UserAccountEvent {
 	) {
 		super(user);
 	}
+	run() {
+		Logger.log(`Email ${this.user.email} with ${this.verificationKey}`, 'PasswordResetRequestedEvent');
+	}
 }
 export class PasswordChangedEvent  extends UserAccountEvent {
 	constructor(public user: User, public newPassword: string){
 		super(user);
+	}
+	run() {
+
 	}
 }
 
@@ -46,17 +71,29 @@ export class AccountReopenedEvent  extends UserAccountEvent {
 	constructor(public user: User, public verificationKey: string){
 		super(user);
 	}
+
+	run() {
+		Logger.log(`Email ${this.user.email} with ${this.verificationKey}`, 'AccountReopenedEvent');
+	}
 }
 
 export class UsernameChangedEvent  extends UserAccountEvent {
 	constructor(public user: User, public oldUsername: string, public newUsername: string){
 		super(user);
 	}
+
+	run() {
+
+	}
 }
 
 export class EmailChangeRequestedEvent  extends UserAccountEvent {
 	constructor(public user: User, public oldEmail: string, public newEmail: string, public verificationKey: string){
 		super(user);
+	}
+
+	run() {
+
 	}
 }
 export class EmailChangedEvent  extends UserAccountEvent {

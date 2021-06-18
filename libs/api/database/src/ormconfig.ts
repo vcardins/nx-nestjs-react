@@ -89,9 +89,11 @@ const entities = getFilesByFolder(`${isFromMigration ? '/**' : ''}/**/*.entity`)
 
 const connectionString = new ConnectionString(process.env.DATABASE_URL || 'sqlite://database/sqlitedb.db');
 
-const [migrations, subscribers, seeds] = ['migrations', 'subscribers', 'seeds'].map((folder) =>
+const [migrations, subscribers] = ['migrations', 'subscribers'].map((folder) =>
 	getFilesByFolder(`/**/${folder}/**/*`),
 );
+
+const [seeds] = ['seeds'].map((folder) => getFilesByFolder(`/**/${folder}/**/*.seed`));
 
 const type = connectionString.protocol as DatabaseType;
 const baseOrmConfig: Partial<ConnectionOptions> = {

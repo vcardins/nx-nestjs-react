@@ -21,20 +21,20 @@ export function getNavigation(routes: IKeyedRoute, userRoles: IRoleWithPermissio
 	const navigation: INavItem[] = [
 		{
 			id: getNavId('user-account'),
-			title: 'User Account',
+			label: 'User Account',
 			type: NavItemTypes.Group,
 			icon: 'account_box',
 			children: [
 				{
 					id: getNavId('user-profile'),
-					title: 'User Profile',
+					label: 'User Profile',
 					type: NavItemTypes.Route,
 					icon: ic_person_pin,
 					route: routes[PageKey.UserProfile],
 				},
 				{
 					id: getNavId('change-password'),
-					title: 'Change Password',
+					label: 'Change Password',
 					type: NavItemTypes.Route,
 					icon: ic_fingerprint,
 					route: routes[PageKey.ChangePassword],
@@ -43,24 +43,46 @@ export function getNavigation(routes: IKeyedRoute, userRoles: IRoleWithPermissio
 		},
 		{
 			id: getNavId('admin'),
-			title: 'Admin',
+			label: 'Admin',
 			type: NavItemTypes.Route,
 			icon: ic_security,
 			route: routes[PageKey.Admin],
 		},
 		{
 			id: getNavId('household'),
-			title: 'Household',
+			label: 'Household',
 			type: NavItemTypes.Route,
 			icon: ic_home,
 			route: routes[PageKey.Household],
 		},
 		{
 			id: getNavId('todo'),
-			title: 'Todo',
+			label: 'Todo',
 			type: NavItemTypes.Route,
 			icon: ic_done,
 			route: routes[PageKey.Todo],
+		},
+		{
+			id: getNavId('task-management'),
+			label: 'Task Management',
+			type: NavItemTypes.Group,
+			icon: 'account_box',
+			children: [
+				{
+					id: getNavId('task-template'),
+					label: 'Task Template',
+					type: NavItemTypes.Route,
+					icon: ic_person_pin,
+					route: routes[PageKey.TaskTemplate],
+				},
+				{
+					id: getNavId('tasks'),
+					label: 'Tasks',
+					type: NavItemTypes.Route,
+					icon: ic_fingerprint,
+					route: routes[PageKey.Tasks],
+				},
+			],
 		},
 	];
 

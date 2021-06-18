@@ -7,6 +7,7 @@ import { createAuth } from '@xapp/state/auth';
 import { createLookup } from '@xapp/state/global';
 import { createAccount } from '@xapp/state/account';
 import { createHousehold } from '@xapp/state/household';
+import { createTask } from '@xapp/state/task';
 
 export type AppState = {
 	config?: IAppConfig;
@@ -16,6 +17,7 @@ export type AppState = {
 	household: ReturnType<typeof createHousehold>;
 	lookup: ReturnType<typeof createLookup>;
 	todo: ReturnType<typeof createTodo>;
+	task: ReturnType<typeof createTask>;
 	init: (appConfig: IAppConfig, notifier: INotifier, authState: IAuthState) => Promise<void>;
 	reset: () => void;
 };
@@ -26,6 +28,7 @@ export const useStore: UseStore<AppState> = createStore((set, get, api) => {
 	const household = namespace(Namespaces.Household, createHousehold)(set, get, api);
 	const lookup = namespace(Namespaces.Lookup, createLookup)(set, get, api);
 	const todo = namespace(Namespaces.Todo, createTodo)(set, get, api);
+	const task = namespace(Namespaces.Task, createTodo)(set, get, api);
 
 	const init = async (appConfig: IAppConfig, notifier: INotifier, authState: IAuthState): Promise<void> => {
 		return new Promise((resolve) => {
@@ -38,6 +41,7 @@ export const useStore: UseStore<AppState> = createStore((set, get, api) => {
 			household.init(authState);
 			lookup.init(authState);
 			todo.init(authState);
+			task.init(authState);
 
 			resolve();
 		});

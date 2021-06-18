@@ -4,6 +4,7 @@ import { OAuthProvider, UserRoles, AuthRoles, DateFormat } from '@xapp/shared/ty
 
 import { FrequencyService } from '../shared/frequency.service';
 import { RoomTypeService } from '../shared/room_type.service';
+import { TaskTemplateService } from '../tasks/task_template.service';
 import { LookupOutput } from './lookup.output';
 
 @Injectable()
@@ -11,6 +12,7 @@ export class LookupService {
 	constructor(
 		protected readonly frequencyService: FrequencyService,
 		protected readonly roomTypeService: RoomTypeService,
+		protected readonly taskTemplateService: TaskTemplateService,
 	) {}
 
 	async getAll(): Promise<LookupOutput> {
@@ -20,6 +22,7 @@ export class LookupService {
 		const userRoles = this.convertEnum(UserRoles);
 		const frequencies = await this.frequencyService.getAll();
 		const roomTypes = await this.roomTypeService.getAll();
+		const tasksTemplates = await this.taskTemplateService.getAllMapped();
 
 		return {
 			dateFormats,
@@ -28,6 +31,7 @@ export class LookupService {
 			userRoles,
 			frequencies,
 			roomTypes,
+			tasksTemplates,
 		};
 	}
 

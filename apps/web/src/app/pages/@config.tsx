@@ -10,6 +10,7 @@ import { Error404PageConfig } from './Errors/404/@config';
 import { Error500PageConfig } from './Errors/500/@config';
 import { TodoPageConfig } from './Todo/@config';
 import { HouseholdPageConfig } from './Household/@config';
+import { TaskPageConfig } from './Task/@config';
 
 import { authPagesConfigs } from './Auth/@config';
 
@@ -46,5 +47,6 @@ export const pagesConfigs = [
 	Error500PageConfig,
 	TodoPageConfig,
 	HouseholdPageConfig,
+	TaskPageConfig,
 	DefaultPageConfig,
 ];

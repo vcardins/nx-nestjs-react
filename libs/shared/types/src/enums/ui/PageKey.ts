@@ -12,6 +12,8 @@ export enum PageKey {
 	VerifyPhone = 'verify-account-phone',
 	Admin = 'admin',
 	Household = 'household',
+	TaskTemplate = 'task-template',
+	Tasks = 'tasks',
 	PageNotFound = 'not-found',
 	Error404 = 'error-404',
 	Error500 = 'error-500',

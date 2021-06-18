@@ -39,7 +39,8 @@
 			"@xapp/state/household": ["libs/state/household/src/index.ts"],
 			"@xapp/state/shared": ["libs/state/shared/src/index.ts"],
 			"@xapp/state/todo": ["libs/state/todo/src/index.ts"],
-			"@xapp/state/auth": ["libs/state/auth/src/index.ts"]
+			"@xapp/state/auth": ["libs/state/auth/src/index.ts"],
+			"@xapp/state/task": ["libs/state/task/src/index.ts"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]

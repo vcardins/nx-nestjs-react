@@ -3,10 +3,12 @@ import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from '@xapp/api/core';
 import { HouseholdRoom } from './../../household/entities/household_room.entity';
 import { Frequency } from './../../shared/entities/frequency.entity';
-import { HouseholdMembers } from './../../household/entities/household_members.entity';
+import { HouseholdMember } from './../../household/entities/household_member.entity';
+import { TaskTemplate } from './task_template.entity';
+
 @Entity('task')
 export class Task extends BaseEntity {
-	@Column('varchar', { name: 'name', length: 60 })
+	@Column('varchar', { name: 'name', length: 120, nullable: true })
 	name: string;
 
 	@Column('datetime', { name: 'date_created' })
@@ -15,25 +17,36 @@ export class Task extends BaseEntity {
 	@Column('datetime', { name: 'date_completed', nullable: true })
 	dateCompleted: Date | null;
 
-	@Column('text', { name: 'description', nullable: true })
-	description: string | null;
+	@Column('datetime', { name: 'due_date', nullable: true })
+	dueDate: Date | null;
 
-	@Column('time', { name: 'proposed_time', nullable: true })
-	proposedTime: boolean | null;
+	@Column('text', { name: 'notes', nullable: true })
+	notes?: string | null;
+
+	@Column('integer', { name: 'estimated_completion_time', nullable: true })
+	estimatedTime: number | null;
 
 	@ManyToOne(
-		() => HouseholdMembers,
-		({ executedTasks }) => executedTasks,
+		() => HouseholdMember,
+		({ tasksCreators }) => tasksCreators,
 	)
-	@JoinColumn([{ name: 'executor_user_id', referencedColumnName: 'userId' }])
-	executorUser?: HouseholdMembers;
+	@JoinColumn([{ name: 'creator_user_id', referencedColumnName: 'id' }])
+	creatorUser?: HouseholdMember;
 
 	@ManyToOne(
-		() => HouseholdMembers,
+		() => HouseholdMember,
+		({ executedTasks }) => executedTasks,
+		{ nullable: true },
+	)
+	@JoinColumn([{ name: 'executor_user_id', referencedColumnName: 'id' }])
+	executorUser?: HouseholdMember;
+
+	@ManyToOne(
+		() => HouseholdMember,
 		({ assignedTasks }) => assignedTasks,
 	)
-	@JoinColumn([{ name: 'assigned_user_id', referencedColumnName: 'userId' }])
-	assignedUser?: HouseholdMembers;
+	@JoinColumn([{ name: 'assigned_user_id', referencedColumnName: 'id' }])
+	assignedUser?: HouseholdMember;
 
 	@ManyToOne(() => Frequency, ({ tasks }) => tasks)
 	@JoinColumn([{ name: 'frequency_id', referencedColumnName: 'id' }])
@@ -45,4 +58,8 @@ export class Task extends BaseEntity {
 		{ name: 'room_type_id', referencedColumnName: 'roomTypeId' },
 	])
 	householdRoom: HouseholdRoom;
+
+	@ManyToOne(() => TaskTemplate, ({ tasks }) => tasks, { nullable: true })
+	@JoinColumn([{ name: 'task_template_id', referencedColumnName: 'id' }])
+	template: TaskTemplate;
 }

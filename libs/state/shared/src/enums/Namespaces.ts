@@ -8,5 +8,6 @@ export enum Namespaces {
 	Lookup = 'lookup',
 	Account = 'account',
 	Auth = 'auth',
-	Household = 'household'
+	Household = 'household',
+	Task = 'task'
 }

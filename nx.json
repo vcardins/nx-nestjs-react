@@ -41,6 +41,7 @@
 		"state-household": { "tags": [] },
 		"state-shared": { "tags": [] },
 		"state-todo": { "tags": [] },
+		"state-task": { "tags": [] },
 		"state": { "tags": [] },
 		"web-e2e": { "tags": [], "implicitDependencies": ["web"] },
 		"web": { "tags": [] }

@@ -40,7 +40,11 @@ export const Authorization = ({ children, routes }: IAuthorizationProps) => {
 	const location = useLocation() as Location<IState>; // <{ redirectUrl?: string }>
 	const navigate = useNavigate();
 	const { user, isSessionValid, onSignOut } = useStore((state) => state.auth);
-	const notLoginLocation = location.pathname !== appConfig.routes.signIn;
+	const isPrivatePage = ![
+		appConfig.routes.signIn,
+		appConfig.routes.signUp,
+		appConfig.routes.resetPassword,
+	].includes(location.pathname);
 
 	const getMatchedRoute = useCallback((pathname: string): IRoute => {
 		const routeObjects = Object.values(routes) as RouteObject[];
@@ -58,7 +62,7 @@ export const Authorization = ({ children, routes }: IAuthorizationProps) => {
 		*/
 		if (!user?.roles?.length) {
 			// If the requested location is NOT login and the access is not allowed redirect to login
-			if (notLoginLocation || !isAccessAllowed()) {
+			if (isPrivatePage || !isAccessAllowed()) {
 				pathname = appConfig.routes.signIn;
 				state = { redirectUrl: location.pathname } as IState;
 			}
@@ -72,7 +76,7 @@ export const Authorization = ({ children, routes }: IAuthorizationProps) => {
 			// if the request location is login but user is logged in
 			// then redirect to home
 			if (!isAccessAllowed()) {
-				if (notLoginLocation) {
+				if (isPrivatePage) {
 					showNotAuthorizedError(location.pathname);
 				}
 				pathname = appConfig.routes.home;
@@ -90,7 +94,7 @@ export const Authorization = ({ children, routes }: IAuthorizationProps) => {
 	}, [
 		navigate,
 		isAccessAllowed,
-		notLoginLocation,
+		isPrivatePage,
 		location.pathname,
 		location?.state?.redirectUrl,
 		user?.roles?.length,
@@ -112,7 +116,7 @@ export const Authorization = ({ children, routes }: IAuthorizationProps) => {
 
 			// // 2. Verify whether the user (group) is allowed to access the route
 			// // If NOT display an error message and redirect to the home page
-			if (!isAccessAllowed() && notLoginLocation) {
+			if (!isAccessAllowed() && isPrivatePage) {
 				showNotAuthorizedError(route.path as string);
 				navigate(appConfig.routes.home);
 			}
@@ -123,7 +127,7 @@ export const Authorization = ({ children, routes }: IAuthorizationProps) => {
 	// 	// return () => historyListener();
 	}, [
 		getMatchedRoute,
-		notLoginLocation,
+		isPrivatePage,
 		navigate,
 		isAccessAllowed,
 		isSessionValid,

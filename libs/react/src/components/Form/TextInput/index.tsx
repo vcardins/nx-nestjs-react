@@ -1,10 +1,11 @@
-import { IHtmlField } from '@xapp/shared/types';
 import React from 'react';
+import { Field } from 'react-jsonschema-form-validation';
+import { IHtmlField } from '@xapp/shared/types';
 
 import { FieldSet } from '../FieldSet';
 import { StyledInput } from './styles';
 
-type InputTypes = 'text' | 'password';
+type InputTypes = 'text' | 'password' | 'hidden';
 
 interface ITextInput extends IHtmlField {
 	type? : InputTypes;
@@ -12,13 +13,21 @@ interface ITextInput extends IHtmlField {
 }
 
 export function TextInput (props: ITextInput) {
-	const { id, name, label, value, labelLess, type, component } = props;
+	const { id, name, label, value, labelLess, type, component, disabled } = props;
+
+	if (type === 'hidden') {
+		return (
+			<Field type="hidden" value={value} />
+		);
+	}
+
 	const inputElement = (
 		<StyledInput
 			id={id || name}
 			name={name}
 			value={value}
 			type={type}
+			disabled={disabled}
 			component={component}
 		/>
 	);

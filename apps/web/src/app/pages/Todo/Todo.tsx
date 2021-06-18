@@ -77,7 +77,7 @@ const TodoPage = memo(() => {
 				</FieldGroup>
 			</Form>
 			<TodoList>
-				{items.map((todo) => {
+				{(items || []).map((todo) => {
 					const { id, title, dateCreated, dateCompleted } = todo;
 					const icon = !dateCompleted ? ic_check : ic_check_box;
 

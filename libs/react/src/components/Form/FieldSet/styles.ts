@@ -5,6 +5,7 @@ export const FieldGroup = styled.div<{sided?: boolean}>`
 	display: flex;
 	flex-direction: ${(p) => p.sided ? 'row' : 'column' };
 	margin: 1em 0;
+	flex: 1;
 	${({ sided }) => sided
 		? css`
 			align-items: center;

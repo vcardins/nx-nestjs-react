@@ -51,6 +51,7 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 			} else {
 				setNavigation([]);
 				dataStore.reset();
+				dataStore.account.init({ authHeader }, appConfig.endpoints );
 			}
 
 			ref.current = accessToken;

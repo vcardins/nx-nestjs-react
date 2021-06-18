@@ -33,7 +33,7 @@ export class DataContext<TOutput = any, TInputCreate = any, TInputUpdate = TInpu
 	readAll = <T = TFilter>(payload?: T): Promise<TOutput[]> =>
 		this.api.get<T>(payload);
 
-	read = <T = TFilter>(payload?: T): Promise<TOutput> =>
+	read = <T = TFilter, TOut = TOutput>(payload?: T): Promise<TOut> =>
 		this.api.get<T>(payload);
 
 	create = <T = TInputCreate>(payload?: IRestClientPayload<TInputCreate>): Promise<TOutput> =>

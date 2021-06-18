@@ -8,7 +8,7 @@ export interface IHtmlField {
 	/* The field value */
 	value?: string | number | boolean;
 	/* The field label */
-	label: string;
+	label?: string;
 	/* The field label */
 	disabled?: boolean;
 	/* The field label */

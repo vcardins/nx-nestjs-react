@@ -274,10 +274,10 @@ export function baseAuthControllerFactory<T extends IBaseEntity>(options: IBaseA
 		public async create(@Req() req, @Body() body: EntityCreateInputT, @Response() response) {
 			try {
 				if (this.beforeCreate) {
-					await this.beforeCreate(body);
+					await this.beforeCreate(body, req.user?.id);
 				}
 
-				const data = await this._service.create(body as any);
+				const data = await this._service.create(body as typeof EntityCreateInputT);
 
 				if (this._service.withMap) {
 					const mappedData = await this._service.map(data);
@@ -285,15 +285,14 @@ export function baseAuthControllerFactory<T extends IBaseEntity>(options: IBaseA
 					response.send(mappedData);
 
 					if (this.afterCreate) {
-						this.afterCreate(body, data, mappedData);
+						await this.afterCreate(body, data, mappedData);
 					}
 				}
 				else {
-					response.send(data);
-
 					if (this.afterCreate) {
-						this.afterCreate(body, data);
+						await this.afterCreate(body, data);
 					}
+					response.send(data);
 				}
 			}
 			catch (e) {
@@ -434,7 +433,7 @@ export function baseAuthControllerFactory<T extends IBaseEntity>(options: IBaseA
 		protected afterPagination?(filter: any, data: { data: any, total: number }, mappedData?: { data: any, total: number }): Promise<void>
 		protected beforeGetById?(id: IdType): Promise<void>
 		protected afterGetById?(id: IdType, data: any, mappedData?: any): Promise<void>
-		protected beforeCreate?(body: any): Promise<void>
+		protected beforeCreate?(body: any, userId: number): Promise<void>
 		protected afterCreate?(body: any, data: any, mappedData?: any): Promise<void>
 		protected beforeUpdateOrCreate?(body: any): Promise<void>
 		protected afterUpdateOrCreate?(body: any, data: any, mappedData?: any): Promise<void>

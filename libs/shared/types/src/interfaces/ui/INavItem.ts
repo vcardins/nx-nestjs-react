@@ -5,7 +5,7 @@ import { NavItemTypes } from '../../enums/ui';
 export interface INavItem {
 	id?: string;
 	type?: NavItemTypes;
-	title?: string;
+	label?: string;
 	icon?: string;
 	auth?: string[];
 	badge?: IBadge;
@@ -15,4 +15,8 @@ export interface INavItem {
 	target?: string;
 	children?: INavItem[];
 	order?: number;
+}
+
+export interface ISubNavItem extends Omit<INavItem, 'children'> {
+	children?: INavItem;
 }

@@ -27,7 +27,7 @@ export class RoleService extends BaseService<Role> {
 		this.queryBuilder = this.queryBuilder.leftJoinAndSelect(`${this.modelName}.permissions`, 'permission');
 
 		if (options.q) {
-			this.queryBuilder = this.queryBuilder.where(`${this.modelName}.title like :q or ${this.modelName}.name like :q or ${this.modelName}.id = :id`, {
+			this.queryBuilder = this.queryBuilder.where(`${this.modelName}.id = :id`, {
 				q: `%${options.q}%`,
 				id: +options.q,
 			});

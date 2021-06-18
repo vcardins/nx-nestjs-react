@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import { State as ZustandState, StateCreator, SetState, GetState, StoreApi, Subscribe } from 'zustand';
-
 export function namespace<K extends string, T extends ZustandState>(
 	key: K,
 	creator: StateCreator<T>,

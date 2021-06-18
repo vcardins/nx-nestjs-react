@@ -25,9 +25,13 @@ export function createBaseStore<
 		...initialStateValues,
 		error: null,
 		store: null,
-		init(props: IAuthState) {
-			set({ store: new Store(props.authHeader) });
+		init(props: IAuthState): Promise<void> {
+			return new Promise((resolve) => {
+				set({ store: new Store(props.authHeader) });
+				resolve();
+			});
 		},
+		isLoaded: () => !!get().store,
 		async read(filters?: TState['filters']) {
 			const { status, store } = get();
 
@@ -38,7 +42,7 @@ export function createBaseStore<
 			setLoading(set)();
 
 			try {
-				const items = await store.readAll(filters);
+				const items = await store?.readAll(filters);
 
 				setSuccess<TState, { items: TOutput[] }>(set)({ items });
 			}

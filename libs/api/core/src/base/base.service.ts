@@ -10,8 +10,7 @@ import {
 import { AutoMapper } from 'nestjsx-automapper';
 
 import { IdType } from '@xapp/shared/types';
-import { IPaginationQuery } from './base.interface';
-import { IBaseService, IBaseServiceOptions, IBaseServiceCache, IFindAndCountResult } from './base.interface';
+import { IBaseService, IBaseServiceOptions, IBaseServiceCache, IFindAndCountResult, IPaginationQuery } from './base.interface';
 import { IBaseEntity } from './base.entity';
 import { IEvent } from '../events/events.interface';
 

@@ -40,10 +40,6 @@ export function useForm<T>(props: IUseFormProps<T>, dependencies: string[] | num
 		try {
 			const response = await onSubmit(formData);
 
-			if (clearAfterSubmit) {
-				setFormData(initialValues);
-			}
-
 			setSuccess(true);
 
 			if (response?.message) {
@@ -67,6 +63,9 @@ export function useForm<T>(props: IUseFormProps<T>, dependencies: string[] | num
 		}
 		finally {
 			setSubmitting(false);
+			if (clearAfterSubmit && !errors) {
+				setFormData(initialValues);
+			}
 		}
 	};
 

@@ -16,8 +16,11 @@ export const createLookup: StateCreator<ILookupState> = (set, get, api) => ({
 	userRoles: null,
 	error: null,
 	sortBy: { id: SortDirections.ASC },
-	init(props: IAuthState) {
-		set({ store: new LookupStore(props.authHeader) });
+	init(props: IAuthState): Promise<void> {
+		return new Promise((resolve) => {
+			set({ store: new LookupStore(props.authHeader) });
+			resolve();
+		});
 	},
 	async read() {
 		const { status, store } = get();

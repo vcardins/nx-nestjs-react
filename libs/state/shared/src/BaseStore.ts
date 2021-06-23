@@ -25,7 +25,7 @@ export function createBaseStore<
 		error: null,
 		isApiReady: false,
 		...initialStateValues,
-		// store: null,
+		store: null,
 		init(props: IAuthState): Promise<void> {
 			return new Promise((resolve) => {
 				set({ store: new Store(props.authHeader), isApiReady: true });

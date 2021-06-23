@@ -1,5 +1,6 @@
-import { INavItem, NavItemTypes } from '@xapp/shared/types'; //NavItemTypes
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useState } from 'react';
+import { INavItem, NavItemTypes } from '@xapp/shared/types'; //NavItemTypes
 
 import {
 	Arrow,
@@ -11,7 +12,6 @@ import {
 	NavItemLink,
 	NavItemGroup,
 	NavItemRoute,
-	// MenuItemBadge,
 } from './styles';
 
 interface IMenuProps {
@@ -40,7 +40,6 @@ interface IMenuItemContainerProps {
 }
 
 export const MenuItemContainer = ({ item, children }: IMenuItemContainerProps) => {
-	// const BadgeWrapper = styled.span`${(props) => getBadgeConfig(props)}`;
 	switch (item.type) {
 		case NavItemTypes.Route:
 			return <NavItemRoute to={item.route.path}>{children}</NavItemRoute>;
@@ -63,11 +62,7 @@ export const Menu = (props: IMenuProps) => {
 	const { items } = props;
 	const [expandedMenus, setExpandedMenus] = useState<string[]>([]);
 
-	// const handleMenuClick = (item: INavItem) => {
-	// 	console.log(item);
-	// };
-
-	const handleArrowClick = (menuKey: string) => {
+	const handleToggleMenu = (menuKey: string) => {
 		const newActiveMenus = [...expandedMenus];
 
 		if (newActiveMenus.includes(menuKey)) {
@@ -83,48 +78,53 @@ export const Menu = (props: IMenuProps) => {
 		setExpandedMenus(newActiveMenus);
 	};
 
-	const ListMenu = ({ dept, item, id, menuIndex }: IListMenu) => (
-		<LI key={id}>
-			<MenuItemContainer item={item}>
-				<Item dept={dept} data-active={expandedMenus.includes(id)}>
-					<Label>{item.label} </Label>
-					{!!item.children?.length && (
-						<Arrow
-							onClick={() => handleArrowClick(id)}
-							toggle={expandedMenus.includes(id)}
+	const ListMenu = ({ dept, item, id, menuIndex }: IListMenu) => {
+		return (
+			<LI key={id}>
+				<MenuItemContainer item={item}>
+					<Item
+						dept={dept}
+						data-active={expandedMenus.includes(id)}
+						onClick={() => item.children?.length ? handleToggleMenu(id) : undefined}
+					>
+						<Label>{item.label} </Label>
+						{item.children?.length && (
+							<Arrow toggle={expandedMenus.includes(id)} />
+						)}
+					</Item>
+					{item.children?.length && (
+						<SubMenu
+							dept={dept}
+							items={item.children}
+							isExpanded={expandedMenus.includes(id)}
+							menuIndex={menuIndex}
 						/>
 					)}
-				</Item>
-				{!!item.children?.length && (
-					<SubMenu
-						dept={dept}
-						items={item.children}
-						isExpanded={expandedMenus.includes(id)}
-						menuIndex={menuIndex}
-					/>
-				)}
-			</MenuItemContainer>
-		</LI>
-	);
+				</MenuItemContainer>
+			</LI>
+		);
+	};
 
-	function SubMenu ({ dept, items, isExpanded, menuIndex }: IListSubMenu) {
+	const SubMenu = ({ dept, items, isExpanded, menuIndex }: IListSubMenu) => {
 		const getKey = (index: number) => `sidebar-submenu-${dept + 1}-${menuIndex}-${index}`;
-
 		return (
 			<UL isVisible={isExpanded} key={`${getKey(menuIndex)}-parent`}>
 				{items.map((menu, index) => {
+					const id = getKey(index);
+
 					return (
 						<ListMenu
+							id={id}
+							key={id}
 							dept={dept + 1}
 							item={menu}
-							key={getKey(index)}
 							menuIndex={index}
 						/>
 					);
 				})}
 			</UL>
 		);
-	}
+	};
 
 	return (
 		<UL isVisible={true}>
@@ -134,9 +134,10 @@ export const Menu = (props: IMenuProps) => {
 
 				return (
 					<ListMenu
+						id={menuKey}
+						key={menuKey}
 						dept={dept}
 						item={menu}
-						key={menuKey}
 						menuIndex={index}
 					/>
 				);
@@ -144,90 +145,3 @@ export const Menu = (props: IMenuProps) => {
 		</UL>
 	);
 };
-
-// export const Menu = (props: IMenuProps) => {
-// 	const { position = 'vertical', collapsed/*trigger = 'click', activeItem */ } = props;
-
-// 	// function triggerMenu ({ target }: React.MouseEvent<HTMLElement>, href: Function): void {
-// 	// 	event.stopPropagation();
-// 	// 	const el = target.closest('.menu-item');
-// 	// 	const elParent = el.closest('.menu-parent');
-// 	// 	const elParentId = elParent ? elParent.getAttribute('id') : undefined;
-
-// 	// 	if (pinedItems.length) {
-// 	// 		pinedItems.forEach(({id, el}) => elParentId ? id !== elParentId : true && el.classList.remove('expanded'));
-// 	// 	}
-
-// 	// 	if (elParent === el) {
-// 	// 		elParent.classList.toggle('expanded');
-// 	// 		pinedItems.push({ id: elParentId, el: elParent });
-// 	// 	} else {
-// 	// 		if (typeof href === 'function') {
-// 	// 			href();
-// 	// 		} else {
-// 	// 			onRouteChange(href);
-// 	// 		}
-// 	// 	}
-// 	// }
-// 	function buildParentLevel(items: INavItem[], isHeading = false) {
-// 		const rootProps = isHeading && { className: `nav-main nav-main--${position} nav-main--${collapsed ? 'collapsed' : 'expanded'}` };
-
-// 		return (
-// 			<MenuGroup
-// 				{...rootProps}
-// 				collapsed={collapsed}
-// 				isHeading={isHeading}
-// 			>
-// 				{items.map(buildNavItem)}
-// 			</MenuGroup>
-// 		);
-// 	}
-
-// 	function buildNavItem (item: INavItem) {
-// 		const { id, title, icon, isHidden, type, children = [] /*badge, */ } = item;
-// 		if (isHidden) {
-// 			return null;
-// 		}
-
-// 		if (type === NavItemTypes.Divider) {
-// 			return (
-// 				<MenuItem
-// 					key={id}
-// 					id={id}
-// 					title={title}
-// 				/>
-// 			);
-// 		}
-
-// 		const hasChildren = children.length > 0;
-// 		const tree = hasChildren
-// 			? buildParentLevel(children)
-// 			: null;
-
-// 		return (
-// 			<MenuItem
-// 				key={id}
-// 				id={id}
-// 				isHeading={type === NavItemTypes.Group}
-// 			>
-// 				<MenuItemContainer item={item}>
-// 					{ typeof icon === 'object' && (
-// 						<MenuItemIcon
-// 							icon={icon}
-// 							title={title}
-// 							size={20}
-// 						/>
-// 					)}
-// 					<MenuItemTitle>{title}</MenuItemTitle>
-// 				</MenuItemContainer>
-// 				{ tree }
-// 			</MenuItem>
-// 		);
-// 	}
-
-// 	return (
-// 		<MenuContainer>
-// 			{ buildParentLevel(props.items, true) }
-// 		</MenuContainer>
-// 	);
-// };

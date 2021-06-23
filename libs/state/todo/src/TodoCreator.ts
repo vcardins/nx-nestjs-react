@@ -112,7 +112,7 @@ export interface ITodoState extends ICrudState<TodoStore, TodoOutput> {
 
 export const createTodo: StateCreator<ITodoState> = createBaseStore<ITodoState, TodoInput, TodoOutput>(
 	TodoStore,
-	null,
+	{ store: new TodoStore() },
 	(set: SetState<ITodoState>, get: GetState<ITodoState>) => ({
 		setComplete: async (todo: TodoOutput) => {
 			const { store, status, items } = get();

@@ -22,16 +22,16 @@ export function createBaseStore<
 		status: ApiCallStatus.Idle,
 		items: [] as TOutput[],
 		sortBy: { id: SortDirections.ASC },
-		...initialStateValues,
 		error: null,
-		store: null,
+		isApiReady: false,
+		...initialStateValues,
+		// store: null,
 		init(props: IAuthState): Promise<void> {
 			return new Promise((resolve) => {
-				set({ store: new Store(props.authHeader) });
+				set({ store: new Store(props.authHeader), isApiReady: true });
 				resolve();
 			});
 		},
-		isLoaded: () => !!get().store,
 		async read(filters?: TState['filters']) {
 			const { status, store } = get();
 
@@ -43,7 +43,6 @@ export function createBaseStore<
 
 			try {
 				const items = await store?.readAll(filters);
-
 				setSuccess<TState, { items: TOutput[] }>(set)({ items });
 			}
 			catch (error) {
@@ -98,6 +97,9 @@ export function createBaseStore<
 		reset() {
 			setIdle<TState, { items: TOutput[] }>(set)({ items: [] });
 		},
-		...extraMethods(set, get),
+		clearError() {
+			set({ error: null });
+		},
+		...extraMethods?.(set, get),
 	});
 }

@@ -1,3 +1,9 @@
+import { TaskTemplateOutput } from './TaskTemplateOutput';
+
 export class TaskInput {
-	title: string;
+	name: string;
+	dueDate: Date | null;
+	notes?: string | null;
+
+	templateId: TaskTemplateOutput['id'] | null;
 }

@@ -8,6 +8,7 @@ import { createLookup } from '@xapp/state/global';
 import { createAccount } from '@xapp/state/account';
 import { createHousehold } from '@xapp/state/household';
 import { createTask } from '@xapp/state/task';
+import { createTaskTemplate } from '@xapp/state/task-template';
 
 export type AppState = {
 	config?: IAppConfig;
@@ -18,6 +19,7 @@ export type AppState = {
 	lookup: ReturnType<typeof createLookup>;
 	todo: ReturnType<typeof createTodo>;
 	task: ReturnType<typeof createTask>;
+	taskTemplate: ReturnType<typeof createTaskTemplate>;
 	init: (appConfig: IAppConfig, notifier: INotifier, authState: IAuthState) => Promise<void>;
 	reset: () => void;
 };
@@ -28,27 +30,24 @@ export const useStore: UseStore<AppState> = createStore((set, get, api) => {
 	const household = namespace(Namespaces.Household, createHousehold)(set, get, api);
 	const lookup = namespace(Namespaces.Lookup, createLookup)(set, get, api);
 	const todo = namespace(Namespaces.Todo, createTodo)(set, get, api);
-	const task = namespace(Namespaces.Task, createTodo)(set, get, api);
+	const task = namespace(Namespaces.Task, createTask)(set, get, api);
+	const taskTemplate = namespace(Namespaces.TaskTemplate, createTaskTemplate)(set, get, api);
 
 	const init = async (appConfig: IAppConfig, notifier: INotifier, authState: IAuthState): Promise<void> => {
-		return new Promise((resolve) => {
-			set((state) => void (
-				(state.config = appConfig),
-				(state.notifier = notifier)
-			));
+		// return new Promise((resolve) => {
+		set((state) => void (
+			(state.config = appConfig),
+			(state.notifier = notifier)
+		));
 
-			account.init(authState, appConfig.endpoints);
-			household.init(authState);
-			lookup.init(authState);
-			todo.init(authState);
-			task.init(authState);
-
-			resolve();
-		});
-	};
-
-	const reset = () => {
-		account.reset();
+		account.init(authState, appConfig.endpoints);
+		await household.init(authState);
+		await lookup.init(authState);
+		await todo.init(authState);
+		await task.init(authState);
+		await taskTemplate.init(authState);
+		// 	resolve();
+		// });
 	};
 
 	return {
@@ -60,6 +59,8 @@ export const useStore: UseStore<AppState> = createStore((set, get, api) => {
 		auth,
 		account,
 		household,
-		reset,
+		reset: account.reset,
+		task,
+		taskTemplate,
 	};
 });

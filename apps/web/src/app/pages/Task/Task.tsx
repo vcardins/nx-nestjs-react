@@ -23,28 +23,36 @@ import { TaskInput } from '@xapp/shared/types';
 import { useStore } from '@xapp/state';
 
 import { validationSchema } from './schema';
-import { TaskList, TaskItem, TaskIcon, TaskItemInfo, TaskItemInvite } from './components';
+import { TaskList, TaskItem, TaskIcon, TaskItemInfo } from './components';
 
-const initialValues: TaskInput = { name: '' };
+const initialValues: TaskInput = {
+	name: '',
+	dueDate: null,
+	notes: '',
+	templateId:  null,
+};
 
 const TaskPage = memo(() => {
 	const formRef = useRef({ valid: false });
-	const { items, store, read, save, remove, invite, error } = useStore((state) => state.task);
+	const { items, isApiReady, read, save, remove, error, clearError } = useStore((state) => state.task);
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<TaskInput>({
 		initialValues,
 		onSubmit: save,
 	});
 
-	useEffect(() => {;
-		if (store){
+	useEffect(() => {
+		if (isApiReady) {
 			read();
 		}
-	}, [read, store]);
+	}, [read, isApiReady]);
 
-	if (error) {
-		toast.error(error.message);
-	}
+	useEffect(() => {
+		if (error) {
+			toast.error(error.message);
+			clearError();
+		}
+	}, [error, clearError]);
 
 	return (
 		<Page title="Task" padded>

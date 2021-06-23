@@ -9,7 +9,7 @@ import { TaskTemplateService } from './task_template.service';
 const BaseController = baseAuthControllerFactory<TaskTemplate>({
 	entity: TaskTemplate,
 	entityOutput: TaskTemplateOutput,
-	auth: getDefaultPermissions([UserRoles.User]),
+	auth: getDefaultPermissions([UserRoles.Admin]),
 });
 
 @ApiBearerAuth()

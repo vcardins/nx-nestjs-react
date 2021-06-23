@@ -587,6 +587,27 @@
 					}
 				}
 			}
+		},
+		"state-task-template": {
+			"root": "libs/state/taskTemplate",
+			"sourceRoot": "libs/state/taskTemplate/src",
+			"projectType": "library",
+			"architect": {
+				"lint": {
+					"builder": "@nrwl/linter:eslint",
+					"options": {
+						"lintFilePatterns": ["libs/state/taskTemplate/**/*.ts"]
+					}
+				},
+				"test": {
+					"builder": "@nrwl/jest:jest",
+					"outputs": ["coverage/libs/state/taskTemplate"],
+					"options": {
+						"jestConfig": "libs/state/taskTemplate/jest.config.js",
+						"passWithNoTests": true
+					}
+				}
+			}
 		}
 	},
 	"cli": {

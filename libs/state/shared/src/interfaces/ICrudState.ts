@@ -12,6 +12,7 @@ export interface ICrudState<
 > extends IStoreState<TStore> {
 	items: TOutput[];
 	filters?: Filters<TFilter>;
+	isApiReady?: boolean;
 	sortBy?: QueryOptions['sortBy'];
 	read(filters?: Filters<TFilter>): Promise<void>;
 	save(todo: TInput, id?: number): Promise<void>;

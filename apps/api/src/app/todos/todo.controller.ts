@@ -3,15 +3,15 @@ import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiBadRequestResponse, ApiOperat
 import { Entity } from 'typeorm';
 
 import { SocketGateway, baseAuthControllerFactory, ResourceGroup, Permissions, ApiException, getDefaultPermissions } from '@xapp/api/core';
-import { getOperationId } from '@xapp/shared/utils';
-import { Resources, SortDirections } from '@xapp/shared/types';
+import { getOperationId, getUtcDate } from '@xapp/shared/utils';
+import { Resources, UserRoles, SortDirections } from '@xapp/shared/types';
 
 import { TodoService } from './todo.service';
 import { Todo } from './todo.entity';
 import { TodoOutput } from './dto/todo.output';
 import { ITodoComplete } from './todo-complete.interface';
 
-const auth = getDefaultPermissions();
+const auth = getDefaultPermissions([UserRoles.Admin]);
 
 const BaseController = baseAuthControllerFactory<Todo>({
 	entity: Todo,
@@ -32,6 +32,13 @@ export class TodoController extends BaseController {
 			socketService,
 			{ sortBy: { dateCompleted: SortDirections.DESC, dateCreated: SortDirections.DESC } },
 		);
+	}
+
+	beforeCreate(body: any): Promise<void> {
+		return new Promise((resolve) => {
+			body.dateCreated = getUtcDate();
+			resolve();
+		});
 	}
 
 	@Patch('complete')

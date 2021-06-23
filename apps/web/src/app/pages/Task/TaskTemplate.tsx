@@ -23,31 +23,40 @@ import { TaskTemplateInput } from '@xapp/shared/types';
 import { useStore } from '@xapp/state';
 
 import { validationSchema } from './schema';
-import { TaskTemplateList, TaskTemplateItem, TaskTemplateIcon, TaskTemplateItemInfo, TaskTemplateItemInvite } from './components';
+import { TaskTemplateList, TaskTemplateItem, TaskTemplateItemInfo, TaskTemplateIcon } from './components/TaskTemplate';
 
-const initialValues: TaskTemplateInput = { name: '' };
+const initialValues: TaskTemplateInput = {
+	name: '',
+	notes: '',
+	isActive: true,
+	estimatedTime: 30,
+	rewardPoints: 1,
+};
 
 const TaskTemplatePage = memo(() => {
 	const formRef = useRef({ valid: false });
-	const { items, store, read, save, remove, invite, error } = useStore((state) => state.task);
+	const { items, isApiReady, read, save, remove, error, clearError } = useStore((state) => state.taskTemplate);
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<TaskTemplateInput>({
 		initialValues,
 		onSubmit: save,
 	});
 
-	useEffect(() => {;
-		if (store){
+	useEffect(() => {
+		if (isApiReady) {
 			read();
 		}
-	}, [read, store]);
+	}, [isApiReady, read]);
 
-	if (error) {
-		toast.error(error.message);
-	}
+	useEffect(() => {
+		if (error) {
+			toast.error(error.message);
+			clearError();
+		}
+	}, [error, clearError]);
 
 	return (
-		<Page title="TaskTemplate" padded>
+		<Page title="Task Template" padded>
 			<Form
 				ref={formRef}
 				data={formData}
@@ -67,7 +76,7 @@ const TaskTemplatePage = memo(() => {
 					<Submit loading={submitting} success={success}>
 						<Icon icon={ic_send} />
 					</Submit>
-					<Button onClick={() => read()}>
+					<Button onClick={() => read?.()}>
 						<Icon icon={ic_refresh} />
 					</Button>
 				</FieldGroup>

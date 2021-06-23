@@ -1,14 +1,7 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-import { INavItem, NavItemTypes } from '@xapp/shared/types';
 import { Icon } from '../../components/Icon';
-
-interface IMenuItemContainerProps {
-	item: INavItem;
-	children: React.ReactNode;
-}
 
 interface IMenuGroupProps {
 	isHeading?: boolean;
@@ -37,21 +30,25 @@ export const MenuItemBadge = styled.span`
 
 export const MenuItem = styled.li<{ isHeading?: boolean }>`
 	font-size: 14px;
-	${({ isHeading }) => isHeading && css`
-		:last-child {
-			align-content: flex-end;
-		}
-	`}
-	${({ isHeading }) => !isHeading && css`
-		${MenuItemTitle} {
-			margin-left: 15px;
-		}
+	${({ isHeading }) =>
+		isHeading &&
+		css`
+			:last-child {
+				align-content: flex-end;
+			}
+		`}
+	${({ isHeading }) =>
+		!isHeading &&
+		css`
+			${MenuItemTitle} {
+				margin-left: 15px;
+			}
 
-		&:hover {
-			text-decoration: none;
-			background-color: rgba(255, 255, 255, 0.15);
-		}
-	`}
+			&:hover {
+				text-decoration: none;
+				background-color: rgba(255, 255, 255, 0.15);
+			}
+		`}
 
 	a {
 		display: flex;
@@ -74,62 +71,76 @@ export const MenuContainer = styled.div`
 	width: 100%;
 `;
 
-const NavItemDivider = styled.span`
-	${ baseMenuItemCss }
+export const NavItemDivider = styled.span`
+	${baseMenuItemCss}
 	padding: 0.5em 0 0.5em 1em;
 `;
 
-const NavItemLink = styled.a`
+export const NavItemLink = styled.a`
 	font-size: 100%;
 `;
 
-const NavItemGroup = styled.span.attrs({ 'data-menu-group': true })`
-	font-weight: bold;
-	position: relative;
+export const NavItemGroup = styled.span.attrs({ 'data-menu-group': true })`
+	> div { font-weight: bold; }
+	/* position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	padding: 16px 16px 10px;
 	color: rgba(255, 255, 255, 0.5);
 	text-transform: uppercase;
-	font-size: 14px;
+	font-size: 14px; */
 `;
 
-const NavItemRoute = styled(Link)`
-	${ baseMenuItemCss }
+export const NavItemRoute = styled(Link)`
+	${baseMenuItemCss}
 	${MenuItemIcon} {
 		order: -1;
 	}
 `;
 
-export const MenuItemContainer = ({ item, children }: IMenuItemContainerProps) => {
-	// const BadgeWrapper = styled.span`${(props) => getBadgeConfig(props)}`;
-	switch (item.type) {
-		case NavItemTypes.Route:
-			return (
-				<NavItemRoute to={item.route.path}>
-					{ children }
-				</NavItemRoute>
-			);
-		case NavItemTypes.Link:
-			return (
-				<NavItemLink href={item.route.path} target={item.target}>
-					{ children }
-				</NavItemLink>
-			);
-		case NavItemTypes.Divider:
-			return (
-				<NavItemDivider>
-					{ children }
-				</NavItemDivider>
-			);
-		case NavItemTypes.Group:
-			return (
-				<NavItemGroup>
-					{ children }
-				</NavItemGroup>
-			);
-		default:
-			return null;
+
+/*********  */
+export const UL = styled.ul<{ isVisible: boolean }>`
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	transition: height visibility 0.6s ease-in-out;
+
+	${({ isVisible }) => !isVisible && css`
+		visibility: hidden;
+		height: 0;
+	`}
+`;
+export const LI = styled.li``;
+export const Item = styled.div<{ dept: number }>`
+	display: flex;
+	padding: 0.5em 0.75em;
+	padding-left: ${({ dept = 1 }) => `${ dept * 15 }px`};
+	align-items: center;
+`;
+export const Label = styled.span`
+	width: 100%;
+	display: block;
+	cursor: pointer;
+`;
+export const Arrow = styled.span<{ toggle: boolean }>`
+	display: flex;
+	height: 25px;
+	width: 35px;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+
+	&::after {
+		content: '';
+		width: 0;
+		height: 0;
+		border-left: 4px solid transparent;
+		border-right: 4px solid transparent;
+
+		border-top: 4px solid #fff;
+		transform: ${({ toggle }) => (toggle ? 'rotate(180deg)' : 'rotate(0deg)')};
 	}
-};
+`;

@@ -80,7 +80,7 @@ export function getNavigation(routes: IKeyedRoute, userRoles: IRoleWithPermissio
 					label: 'Tasks',
 					type: NavItemTypes.Route,
 					icon: ic_fingerprint,
-					route: routes[PageKey.Tasks],
+					route: routes[PageKey.Task],
 				},
 			],
 		},

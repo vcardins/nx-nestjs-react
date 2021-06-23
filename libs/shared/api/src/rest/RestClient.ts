@@ -156,10 +156,11 @@ export class RestClient<TModel = any> {
 			case 400:
 				// eslint-disable-next-line no-case-declarations
 				const error = await response.json();
-				throw errorHandler?.(
-					new Error(error.message || errorMessages[response.status]),
-					response.status,
-				);
+				throw error; //new Error(error.message || errorMessages[response.status])
+				// throw errorHandler?.(
+				// 	new Error(error.message || errorMessages[response.status]),
+				// 	response.status,
+				// );
 			case 401:
 				// console.error('Access code has expired');
 				throw this.onHandleUnauthorizedAccess?.(method, payload);

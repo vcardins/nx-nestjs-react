@@ -62,7 +62,6 @@ export const createHousehold: StateCreator<IHouseholdState> =
 					setError(set)(error);
 				}
 			},
-
 			signUpMember: async (data: HouseholdMemberSignup) => {
 				const { store, status } = get();
 

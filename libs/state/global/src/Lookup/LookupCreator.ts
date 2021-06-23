@@ -10,15 +10,13 @@ import { ILookupState } from './ILookupState';
 export const createLookup: StateCreator<ILookupState> = (set, get, api) => ({
 	store: null,
 	status: ApiCallStatus.Idle,
-	dateFormats: null,
-	oAuthProviders: null,
-	authRoles: null,
-	userRoles: null,
+	data: null,
 	error: null,
 	sortBy: { id: SortDirections.ASC },
 	init(props: IAuthState): Promise<void> {
 		return new Promise((resolve) => {
-			set({ store: new LookupStore(props.authHeader) });
+			const store = new LookupStore(props.authHeader);
+			set({ store });
 			resolve();
 		});
 	},
@@ -32,13 +30,16 @@ export const createLookup: StateCreator<ILookupState> = (set, get, api) => ({
 		setLoading(set)();
 
 		try {
-			const { dateFormats } = await store.read();
+			const data = await store.read();
 
-			setSuccess(set)({ dateFormats });
+			setSuccess(set)({ data });
 		}
 		catch (error) {
 			setError(set)(error);
 		}
+	},
+	clearError() {
+		set({ error: null });
 	},
 });
 

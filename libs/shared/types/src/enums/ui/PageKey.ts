@@ -13,7 +13,7 @@ export enum PageKey {
 	Admin = 'admin',
 	Household = 'household',
 	TaskTemplate = 'task-template',
-	Tasks = 'tasks',
+	Task = 'tasks',
 	PageNotFound = 'not-found',
 	Error404 = 'error-404',
 	Error500 = 'error-500',

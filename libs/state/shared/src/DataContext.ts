@@ -8,7 +8,7 @@ export interface IDataContextProps {
 }
 
 export class DataContext<TOutput = any, TInputCreate = any, TInputUpdate = TInputCreate & { id: number }, TFilter = any> {
-	public readonly api: RestClient;
+	private readonly api: RestClient;
 	private basePath: string;
 	private accessToken: string;
 	private refreshToken: string;

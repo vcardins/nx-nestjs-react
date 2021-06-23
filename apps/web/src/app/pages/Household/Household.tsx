@@ -23,28 +23,31 @@ import { HouseholdInput } from '@xapp/shared/types';
 import { useStore } from '@xapp/state';
 
 import { validationSchema } from './schema';
-import { HouseholdList, HouseholdItem, HouseholdIcon, HouseholdItemInfo, HouseholdItemInvite } from './components';
+import { HouseholdList, HouseholdItem, HouseholdIcon, HouseholdItemInfo } from './components';
 
 const initialValues: HouseholdInput = { name: '' };
 
 const HouseholdPage = memo(() => {
 	const formRef = useRef({ valid: false });
-	const { items, store, read, save, remove, invite, error } = useStore((state) => state.household);
+	const { items = [], isApiReady, read, save, remove, invite, error, clearError } = useStore((state) => state.household);
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<HouseholdInput>({
 		initialValues,
 		onSubmit: save,
 	});
 
-	useEffect(() => {;
-		if (store){
+	useEffect(() => {
+		if (isApiReady) {
 			read();
 		}
-	}, [read, store]);
+	}, [isApiReady, read]);
 
-	if (error) {
-		toast.error(error.message);
-	}
+	useEffect(() => {
+		if (error) {
+			toast.error(error.message);
+			clearError();
+		}
+	}, [error, clearError]);
 
 	return (
 		<Page title="Household" padded>

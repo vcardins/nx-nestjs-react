@@ -11,11 +11,11 @@ export const TaskPageConfig: IPageConfig = {
 		style: LayoutStyles.Viewport,
 		config: {},
 	},
-	auth: AuthRoles.user,
 	routes: [
 		{
 			key: PageKey.Task,
 			caseSensitive: true,
+			auth: AuthRoles.user,
 			path: '/tasks',
 			element: <Task />,
 			title: 'Task',
@@ -23,6 +23,7 @@ export const TaskPageConfig: IPageConfig = {
 		{
 			key: PageKey.TaskTemplate,
 			caseSensitive: true,
+			auth: AuthRoles.admin,
 			path: '/task-templates',
 			element: <TaskTemplate />,
 			title: 'Task Template',

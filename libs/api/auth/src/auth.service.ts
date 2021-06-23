@@ -40,7 +40,8 @@ export class AuthService {
 		private readonly groupService: RoleService,
 		private readonly tokenService: JwtTokenService,
 	) {
-		this.localUri = `http://${this.coreConfig.domain}${this.coreConfig.port ? `:${this.coreConfig.port}` : ''}`;
+		const port = this.coreConfig.port ? `:${this.coreConfig.port}` : '';
+		this.localUri = `http://${this.coreConfig.domain}${port}`;
 	}
 
 	async info(id: number) {
@@ -86,10 +87,11 @@ export class AuthService {
 			throw new BadRequestException('Error in load roles');
 		}
 
-		await this.userService.assertUsernameAndEmail(userInfo.email, userInfo.username);
+		await this.userService.assertEmail(userInfo.email);
 
-		const group = this.groupService.getRoleByName(UserRoles.User);
+		const group = await this.groupService.findById(UserRoles.User);
 		const newUser = await plainToClass(User, userInfo).setPassword(userInfo.password);
+
 		const info = {
 			email: userInfo.email,
 			expiry: new Date(new Date().getTime() + WEEK_IN_SECONDS),

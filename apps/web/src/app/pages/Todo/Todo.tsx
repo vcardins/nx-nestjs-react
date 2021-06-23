@@ -33,7 +33,7 @@ const dateFormat = 'MMM D, YYYY h:mm A';
 
 const TodoPage = memo(() => {
 	const formRef = useRef({ valid: false });
-	const { items, read, save, remove, setComplete, error } = useStore((state) => state.todo);
+	const { items, isApiReady, read, save, remove, setComplete, error, clearError } = useStore((state) => state.todo);
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<TodoInput>({
 		initialValues,
@@ -43,12 +43,17 @@ const TodoPage = memo(() => {
 	});
 
 	useEffect(() => {
-		read();
-	}, [read]);
+		if (isApiReady) {
+			read();
+		}
+	}, [isApiReady, read]);
 
-	if (error) {
-		toast.error(error.message);
-	}
+	useEffect(() => {
+		if (error) {
+			toast.error(error.message);
+			clearError();
+		}
+	}, [error, clearError]);
 
 	return (
 		<Page title="Todo" padded>

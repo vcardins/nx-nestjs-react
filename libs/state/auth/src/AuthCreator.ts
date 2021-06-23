@@ -118,7 +118,9 @@ export const createAuth: StateCreator<IAuthStoreState> = (set, get) => ({
 	onSignOut: handleSignOut(set, get),
 	isSessionValid: isSessionValid(set,get),
 	isLoading: isLoading(set, get),
-
+	clearError() {
+		set({ error: null });
+	},
 });
 
 export const useAuthState: UseStore<ReturnType<typeof createAuth>> =

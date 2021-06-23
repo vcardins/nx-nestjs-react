@@ -73,6 +73,13 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 		dataStore.init,
 	]);
 
+	useEffect(() => {
+		if (dataStore.lookup.data) {
+			window.State = dataStore;
+		}
+	}, [dataStore.lookup.data]);
+
+
 	const value = useMemo<IAppContext>(
 		() => ({
 			routes,

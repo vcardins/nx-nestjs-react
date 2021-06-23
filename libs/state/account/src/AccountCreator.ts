@@ -283,6 +283,9 @@ export const createAccount: StateCreator<IAccountState> = (set, get) => ({
 	changePhoneNumber: changePhoneNumber(set, get),
 	changePassword: changePassword(set, get),
 	resetPassword: resetPassword(set, get),
+	clearError() {
+		set({ error: null });
+	},
 });
 
 export const useAccountState: UseStore<ReturnType<typeof createAccount>> =

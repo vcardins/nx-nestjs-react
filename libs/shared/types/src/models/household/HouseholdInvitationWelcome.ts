@@ -5,8 +5,8 @@ export class HouseholdInvitationWelcome {
 		pictureUrl: string;
 	};
 	household: string;
-	dateCreated: string;
-	dateAccepted: string | null;
+	createdAt: string;
+	acceptedAt: string | null;
 	invitee: {
 		firstName: string;
 		email: string;

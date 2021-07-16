@@ -80,7 +80,7 @@ export class HouseholdMemberService extends EventService {
 				throw new NotFoundException('The invitation was not found or is expired');
 			}
 
-			const { firstName, email, dateCreated, dateAccepted, senderUser, household } = invitation;
+			const { firstName, email, createdAt, acceptedAt, senderUser, household } = invitation;
 			const response = new HouseholdInvitationWelcome();
 
 			response.invitee = { firstName, email };
@@ -90,8 +90,8 @@ export class HouseholdMemberService extends EventService {
 				pictureUrl: senderUser.userProfile.pictureUrl,
 			};
 			response.household = household.name;
-			response.dateCreated = dateCreated.toUTCString();
-			response.dateAccepted = dateAccepted?.toUTCString();
+			response.createdAt = createdAt.toUTCString();
+			response.acceptedAt = acceptedAt?.toUTCString();
 
 			return response;
 		}
@@ -110,7 +110,7 @@ export class HouseholdMemberService extends EventService {
 				throw new NotFoundException('Invitation was not found or is expired');
 			}
 
-			invitation.dateAccepted = getUtcDate();
+			invitation.acceptedAt = getUtcDate();
 			await this.repositoryMemberInvitation.save(invitation);
 
 			const user = await this.userService.findById(model.userId);
@@ -145,7 +145,7 @@ export class HouseholdMemberService extends EventService {
 				throw new NotFoundException('Invitation was not found or is expired');
 			}
 
-			await this.repositoryMemberInvitation.save({ ...invitation, dateAccepted: getUtcDate() });
+			await this.repositoryMemberInvitation.save({ ...invitation, acceptedAt: getUtcDate() });
 
 			const user = await this.authService.signUp(model);
 

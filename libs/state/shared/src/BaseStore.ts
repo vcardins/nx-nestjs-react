@@ -1,4 +1,4 @@
-import { SortDirections } from '@xapp/shared/types';
+import { SortDirections, KeyType } from '@xapp/shared/types';
 import { GetState, SetState } from 'zustand';
 import { ApiCallStatus, IAuthState, ICrudState, setError, setIdle, setLoading, setSuccess } from '.';
 import { DataContext } from './DataContext';
@@ -7,12 +7,12 @@ interface Class<TDataContext> {
 	new(authHeader: IAuthState['authHeader']): TDataContext;
 }
 
-type TStore<TOutput, TInput, TFilter> = DataContext<TOutput, TInput, TInput & { id: number }, TFilter>;
+type TStore<TOutput, TInput, TFilter> = DataContext<TOutput, TInput, TInput & { id: KeyType }, TFilter>;
 
 export function createBaseStore<
 	TState extends ICrudState<TStore<TOutput, TInput, TState['filters']>, TOutput, TInput, TState['filters']>,
 	TInput = any,
-	TOutput extends { id: number } = any,
+	TOutput extends { id: KeyType } = any,
 >(
 	Store: Class<TStore<TOutput, TInput, TState['filters']>>,
 	initialStateValues?: Partial<TState>,
@@ -61,7 +61,7 @@ export function createBaseStore<
 			try {
 				const item = !id
 					? await store.create({ data })
-					: await store.update({ data: { id, ...data } });
+					: await store.update({ data }, id);
 
 				const index = items.findIndex(({ id }) => id === item.id);
 
@@ -87,7 +87,7 @@ export function createBaseStore<
 			setLoading(set)();
 
 			try {
-				await store.delete(id);
+				await store.delete(null, id);
 				setSuccess<TState, { items: TOutput[] }>(set)({ items: items.filter((item) => item.id !== id) });
 			}
 			catch (error) {

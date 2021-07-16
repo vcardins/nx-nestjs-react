@@ -35,6 +35,7 @@ export interface IBaseServiceCache {
 export interface IBaseServiceOptions {
 	cache?: IBaseServiceCache | boolean;
 	mapping?: (config: AutoMapper) => void;
+	outputModel?: { new (): any };
 }
 
 export interface IBaseService<T> {

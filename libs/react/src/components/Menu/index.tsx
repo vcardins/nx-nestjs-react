@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { INavItem, NavItemTypes } from '@xapp/shared/types'; //NavItemTypes
 
 import {
+	MenuGroup,
+	SubMenuGroup,
 	Arrow,
 	Item,
 	Label,
@@ -107,41 +109,50 @@ export const Menu = (props: IMenuProps) => {
 
 	const SubMenu = ({ dept, items, isExpanded, menuIndex }: IListSubMenu) => {
 		const getKey = (index: number) => `sidebar-submenu-${dept + 1}-${menuIndex}-${index}`;
+
 		return (
-			<UL isVisible={isExpanded} key={`${getKey(menuIndex)}-parent`}>
+			<SubMenuGroup>
+				<UL
+					isVisible={isExpanded}
+					key={`${getKey(menuIndex)}-parent`}
+					data-visible={isExpanded}
+				>
+					{items.map((menu, index) => {
+						const id = getKey(index);
+
+						return (
+							<ListMenu
+								id={id}
+								key={id}
+								dept={dept + 1}
+								item={menu}
+								menuIndex={index}
+							/>
+						);
+					})}
+				</UL>
+			</SubMenuGroup>
+		);
+	};
+
+	return (
+		<MenuGroup>
+			<UL isVisible={true} data-visible="true">
 				{items.map((menu, index) => {
-					const id = getKey(index);
+					const dept = 1;
+					const menuKey = `menu-${dept}-${index}`;
 
 					return (
 						<ListMenu
-							id={id}
-							key={id}
-							dept={dept + 1}
+							id={menuKey}
+							key={menuKey}
+							dept={dept}
 							item={menu}
 							menuIndex={index}
 						/>
 					);
 				})}
 			</UL>
-		);
-	};
-
-	return (
-		<UL isVisible={true}>
-			{items.map((menu, index) => {
-				const dept = 1;
-				const menuKey = `menu-${dept}-${index}`;
-
-				return (
-					<ListMenu
-						id={menuKey}
-						key={menuKey}
-						dept={dept}
-						item={menu}
-						menuIndex={index}
-					/>
-				);
-			})}
-		</UL>
+		</MenuGroup>
 	);
 };

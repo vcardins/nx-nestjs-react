@@ -6,7 +6,7 @@ import { InjectMapper } from 'nestjsx-automapper';
 import { BaseService } from '@xapp/api/core';
 import { RoomType } from './entities/room_type.entity';
 import { plainToClass } from 'class-transformer';
-import { RoomTypeOutput } from '@xapp/shared/types';
+import { HouseholdRoomOutput, RoomTypeOutput } from '@xapp/shared/types';
 
 @Injectable()
 export class RoomTypeService extends BaseService<RoomType> {
@@ -18,7 +18,7 @@ export class RoomTypeService extends BaseService<RoomType> {
 		@InjectRepository(RoomType) protected readonly repository: Repository<RoomType>,
 		@InjectMapper() autoMapper,
 	) {
-		super(repository, autoMapper);
+		super(repository, autoMapper, { outputModel: HouseholdRoomOutput });
 	}
 
 	public async getAll(): Promise<RoomTypeOutput[]> {

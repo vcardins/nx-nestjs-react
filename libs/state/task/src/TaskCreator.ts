@@ -5,15 +5,13 @@ import { TaskInput, TaskOutput } from '@xapp/shared/types';
 
 import { TaskStore } from './TaskStore';
 
-export interface ITaskState extends ICrudState<TaskStore, TaskOutput> {}
+// export interface ITaskState extends ICrudState<TaskStore, TaskOutput> {}
+type ITaskState = ICrudState<TaskStore, TaskOutput>;
 
 export const createTask: StateCreator<ITaskState> =
 	createBaseStore<ITaskState, TaskInput, TaskOutput>(
 		TaskStore,
 		{ store: new TaskStore() },
-		// (set: SetState<ITaskState>, get: GetState<ITaskState>) => ({
-
-		// }),
 	);
 
 export const useTaskState: UseStore<ReturnType<typeof createTask>> =

@@ -24,7 +24,7 @@ import {
 } from '@xapp/react';
 
 import { useStore } from '@xapp/state';
-import { TodoInput } from '@xapp/shared/types';
+import { TodoInput, TodoOutput } from '@xapp/shared/types';
 
 import { validationSchema } from './schema';
 import { TodoList, TodoItem, TodoIcon } from './components';
@@ -55,6 +55,10 @@ const TodoPage = memo(() => {
 		}
 	}, [error, clearError]);
 
+	function handleSave(title: string, id: number) {
+		save({ title }, id)
+	}
+
 	return (
 		<Page title="Todo" padded>
 			<Form
@@ -82,31 +86,35 @@ const TodoPage = memo(() => {
 				</FieldGroup>
 			</Form>
 			<TodoList>
-				{(items || []).map((todo) => {
-					const { id, title, dateCreated, dateCompleted } = todo;
-					const icon = !dateCompleted ? ic_check : ic_check_box;
-
-					return (
-						<TodoItem key={id} isCompleted={!!dateCompleted}>
-							<InlineEdit text={title} onSetText={(title) => save({ ...todo, title }, id)} />
-							<DateFormatter value={dateCreated} format={dateFormat} />
-							<TodoIcon icon={ic_delete} onClick={() => remove(id)} />
-							<TodoIcon
-								icon={icon}
-								onClick={() => setComplete(todo)}
-								data-completed={!!dateCompleted}
-								title={
-									!dateCompleted
-										? 'Mark as complete'
-										: `Completed at: ${formatDateTime(dateCompleted)}. Click to uncompleted`
-								}
-							/>
-						</TodoItem>
-					);
-				})}
+				{(items || []).map(renderItem)}
 			</TodoList>
 		</Page>
 	);
+
+	function renderItem(todo: TodoOutput) {
+		const icon = !todo.completedAt ? ic_check : ic_check_box;
+
+		return (
+			<TodoItem key={todo.id} isCompleted={!!todo.completedAt}>
+				<InlineEdit
+					text={todo.title}
+					onSetText={(title) => title !== todo.title ? handleSave(title, todo.id) : undefined}
+				/>
+				<DateFormatter value={todo.createdAt} format={dateFormat} />
+				<TodoIcon icon={ic_delete} onClick={() => remove(todo.id)} />
+				<TodoIcon
+					icon={icon}
+					onClick={() => setComplete(todo)}
+					data-completed={!!todo.completedAt}
+					title={
+						!todo.completedAt
+							? 'Mark as complete'
+							: `Completed at: ${formatDateTime(todo.completedAt)}. Click to uncompleted`
+					}
+				/>
+			</TodoItem>
+		);
+	}
 });
 
 export default TodoPage;

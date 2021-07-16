@@ -63,7 +63,6 @@ export class AccountService extends EventService { // implements IAccountService
 		}).setPassword(data.password);
 
 		newUser.roles = [role];
-		newUser.dateJoined = getUtcDate();
 
 		const userProfile = new UserProfile();
 		userProfile.firstName = data.firstName;

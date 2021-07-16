@@ -7,7 +7,7 @@ export interface ISignedUserOutput {
 	isSuperuser: boolean;
 	email: string;
 	isActive: boolean;
-	dateJoined: Date
+	joinedAt: Date
 	roles: IRoleWithPermissions[];
 	profile: IUserProfile;
 }

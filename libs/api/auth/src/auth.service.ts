@@ -101,7 +101,7 @@ export class AuthService {
 		// const verified = this.tokenService.validate(verificationKey);
 
 		newUser.roles = [group];
-		newUser.dateJoined = getUtcDate();
+		newUser.joinedAt = getUtcDate();
 		newUser.verificationKey = verificationKey;
 		newUser.dateVerificationKeySent = getUtcDate();
 		newUser.verificationKeyPurpose = VerificationKeyPurpose.ChangeEmail;

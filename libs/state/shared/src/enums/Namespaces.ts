@@ -9,6 +9,7 @@ export enum Namespaces {
 	Account = 'account',
 	Auth = 'auth',
 	Household = 'household',
+	HouseholdRoom = 'householdRoom',
 	Task = 'task',
 	TaskTemplate = 'taskTemplate'
 }

@@ -74,15 +74,11 @@ const handleSignIn = (set: SetState<IAuthStoreState>, get: GetState<IAuthStoreSt
 	}
 };
 
-const handleSignOut = (set: SetState<IAuthStoreState>, get: GetState<IAuthStoreState>) => async (isTriggeredByExpiredSession?: boolean): Promise<void> => {
+const handleSignOut = (set: SetState<IAuthStoreState>, get: GetState<IAuthStoreState>) => async (): Promise<void> => { // isTriggeredByExpiredSession?: boolean
 	const { status, store } = get();
 
 	if (status === ApiCallStatus.Loading) {
 		return;
-	}
-
-	if (isTriggeredByExpiredSession === true) {
-		return console.info('Session has expired');
 	}
 
 	const { message } = await store.signOut();
@@ -97,7 +93,6 @@ const handleSignOut = (set: SetState<IAuthStoreState>, get: GetState<IAuthStoreS
 
 const isSessionValid = (_: SetState<IAuthStoreState>, get: GetState<IAuthStoreState>) => (): boolean => {
 	const { store } = get();
-
 	return store.isUserSessionValid();
 };
 

@@ -91,7 +91,7 @@ export interface ITodoState extends ICrudState<TodoStore, TodoOutput> {
 // 		setLoading(set)();
 
 // 		try {
-// 			const response = await store.complete(todo.id, !!todo.dateCompleted);
+// 			const response = await store.complete(todo.id, !!todo.completedAt);
 // 			const index = items.findIndex(({ id }) => id === response.id);
 
 // 			set((state) => void (
@@ -124,7 +124,7 @@ export const createTodo: StateCreator<ITodoState> = createBaseStore<ITodoState, 
 			setLoading(set)();
 
 			try {
-				const response = await store.complete(todo.id, !!todo.dateCompleted);
+				const response = await store.complete(todo.id, !!todo.completedAt);
 				const index = items.findIndex(({ id }) => id === response.id);
 
 				set((state) => void (

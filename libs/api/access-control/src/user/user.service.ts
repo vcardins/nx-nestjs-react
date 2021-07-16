@@ -201,10 +201,10 @@ export class UserService extends BaseService<User> {
 	}
 
 	getUserDto(user: User): UserDto {
-		const { userProfile, roles = [], id, dateJoined, isActive, isSuperuser, lastLogin, email, phoneNumber } = user;
+		const { userProfile, roles = [], id, joinedAt, isActive, isSuperuser, lastLogin, email, phoneNumber } = user;
 
 		return plainToClass(UserDto, {
-			id, dateJoined, isActive, isSuperuser, lastLogin,
+			id, joinedAt, isActive, isSuperuser, lastLogin,
 			email,
 			roles: roles.map((role) => ({
 				...role,

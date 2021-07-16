@@ -13,7 +13,7 @@ export class UserProfile extends BaseEntity {
 	@Column({ nullable: true, length: 255 })
 	bio?: string | null;
 
-	@Column({ name: 'first_name', length: 30, nullable: true })
+	@Column({ name: 'first_name', length: 30 })
 	@MaxLength(30)
 	@IsOptional()
 	firstName: string = undefined;
@@ -29,7 +29,7 @@ export class UserProfile extends BaseEntity {
 	@Column({ nullable: true, length: 3 })
 	locale?: string | null;
 
-	@OneToOne(() => User, (user) => user.userProfile)
+	@OneToOne(() => User, ({ userProfile }) => userProfile)
 	@JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
 	user: User;
 }

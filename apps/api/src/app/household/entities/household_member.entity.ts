@@ -1,6 +1,7 @@
 import {
 	BeforeInsert,
 	Column,
+	CreateDateColumn,
 	Entity,
 	JoinColumn,
 	ManyToOne,
@@ -8,11 +9,12 @@ import {
 	Unique,
 } from 'typeorm';
 import { User } from '@xapp/api/access-control';
-import { BaseEntity, getUtcDate } from '@xapp/api/core';
+import { BaseEntity } from '@xapp/api/core';
 
 import { Household } from './household.entity';
 import { Task } from '../../tasks/entities/task.entity';
 import { HouseholdType } from '@xapp/shared/types';
+import { TaskInstance } from '../../tasks/entities/task_instance.entity';
 
 @Entity('household_member')
 @Unique('index_household_member', ['userId', 'householdId'])
@@ -27,12 +29,16 @@ export class HouseholdMember extends BaseEntity {
 	@JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
 	user: User;
 
-	@ManyToOne(() => Household, ({ members }) => members)
+	@ManyToOne(
+		() => Household,
+		({ members }) => members,
+		{ onDelete: 'CASCADE' },
+	)
 	@JoinColumn([{ name: 'household_id', referencedColumnName: 'id' }])
 	household: Household;
 
-	@Column('datetime', { name: 'date_created' })
-	dateCreated: Date;
+	@CreateDateColumn({ name: 'created_at' })
+	createdAt: Date;
 
 	@Column('boolean', { name: 'is_default', nullable: true })
 	isDefault: boolean | null;
@@ -45,27 +51,28 @@ export class HouseholdMember extends BaseEntity {
 
 	@OneToMany(
 		() => Task,
-		(task) => task.creatorUser,
-		{ cascade: true },
+		({ creatorUser }) => creatorUser,
+		{ onDelete: 'CASCADE' },
 	)
+	@JoinColumn()
 	tasksCreators?: Task[];
 
 	@OneToMany(
-		() => Task,
+		() => TaskInstance,
 		(task) => task.executorUser,
-		{ cascade: true },
+		{ onDelete: 'CASCADE' },
 	)
-	executedTasks?: Task[];
+	executedTasks?: TaskInstance[];
 
 	@OneToMany(
 		() => Task,
 		(task) => task.assignedUser,
-		{ cascade: true },
+		{ onDelete: 'CASCADE' },
 	)
 	assignedTasks?: Task[];
 
 	@BeforeInsert()
 	doBeforeInsertion() {
-		this.dateCreated = getUtcDate();
+		this.validate();
 	}
 }

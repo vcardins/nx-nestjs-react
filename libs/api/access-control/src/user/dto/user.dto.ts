@@ -22,7 +22,7 @@ export class UserDto {
 	isActive: boolean;
 
 	@ApiProperty({ type: String })
-	dateJoined: Date;
+	joinedAt: Date;
 
 	@Type(() => RoleDto)
 	@ApiProperty({ type: RoleDto, isArray: true })

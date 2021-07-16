@@ -1,4 +1,4 @@
-import { Body, Controller, Response, InternalServerErrorException, Req, Post, Get, Param, BadRequestException } from '@nestjs/common';
+import { Body, Controller, Response, InternalServerErrorException, Req, Post, Get, Param, BadRequestException, Delete, Patch } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { User, UserService } from '@xapp/api/access-control';
 
@@ -22,6 +22,9 @@ import {
 	HouseholdMemberSignup,
 	HouseholdInput,
 	HouseholdType,
+	HouseholdRoomInput,
+	HouseholdRoomOutput,
+	IdType,
 } from '@xapp/shared/types';
 import { getOperationId } from '@xapp/shared/utils';
 import { plainToClass } from 'class-transformer';
@@ -29,8 +32,10 @@ import { Entity } from 'typeorm';
 
 import { Household } from './entities/household.entity';
 import { HouseholdMember } from './entities/household_member.entity';
+import { HouseholdRoom } from './entities/household_room.entity';
 import { HouseholdService } from './household.service';
 import { HouseholdMemberService } from './household_member.service';
+import { HouseholdRoomService } from './household_room.service';
 
 const auth = getDefaultPermissions([UserRoles.Admin]);
 
@@ -49,6 +54,7 @@ export class HouseholdController extends BaseController {
 		private readonly service: HouseholdService,
 		private readonly userService: UserService,
 		private readonly householdMemberService: HouseholdMemberService,
+		private readonly householdRoomService: HouseholdRoomService,
 		private readonly socketService: SocketGateway,
 	) {
 		super(service, socketService);
@@ -117,13 +123,6 @@ export class HouseholdController extends BaseController {
 		}
 	}
 
-	// afterCreate(body: HouseholdInvitationInput, userId: number): Promise<void> {
-	// 	return new Promise((resolve) => {
-	// 		body.inviterId = userId;
-	// 		resolve();
-	// 	});
-	// }
-
 	@Post('invitation/accept')
 	// @Permissions(...auth?.update?.permissions)
 	@ApiBody({
@@ -180,6 +179,78 @@ export class HouseholdController extends BaseController {
 	public async signUp(@Body() model: HouseholdMemberSignup, @Response() response) {
 		try {
 			const data = await this.householdMemberService.addMemberByInvitation(model);
+			response.send(data);
+		}
+		catch (e) {
+			throw new InternalServerErrorException(e);
+		}
+	}
+
+	/*  ROOM */
+
+	@Post('room')
+	@Roles(...auth?.create?.roles)
+	// @Permissions(...auth?.create?.permissions)
+	@ApiBody({
+		type: HouseholdRoomInput,
+		description: 'Data for entity creation',
+		required: true,
+		isArray: false,
+	})
+	@ApiCreatedResponse({ type: HouseholdRoomOutput })
+	@ApiBadRequestResponse({ type: ApiException })
+	@ApiOperation(getOperationId(Entity.name, 'Create'))
+	public async addRoom(@Req() req: { user: User }, @Body() body: HouseholdRoomInput, @Response() response) {
+		try {
+			const newHouseholdRoom = plainToClass(HouseholdRoom, body);
+			const householdRoom = await this.householdRoomService.create(newHouseholdRoom);
+
+			response.send(householdRoom);
+		}
+		catch (e) {
+			throw new InternalServerErrorException(e);
+		}
+	}
+
+	@Delete('room/:id')
+	@Roles(...auth?.create?.roles)
+	// @Permissions(...auth?.create?.permissions)
+	@ApiBody({
+		type: HouseholdRoomInput,
+		description: 'Data for entity creation',
+		required: true,
+		isArray: false,
+	})
+	@ApiCreatedResponse({ type: HouseholdRoomOutput })
+	@ApiBadRequestResponse({ type: ApiException })
+	@ApiOperation(getOperationId(Entity.name, 'Delete'))
+	public async removeRoom(@Param('id') id: IdType, @Response() response) {
+		try {
+			const data = await this.householdRoomService.delete(id);
+
+			response.send(data);
+		}
+		catch (e) {
+			throw new InternalServerErrorException(e);
+		}
+	}
+
+	@Patch('room/:id')
+	@Roles(...auth?.create?.roles)
+	// @Permissions(...auth?.create?.permissions)
+	@ApiBody({
+		type: HouseholdRoomInput,
+		description: 'Data for entity creation',
+		required: true,
+		isArray: false,
+	})
+	@ApiCreatedResponse({ type: HouseholdRoomOutput })
+	@ApiBadRequestResponse({ type: ApiException })
+	@ApiOperation(getOperationId(Entity.name, 'Delete'))
+	public async updateRoom(@Param('id') id: IdType, @Body() body: HouseholdRoomInput, @Response() response) {
+		try {
+			const data = await this.householdRoomService.update(id, body);
+
 			response.send(data);
 		}
 		catch (e) {

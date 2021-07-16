@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { DropdownSizeStyle } from './DropdownSizeStyle';
+import { DropdownSizeStyle } from './types';
 
 const buildArrow = (border: number, color: string, arrowPosition: number) => css`
 	content: '';
@@ -14,15 +14,16 @@ const buildArrow = (border: number, color: string, arrowPosition: number) => css
 	border-bottom: ${border}px solid ${color};
 `;
 
-interface IDropdownWrapper {
+interface IDropdownContent {
 	arrowPosition?: number;
 	children: any;
 	position?: string;
+	width?: number | 'auto' | 'fit-content' | 'max-content';
 }
 
-export const DropdownWrapper = styled.div<IDropdownWrapper>`
+export const DropdownContent = styled.div<IDropdownContent>`
 	position: absolute;
-	${({ position }) => position}: 0;
+	${({ position }) => position}: -5px;
 	top: 20px;
 	border: 1px solid ${({ theme }) => theme.colors.tertiary.lighterGrey };
 	z-index: 999;
@@ -32,9 +33,10 @@ export const DropdownWrapper = styled.div<IDropdownWrapper>`
 	transform: translateY(-10px);
 	transition: all 0.3s;
 	box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.05);
+	width: ${({ width }) => typeof width === 'number' ? `${width}px` : width ?? 'max-content' };
 
 	&[data-active="false"] {
-		max-height: 0;
+		height: 0;
 		visibility: hidden;
 	}
 
@@ -46,11 +48,11 @@ export const DropdownWrapper = styled.div<IDropdownWrapper>`
 	}
 
 	&::before {
-		${({ theme, arrowPosition = 85, position }) => buildArrow(6, theme.colors.tertiary.lighterGrey, position === 'right' ? arrowPosition : 5)};
+		${({ theme, arrowPosition = 95, position }) => buildArrow(6, theme.colors.tertiary.lighterGrey, position === 'right' ? arrowPosition : 5)};
 	}
 
 	&::after {
-		${({ theme, arrowPosition = 85, position }) => buildArrow(5, theme.colors.primary.white, position === 'right' ? arrowPosition : 5)};
+		${({ theme, arrowPosition = 95, position }) => buildArrow(5, theme.colors.primary.white, position === 'right' ? arrowPosition : 5)};
 	}
 `;
 
@@ -96,7 +98,7 @@ export const DropdownListWrapper = styled.ul<{ addSpacing?: boolean }>`
 		margin-right: 1em;
 	`}
 `;
-interface IDropdownContainer {
+interface IDropdownWrapper {
 	highlightOnHover?: boolean;
 	hideChevron: boolean;
 	size: DropdownSizeStyle;
@@ -107,15 +109,21 @@ export const DropdownAnchor = styled.a`
 	align-items: center;
 `;
 
-export const DropdownContainer = styled.div<IDropdownContainer>`
-	position: relative;
-	line-height: 50%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+export const DropdownContainer = styled.div`
 
-	button {
-		cursor: pointer;
+`;
+
+export const DropdownTrigger = styled.a`
+	position: relative;
+`;
+
+export const DropdownWrapper = styled.div<IDropdownWrapper>`
+	position: relative;
+	/* display: flex;
+	align-items: center;
+	justify-content: center; */
+
+	${DropdownContainer} {
 		outline: none;
 		border: none;
 		background-color: transparent;

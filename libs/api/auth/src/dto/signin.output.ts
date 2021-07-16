@@ -24,7 +24,7 @@ export class SignInOutput implements ISignedUserOutput {
 	isActive: boolean;
 
 	@ApiProperty({ type: String })
-	dateJoined: Date;
+	joinedAt: Date;
 
 	@Type(() => RoleWithPermissionsDto)
 	@ApiProperty({ type: RoleWithPermissionsDto, isArray: true })

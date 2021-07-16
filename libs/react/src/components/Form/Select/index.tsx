@@ -2,17 +2,21 @@ import React from 'react';
 
 import { StyledSelect } from './styles';
 import { FieldSet } from '../FieldSet';
-import { IHtmlField } from '@xapp/shared/types';
+import { IHtmlField, KeyType } from '@xapp/shared/types';
 
-type KeyType = string | number;
-
-export interface ISelectField<T extends KeyType> extends IHtmlField {
-	items: T[];
-	size?: number;
-	keyValueProps?: Record<string, T>;
+interface IKeyValue {
+	id: KeyType;
+	name: string;
 }
 
-function getOptions<T extends KeyType> (keyValueProps: Record<string, T>, items: T[] = []) {
+export interface ISelectField extends IHtmlField {
+	emptyValueLabel?: string | null;
+	items: IKeyValue[];
+	size?: number;
+	keyValueProps: Record<string, string>;
+}
+
+function getOptions (keyValueProps: ISelectField['keyValueProps'], items: ISelectField['items'] = []) {
 	if (!keyValueProps) {
 		throw new Error('keyValueProps is required for select components');
 	}
@@ -30,19 +34,22 @@ function getOptions<T extends KeyType> (keyValueProps: Record<string, T>, items:
 		>
 			{option[v]}
 		</option>
-	),
-	);
+	));
 }
 
-export function Select<T extends KeyType> (props: ISelectField<T>) {
-	const { id, name, label, value, items = [], keyValueProps } = props;
-	const options = getOptions(keyValueProps, items);
+export function Select (props: ISelectField) {
+	const { id, name, label, value, items = [], keyValueProps, emptyValueLabel = 'Please select' } = props;
+	const allItems = !emptyValueLabel
+		? items
+		: [{ id: 0, name: emptyValueLabel } as IKeyValue].concat(items);
+	const options = getOptions(keyValueProps, allItems);
+
 	const selectElement = (
 		<StyledSelect
 			id={id || name}
 			name={name}
 			component="select"
-			value={value}
+			value={value || 0}
 		>
 			{ options }
 		</StyledSelect>

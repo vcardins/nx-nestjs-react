@@ -79,7 +79,6 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 		}
 	}, [dataStore.lookup.data]);
 
-
 	const value = useMemo<IAppContext>(
 		() => ({
 			routes,

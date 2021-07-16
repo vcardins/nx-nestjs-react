@@ -13,63 +13,10 @@ const baseMenuItemCss = css`
 	flex-direction: column;
 `;
 
-export const MenuItemTitle = styled.span`
-	display: block;
-	line-height: 1;
-	opacity: 1;
-	white-space: nowrap;
-`;
-
 export const MenuItemIcon = styled(Icon)`
 	order: -1;
 `;
 
-export const MenuItemBadge = styled.span`
-	font-size: 14px;
-`;
-
-export const MenuItem = styled.li<{ isHeading?: boolean }>`
-	font-size: 14px;
-	${({ isHeading }) =>
-		isHeading &&
-		css`
-			:last-child {
-				align-content: flex-end;
-			}
-		`}
-	${({ isHeading }) =>
-		!isHeading &&
-		css`
-			${MenuItemTitle} {
-				margin-left: 15px;
-			}
-
-			&:hover {
-				text-decoration: none;
-				background-color: rgba(255, 255, 255, 0.15);
-			}
-		`}
-
-	a {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		padding: 6px 15px;
-	}
-`;
-
-export const MenuGroup = styled.ul<IMenuGroupProps>`
-	list-style: none;
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-	height: 100%;
-`;
-
-export const MenuContainer = styled.div`
-	overflow-x: hidden;
-	width: 100%;
-`;
 
 export const NavItemDivider = styled.span`
 	${baseMenuItemCss}
@@ -82,14 +29,6 @@ export const NavItemLink = styled.a`
 
 export const NavItemGroup = styled.span.attrs({ 'data-menu-group': true })`
 	> div { font-weight: bold; }
-	/* position: relative;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 16px 16px 10px;
-	color: rgba(255, 255, 255, 0.5);
-	text-transform: uppercase;
-	font-size: 14px; */
 `;
 
 export const NavItemRoute = styled(Link)`
@@ -99,32 +38,51 @@ export const NavItemRoute = styled(Link)`
 	}
 `;
 
-
 /*********  */
+
+export const MenuGroup = styled.div<IMenuGroupProps>`
+	overflow: hidden;
+	width: 100%;
+`;
+
+export const SubMenuGroup = styled.div<IMenuGroupProps>`
+	overflow: hidden;
+	width: 100%;
+`;
+
 export const UL = styled.ul<{ isVisible: boolean }>`
 	list-style: none;
 	margin: 0;
 	padding: 0;
 	width: 100%;
-	transition: height visibility 0.6s ease-in-out;
+	max-height: 0;
+	overflow: hidden;
+	max-height: 100vh;
+	transition: all .35s;
 
 	${({ isVisible }) => !isVisible && css`
-		visibility: hidden;
-		height: 0;
+		max-height: 0;
 	`}
 `;
-export const LI = styled.li``;
+
+export const LI = styled.li`
+	overflow: hidden;
+	transition: all .35s;
+`;
+
 export const Item = styled.div<{ dept: number }>`
 	display: flex;
 	padding: 0.5em 0.75em;
 	padding-left: ${({ dept = 1 }) => `${ dept * 15 }px`};
 	align-items: center;
 `;
+
 export const Label = styled.span`
 	width: 100%;
 	display: block;
 	cursor: pointer;
 `;
+
 export const Arrow = styled.span<{ toggle: boolean }>`
 	display: flex;
 	height: 25px;

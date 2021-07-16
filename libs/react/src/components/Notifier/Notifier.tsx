@@ -1,6 +1,7 @@
 import React from 'react';
 import { toast } from 'react-toastify';
 
+// eslint-disable-next-line camelcase
 import { ic_close } from 'react-icons-kit/md/ic_close';
 
 import { INotifier, INotifierCallback } from '@xapp/shared/types';

@@ -35,7 +35,10 @@ export class Role extends BaseEntity {
 	})
 	permissions: Permission[];
 
-	@ManyToMany(() => User)
+	@ManyToMany(
+		() => User,
+		{ cascade: ['remove'] },
+	)
 	@JoinTable({
 		// not work on run cli migration:
 		name: 'user_role',

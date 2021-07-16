@@ -1,5 +1,6 @@
 import { ValidationError } from '@xapp/shared/exceptions';
 import { appConfig } from '@xapp/shared/config';
+import { KeyType } from '@xapp/shared/types';
 
 import { RestMethod } from './RestMethod';
 import { IRestClientPayload } from './IRestClientPayload';
@@ -15,6 +16,7 @@ const errorMessages = {
 interface IRestClientProps {
 	authHeader?: string;
 	basePath?: string;
+	idProp?: string;
 	onHandleException?: ( error: Error ) => Promise<void>;
 	onHandleUnauthorizedAccess?: ( method: RestMethod, payload: IRestClientPayload ) => Promise<void>;
 }
@@ -23,39 +25,42 @@ export class RestClient<TModel = any> {
 	public jsonContentType = 'application/json';
 	public authHeader = '';
 	public basePath = '';
+	public idProp = 'id';
 	private onHandleUnauthorizedAccess: (method: RestMethod, payload: IRestClientPayload) => Promise<void>;
 	private onHandleException: IRestExceptionHandler;
 
 	constructor({
 		authHeader = '',
 		basePath = '',
+		idProp = 'id',
 		onHandleException,
 		onHandleUnauthorizedAccess,
 	}: IRestClientProps = {}) {
 		this.authHeader = authHeader;
 		this.basePath = basePath;
+		this.idProp = idProp;
 		this.onHandleException = onHandleException;
 		this.onHandleUnauthorizedAccess = onHandleUnauthorizedAccess;
 	}
 
-	get<T>(payload: IRestClientPayload = null): Promise<T | TModel> {
-		return this.request(RestMethod.Get, payload);
+	get<T>(payload: IRestClientPayload, id?: KeyType): Promise<T | TModel> {
+		return this.request(RestMethod.Get, payload, id);
 	}
 
-	post<T>(payload: IRestClientPayload = null): Promise<T | TModel> {
+	post<T>(payload: IRestClientPayload): Promise<T | TModel> {
 		return this.request(RestMethod.Post, payload);
 	}
 
-	patch<T>(payload: IRestClientPayload = null): Promise<T | TModel> {
-		return this.request(RestMethod.Patch, payload);
+	patch<T>(payload: IRestClientPayload, id: KeyType): Promise<T | TModel> {
+		return this.request(RestMethod.Patch, payload, id);
 	}
 
-	put<T>(payload: IRestClientPayload = null): Promise<T | TModel> {
-		return this.request(RestMethod.Put, payload);
+	put<T>(payload: IRestClientPayload, id: KeyType): Promise<T | TModel> {
+		return this.request(RestMethod.Put, payload, id);
 	}
 
-	delete<T>(payload: IRestClientPayload = null): Promise<T | TModel> {
-		return this.request(RestMethod.Delete, { data: null, url: payload.data });
+	delete<T>(payload: IRestClientPayload, id: KeyType): Promise<T | TModel> {
+		return this.request(RestMethod.Delete, payload, id);
 	}
 
 	upload<T>(payload: IRestClientPayload = null): Promise<T> {
@@ -127,13 +132,19 @@ export class RestClient<TModel = any> {
 	public async request<T>(
 		method: RestMethod,
 		payload: IRestClientPayload,
+		id?: KeyType,
 	): Promise<T> {
 		const errorHandler = payload?.errorHandler
 			? payload.errorHandler
 			: this.onHandleException;
 
 		const { url, body, headers } = this.verifyPayload(payload);
-		const updatedUrl = this.buildUrl(url, payload?.data);
+		let updatedUrl = this.buildUrl(url, payload?.data);
+
+		if (id) {
+			updatedUrl = `${updatedUrl}/${id}`;
+		}
+
 		const request: RequestInit = {
 			method: method.toUpperCase(),
 			headers,

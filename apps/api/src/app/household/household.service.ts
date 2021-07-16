@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { InjectMapper } from 'nestjsx-automapper';
 import { Repository, getRepository } from 'typeorm';
 
-import { BaseService } from '@xapp/api/core';
+import { BaseService, IFindAndCountResult, IPaginationQuery } from '@xapp/api/core';
 
 import { Household } from './entities/household.entity';
 import { HouseholdMember } from './entities/household_member.entity';
@@ -28,5 +28,20 @@ export class HouseholdService extends BaseService<Household> {
 		return this.repository.findOne({
 			where: { name },
 		});
+	}
+
+	async findAndCount (options: IPaginationQuery): Promise<IFindAndCountResult<Household> | Household[]> {
+		this.queryBuilder = this.createQueryBuilder();
+		this.queryBuilder = this.queryBuilder.leftJoinAndSelect(`${this.modelName}.rooms`, 'rooms');
+		this.queryBuilder = this.queryBuilder.leftJoinAndSelect(`${this.modelName}.members`, 'members');
+
+		if (options.q) {
+			this.queryBuilder = this.queryBuilder.where(`${this.modelName}.title like :q or ${this.modelName}.name like :q or ${this.modelName}.id = :id`, {
+				q: `%${options.q}%`,
+				id: +options.q,
+			});
+		}
+
+		return super.findAndCount(options);
 	}
 }

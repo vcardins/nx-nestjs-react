@@ -17,7 +17,6 @@ const getUser = async (username: string, profile: Partial<UserProfile>, roles: R
 		isSuperuser,
 		dateAccountVerified: getUtcDate(),
 		isActive: true,
-		dateJoined: getUtcDate(),
 		hashedPassword: await User.createPassword(username),
 		roles,
 	});

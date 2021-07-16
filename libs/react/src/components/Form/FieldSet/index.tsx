@@ -23,9 +23,11 @@ export const FieldSet = ({
 	children,
 }: IFieldSet) => (
 	<FieldGroup sided={sided}>
-		<FieldLabel htmlFor={name}>
-			{label}
-		</FieldLabel>
+		{label &&
+			<FieldLabel htmlFor={name}>
+				{label}
+			</FieldLabel>
+		}
 		{ children }
 		<StyledError name={name} />
 	</FieldGroup>

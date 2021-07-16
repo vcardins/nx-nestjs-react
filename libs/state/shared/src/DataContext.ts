@@ -1,4 +1,5 @@
 import { RestClient, RestMethod, IRestClientPayload } from '@xapp/shared/api';
+import { KeyType } from '@xapp/shared/types';
 
 export interface IDataContextProps {
 	basePath?: string;
@@ -39,14 +40,14 @@ export class DataContext<TOutput = any, TInputCreate = any, TInputUpdate = TInpu
 	create = <T = TInputCreate>(payload?: IRestClientPayload<TInputCreate>): Promise<TOutput> =>
 		this.api.post<T | TInputCreate>(payload);
 
-	patch = <T = TInputUpdate>(payload?: IRestClientPayload<TInputUpdate>): Promise<TOutput> =>
-		this.api.patch<T | TInputUpdate>(payload);
+	patch = <T = TInputUpdate>(payload?: IRestClientPayload<TInputUpdate>, id?: KeyType): Promise<TOutput> =>
+		this.api.patch<T | TInputUpdate>(payload, id);
 
-	update = <T = TInputUpdate>(payload?: IRestClientPayload<TInputUpdate>): Promise<TOutput> =>
-		this.api.put<T | TInputUpdate>(payload);
+	update = <T = TInputUpdate>(payload?: IRestClientPayload<TInputUpdate>, id?: KeyType): Promise<TOutput> =>
+		this.api.put<T | TInputUpdate>(payload, id);
 
-	delete = (id: string | number): Promise<TOutput> =>
-		this.api.delete({ data: id });
+	delete = (payload?: IRestClientPayload, id?: KeyType): Promise<void> =>
+		this.api.delete(payload, id);
 
 	upload = (payload?: IRestClientPayload<TInputCreate>): Promise<TOutput> =>
 		this.api.upload(payload);

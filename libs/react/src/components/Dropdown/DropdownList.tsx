@@ -1,13 +1,8 @@
 /* eslint-disable react/display-name */
-import React, { useState, useRef } from 'react';
+import React from 'react';
 
 import { DropdownItemTypes, IDropdownItem } from '@xapp/shared/types';
-import { useOuterClickNotifier } from '../../hooks/useOuterClickNotifier';
-import { DropdownSizeStyle } from './DropdownSizeStyle';
 import {
-	DropdownContainer,
-	DropdownWrapper,
-	DropdownLabel,
 	DropdownListWrapper,
 	DropdownListItem,
 	DropdownAnchor,
@@ -15,26 +10,10 @@ import {
 	LabelWrapper,
 } from './styles';
 import { Icon } from '../../components/Icon';
+import { Dropdown } from './';
+import { IDropdownListProps, DropdownSizeStyle } from './types';
 
-
-interface IDropdownListProps {
-	selectedItem?: string;
-	options: IDropdownItem[];
-	disabled?: boolean;
-	size?: DropdownSizeStyle;
-	closeOnSelect?: boolean;
-}
-
-interface IDropdownProps extends IDropdownListProps {
-	children?: any;
-	hideChevron?: boolean;
-	label?: string;
-	emptyValueLabel?: string;
-	position?: 'right' | 'left';
-	highlightOnHover?: boolean;
-}
-
-export const DropdownList = React.memo(({
+const DropdownListItems = React.memo(({
 	options = [],
 	size,
 	disabled,
@@ -91,19 +70,11 @@ export const DropdownList = React.memo(({
 	);
 });
 
-export const Dropdown = (props: IDropdownProps) => {
+export const DropdownList = (props: IDropdownListProps) => {
 	const {
 		children, hideChevron, size, label, disabled, options = [],
 		emptyValueLabel, highlightOnHover, position = 'right',
 	} = props;
-	const innerRef = useRef(null);
-	const [active, setActive] = useState(false);
-	const toggleShow = () => setActive(!active);
-
-	useOuterClickNotifier(
-		() => setActive(false),
-		innerRef,
-	);
 
 	if (!options.length) {
 		return null;
@@ -111,29 +82,25 @@ export const Dropdown = (props: IDropdownProps) => {
 
 	const updatedOptions: IDropdownItem[] = !emptyValueLabel
 		? options
-		: [
-			{ id: null, type: DropdownItemTypes.Divider, title: emptyValueLabel } as IDropdownItem,
-		].concat(options);
+		: [{ id: null, type: DropdownItemTypes.Divider, title: emptyValueLabel } as IDropdownItem].concat(options);
 
 	return (
-		<DropdownContainer
-			ref={innerRef}
+		<Dropdown
 			hideChevron={hideChevron}
 			size={size}
 			highlightOnHover={highlightOnHover}
+			label={label}
+			trigger={children}
+			position={position}
 		>
-			{label && <DropdownLabel>{label}</DropdownLabel>}
-			<button onClick={toggleShow}>
-				{ children }
-			</button>
-			<DropdownWrapper data-active={active} position={position}>
-				<DropdownList
+			{(onClose) => (
+				<DropdownListItems
 					{...props}
 					disabled={disabled}
 					options={updatedOptions}
-					onClose={() => setActive(false)}
+					onClose={onClose}
 				/>
-			</DropdownWrapper>
-		</DropdownContainer>
+			)}
+		</Dropdown>
 	);
 };

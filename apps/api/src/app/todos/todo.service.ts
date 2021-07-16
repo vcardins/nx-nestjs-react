@@ -19,6 +19,6 @@ export class TodoService extends BaseService<Todo> {
 	}
 
 	async completeTodo(model: ITodoComplete) {
-		return this.update(model.id, { dateCompleted: !model.setIncomplete ? getUtcDate() : null });
+		return this.update(model.id, { completedAt: !model.setIncomplete ? getUtcDate() : null });
 	}
 }

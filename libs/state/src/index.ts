@@ -34,7 +34,6 @@ export const useStore: UseStore<AppState> = createStore((set, get, api) => {
 	const taskTemplate = namespace(Namespaces.TaskTemplate, createTaskTemplate)(set, get, api);
 
 	const init = async (appConfig: IAppConfig, notifier: INotifier, authState: IAuthState): Promise<void> => {
-		// return new Promise((resolve) => {
 		set((state) => void (
 			(state.config = appConfig),
 			(state.notifier = notifier)
@@ -46,8 +45,6 @@ export const useStore: UseStore<AppState> = createStore((set, get, api) => {
 		await todo.init(authState);
 		await task.init(authState);
 		await taskTemplate.init(authState);
-		// 	resolve();
-		// });
 	};
 
 	return {

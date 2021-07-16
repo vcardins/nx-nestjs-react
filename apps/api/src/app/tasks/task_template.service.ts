@@ -37,7 +37,7 @@ export class TaskTemplateService extends BaseService<TaskTemplate> {
 		});
 	}
 
-	public async getAllMapped(): Promise<Record<RoomTypes, TaskTemplateOutput[]>> {
+	public async getMappedValues(): Promise<Record<RoomTypes, TaskTemplateOutput[]>> {
 		const items = await this.getAll();
 		return items.reduce((result, item) => {
 			if (!result[item.roomTypeId]) {

@@ -4,6 +4,7 @@ export enum Resources {
 	Permission = 'permission',
 	Todo = 'todo',
 	Household = 'household',
+	HouseholdRoom = 'household-room',
 	Task = 'task',
 	TaskTemplate = 'task-template',
 	RoomType = 'room-type',

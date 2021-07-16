@@ -11,7 +11,6 @@ const LocalStorage: IStorage = {
 		}
 		catch (error) {
 			// If error also return initialValue
-			console.log(error);
 			return initialValue;
 		}
 	},
@@ -30,7 +29,6 @@ const LocalStorage: IStorage = {
 		}
 		catch (error) {
 			// A more advanced implementation would handle the error case
-			console.log(error);
 		}
 	},
 

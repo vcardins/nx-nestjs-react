@@ -12,8 +12,9 @@ import { HouseholdMemberInvitation } from './entities/household_member_invitatio
 import { HouseholdController } from './household.controller';
 import { HouseholdService } from './household.service';
 import { HouseholdMemberService } from './household_member.service';
-// import { AuthService } from '@xapp/api/auth';
+
 import { CoreModule } from '@xapp/api/core';
+import { HouseholdRoomService } from './household_room.service';
 
 @Module({})
 export class HouseholdModule {
@@ -27,8 +28,8 @@ export class HouseholdModule {
 				CoreModule,
 				authModule,
 				DatabaseModule.forFeature([
-					HouseholdRoom,
 					Household,
+					HouseholdRoom,
 					HouseholdMemberInvitation,
 					HouseholdMember,
 					User,
@@ -38,6 +39,7 @@ export class HouseholdModule {
 			providers: [
 				HouseholdService,
 				HouseholdMemberService,
+				HouseholdRoomService,
 				UserService,
 				// AuthService,
 				FilesService,
@@ -47,6 +49,7 @@ export class HouseholdModule {
 			exports: [
 				HouseholdService,
 				HouseholdMemberService,
+				HouseholdRoomService,
 			],
 			controllers: [
 				HouseholdController,

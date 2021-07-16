@@ -30,6 +30,6 @@ export class TaskTemplate extends BaseEntity {
 	@JoinColumn([{ name: 'frequency_id', referencedColumnName: 'id' }])
 	frequency: Frequency;
 
-	@OneToMany(() => Task, ({ template }) => template)
+	@OneToMany(() => Task, ({ template }) => template, { onDelete: 'CASCADE' })
 	tasks: Task[];
 }

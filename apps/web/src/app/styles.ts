@@ -41,7 +41,7 @@ export const globalStyle = createGlobalStyle`
 	html {
 		line-height: 1.5;
 		font-family: ${fonts.primary};
-		font-size: ${fontSizes[1]}px;
+		font-size: ${fontSizes[0]}px;
 		box-sizing: border-box;
 
 		a {

@@ -1,6 +1,6 @@
-import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { BeforeInsert, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
-import { BaseEntity, getUtcDate } from '@xapp/api/core';
+import { BaseEntity } from '@xapp/api/core';
 import { User } from '@xapp/api/access-control';
 import { Household } from './household.entity';
 
@@ -15,23 +15,30 @@ export class HouseholdMemberInvitation extends BaseEntity {
 	@Column('varchar', { name: 'invitation_code', nullable: false, length: 40 })
 	invitationCode: string | null;
 
-	@Column('datetime', { name: 'date_created' })
-	dateCreated: Date;
+	@CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP', name: 'created_at' })
+	createdAt: Date;
 
-	@Column('datetime', { name: 'date_accepted', nullable: true })
-	dateAccepted: Date | null;
+	@Column({ type: 'datetime', name: 'accepted_at', nullable: true })
+	acceptedAt: Date | null;
 
-	@ManyToOne(() => Household, (household) => household.invitedMembers)
+	@ManyToOne(
+		() => Household,
+		({ invitedMembers }) => invitedMembers,
+		{ onDelete: 'CASCADE' },
+	)
 	@JoinColumn([{ name: 'household_id', referencedColumnName: 'id' }])
 	household: Household;
 
-	@ManyToOne(() => User, 'householdMemberInvitations')
+	@ManyToOne(
+		() => User,
+		'householdMemberInvitations',
+		{ onDelete: 'CASCADE' },
+	)
 	@JoinColumn([{ name: 'sender_user_id', referencedColumnName: 'id' }])
 	senderUser: User;
 
 	@BeforeInsert()
 	doBeforeInsertion() {
-		this.dateCreated = getUtcDate();
 		this.validate();
 	}
 }

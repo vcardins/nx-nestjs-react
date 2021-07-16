@@ -21,41 +21,16 @@ const { projects, defaultProject } = (workspaceJson as unknown) as IWorkspaceJso
 try {
 	fs.accessSync(envFilePath);
 	load({ path: envFilePath });
-	// console.log(`env file: ${envFile}`);
 }
 catch (error) {
-	// console.log(`error on get env file: ${envFile}`);
+	// error on get env file: ${envFile}`
 	try {
 		fs.accessSync('.env');
 		load();
-		// console.log('env file: .env');
 	}
 	catch (e) {
-		// console.log('error on get env file: .env');
 	}
 }
-
-// function normalizationFileList(files: string[]) {
-// 	const newFiles: string[] = [];
-// 	for (let i = 0; i < files.length; i++) {
-// 		if (files[i].indexOf('.d.ts') === -1) {
-// 			let founded = false;
-// 			for (let j = 0; j < newFiles.length; j++) {
-// 				const filename = newFiles[j];
-// 				if (
-// 					path.basename(filename, path.parse(filename).ext) ===
-// 					path.basename(files[i], path.parse(files[i]).ext)
-// 				) {
-// 					founded = true;
-// 				}
-// 			}
-// 			if (!founded) {
-// 				newFiles.push(files[i]);
-// 			}
-// 		}
-// 	}
-// 	return newFiles;
-// }
 
 function filterProjects(projectKey: string) {
 	const lib = projects[projectKey];

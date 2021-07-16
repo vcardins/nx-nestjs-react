@@ -79,7 +79,6 @@ export class GoogleStrategy { //extends PassportStrategy(Strategy, 'google') {
 				this.options,
 				async (request: any, accessToken: string, refreshToken: string, profile: any, done) => {
 					Logger.log(JSON.stringify(profile), GoogleStrategy.name);
-					// console.log(this.options);
 					if (!profile.id) {
 						done(null, null);
 					}

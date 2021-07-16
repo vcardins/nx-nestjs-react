@@ -26,7 +26,7 @@ const SignUpPage = memo(() => {
 
 	const { routes } = useContext(appContext);
 	const { signUp } = useStore((state) => state.account);
-	const { getInvitation, signUpMember, invitation, error, store } = useStore((state) => state.household);
+	const { getInvitation, registerMember: signUpMember, invitation, error, store } = useStore((state) => state.household);
 	const formRef = useRef({ valid: false });
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<HouseholdMemberSignup>({
@@ -75,7 +75,7 @@ const SignUpPage = memo(() => {
 			onSubmit={handleSubmit}
 			schema={validationSchema}
 		>
-			{ invitation && !invitation?.dateAccepted && (
+			{ invitation && !invitation?.acceptedAt && (
 				<div>
 					<p>
 						Hello <b>{invitation.invitee.firstName} {invitation.inviter.lastName}</b> has invited your to join the {invitation.household} household!<br/>
@@ -83,7 +83,7 @@ const SignUpPage = memo(() => {
 					</p>
 				</div>
 			)}
-			{ invitation?.dateAccepted && (
+			{ invitation?.acceptedAt && (
 				<div>
 					<p>
 						Hello <b>{invitation.invitee.firstName}</b>, this invitation has expired.

@@ -14,7 +14,7 @@ export interface IUserAccount {
 	createIp: string | null;
 	dateAccountLocked: Date | null;
 	dateAccountClosed: Date | null;
-	dateJoined: Date;
+	joinedAt: Date;
 	lastPasswordChanged: Date | null;
 	requiresPasswordReset: boolean;
 	lastFailedPasswordReset: Date | null;

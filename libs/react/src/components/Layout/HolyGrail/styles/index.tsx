@@ -3,7 +3,6 @@ import { Header } from './Header';
 import { Sidenav, Profile, Brand, ActionLink } from './Sidenav';
 import { Main } from './Main';
 import { Footer } from './Footer';
-import { MenuItemTitle } from '../../../Menu/styles';
 
 const Container = styled.div`
 	display: grid;
@@ -32,8 +31,7 @@ const Container = styled.div`
 
 				#sidenav-brand-close,
 				${Profile.NameContainer},
-				${Brand.Link},
-				${MenuItemTitle} {
+				${Brand.Link} {
 					opacity: 0;
 				}
 			}
@@ -43,8 +41,7 @@ const Container = styled.div`
 			grid-template-columns: ${({ theme }) => theme.sizes.sideNav.expanded} calc(100% - ${({ theme }) => theme.sizes.sideNav.expanded});
 
 			${Profile.NameContainer},
-			${Brand.Link},
-			${MenuItemTitle} {
+			${Brand.Link} {
 				opacity: 1;
 				transition: opacity .25s ease-in-out;
 			}

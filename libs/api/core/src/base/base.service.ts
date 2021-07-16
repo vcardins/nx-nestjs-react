@@ -13,6 +13,7 @@ import { IdType } from '@xapp/shared/types';
 import { IBaseService, IBaseServiceOptions, IBaseServiceCache, IFindAndCountResult, IPaginationQuery } from './base.interface';
 import { IBaseEntity } from './base.entity';
 import { IEvent } from '../events/events.interface';
+import { plainToClass } from 'class-transformer';
 
 // interface ClassType<T> {
 // 	new (): T;
@@ -20,21 +21,23 @@ import { IEvent } from '../events/events.interface';
 
 export abstract class BaseService<T extends IBaseEntity> implements IBaseService<T> {
 	public withMap: boolean;
-	private readonly mapping: (config: AutoMapper) => void;
-	protected readonly mapper: AutoMapper;
 	protected queryBuilder?: SelectQueryBuilder<T>;
 	private cache: IBaseServiceCache;
-	events: IEvent[] = []
+	events: IEvent[] = [];
 
-	constructor(protected readonly repository: Repository<T>, mapper: AutoMapper, options: IBaseServiceOptions = {}) {
+	constructor(
+		protected readonly repository: Repository<T>,
+		protected readonly mapper: AutoMapper,
+		private options: IBaseServiceOptions = {},
+	) {
 		this.withMap = !!options.mapping;
-		this.mapping = options.mapping;
 		this.mapper = mapper;
 
 		this.cacheConfig(options.cache);
 
 		Logger.log('Im the ORM Service');
 	}
+
 	public async find(filter: FindManyOptions<T> & FindConditions<T> = {}): Promise<T[]> {
 		return this.repository.find(filter);
 	}
@@ -45,6 +48,16 @@ export abstract class BaseService<T extends IBaseEntity> implements IBaseService
 
 	createQueryBuilder() {
 		return this.repository.createQueryBuilder(this.modelName);
+	}
+
+	public async getAllMapped<TOutput extends { id: number }>(): Promise<Record<number, TOutput>> {
+		const items = await this.find();
+		const outputItems = items.map((item) => plainToClass(this.options.outputModel, item));
+
+		return outputItems.reduce((result, item) => {
+			result[item.id] = item;
+			return result;
+		}, {} as Record<number, TOutput>);
 	}
 
 	async create(model: any): Promise<T> {

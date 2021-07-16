@@ -18,7 +18,7 @@ export class FrequencyService extends BaseService<Frequency> {
 		@InjectRepository(Frequency) protected readonly repository: Repository<Frequency>,
 		@InjectMapper() autoMapper,
 	) {
-		super(repository, autoMapper);
+		super(repository, autoMapper, { outputModel: FrequencyOutput });
 	}
 
 	public async getAll(): Promise<FrequencyOutput[]> {

@@ -7,6 +7,7 @@ import {
 	BeforeUpdate,
 	Column,
 	CreateDateColumn,
+	UpdateDateColumn,
 	Entity,
 	JoinTable,
 	ManyToMany,
@@ -81,8 +82,8 @@ export class User extends BaseEntity {
 	@Column({ name: 'date_account_closed', nullable: true })
 	dateAccountClosed: Date | null;
 
-	@CreateDateColumn({ name: 'date_joined' })
-	dateJoined: Date = undefined;
+	@CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP', name: 'joined_at' })
+	joinedAt: Date;
 
 	@Column({ name: 'last_password_changed', nullable: true })
 	lastPasswordChanged: Date | null;
@@ -106,16 +107,13 @@ export class User extends BaseEntity {
 	@Column({ name: 'last_update_ip', nullable: true, length: 255 })
 	lastUpdateIp: string | null;
 
-	@Column({ name: 'last_updated', nullable: true })
-	lastUpdated: Date | null;
+	@UpdateDateColumn({ name: 'last_updated_at', nullable: true })
+	lastUpdatedAt: Date | null;
 
 	@JoinColumn()
 	@OneToOne(
 		() => PublicFile,
-		{
-			eager: true,
-			nullable: true,
-		},
+		{ eager: true, nullable: true },
 	)
 	public avatar?: PublicFile;
 
@@ -135,10 +133,10 @@ export class User extends BaseEntity {
 	})
 	roles: Role[];
 
-	@OneToMany(() => UserSession, 'user', { cascade: true })
+	@OneToMany(() => UserSession, 'user', { onDelete: 'CASCADE' })
 	sessions: UserSession[];
 
-	@OneToOne(() => UserProfile, (userProfile) => userProfile.user, {
+	@OneToOne(() => UserProfile, ({ user }) => user, {
 		cascade: true,
 		eager: true,
 	})

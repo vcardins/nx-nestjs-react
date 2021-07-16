@@ -30,13 +30,13 @@ export class TodoController extends BaseController {
 		super(
 			service,
 			socketService,
-			{ sortBy: { dateCompleted: SortDirections.DESC, dateCreated: SortDirections.DESC } },
+			{ sortBy: { completedAt: SortDirections.DESC, createdAt: SortDirections.DESC } },
 		);
 	}
 
 	beforeCreate(body: any): Promise<void> {
 		return new Promise((resolve) => {
-			body.dateCreated = getUtcDate();
+			body.createdAt = getUtcDate();
 			resolve();
 		});
 	}

@@ -27,9 +27,11 @@ import { TaskList, TaskItem, TaskIcon, TaskItemInfo } from './components';
 
 const initialValues: TaskInput = {
 	name: '',
-	dueDate: null,
+	estimatedCompletionTime: null,
 	notes: '',
 	templateId:  null,
+	frequencyId:  null,
+	householdRoomId:  null,
 };
 
 const TaskPage = memo(() => {

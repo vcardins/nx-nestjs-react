@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 import { FieldValidationError } from '@xapp/shared/exceptions';
 
 export interface IUseFormProps<T> {
+	validationSchema?: any;
 	initialValues: T;
 	clearAfterSubmit?: boolean;
 	onSubmit: (data: T) => Promise<any>;
@@ -17,11 +18,11 @@ interface IUseFormResponse<T> {
 	formData: T;
 	handleSubmit: () => Promise<any>;
 	handleReset: () => void;
-	handleChange: (data: T) => void;
+	handleChange: (data: T, event?: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
 }
 
 export function useForm<T>(props: IUseFormProps<T>, dependencies: string[] | number[] = []): IUseFormResponse<T> {
-	const { initialValues, clearAfterSubmit = true, onSubmit } = props;
+	const { validationSchema, initialValues, clearAfterSubmit = true, onSubmit } = props;
 	const navigate = useNavigate();
 
 	const [formData, setFormData] = useState<T>(initialValues);
@@ -29,8 +30,24 @@ export function useForm<T>(props: IUseFormProps<T>, dependencies: string[] | num
 	const [success, setSuccess] = useState(false);
 	const [errors, setErrors] = useState<FieldValidationError['errors']>(new Set());
 
-	const handleChange = (newData: T) => {
-		setFormData(newData);
+	const handleChange = (newData: T, event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+		const { target: { name, value } } = event;
+		const type = validationSchema?.properties?.[name]?.type;
+		let updatedValue = null;
+
+		switch (type) {
+			case 'integer':
+			case 'number':
+				updatedValue = Number(value);
+				break;
+			case 'boolean':
+				updatedValue = Boolean(value);
+				break;
+			default:
+				updatedValue = value;
+		}
+
+		setFormData({ ...newData, [name]: updatedValue });
 		setSuccess(false);
 	};
 
@@ -63,7 +80,8 @@ export function useForm<T>(props: IUseFormProps<T>, dependencies: string[] | num
 		}
 		finally {
 			setSubmitting(false);
-			if (clearAfterSubmit && !errors) {
+
+			if (clearAfterSubmit && !errors?.size) {
 				setFormData(initialValues);
 			}
 		}

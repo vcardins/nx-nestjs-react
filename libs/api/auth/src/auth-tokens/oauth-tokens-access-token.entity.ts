@@ -32,20 +32,20 @@ export class OauthTokensAccessToken extends BaseEntity {
 	@MaxLength(500)
 	accessToken: string = undefined;
 
-	@Column({ name: 'refresh_token', length: 200, nullable: true })
+	@Column({ name: 'refresh_token', length: 200 })
 	@MaxLength(200)
 	@IsOptional()
 	refreshToken: string = undefined;
 
-	@Column({ type: Date, name: 'expires_at', nullable: true })
+	@CreateDateColumn({ name: 'expires_at' })
 	expiresAt: Date = undefined;
 
-	@Column({ name: 'token_type', length: 200, nullable: true })
+	@Column({ name: 'token_type', length: 200 })
 	@MaxLength(200)
 	@IsOptional()
 	tokenType: string = undefined;
 
-	@Column({ length: 512, nullable: true })
+	@Column({ length: 512 })
 	@MaxLength(512)
 	@IsOptional()
 	scope: string = undefined;

@@ -8,6 +8,7 @@ export * from './IPermissionOutput';
 export * from './IRedirectUriOutput';
 export * from './IResetPasswordInput';
 export * from './ISignInInput';
+export * from './ISignInRequest';
 export * from './ISignedUserOutput';
 export * from './IRoleWithPermissions';
 export * from './ISignUpInput';

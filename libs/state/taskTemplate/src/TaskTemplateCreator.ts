@@ -5,7 +5,8 @@ import { TaskTemplateInput, TaskTemplateOutput } from '@xapp/shared/types';
 
 import { TaskTemplateStore } from './TaskTemplateStore';
 
-export interface ITaskTemplateState extends ICrudState<TaskTemplateStore, TaskTemplateOutput> {}
+// export interface ITaskTemplateState extends ICrudState<TaskTemplateStore, TaskTemplateOutput> {}
+type ITaskTemplateState = ICrudState<TaskTemplateStore, TaskTemplateOutput>;
 
 export const createTaskTemplate: StateCreator<ITaskTemplateState> =
 	createBaseStore<ITaskTemplateState, TaskTemplateInput, TaskTemplateOutput>(

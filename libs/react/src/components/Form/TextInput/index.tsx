@@ -5,7 +5,7 @@ import { IHtmlField } from '@xapp/shared/types';
 import { FieldSet } from '../FieldSet';
 import { StyledInput } from './styles';
 
-type InputTypes = 'text' | 'password' | 'hidden';
+type InputTypes = 'text' | 'password' | 'hidden' | 'number';
 
 interface ITextInput extends IHtmlField {
 	type? : InputTypes;

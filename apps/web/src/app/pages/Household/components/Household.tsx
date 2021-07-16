@@ -10,7 +10,7 @@ export const HouseholdItem = styled.li`
 export const HouseholdItemInfo = styled.div`
 	width: inherit;
 	display: grid;
-	grid-template-columns: auto 20px;
+	grid-template-columns: auto 20px 20px;
 `;
 
 export const HouseholdItemInvite = styled.div`

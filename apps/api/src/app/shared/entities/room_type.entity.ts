@@ -11,7 +11,7 @@ export class RoomType extends BaseEntity {
 	@Column('varchar', { name: 'name', length: 40 })
 	name: string;
 
-	@Column('varchar', { name: 'description', nullable: true, length: 255 })
+	@Column('varchar', { name: 'description', length: 255 })
 	description: string | null;
 
 	@OneToMany(() => HouseholdRoom, ({ roomType }) => roomType)

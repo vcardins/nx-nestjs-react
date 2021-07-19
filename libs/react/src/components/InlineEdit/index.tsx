@@ -118,7 +118,7 @@ export function InlineEdit(props: IInlineEditProps) {
 				ref={inputRef}
 				// set the width to the input length multiplied by the x height
 				// it's not quite right but gets it close
-				style={{ minWidth: `${Math.ceil(inputValue.length)}ch` }}
+				style={{ minWidth: inputValue?.length ? `${Math.ceil(inputValue?.length)}ch` : '0ch' }}
 				value={inputValue}
 				onChange={handleInputChange}
 				isActive={isInputActive}

@@ -75,6 +75,7 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 
 	useEffect(() => {
 		if (dataStore.lookup.data) {
+			// @ts-ignore
 			window.State = dataStore;
 		}
 	}, [dataStore.lookup.data]);

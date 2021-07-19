@@ -31,24 +31,26 @@ export function useForm<T>(props: IUseFormProps<T>, dependencies: string[] | num
 	const [errors, setErrors] = useState<FieldValidationError['errors']>(new Set());
 
 	const handleChange = (newData: T, event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-		const { target: { name, value } } = event;
-		const type = validationSchema?.properties?.[name]?.type;
-		let updatedValue = null;
+		if (event) {
+			const { target: { name, value } } = event;
+			const type = validationSchema?.properties?.[name]?.type;
+			let updatedValue = null;
 
-		switch (type) {
-			case 'integer':
-			case 'number':
-				updatedValue = Number(value);
-				break;
-			case 'boolean':
-				updatedValue = Boolean(value);
-				break;
-			default:
-				updatedValue = value;
+			switch (type) {
+				case 'integer':
+				case 'number':
+					updatedValue = Number(value);
+					break;
+				case 'boolean':
+					updatedValue = Boolean(value);
+					break;
+				default:
+					updatedValue = value;
+			}
+
+			setFormData({ ...newData, [name]: updatedValue });
+			setSuccess(false);
 		}
-
-		setFormData({ ...newData, [name]: updatedValue });
-		setSuccess(false);
 	};
 
 	const handleSubmit = async () => {

@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import dayjs from 'dayjs';
 
-export const DEFAULT_FORMAT = 'YYYY-MM-DD HH:mm';
+export const DEFAULT_FORMAT = 'yyyy-mm-dd HH:mm';
 
 interface IDateWrapperProps {
 	width?: string | number;

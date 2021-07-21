@@ -11,10 +11,10 @@ export interface IAuthService {
 	isAuthorized(allowedUserRoles: string[]): boolean;
 	isUserSessionValid(accessToken: string): boolean;
 	setSession(accessToken: string): void;
-	setUser(user: any): void;
-	signInWithEmailAndPassword(data: ISignInInput): Promise<any>;
+	setUser(user: unknown): void;
+	signInWithEmailAndPassword(data: ISignInInput): Promise<unknown>;
 	signInWithToken(): Promise<IUserProfile>;
-	signOut(): Promise<any>;
-	signUp(user?: ISignUpInput): Promise<any>;
-	verifyAccount(data: IVerifyEmailInput): Promise<any>;
+	signOut(): Promise<unknown>;
+	signUp(user?: ISignUpInput): Promise<unknown>;
+	verifyAccount(data: IVerifyEmailInput): Promise<unknown>;
 }

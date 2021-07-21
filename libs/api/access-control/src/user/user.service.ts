@@ -117,7 +117,7 @@ export class UserService extends BaseService<User> {
 
 	async update(id: number, model: Partial<User>) {
 		await this.assertEmail(model.email, model.id);
-		return await super.update(
+		return super.update(
 			id,
 			{
 				...model,

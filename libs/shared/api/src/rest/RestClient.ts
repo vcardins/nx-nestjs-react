@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ValidationError } from '@xapp/shared/exceptions';
 import { appConfig } from '@xapp/shared/config';
 import { KeyType } from '@xapp/shared/types';
@@ -167,13 +168,12 @@ export class RestClient<TModel = any> {
 			case 400:
 				// eslint-disable-next-line no-case-declarations
 				const error = await response.json();
-				throw error; //new Error(error.message || errorMessages[response.status])
-				// throw errorHandler?.(
-				// 	new Error(error.message || errorMessages[response.status]),
-				// 	response.status,
-				// );
+				// throw error; //new Error(error.message || errorMessages[response.status])
+				throw errorHandler?.(
+					new Error(error.message || errorMessages[response.status]),
+					response.status,
+				);
 			case 401:
-				// console.error('Access code has expired');
 				throw this.onHandleUnauthorizedAccess?.(method, payload);
 			case 200:
 			case 201:
@@ -184,7 +184,7 @@ export class RestClient<TModel = any> {
 		}
 	}
 
-	getParams = (data: any = {}, parameters: { [key: string] : string } = {}): string =>
+	getParams = (data: unknown = {}, parameters: { [key: string] : string } = {}): string =>
 		Object.keys(data).reduce((queryString, prop: string) => {
 			if ((Object.keys(parameters).length > 0 && parameters[prop])) {
 				queryString.push(`${encodeURIComponent(prop)}=${encodeURIComponent(data[prop])}`);

@@ -1,5 +1,4 @@
 import { writeFile } from 'fs';
-// import { config as load } from 'dotenv';
 
 const environment = process.env.NODE_ENV;
 let apiURL: string;
@@ -18,6 +17,6 @@ const envConfigFile = `export const environment = {
 
 writeFile(targetPath, envConfigFile, (err: any) => {
 	if (err) {
-		console.log(err);
+		throw new Error(err);
 	}
 });

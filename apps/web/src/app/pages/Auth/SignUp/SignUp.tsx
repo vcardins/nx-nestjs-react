@@ -1,14 +1,14 @@
 import React, { memo, useContext, useEffect, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-import { validationSchema } from './schema';
 
 import { Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react';
 import { HouseholdMemberSignup, PageKey } from '@xapp/shared/types';
 import { useStore } from '@xapp/state';
 
 import { appContext } from '../../../context';
-import { toast } from 'react-toastify';
+import { validationSchema } from './schema';
 
 const initialValues: HouseholdMemberSignup = {
 	firstName: '',

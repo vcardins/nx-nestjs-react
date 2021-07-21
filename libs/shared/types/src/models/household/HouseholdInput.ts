@@ -4,7 +4,7 @@ import { HouseholdRoomOutput } from './HouseholdRoomOutput';
 export class HouseholdInput {
 	name: string;
 	description?: string;
-	ownerUser?: any;
+	ownerUser?: unknown;
 	members?: HouseholdMemberOutput[];
 	rooms?: HouseholdRoomOutput[];
 }

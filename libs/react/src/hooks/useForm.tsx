@@ -18,7 +18,10 @@ interface IUseFormResponse<T> {
 	formData: T;
 	handleSubmit: () => Promise<any>;
 	handleReset: () => void;
-	handleChange: (data: T, event?: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
+	handleChange: (
+		data: T,
+		event?: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | { target: { name: string; value: string }}
+	) => void;
 }
 
 export function useForm<T>(props: IUseFormProps<T>, dependencies: string[] | number[] = []): IUseFormResponse<T> {

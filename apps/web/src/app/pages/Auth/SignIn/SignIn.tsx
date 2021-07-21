@@ -1,14 +1,13 @@
 import React, { memo, useContext, useRef } from 'react';
-import { Link /*, useLocation*/ } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { FieldGroup, Form, TextInput, Button, Submit, useForm } from '@xapp/react';
 
-import { OAuthProvider, ISignInInput } from '@xapp/shared/types';
-import { PageKey } from '@xapp/shared/types';
+import { OAuthProvider, ISignInInput, PageKey } from '@xapp/shared/types';
+import { useStore } from '@xapp/state';
 
 import { validationSchema } from './schema';
 import { appContext } from '../../../context';
-import { useStore } from '@xapp/state';
 
 // import { GoogleLogo } from './logos';
 
@@ -56,7 +55,13 @@ const SignInPage = memo(() => {
 	};
 
 	return (
-		<Form ref={formRef} data={formData} onChange={handleChange} onSubmit={handleSubmit} schema={validationSchema}>
+		<Form
+			ref={formRef}
+			data={formData}
+			onChange={handleChange}
+			onSubmit={handleSubmit}
+			schema={validationSchema}
+		>
 			<TextInput
 				label="Email"
 				name="email"

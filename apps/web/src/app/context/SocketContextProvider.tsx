@@ -49,11 +49,11 @@ const SocketContextProvider: FC<ISocketContextProviderProps> = ({ children }: IS
 		updatedSocket
 			// eslint-disable-next-line no-console
 			.on('disconnect', () => console.log('Disconnected'))
-			.on('exception', (data: any) => toast.info('Event', data))
-			.on('connected', (data: any) => {
-				toast.info('Connected client', data.clientId);
+			.on('exception', (data: unknown) => toast.info('Event', data))
+			.on('connected', (data: { clientId: string }) => {
+				toast.info(`Connected client - ${data.clientId}`);
 			})
-			.on('events', (data: any) => {
+			.on('events', (data: unknown) => {
 				toast.info(data);
 			});
 

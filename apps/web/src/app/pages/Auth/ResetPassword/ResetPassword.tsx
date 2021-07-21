@@ -46,7 +46,6 @@ const ResetPasswordPage = memo((props: IRoutedPageProps) => {
 					type="password"
 					label="New Password"
 					name="password"
-					autoComplete="true"
 					value={formData.password}
 					error={errors?.['password']}
 				/>
@@ -54,7 +53,6 @@ const ResetPasswordPage = memo((props: IRoutedPageProps) => {
 					type="password"
 					label="Confirm Password"
 					name="confirmPassword"
-					autoComplete="true"
 					value={formData.confirmPassword}
 					error={errors?.['confirmPassword']}
 				/>

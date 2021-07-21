@@ -72,7 +72,7 @@ Returns a JSON Web Token that can be used for authenticated requests.`,
 		description: '',
 	})
 	async patchUserProfile(@Req() req, @Body() model: UserProfileInput) {
-		return await this.accountService.updateProfile(req.user?.id, model);
+		return this.accountService.updateProfile(req.user?.id, model);
 	}
 
 	@ApiBearerAuth()

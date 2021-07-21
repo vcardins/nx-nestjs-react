@@ -2,9 +2,9 @@ import React, { memo, useRef } from 'react';
 
 import { Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react';
 import { IVerifyPhoneNumberInput } from '@xapp/shared/types';
+import { useStore } from '@xapp/state';
 
 import { validationSchema } from './schema';
-import { useStore } from '@xapp/state';
 
 const initialValues: IVerifyPhoneNumberInput = {
 	code: '',

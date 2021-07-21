@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IRestOptions } from './IRestOptions';
 import { IRestExceptionHandler } from './IRestExceptionHandler';
 

@@ -16,7 +16,7 @@ export class MemberInvitedEvent extends UserHouseholdEvent {
 	}
 
 	run() {
-		console.log('Running event');
+		// 'Running event';
 	}
 }
 
@@ -26,6 +26,6 @@ export class MemberAddedEvent extends UserHouseholdEvent {
 	}
 
 	run() {
-		console.log('Running MemberAddedEvent event');
+		// 'Running MemberAddedEvent event';
 	}
 }

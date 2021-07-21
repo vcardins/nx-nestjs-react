@@ -1,5 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
 import { parse } from 'query-string';
+
 import { useStore } from '@xapp/state';
 
 const VerifyEmailPage = memo(() => {
@@ -33,7 +34,7 @@ const VerifyEmailPage = memo(() => {
 		if (key) {
 			handleVerifyEmail(key as string);
 		}
-	}, [store.verifyEmail]);
+	}, [store.verifyEmail, store.response.message]);
 
 	if (submitting) {
 		return <div>Verifying account ...</div>;

@@ -273,9 +273,9 @@ export class AccountService extends EventService { // implements IAccountService
 		const foundUser = await this.userService.findById(id);
 		const updatedUser = {
 			...foundUser,
+			phoneNumber: userProfile.phoneNumber,
 			userProfile: plainToClassFromExist(foundUser.userProfile, userProfile),
 		};
-
 		const user = await this.userService.update(id, updatedUser);
 
 		return this.userService.getUserDto(user)?.profile;

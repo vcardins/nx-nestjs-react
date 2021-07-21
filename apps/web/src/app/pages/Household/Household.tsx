@@ -71,6 +71,7 @@ const HouseholdPage = memo(() => {
 			clearError();
 		}
 	}, [error, clearError]);
+
 	function handleSave(name: string, data: HouseholdOutput) {
 		save({ name }, data.id);
 	}

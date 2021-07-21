@@ -18,7 +18,7 @@ import {
 	Icon,
 	InlineEdit,
 } from '@xapp/react';
-import { TaskTemplateInput } from '@xapp/shared/types';
+import { TaskTemplateInput, TaskTemplateOutput } from '@xapp/shared/types';
 
 import { useStore } from '@xapp/state';
 
@@ -35,7 +35,8 @@ const initialValues: TaskTemplateInput = {
 
 const TaskTemplatePage = memo(() => {
 	const formRef = useRef({ valid: false });
-	const { items, isApiReady, read, save, remove, error, clearError } = useStore((state) => state.taskTemplate);
+	const { mappedItems, isApiReady, read, save, remove, error, clearError } = useStore((state) => state.taskTemplate);
+	const lookupStore = useStore((state) => state.lookup);
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<TaskTemplateInput>({
 		initialValues,
@@ -55,6 +56,12 @@ const TaskTemplatePage = memo(() => {
 		}
 	}, [error, clearError]);
 
+	// Object.keys(mappedItems[roomTypeId]).forEach((frequencyId) => {
+	// 	const frequency = lookupStore?.frequencies?.[frequencyId];
+	// 	const tasks = mappedItems[roomTypeId][frequencyId];
+
+	// 	return tasks.map(renderTaskTemplate);
+	// })
 	return (
 		<Page title="Task Template" padded>
 			<Form
@@ -82,30 +89,45 @@ const TaskTemplatePage = memo(() => {
 				</FieldGroup>
 			</Form>
 			<TaskTemplateList>
-				{items.map((task) => (
-					<TaskTemplateItem key={task.id}>
-						<TaskTemplateItemInfo>
-							<InlineEdit text={task.name} onSetText={(name) => save({ ...task, name }, task.id)} />
-							<TaskTemplateIcon icon={ic_delete} onClick={() => remove(task.id)} />
-						</TaskTemplateItemInfo>
-						{/* <TaskTemplateItemInvite>
-							<input
-								type="text"
-								name="invitation-firstName"
-								value={formData.invitation.firstName}
-							/>
-							<input
-								type="text"
-								name="invitation-email"
-								value={formData.invitation.email}
-							/>
-							<TaskTemplateIcon icon={ic_send} onClick={() => invite({ taskId: task.id, ...formData.invitation })} />
-						</TaskTemplateItemInvite> */}
-					</TaskTemplateItem>
-				))}
+				{lookupStore?.roomTypes && Object.keys(mappedItems).map((roomTypeId) => {
+					const roomType = lookupStore?.roomTypes?.[roomTypeId];
+					return (
+						<div key={roomType.id}>
+							<br/>
+							<h3>{roomType.name}</h3>
+							<TaskTemplateList>
+								{ mappedItems[roomTypeId].map(renderTaskTemplate) }
+							</TaskTemplateList>
+						</div>
+					);
+			})}
 			</TaskTemplateList>
 		</Page>
 	);
+
+	function renderTaskTemplate(task: TaskTemplateOutput) {
+		return (
+			<TaskTemplateItem key={task.id}>
+				<TaskTemplateItemInfo>
+					<InlineEdit text={task.name} onSetText={(name) => save({ ...task, name }, task.id)} />
+					<TaskTemplateIcon icon={ic_delete} onClick={() => remove(task.id)} />
+				</TaskTemplateItemInfo>
+				{/* <TaskTemplateItemInvite>
+					<input
+						type="text"
+						name="invitation-firstName"
+						value={formData.invitation.firstName}
+					/>
+					<input
+						type="text"
+						name="invitation-email"
+						value={formData.invitation.email}
+					/>
+					<TaskTemplateIcon icon={ic_send} onClick={() => invite({ taskId: task.id, ...formData.invitation })} />
+				</TaskTemplateItemInvite> */}
+			</TaskTemplateItem>
+		);
+	}
 });
 
 export default TaskTemplatePage;

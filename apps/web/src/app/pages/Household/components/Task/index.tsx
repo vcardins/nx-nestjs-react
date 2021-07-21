@@ -50,10 +50,10 @@ export const HouseholdTask = memo((props: IHouseholdTaskProps) => {
 	}, [error, clearError]);
 
 	useEffect(() => {
-		if (roomTypeId && lookupState?.data?.tasksTemplates) {
-			setTaskTemplates(lookupState?.data?.tasksTemplates[roomTypeId] || []);
+		if (roomTypeId && lookupState?.tasksTemplates) {
+			setTaskTemplates(lookupState?.tasksTemplates[roomTypeId] || []);
 		}
-	}, [roomTypeId, lookupState?.data?.tasksTemplates]);
+	}, [roomTypeId, lookupState?.tasksTemplates]);
 
 	return (
 		<Form

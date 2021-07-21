@@ -55,7 +55,7 @@ export const HouseholdRoom = memo((props: IHouseholdRoomProps) => {
 				label="Room Type"
 				keyValueProps={{ id: 'name' }}
 				value={formData.roomTypeId}
-				items={lookupState?.data ? Object.values(lookupState?.data?.roomTypes).map(({ id, name }) => ({ id, name })) : []}
+				items={Object.values(lookupState?.roomTypes).map(({ id, name }) => ({ id, name })) }
 			/>
 			<TextInput
 				type="text"

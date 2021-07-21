@@ -1,17 +1,19 @@
 import { StateCreator, UseStore } from 'zustand';
 
-import { SortDirections } from '@xapp/shared/types';
+import { SortDirections, ILookup } from '@xapp/shared/types';
 import { IAuthState, ApiCallStatus, createStore, setError, setLoading, setSuccess } from '@xapp/state/shared';
 
 import { LookupStore } from './LookupStore';
 import { ILookupState } from './ILookupState';
 
+const data = {} as ILookup;
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createLookup: StateCreator<ILookupState> = (set, get, api) => ({
 	store: null,
 	status: ApiCallStatus.Idle,
-	data: null,
 	error: null,
+	...data,
 	sortBy: { id: SortDirections.ASC },
 	init(props: IAuthState): Promise<void> {
 		return new Promise((resolve) => {
@@ -32,7 +34,7 @@ export const createLookup: StateCreator<ILookupState> = (set, get, api) => ({
 		try {
 			const data = await store.read();
 
-			setSuccess(set)({ data });
+			setSuccess(set)(data);
 		}
 		catch (error) {
 			setError(set)(error);

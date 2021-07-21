@@ -141,7 +141,7 @@ const HouseholdPage = memo(() => {
 				</div>
 				<div>
 					<b>Rooms</b>
-					<div>{lookupStore.data && household?.rooms?.map(renderRoomsList)}</div>
+					<div>{lookupStore.roomTypes && household?.rooms?.map(renderRoomsList)}</div>
 				</div>
 			</HouseholdItem>
 		);
@@ -154,7 +154,7 @@ const HouseholdPage = memo(() => {
 	function renderRoomsList({ id, householdId, roomTypeId, customName }: HouseholdRoomOutput) {
 		return (
 			<HouseholdItemInfo key={id}>
-				<span>{customName || lookupStore.data?.roomTypes[roomTypeId].name}</span>
+				<span>{customName || lookupStore.roomTypes?.[roomTypeId].name}</span>
 				<Dropdown hideChevron={true} trigger={<HouseholdIcon icon={ic_delete} />}>
 					{(onClose) => (
 						<ActionConfirm>

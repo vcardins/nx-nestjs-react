@@ -88,7 +88,7 @@ export abstract class BaseService<T extends IBaseEntity> implements IBaseService
 
 	async findById(id: IdType, options?: FindOneOptions): Promise<T> {
 		try {
-			return this.repository.findOne(id, options);
+			return await this.repository.findOne(id, options);
 		}
 		catch (error) {
 			throw new NotFoundException(error);
@@ -119,7 +119,7 @@ export abstract class BaseService<T extends IBaseEntity> implements IBaseService
 	}
 
 	// ps: number, pn: number, filter: FindManyOptions<T>
-	public async findAndCount(options: IPaginationQuery = {}): Promise<IFindAndCountResult<T> | T[]>{
+	public async findAndCount(options: IPaginationQuery, relations?: Record<string, string>): Promise<IFindAndCountResult<T> | T[]>{
 		const { sortBy, filter, pageNumber, pageSize } = options || {};
 
 		const isPaginated = pageSize > 0 && pageNumber > 0;
@@ -127,7 +127,10 @@ export abstract class BaseService<T extends IBaseEntity> implements IBaseService
 
 		let qb = this.queryBuilder || this.createQueryBuilder();
 
-		qb = qb.skip(skip).take(pageSize).cache(this.cache.find);
+		qb = qb
+			.skip(skip)
+			.take(pageSize)
+			.cache(this.cache.find);
 
 		if (sortBy) {
 			Object.keys(sortBy).forEach((direction) => {
@@ -139,8 +142,14 @@ export abstract class BaseService<T extends IBaseEntity> implements IBaseService
 			qb = qb.where(filter);
 		}
 
+		if (relations) {
+			Object.keys(relations).forEach((relation) => {
+				qb.leftJoinAndSelect(relations[relation], relation);
+			});
+		}
+
 		if (!isPaginated) {
-			return await qb.getMany();
+			return qb.getMany();
 		}
 
 		const [data, total] = await qb.getManyAndCount();
@@ -153,6 +162,7 @@ export abstract class BaseService<T extends IBaseEntity> implements IBaseService
 			pageNumber,
 		};
 	}
+
 	public async map(object: T | Partial<T>): Promise<Partial<T>> {
 		return this.mapper.map(this.modelName, object as any);
 	}

@@ -5,3 +5,5 @@ export class TaskTemplateOutput extends TaskTemplateInput {
 	roomTypeId: number;
 	frequencyId: number;
 }
+
+export type TaskTemplateOutputMapped = Record<number, TaskTemplateOutput[]>;

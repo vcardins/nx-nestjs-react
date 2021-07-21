@@ -12,7 +12,7 @@ import { TaskTemplate } from './entities/task_template.entity';
 export class TaskTemplateService extends BaseService<TaskTemplate> {
 	items: TaskTemplate[] = [];
 
-	static modelName = 'tasks';
+	static modelName = 'taskTemplate';
 
 	constructor(
 		@InjectRepository(TaskTemplate) protected readonly repository: Repository<TaskTemplate>,
@@ -26,8 +26,13 @@ export class TaskTemplateService extends BaseService<TaskTemplate> {
 		return plainToClass(TaskTemplateOutput, { ...template, roomTypeId: roomType.id, frequencyId: frequency.id });
 	}
 
+	public async findAndCount(options: IPaginationQuery = {}): Promise<IFindAndCountResult<TaskTemplate> | TaskTemplate[]>{
+		return super.findAndCount(options, { 'taskTemplate.roomType': 'room_type', 'taskTemplate.frequency': 'frequency' });
+	}
+
 	public async getAll(): Promise<TaskTemplateOutput[]> {
 		const items = await this.find({ relations: ['roomType', 'frequency'] });
+
 		return items.map(this.convert).sort((a, b) => {
 			if (a.roomTypeId > b.roomTypeId) return 1;
 			if (a.roomTypeId < b.roomTypeId) return -1;
@@ -50,18 +55,6 @@ export class TaskTemplateService extends BaseService<TaskTemplate> {
 		}, {} as Record<RoomTypes, TaskTemplateOutput[]>);
 	}
 
-	async findAndCount (options: IPaginationQuery): Promise<IFindAndCountResult<TaskTemplate> | TaskTemplate[]> {
-		this.queryBuilder = this.createQueryBuilder();
-
-		if (options.q) {
-			this.queryBuilder = this.queryBuilder.where(`${this.modelName}.name like :q or ${this.modelName}.name like :q or ${this.modelName}.id = :id`, {
-				q: `%${options.q}%`,
-				id: +options.q,
-			});
-		}
-
-		return super.findAndCount(options);
-	}
 
 	getTaskTemplateByName(name: string) {
 		const tasks = this.items.filter((group) => group.name === name);

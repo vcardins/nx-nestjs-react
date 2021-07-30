@@ -66,14 +66,12 @@ export const HouseholdTask = memo((props: IHouseholdTaskProps) => {
 			<Select
 				name="templateId"
 				label="Template"
-				keyValueProps={{ id: 'name' }}
 				value={formData.templateId}
 				items={taskTemplates.map(({ id, name }) => ({ id, name }))}
 			/>
 			<Select
 				name="frequencyId"
 				label="Frequency"
-				keyValueProps={{ id: 'name' }}
 				value={formData.frequencyId}
 				items={lookupState?.data ? Object.values(lookupState?.data?.frequencies).map(({ id, name }) => ({ id, name })) : []}
 			/>
@@ -104,7 +102,6 @@ export const HouseholdTask = memo((props: IHouseholdTaskProps) => {
 			<Select
 				name="assignedUserId"
 				label="Assign To"
-				keyValueProps={{ id: 'name' }}
 				value={formData.assignedUserId}
 				items={[]}
 			/>

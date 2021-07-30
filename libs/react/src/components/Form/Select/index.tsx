@@ -13,7 +13,7 @@ export interface ISelectField extends IHtmlField {
 	emptyValueLabel?: string | null;
 	items: IKeyValue[];
 	size?: number;
-	keyValueProps: Record<string, string>;
+	keyValueProps?: Record<string, string>;
 }
 
 function getOptions (keyValueProps: ISelectField['keyValueProps'], items: ISelectField['items'] = []) {
@@ -38,7 +38,8 @@ function getOptions (keyValueProps: ISelectField['keyValueProps'], items: ISelec
 }
 
 export function Select (props: ISelectField) {
-	const { id, name, label, value, items = [], keyValueProps, emptyValueLabel = 'Please select' } = props;
+	const { id, name, label, value, items = [], emptyValueLabel = 'Please select' } = props;
+	const keyValueProps = props.keyValueProps || { id: 'name' };
 	const allItems = !emptyValueLabel
 		? items
 		: [{ id: 0, name: emptyValueLabel } as IKeyValue].concat(items);

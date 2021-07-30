@@ -15,7 +15,7 @@ import {
 import {
 	Resources,
 	HouseholdOutput,
-	UserRoles,
+	AuthGroups,
 	HouseholdInvitationInput,
 	HouseholdInvitationOutput,
 	HouseholdInvitationAcceptance,
@@ -37,7 +37,7 @@ import { HouseholdService } from './household.service';
 import { HouseholdMemberService } from './household_member.service';
 import { HouseholdRoomService } from './household_room.service';
 
-const auth = getDefaultPermissions([UserRoles.Admin]);
+const auth = getDefaultPermissions(AuthGroups.User);
 
 const BaseController = baseAuthControllerFactory<Household>({
 	entity: Household,
@@ -61,7 +61,7 @@ export class HouseholdController extends BaseController {
 	}
 
 	@Post()
-	@Roles(...auth?.create?.roles)
+	@Roles(auth?.create?.roles)
 	// @Permissions(...auth?.create?.permissions)
 	@ApiBody({
 		type: HouseholdInput,
@@ -189,7 +189,7 @@ export class HouseholdController extends BaseController {
 	/*  ROOM */
 
 	@Post('room')
-	@Roles(...auth?.create?.roles)
+	@Roles(auth?.create?.roles)
 	// @Permissions(...auth?.create?.permissions)
 	@ApiBody({
 		type: HouseholdRoomInput,
@@ -213,7 +213,7 @@ export class HouseholdController extends BaseController {
 	}
 
 	@Delete('room/:id')
-	@Roles(...auth?.create?.roles)
+	@Roles(auth?.create?.roles)
 	// @Permissions(...auth?.create?.permissions)
 	@ApiBody({
 		type: HouseholdRoomInput,
@@ -236,7 +236,7 @@ export class HouseholdController extends BaseController {
 	}
 
 	@Patch('room/:id')
-	@Roles(...auth?.create?.roles)
+	@Roles(auth?.create?.roles)
 	// @Permissions(...auth?.create?.permissions)
 	@ApiBody({
 		type: HouseholdRoomInput,

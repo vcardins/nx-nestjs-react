@@ -6,17 +6,16 @@ import { ic_home } from 'react-icons-kit/md/ic_home';
 import { ic_security } from 'react-icons-kit/md/ic_security';
 /* eslint-enable camelcase */
 
-import {
-	IKeyedRoute, INavItem, IRoleWithPermissions,
-	NavItemTypes, PageKey, AuthRoles,
-} from '@xapp/shared/types';
+import { IKeyedRoute, INavItem, IRoleWithPermissions, NavItemTypes, PageKey } from '@xapp/shared/types';
 import { hasRoutePermission, generateRoutes } from '@xapp/shared/utils';
 
 import { pagesConfigs } from './pages/@config';
 
-export const routes = generateRoutes(pagesConfigs, AuthRoles.user);
+export const getRoutes = (userRoles: IRoleWithPermissions[]) =>
+	generateRoutes(pagesConfigs, userRoles);
 
 const getNavId = (key: string) => `nav-item-${key}`;
+
 export function getNavigation(routes: IKeyedRoute, userRoles: IRoleWithPermissions[]) {
 	const navigation: INavItem[] = [
 		{
@@ -86,20 +85,20 @@ export function getNavigation(routes: IKeyedRoute, userRoles: IRoleWithPermissio
 		},
 	];
 
-	return navigation.reduce((result: INavItem[], nav: INavItem) => {
-		if (nav?.route?.auth) {
-			if (hasRoutePermission(nav.route.auth, userRoles)) {
+	return navigation
+		.reduce((result: INavItem[], nav: INavItem) => {
+			if (nav?.route?.auth && hasRoutePermission(nav.route.auth, userRoles)) {
 				result.push(nav);
+			} else {
+				if (nav?.children) {
+					nav.children = nav.children.filter((childNav) => childNav?.route
+						? childNav?.route?.auth ? hasRoutePermission(childNav.route.auth, userRoles) : true
+						: false
+					);
+					result.push(nav);
+				}
 			}
-		} else {
-			if (nav?.children) {
-				nav.children = nav.children.filter((childNav) =>
-					childNav?.route?.auth ? hasRoutePermission(childNav.route.auth, userRoles) : true
-				);
-			}
-			result.push(nav);
-		}
 
-		return result;
-	}, []);
+			return result;
+		}, []);
 }

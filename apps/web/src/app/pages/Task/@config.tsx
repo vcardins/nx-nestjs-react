@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AuthRoles, IPageConfig, LayoutStyles, PageKey } from '@xapp/shared/types';
+import { AuthGroups, IPageConfig, LayoutStyles, PageKey } from '@xapp/shared/types';
 
 import Task from './Task';
 import TaskTemplate from './TaskTemplate';
@@ -15,7 +15,7 @@ export const TaskPageConfig: IPageConfig = {
 		{
 			key: PageKey.Task,
 			caseSensitive: true,
-			auth: AuthRoles.user,
+			auth: AuthGroups.User,
 			path: '/tasks',
 			element: <Task />,
 			title: 'Task',
@@ -23,7 +23,7 @@ export const TaskPageConfig: IPageConfig = {
 		{
 			key: PageKey.TaskTemplate,
 			caseSensitive: true,
-			auth: AuthRoles.admin,
+			auth: AuthGroups.Admin,
 			path: '/task-templates',
 			element: <TaskTemplate />,
 			title: 'Task Template',

@@ -14,7 +14,7 @@ import {
 import {
 	Resources,
 	HouseholdRoomOutput,
-	UserRoles,
+	AuthGroups,
 	HouseholdRoomInput,
 } from '@xapp/shared/types';
 import { getOperationId } from '@xapp/shared/utils';
@@ -24,7 +24,7 @@ import { Entity } from 'typeorm';
 import { HouseholdRoom } from './entities/household_room.entity';
 import { HouseholdRoomService } from './household_room.service';
 
-const auth = getDefaultPermissions([UserRoles.Admin]);
+const auth = getDefaultPermissions(AuthGroups.User);
 
 const BaseController = baseAuthControllerFactory<HouseholdRoom>({
 	entity: HouseholdRoom,
@@ -46,7 +46,7 @@ export class HouseholdRoomController extends BaseController {
 	}
 
 	@Post()
-	@Roles(...auth?.create?.roles)
+	@Roles(auth?.create?.roles)
 	// @Permissions(...auth?.create?.permissions)
 	@ApiBody({
 		type: HouseholdRoomInput,

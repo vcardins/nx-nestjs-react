@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IPageConfig, AuthRoles, LayoutStyles, PageKey } from '@xapp/shared/types';
+import { IPageConfig, AuthGroups, LayoutStyles, PageKey } from '@xapp/shared/types';
 
 import Admin from './Admin';
 // const element = React.lazy(() => import('./Admin'));
@@ -10,7 +10,7 @@ export const AdminPageConfig: IPageConfig = {
 		style: LayoutStyles.Viewport,
 		config: {},
 	},
-	auth: AuthRoles.admin,
+	auth: AuthGroups.Admin,
 	routes: [
 		{
 			key: PageKey.Admin,

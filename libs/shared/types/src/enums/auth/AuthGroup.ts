@@ -1,10 +1,8 @@
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { UserRoles } from './UserRoles';
 
-export const AuthRoles: Record<string, UserRoles[]> = {
-	admin    : [UserRoles.Admin],
-	editor    : [UserRoles.Admin, UserRoles.Editor],
-	user     : [UserRoles.Admin, UserRoles.Editor, UserRoles.User],
-	onlyGuest: [],
-	everyone: [null],
+export const AuthGroups: Record<string, UserRoles[]> = {
+	Admin: [UserRoles.Admin],
+	Editor: [UserRoles.Admin, UserRoles.Editor],
+	User: [UserRoles.Admin, UserRoles.User],
+	Guest: [],
 };

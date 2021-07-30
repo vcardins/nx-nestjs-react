@@ -2,14 +2,14 @@ import { Body, Controller, InternalServerErrorException, Post, Req, Response } f
 import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
 
 import { SocketGateway, baseAuthControllerFactory, ResourceGroup, getDefaultPermissions, ApiException, Roles, Permissions } from '@xapp/api/core';
-import { Resources, TaskOutput, TaskInput, UserRoles } from '@xapp/shared/types';
+import { Resources, TaskOutput, TaskInput, AuthGroups } from '@xapp/shared/types';
 import { getOperationId } from '@xapp/shared/utils';
 import { plainToClass } from 'class-transformer';
 import { Entity } from 'typeorm';
 import { Task } from './entities/task.entity';
 import { TaskService } from './task.service';
 
-const auth = getDefaultPermissions([UserRoles.Admin]);
+const auth = getDefaultPermissions(AuthGroups.User);
 
 const BaseController = baseAuthControllerFactory<Task>({
 	entity: Task,
@@ -31,7 +31,7 @@ export class TaskController extends BaseController {
 	}
 
 	@Post()
-	@Roles(...auth?.create?.roles)
+	@Roles(auth?.create?.roles)
 	@Permissions(...auth?.create?.permissions)
 	@ApiBody({
 		type: TaskInput,

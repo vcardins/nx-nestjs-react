@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IPageConfig, AuthRoles, LayoutStyles, PageKey } from '@xapp/shared/types';
+import { IPageConfig, AuthGroups, LayoutStyles, PageKey } from '@xapp/shared/types';
 import { appConfig } from '@xapp/shared/config';
 
 
@@ -12,7 +12,7 @@ export const SignInPageConfig: IPageConfig = {
 		style: LayoutStyles.Auth,
 		config: {},
 	},
-	auth: AuthRoles.onlyGuest,
+	auth: AuthGroups.Guest,
 	routes: [
 		{
 			key: PageKey.SignIn,

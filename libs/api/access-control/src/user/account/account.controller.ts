@@ -4,7 +4,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { plainToClass } from 'class-transformer';
 
 import { MessageOutput, Public, Roles, Permissions } from '@xapp/api/core';
-import { Operations, UserRoles } from '@xapp/shared/types';
+import { Operations, AuthGroups } from '@xapp/shared/types';
 
 import { SignUpInput } from './dto/signup.input';
 import { AccountOutput } from './dto/account.output';
@@ -63,7 +63,7 @@ Returns a JSON Web Token that can be used for authenticated requests.`,
 	}
 
 	@ApiBearerAuth()
-	@Roles(UserRoles.Admin)
+	@Roles(AuthGroups.User)
 	@HttpCode(HttpStatus.OK)
 	@Patch('/profile')
 	@ApiResponse({
@@ -76,7 +76,7 @@ Returns a JSON Web Token that can be used for authenticated requests.`,
 	}
 
 	@ApiBearerAuth()
-	@Roles(UserRoles.Admin)
+	@Roles(AuthGroups.User)
 	@HttpCode(HttpStatus.OK)
 	@Patch('/change-password')
 	@ApiResponse({
@@ -142,7 +142,7 @@ Returns a JSON Web Token that can be used for authenticated requests.`,
 	}
 
 	@ApiBearerAuth()
-	@Roles(UserRoles.Admin)
+	@Roles(AuthGroups.User)
 	@HttpCode(HttpStatus.OK)
 	@Patch('/close')
 	@ApiResponse({
@@ -169,7 +169,7 @@ Returns a JSON Web Token that can be used for authenticated requests.`,
 	}
 
 	@ApiBearerAuth()
-	@Roles(UserRoles.Admin)
+	@Roles(AuthGroups.User)
 	@Permissions(Operations.Update)
 	@HttpCode(HttpStatus.OK)
 	@Post('/update')
@@ -186,7 +186,7 @@ Returns a JSON Web Token that can be used for authenticated requests.`,
 	}
 
 	@ApiBearerAuth()
-	@Roles(UserRoles.Admin)
+	@Roles(AuthGroups.User)
 	@Permissions(Operations.Update)
 	@HttpCode(HttpStatus.OK)
 	@ApiConsumes('multipart/form-data')
@@ -201,7 +201,7 @@ Returns a JSON Web Token that can be used for authenticated requests.`,
 	}
 
 	@ApiBearerAuth()
-	@Roles(UserRoles.Admin)
+	@Roles(AuthGroups.User)
 	@Permissions(Operations.Update)
 	@HttpCode(HttpStatus.OK)
 	@Delete('avatar')

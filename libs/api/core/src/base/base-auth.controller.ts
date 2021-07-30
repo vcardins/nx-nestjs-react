@@ -96,7 +96,7 @@ export function baseAuthControllerFactory<T extends IBaseEntity>(options: IBaseA
 		}
 
 		@Get('count')
-		@Roles(...auth?.count?.roles)
+		@Roles(auth?.count?.roles)
 		@Permissions(...auth?.count?.permissions)
 		@ApiBadRequestResponse({ type: ApiException })
 		@ApiOperation(getOperationId(Entity.name, 'Count'))
@@ -120,7 +120,7 @@ export function baseAuthControllerFactory<T extends IBaseEntity>(options: IBaseA
 		}
 
 		@Get() // 'pagination'
-		@Roles(...auth?.get?.roles)
+		@Roles(auth?.get?.roles)
 		@Permissions(...auth?.get?.permissions)
 		@ApiQuery({
 			name: 'pageSize',
@@ -176,12 +176,13 @@ export function baseAuthControllerFactory<T extends IBaseEntity>(options: IBaseA
 				const filter = query.filter ? JSON.parse(query.filter) : {};
 
 				if (this.beforePagination) {
-					await this.beforePagination(filter);
+					await this.beforePagination(filter, req.user?.id);
 				}
 
 				const isPaginated = pageSize > 0 && pageNumber > 0;
-
-				const result = await this._service.findAndCount({ ...query, filter });
+				const params = { ...query, filter };
+				console.log(params);
+				const result = await this._service.findAndCount(params);
 
 				if (!isPaginated) {
 					return response.send(result);
@@ -219,7 +220,7 @@ export function baseAuthControllerFactory<T extends IBaseEntity>(options: IBaseA
 		}
 
 		@Get(':id')
-		@Roles(...auth?.getById?.roles)
+		@Roles(auth?.getById?.roles)
 		@Permissions(...auth?.getById?.permissions)
 		@ApiParam({
 			name: 'id',
@@ -260,7 +261,7 @@ export function baseAuthControllerFactory<T extends IBaseEntity>(options: IBaseA
 		}
 
 		@Post()
-		@Roles(...auth?.create?.roles)
+		@Roles(auth?.create?.roles)
 		@Permissions(...auth?.create?.permissions)
 		@ApiBody({
 			type: EntityCreateInputT,
@@ -301,7 +302,7 @@ export function baseAuthControllerFactory<T extends IBaseEntity>(options: IBaseA
 		}
 
 		@Put(':id')
-		@Roles(...auth?.updateOrCreate?.roles)
+		@Roles(auth?.updateOrCreate?.roles)
 		@Permissions(...auth?.updateOrCreate?.permissions)
 		@ApiBody({
 			type: EntityUpdateInputT,
@@ -368,7 +369,7 @@ export function baseAuthControllerFactory<T extends IBaseEntity>(options: IBaseA
 		}
 
 		@Patch()
-		@Roles(...auth?.update?.roles)
+		@Roles(auth?.update?.roles)
 		@Permissions(...auth?.update?.permissions)
 		@ApiBody({
 			type: EntityUpdateInputT,
@@ -399,7 +400,7 @@ export function baseAuthControllerFactory<T extends IBaseEntity>(options: IBaseA
 		}
 
 		@Delete(':id')
-		@Roles(...auth?.delete?.roles)
+		@Roles(auth?.delete?.roles)
 		@Permissions(...auth?.delete?.permissions)
 		@ApiParam({
 			name: 'id',
@@ -429,17 +430,17 @@ export function baseAuthControllerFactory<T extends IBaseEntity>(options: IBaseA
 
 		protected beforeCount?(): Promise<void>
 		protected afterCount?(count: number): Promise<void>
-		protected beforePagination?(filter: any): Promise<void>
+		protected beforePagination?(filter: any, userId?: number): Promise<void>
 		protected afterPagination?(filter: any, data: { data: any, total: number }, mappedData?: { data: any, total: number }): Promise<void>
-		protected beforeGetById?(id: IdType): Promise<void>
+		protected beforeGetById?(id: IdType, userId?: number): Promise<void>
 		protected afterGetById?(id: IdType, data: any, mappedData?: any): Promise<void>
 		protected beforeCreate?(body: any, userId: number): Promise<void>
 		protected afterCreate?(body: any, data: any, mappedData?: any): Promise<void>
-		protected beforeUpdateOrCreate?(body: any): Promise<void>
+		protected beforeUpdateOrCreate?(body: any, userId?: number): Promise<void>
 		protected afterUpdateOrCreate?(body: any, data: any, mappedData?: any): Promise<void>
-		protected beforeUpdate?(body: any): Promise<void>
+		protected beforeUpdate?(body: any, userId?: number): Promise<void>
 		protected afterUpdate?(body: any, data: any): Promise<void>
-		protected beforeDelete?(id: IdType): Promise<void>
+		protected beforeDelete?(id: IdType, userId?: number): Promise<void>
 		protected afterDelete?(id: IdType, data: any): Promise<void>
 	}
 

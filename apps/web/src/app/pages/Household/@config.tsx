@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AuthRoles, IPageConfig, LayoutStyles, PageKey } from '@xapp/shared/types';
+import { AuthGroups, IPageConfig, LayoutStyles, PageKey } from '@xapp/shared/types';
 
 import Household from './Household';
 // const element = React.lazy(() => import('./Household'));
@@ -10,7 +10,7 @@ export const HouseholdPageConfig: IPageConfig = {
 		style: LayoutStyles.Viewport,
 		config: {},
 	},
-	auth: AuthRoles.user,
+	auth: AuthGroups.User,
 	routes: [
 		{
 			key: PageKey.Household,

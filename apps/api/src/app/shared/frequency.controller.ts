@@ -2,7 +2,7 @@ import { Controller } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
 import { SocketGateway, baseAuthControllerFactory, ResourceGroup, getDefaultPermissions } from '@xapp/api/core';
-import { Resources, FrequencyOutput, UserRoles, FrequencyInput } from '@xapp/shared/types';
+import { Resources, FrequencyOutput, AuthGroups, FrequencyInput } from '@xapp/shared/types';
 
 import { Frequency } from './entities/frequency.entity';
 import { FrequencyService } from './frequency.service';
@@ -11,7 +11,7 @@ const BaseController = baseAuthControllerFactory<Frequency>({
 	entity: Frequency,
 	entityOutput: FrequencyOutput,
 	entityCreateInput: FrequencyInput,
-	auth: getDefaultPermissions([UserRoles.Admin]),
+	auth: getDefaultPermissions(AuthGroups.Admin),
 });
 
 @ApiBearerAuth()

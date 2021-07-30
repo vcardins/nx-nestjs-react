@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AuthRoles, IPageConfig, LayoutStyles, PageKey } from '@xapp/shared/types';
+import { AuthGroups, IPageConfig, LayoutStyles, PageKey } from '@xapp/shared/types';
 import { appConfig } from '@xapp/shared/config';
 
 import ChangePassword from './ChangePassword';
@@ -11,7 +11,7 @@ export const ChangePasswordPageConfig: IPageConfig = {
 		style: LayoutStyles.Viewport,
 		config: {},
 	},
-	auth: AuthRoles.user,
+	auth: AuthGroups.User,
 	routes: [
 		{
 			key: PageKey.ChangePassword,

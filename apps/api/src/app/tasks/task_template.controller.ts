@@ -2,11 +2,11 @@ import { Controller, Get, Req, Response } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse } from '@nestjs/swagger';
 
 import { SocketGateway, baseAuthControllerFactory, ResourceGroup, getDefaultPermissions, Roles, Permissions, ApiException } from '@xapp/api/core';
-import { Resources, TaskTemplateOutput, UserRoles } from '@xapp/shared/types';
+import { Resources, TaskTemplateOutput, AuthGroups } from '@xapp/shared/types';
 import { TaskTemplate } from './entities/task_template.entity';
 import { TaskTemplateService } from './task_template.service';
 
-const auth = getDefaultPermissions([UserRoles.Admin]);
+const auth = getDefaultPermissions(AuthGroups.Admin);
 
 const BaseController = baseAuthControllerFactory<TaskTemplate>({
 	entity: TaskTemplate,
@@ -26,7 +26,7 @@ export class TaskTemplateController extends BaseController {
 	}
 
 	@Get()
-	@Roles(...auth?.get?.roles)
+	@Roles(auth?.get?.roles)
 	@Permissions(...auth?.get?.permissions)
 	@ApiOkResponse({
 		type: TaskTemplateOutput,

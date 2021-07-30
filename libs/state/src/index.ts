@@ -4,7 +4,7 @@ import { INotifier, IAppConfig } from '@xapp/shared/types';
 import { createStore, namespace, Namespaces, IAuthState } from '@xapp/state/shared';
 import { createTodo }  from '@xapp/state/todo';
 import { createAuth } from '@xapp/state/auth';
-import { createLookup } from '@xapp/state/global';
+import { createLookup, createSettings } from '@xapp/state/global';
 import { createAccount } from '@xapp/state/account';
 import { createHousehold } from '@xapp/state/household';
 import { createTask } from '@xapp/state/task';
@@ -17,6 +17,7 @@ export type AppState = {
 	auth: ReturnType<typeof createAuth>;
 	household: ReturnType<typeof createHousehold>;
 	lookup: ReturnType<typeof createLookup>;
+	settings: ReturnType<typeof createSettings>;
 	todo: ReturnType<typeof createTodo>;
 	task: ReturnType<typeof createTask>;
 	taskTemplate: ReturnType<typeof createTaskTemplate>;
@@ -30,6 +31,7 @@ export const useAppStore: UseStore<AppState> = createStore((set, get, api) => {
 	const household = namespace(Namespaces.Household, createHousehold)(set, get, api);
 	const lookup = namespace(Namespaces.Lookup, createLookup)(set, get, api);
 	const todo = namespace(Namespaces.Todo, createTodo)(set, get, api);
+	const settings = namespace(Namespaces.Settings, createSettings)(set, get, api);
 	const task = namespace(Namespaces.Task, createTask)(set, get, api);
 	const taskTemplate = namespace(Namespaces.TaskTemplate, createTaskTemplate)(set, get, api);
 
@@ -44,6 +46,7 @@ export const useAppStore: UseStore<AppState> = createStore((set, get, api) => {
 		await lookup.init(authState);
 		await todo.init(authState);
 		await task.init(authState);
+		await settings.init();
 		await taskTemplate.init(authState);
 	};
 
@@ -57,6 +60,7 @@ export const useAppStore: UseStore<AppState> = createStore((set, get, api) => {
 		account,
 		household,
 		reset: account.reset,
+		settings,
 		task,
 		taskTemplate,
 	};

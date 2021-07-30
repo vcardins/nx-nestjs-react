@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { ToastContainer, Slide } from 'react-toastify';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -13,11 +13,11 @@ import { getRoutes, getNavigation } from './config';
 import { globalStyle as GlobalStyle } from './styles';
 
 import { AppContextProvider, SocketContextProvider } from './context';
+import { HouseholdSelector } from './components';
 
 export const App = () => {
 	const dataStore = useAppStore();
-	const { user, onSignOut } = useMemo(() => dataStore.auth, [dataStore.auth]);
-	const lookupStore = useMemo(() => dataStore.lookup, [dataStore.lookup]);
+	const { user, onSignOut } = dataStore.auth;
 
 	const { routes, navigation } = useMemo(() => {
 		const routes = getRoutes(user?.roles);
@@ -28,32 +28,6 @@ export const App = () => {
 		};
 	}, [user?.roles]);
 
-	const handleHouseholdChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
-		const id = +e.target.value;
-		lookupStore.setActiveHousehold(id);
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	},[lookupStore.setActiveHousehold]);
-
-	const houseHoldSelect = useMemo(() => {
-		const options = lookupStore.households
-			? lookupStore.households.map(({ id, name }) => ({ id, name }))
-			: [];
-
-		if (!options.length) {
-			return null;
-		}
-
-		return (
-			<select
-				name="activeHousehold"
-				value={lookupStore.activeHousehold}
-				onChange={handleHouseholdChange}
-			>
-				{ options.map(({ id, name }) => (<option key={id} value={id}>{name}</option>)) }
-			</select>
-		);
-	}, [lookupStore.households, lookupStore.activeHousehold, handleHouseholdChange]);
-
 	return (
 		<AppProviders routes={routes}>
 			<GlobalStyle />
@@ -62,8 +36,16 @@ export const App = () => {
 					routes={routes}
 					user={user}
 					config={appConfig}
-					sideBar={<Menu items={navigation} />}
-					topBar={houseHoldSelect}
+					sideBar={
+						<Menu items={navigation} />
+					}
+					topBar={
+						<HouseholdSelector
+							items={dataStore.lookup.households}
+							activeHousehold={dataStore.settings.activeHousehold}
+							onActivateHousehold={dataStore.settings.setActiveHousehold}
+						/>
+					}
 					onSignOut={onSignOut}
 				/>
 			</Authorization>

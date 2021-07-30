@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react';
 import { IForgotPasswordInput } from '@xapp/shared/types';
-import { useStore } from '@xapp/state';
+import { useAppStore } from '@xapp/state';
 import { PageKey } from '@xapp/shared/types';
 
 import { validationSchema } from './schema';
@@ -15,7 +15,7 @@ const initialValues: IForgotPasswordInput = {
 
 const ForgotPasswordPage = memo(() => {
 	const { routes } = useContext(appContext);
-	const { forgotPassword } = useStore((state) => state.account);
+	const { forgotPassword } = useAppStore((state) => state.account);
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<IForgotPasswordInput>({
 		initialValues,

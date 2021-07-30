@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { FieldGroup, Form, TextInput, Button, Submit, useForm } from '@xapp/react';
 
 import { OAuthProvider, ISignInInput, PageKey } from '@xapp/shared/types';
-import { useStore } from '@xapp/state';
+import { useAppStore } from '@xapp/state';
 
 import { validationSchema } from './schema';
 import { appContext } from '../../../context';
@@ -22,7 +22,7 @@ const normalizePath = (path: string | string[]): string => (Array.isArray(path) 
 const SignInPage = memo(() => {
 	// const location = useLocation();
 	const { routes } = useContext(appContext);
-	const { onSignIn, getProviderUri } = useStore((state) => state.auth); // getOauthAccessToken
+	const { onSignIn, getProviderUri } = useAppStore((state) => state.auth); // getOauthAccessToken
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<ISignInInput>({
 		initialValues,
 		onSubmit: onSignIn,

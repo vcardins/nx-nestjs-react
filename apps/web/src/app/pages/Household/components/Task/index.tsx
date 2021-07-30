@@ -12,7 +12,7 @@ import {
 } from '@xapp/react';
 import { TaskInput, TaskOutput, TaskTemplateOutput } from '@xapp/shared/types';
 
-import { useStore } from '@xapp/state';
+import { useAppStore } from '@xapp/state';
 
 import { validationSchema } from './schema';
 
@@ -32,9 +32,9 @@ export const HouseholdTask = memo((props: IHouseholdTaskProps) => {
 		assignedUserId: null,
 	};
 	const formRef = useRef({ valid: false });
-	const lookupState = useStore((state) => state.lookup);
+	const lookupState = useAppStore((state) => state.lookup);
 	const [taskTemplates, setTaskTemplates] = useState<TaskTemplateOutput[]>([]);
-	const { save, error, clearError } = useStore((state) => state.task);
+	const { save, error, clearError } = useAppStore((state) => state.task);
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<TaskInput>({
 		initialValues,

@@ -23,7 +23,7 @@ import {
 	InlineEdit,
 } from '@xapp/react';
 
-import { useStore } from '@xapp/state';
+import { useAppStore } from '@xapp/state';
 import { TodoInput, TodoOutput } from '@xapp/shared/types';
 
 import { validationSchema } from './schema';
@@ -33,7 +33,7 @@ const dateFormat = 'MMM D, YYYY h:mm A';
 
 const TodoPage = memo(() => {
 	const formRef = useRef({ valid: false });
-	const { items, isApiReady, read, save, remove, setComplete, error, clearError } = useStore((state) => state.todo);
+	const { items, isApiReady, read, save, remove, setComplete, error, clearError } = useAppStore((state) => state.todo);
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<TodoInput>({
 		initialValues,

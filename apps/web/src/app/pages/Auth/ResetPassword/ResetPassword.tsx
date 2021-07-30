@@ -5,7 +5,7 @@ import { Page, Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react'
 import { IResetPasswordInput } from '@xapp/shared/types';
 
 import { validationSchema } from './schema';
-import { useStore } from '@xapp/state';
+import { useAppStore } from '@xapp/state';
 import { IRoutedPageProps } from '@xapp/shared/types';
 
 const initialValues: IResetPasswordInput = {
@@ -15,7 +15,7 @@ const initialValues: IResetPasswordInput = {
 };
 
 const ResetPasswordPage = memo((props: IRoutedPageProps) => {
-	const { resetPassword } = useStore((state) => state.account);
+	const { resetPassword } = useAppStore((state) => state.account);
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<IResetPasswordInput>({
 		initialValues,

@@ -1,7 +1,7 @@
 import React, { FC, Context, createContext, useEffect, useState, useRef, useMemo } from 'react'; // , Dispatch, useReducer
 
 import { IKeyedRoute, INavItem, IRoute } from '@xapp/shared/types';
-import { useStore } from '@xapp/state';
+import { useAppStore } from '@xapp/state';
 import { useNotifier } from '@xapp/react';
 import { appConfig } from '@xapp/shared/config';
 
@@ -28,11 +28,11 @@ interface IAppContextProviderProps {
 }
 
 const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: IAppContextProviderProps) => {
-	const { accessToken, authHeader } = useStore((state) => state.auth);
+	const { accessToken, authHeader } = useAppStore((state) => state.auth);
 
 	const [activeRoute, setActiveRoute] = useState(null);
 	const [navigation, setNavigation] = useState<INavItem[]>([]);
-	const dataStore = useStore();
+	const dataStore = useAppStore();
 	const notifier = useNotifier();
 
 	const ref = useRef(null);

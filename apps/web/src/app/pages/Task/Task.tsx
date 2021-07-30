@@ -20,14 +20,14 @@ import {
 } from '@xapp/react';
 import { TaskInput } from '@xapp/shared/types';
 
-import { useStore } from '@xapp/state';
+import { useAppStore } from '@xapp/state';
 
 import { validationSchema } from './schema';
 import { TaskList, TaskItem, TaskIcon, TaskItemInfo } from './components';
 
 const initialValues: TaskInput = {
 	name: '',
-	estimatedCompletionTime: null,
+	estimatedCompletionTime: 0,
 	notes: '',
 	templateId:  null,
 	frequencyId:  null,
@@ -36,7 +36,7 @@ const initialValues: TaskInput = {
 
 const TaskPage = memo(() => {
 	const formRef = useRef({ valid: false });
-	const { items, isApiReady, read, save, remove, error, clearError } = useStore((state) => state.task);
+	const { items, isApiReady, read, save, remove, error, clearError } = useAppStore((state) => state.task);
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<TaskInput>({
 		initialValues,

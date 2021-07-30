@@ -2,7 +2,7 @@ import React, { memo, useRef } from 'react';
 
 import { Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react';
 import { IVerifyPhoneNumberInput } from '@xapp/shared/types';
-import { useStore } from '@xapp/state';
+import { useAppStore } from '@xapp/state';
 
 import { validationSchema } from './schema';
 
@@ -11,7 +11,7 @@ const initialValues: IVerifyPhoneNumberInput = {
 };
 
 const VerifyMobilePage = memo(() => {
-	const { verifyPhoneNumber } = useStore((state) => state.account);
+	const { verifyPhoneNumber } = useAppStore((state) => state.account);
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<IVerifyPhoneNumberInput>({
 		initialValues,

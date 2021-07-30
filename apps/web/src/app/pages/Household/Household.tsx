@@ -15,7 +15,7 @@ import { ic_check } from 'react-icons-kit/md/ic_check';
 import { Page, Form, TextInput, FieldGroup, Submit, useForm, Button, Icon, InlineEdit, Dropdown } from '@xapp/react';
 import { HouseholdInput, HouseholdMemberOutput, HouseholdOutput, HouseholdRoomOutput } from '@xapp/shared/types';
 
-import { useStore } from '@xapp/state';
+import { useAppStore } from '@xapp/state';
 
 import { validationSchema } from './schema';
 import {
@@ -51,8 +51,8 @@ const HouseholdPage = memo(() => {
 		removeRoom,
 		error,
 		clearError,
-	} = useStore((state) => state.household);
-	const lookupStore = useStore((state) => state.lookup);
+	} = useAppStore((state) => state.household);
+	const lookupStore = useAppStore((state) => state.lookup);
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<HouseholdInput>({
 		initialValues,

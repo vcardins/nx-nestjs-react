@@ -24,7 +24,7 @@ export type AppState = {
 	reset: () => void;
 };
 
-export const useStore: UseStore<AppState> = createStore((set, get, api) => {
+export const useAppStore: UseStore<AppState> = createStore((set, get, api) => {
 	const account = namespace(Namespaces.Account, createAccount)(set, get, api);
 	const auth = namespace(Namespaces.Auth, createAuth)(set, get, api);
 	const household = namespace(Namespaces.Household, createHousehold)(set, get, api);

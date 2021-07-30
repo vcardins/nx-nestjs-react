@@ -8,7 +8,7 @@ import { useNavigate, useLocation, matchRoutes } from 'react-router-dom';
 import { appConfig } from '@xapp/shared/config';
 import { IRoute, IKeyedRoute, PageKey } from '@xapp/shared/types';
 import { hasRoutePermission } from '@xapp/shared/utils';
-import { useStore } from '@xapp/state';
+import { useAppStore } from '@xapp/state';
 
 interface IAuthorizationProps {
 	children: React.ReactElement;
@@ -39,7 +39,7 @@ interface IState {
 export const Authorization = ({ children, routes }: IAuthorizationProps) => {
 	const location = useLocation() as Location<IState>; // <{ redirectUrl?: string }>
 	const navigate = useNavigate();
-	const { user, isSessionValid, onSignOut } = useStore((state) => state.auth);
+	const { user, isSessionValid, onSignOut } = useAppStore((state) => state.auth);
 	const isPrivatePage = ![
 		appConfig.routes.signIn,
 		appConfig.routes.signUp,

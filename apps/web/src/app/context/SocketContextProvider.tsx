@@ -3,7 +3,7 @@ import { io, Socket } from 'socket.io-client';
 import { toast } from 'react-toastify';
 
 import { appConfig } from '@xapp/shared/config';
-import { useStore } from '@xapp/state';
+import { useAppStore } from '@xapp/state';
 
 type ISocketContext = Socket | null;
 
@@ -22,7 +22,7 @@ const SocketContextProvider: FC<ISocketContextProviderProps> = ({ children }: IS
 	// const [state, dispatch] = useReducer(mainReducer, initialState);
 	// The ref object is a generic container whose current property is mutable ...
 	// ... and can hold any value, similar to an instance property on a class
-	const { accessToken } = useStore((state) => state.auth);
+	const { accessToken } = useAppStore((state) => state.auth);
 	const [socket, setSocket] = useState<ReturnType<typeof io>>(null);
 
 	useEffect(() => {

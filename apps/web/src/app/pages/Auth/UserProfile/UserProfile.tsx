@@ -2,12 +2,12 @@ import React, { memo, useRef } from 'react';
 
 import { Form, TextInput, Page, Submit, FieldGroup, DatePicker, formatDate, useForm } from '@xapp/react';
 import { IUserProfileInput } from '@xapp/shared/types';
-import { useStore } from '@xapp/state';
+import { useAppStore } from '@xapp/state';
 
 import { validationSchema } from './schema';
 
 const UserProfilePage = memo(() => {
-	const { userInfo, updateProfile } = useStore((state) => state.account);
+	const { userInfo, updateProfile } = useAppStore((state) => state.account);
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<IUserProfileInput>(
 		{

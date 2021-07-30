@@ -11,7 +11,7 @@ import {
 } from '@xapp/react';
 import { HouseholdInvitationInput } from '@xapp/shared/types';
 
-import { useStore } from '@xapp/state';
+import { useAppStore } from '@xapp/state';
 
 import { validationSchema } from './schema';
 
@@ -24,7 +24,7 @@ export const HouseholdInvitation = memo((props: IHouseholdInvitationProps) => {
 	const { householdId, onClose } = props;
 	const initialValues: HouseholdInvitationInput = { email: '', firstName: '', householdId };
 	const formRef = useRef({ valid: false });
-	const { invite, error, clearError } = useStore((state) => state.household);
+	const { invite, error, clearError } = useAppStore((state) => state.household);
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<HouseholdInvitationInput>({
 		initialValues,

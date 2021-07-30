@@ -1,10 +1,10 @@
 import React, { memo, useState, useEffect } from 'react';
 import { parse } from 'query-string';
 
-import { useStore } from '@xapp/state';
+import { useAppStore } from '@xapp/state';
 
 const VerifyEmailPage = memo(() => {
-	const store = useStore((state) => state.account);
+	const store = useAppStore((state) => state.account);
 
 	const [submitting, setSubmitting] = useState(false);
 	const [, setSuccess] = useState(false);

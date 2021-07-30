@@ -20,7 +20,7 @@ import {
 } from '@xapp/react';
 import { TaskTemplateInput, TaskTemplateOutput } from '@xapp/shared/types';
 
-import { useStore } from '@xapp/state';
+import { useAppStore } from '@xapp/state';
 
 import { validationSchema } from './schema';
 import { TaskTemplateList, TaskTemplateItem, TaskTemplateItemInfo, TaskTemplateIcon } from './components/TaskTemplate';
@@ -35,8 +35,8 @@ const initialValues: TaskTemplateInput = {
 
 const TaskTemplatePage = memo(() => {
 	const formRef = useRef({ valid: false });
-	const { mappedItems, isApiReady, read, save, remove, error, clearError } = useStore((state) => state.taskTemplate);
-	const lookupStore = useStore((state) => state.lookup);
+	const { mappedItems, isApiReady, read, save, remove, error, clearError } = useAppStore((state) => state.taskTemplate);
+	const lookupStore = useAppStore((state) => state.lookup);
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<TaskTemplateInput>({
 		initialValues,

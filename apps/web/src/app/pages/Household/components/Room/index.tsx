@@ -12,7 +12,7 @@ import {
 } from '@xapp/react';
 import { HouseholdRoomInput, HouseholdRoomOutput } from '@xapp/shared/types';
 
-import { useStore } from '@xapp/state';
+import { useAppStore } from '@xapp/state';
 
 import { validationSchema } from './schema';
 
@@ -26,8 +26,8 @@ export const HouseholdRoom = memo((props: IHouseholdRoomProps) => {
 	const { householdId, onClose } = props;
 	const initialValues: HouseholdRoomInput = { customName: '', roomTypeId: undefined, householdId };
 	const formRef = useRef({ valid: false });
-	const lookupState = useStore((state) => state.lookup);
-	const { addRoom, error, clearError } = useStore((state) => state.household);
+	const lookupState = useAppStore((state) => state.lookup);
+	const { addRoom, error, clearError } = useAppStore((state) => state.household);
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<HouseholdRoomInput>({
 		initialValues,

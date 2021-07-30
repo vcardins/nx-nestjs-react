@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 import { Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react';
 import { HouseholdMemberSignup, PageKey } from '@xapp/shared/types';
-import { useStore } from '@xapp/state';
+import { useAppStore } from '@xapp/state';
 
 import { appContext } from '../../../context';
 import { validationSchema } from './schema';
@@ -25,8 +25,8 @@ const SignUpPage = memo(() => {
 	const invitationCode = params.get('invitationCode');
 
 	const { routes } = useContext(appContext);
-	const { signUp } = useStore((state) => state.account);
-	const { getInvitation, registerMember: signUpMember, invitation, error, store } = useStore((state) => state.household);
+	const { signUp } = useAppStore((state) => state.account);
+	const { getInvitation, registerMember: signUpMember, invitation, error, store } = useAppStore((state) => state.household);
 	const formRef = useRef({ valid: false });
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<HouseholdMemberSignup>({

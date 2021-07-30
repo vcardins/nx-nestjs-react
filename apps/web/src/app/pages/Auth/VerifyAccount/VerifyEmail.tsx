@@ -34,6 +34,7 @@ const VerifyEmailPage = memo(() => {
 		if (key) {
 			handleVerifyEmail(key as string);
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [store.verifyEmail, store.response.message]);
 
 	if (submitting) {

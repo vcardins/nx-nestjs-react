@@ -181,7 +181,6 @@ export function baseAuthControllerFactory<T extends IBaseEntity>(options: IBaseA
 
 				const isPaginated = pageSize > 0 && pageNumber > 0;
 				const params = { ...query, filter };
-				console.log(params);
 				const result = await this._service.findAndCount(params);
 
 				if (!isPaginated) {

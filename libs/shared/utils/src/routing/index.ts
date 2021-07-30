@@ -40,14 +40,13 @@ export function hasRoutePermission(authArr: UserRoles[], userRoles: IRoleWithPer
 function prepareRoutes(config: IPageConfig, allowedRoles: IRoleWithPermissions[] = []) {
 	return config.routes.reduce((result, route) => {
 		const auth = route.auth ? route.auth : (config.auth || []);
-		// const isAllowed = hasRoutePermission(auth, allowedRoles);
-		// if ( isAllowed ) {
+		const isAllowed = hasRoutePermission(auth, allowedRoles);
+
 		result[route.key] = {
 			...route,
 			layout: { ...defaultPageLayout, ...config.layout },
-			auth,
+			auth: isAllowed ? auth : null,
 		};
-		// }
 
 		return result;
 	}, {} as IKeyedRoute);

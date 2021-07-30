@@ -1,4 +1,4 @@
-import React, { FC, Context, createContext, useEffect, useState, useRef, useMemo } from 'react'; // , Dispatch, useReducer
+import React, { FC, Context, createContext, useEffect, useState, useRef, useMemo } from 'react';
 
 import { IKeyedRoute, INavItem, IRoute } from '@xapp/shared/types';
 import { useAppStore } from '@xapp/state';
@@ -74,8 +74,8 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 	]);
 
 	useEffect(() => {
-		if (dataStore.lookup.data) {
-			window.State = dataStore;
+		if (dataStore.lookup?.households?.length) {
+			Object.assign(window, { State: dataStore });
 		}
 	}, [dataStore.lookup.data, dataStore]);
 

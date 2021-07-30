@@ -4,4 +4,6 @@ import { LookupStore } from '.';
 
 export interface ILookupState extends
 	Omit<ICrudState<LookupStore>, 'save' | 'remove' | 'reset' | 'items'>,
-	ILookup {}
+	ILookup {
+	setActiveHousehold(activeHousehold: number): void;
+}

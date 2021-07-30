@@ -9,6 +9,8 @@ import { Household } from './entities/household.entity';
 import { HouseholdMember } from './entities/household_member.entity';
 import { MailService } from '@xapp/api/mail';
 import { UserService } from '@xapp/api/access-control';
+import { HouseholdOutput } from '@xapp/shared/types';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class HouseholdService extends BaseService<Household> {
@@ -28,6 +30,19 @@ export class HouseholdService extends BaseService<Household> {
 		return this.repository.findOne({
 			where: { name },
 		});
+	}
+
+	async getMemberHouseholds(memberId: number): Promise<HouseholdOutput[]> {
+		this.queryBuilder = this.createQueryBuilder();
+		this.queryBuilder = this.queryBuilder.leftJoinAndSelect(`${this.modelName}.members`, 'members');
+
+		this.queryBuilder = this.queryBuilder.where('members.user_id = :id', {
+			id: +memberId,
+		});
+
+		const items = await this.queryBuilder.getMany();
+
+		return items.map((item) => plainToClass(HouseholdOutput, item));
 	}
 
 	async findAndCount (options: IPaginationQuery): Promise<IFindAndCountResult<Household> | Household[]> {

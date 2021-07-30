@@ -6,7 +6,9 @@ import { IAuthState, ApiCallStatus, createStore, setError, setLoading, setSucces
 import { LookupStore } from './LookupStore';
 import { ILookupState } from './ILookupState';
 
-const data = {} as ILookup;
+const data = {
+	activeHousehold: 0,
+} as ILookup;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createLookup: StateCreator<ILookupState> = (set, get, api) => ({
@@ -22,6 +24,9 @@ export const createLookup: StateCreator<ILookupState> = (set, get, api) => ({
 			resolve();
 		});
 	},
+	setActiveHousehold(activeHousehold: number): void {
+		set({ activeHousehold });
+	},
 	async read() {
 		const { status, store } = get();
 
@@ -34,7 +39,9 @@ export const createLookup: StateCreator<ILookupState> = (set, get, api) => ({
 		try {
 			const data = await store.read();
 
-			setSuccess(set)(data);
+			const updatedData = { ...data, activeHousehold: data.households[0].id };
+
+			setSuccess(set)(updatedData);
 		}
 		catch (error) {
 			setError(set)(error);

@@ -1,28 +1,38 @@
 import { Injectable } from '@nestjs/common';
 
-import { OAuthProvider, UserRoles, AuthRoles, DateFormat, FrequencyOutput, HouseholdRoomOutput } from '@xapp/shared/types';
+import {
+	OAuthProvider,
+	UserRoles,
+	AuthGroups,
+	DateFormat,
+	FrequencyOutput,
+	HouseholdRoomOutput,
+	ILookup,
+} from '@xapp/shared/types';
 
 import { FrequencyService } from '../shared/frequency.service';
 import { RoomTypeService } from '../shared/room_type.service';
 import { TaskTemplateService } from '../tasks/task_template.service';
-import { LookupOutput } from './lookup.output';
+import { HouseholdService } from '../household/household.service';
 
 @Injectable()
 export class LookupService {
 	constructor(
+		protected readonly householdService: HouseholdService,
 		protected readonly frequencyService: FrequencyService,
 		protected readonly roomTypeService: RoomTypeService,
 		protected readonly taskTemplateService: TaskTemplateService,
 	) {}
 
-	async getAll(): Promise<LookupOutput> {
+	async getAll(userId: number): Promise<ILookup> {
 		const dateFormats = this.convertEnum(DateFormat);
 		const oAuthProviders = this.convertEnum(OAuthProvider);
-		const authRoles = this.convertEnum(AuthRoles);
+		const authRoles = this.convertEnum(AuthGroups);
 		const userRoles = this.convertEnum(UserRoles);
 		const frequencies = await this.frequencyService.getAllMapped<FrequencyOutput>();
 		const roomTypes = await this.roomTypeService.getAllMapped<HouseholdRoomOutput>();
 		const tasksTemplates = await this.taskTemplateService.getMappedValues();
+		const households = await this.householdService.getMemberHouseholds(userId);
 
 		return {
 			dateFormats,
@@ -32,6 +42,7 @@ export class LookupService {
 			frequencies,
 			roomTypes,
 			tasksTemplates,
+			households,
 		};
 	}
 

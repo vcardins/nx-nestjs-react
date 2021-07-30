@@ -28,8 +28,9 @@ export const HolyGrailLayout = (props: ILayoutProps) => {
 		config,
 		renderedRoutes,
 		// activeRoute,
-		userMenu,
-		sideMenu,
+		userBar,
+		sideBar,
+		topBar,
 		user,
 		onSignOut,
 	} = props;
@@ -68,9 +69,16 @@ export const HolyGrailLayout = (props: ILayoutProps) => {
 				<Header.Search id="header-search">
 					<input placeholder="Search..." />
 				</Header.Search>
-				<Header.Profile>
-					{ userMenu }
-				</Header.Profile>
+				{userBar && (
+					<Header.Profile>
+						{ userBar }
+					</Header.Profile>
+				)}
+				{topBar && (
+					<div>
+						{ topBar }
+					</div>
+				)}
 			</Header.Container>
 			<Sidenav.Container id="sidenav-container" data-sidenav-active={isSidenavActive}>
 				<Sidenav.Brand id="sidenav-brand">
@@ -96,7 +104,7 @@ export const HolyGrailLayout = (props: ILayoutProps) => {
 					</Profile.NameContainer>
 				</Sidenav.Profile>
 				<Sidenav.Menu id="sidenav-menu">
-					{ sideMenu }
+					{ sideBar }
 				</Sidenav.Menu>
 				<Sidenav.Footer id="sidenav-footer">
 					<a

@@ -6,8 +6,9 @@ export interface ILayoutProps {
 	config: IAppConfig;
 	renderedRoutes: React.ReactElement;
 	activeRoute: IRoute;
-	userMenu?: React.ReactElement;
-	sideMenu?: React.ReactElement;
+	userBar?: React.ReactElement;
+	sideBar?: React.ReactElement;
+	topBar?: React.ReactElement;
 	user: ISignedUserOutput;
 	onSignOut: () => Promise<void>;
 }

@@ -1,22 +1,58 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { ToastContainer, Slide } from 'react-toastify';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import { Layout, Menu } from '@xapp/react';
 import { appConfig, getTheme } from '@xapp/shared/config';
-import { useStore } from '@xapp/state';
+import { useAppStore } from '@xapp/state';
 import { IKeyedRoute, Themes } from '@xapp/shared/types';
 
 import { Authorization } from './Authorization';
-import { routes, getNavigation } from './config';
+import { getRoutes, getNavigation } from './config';
 import { globalStyle as GlobalStyle } from './styles';
 
 import { AppContextProvider, SocketContextProvider } from './context';
 
 export const App = () => {
-	const dataStore = useStore();
-	const { user, onSignOut } = dataStore.auth;
+	const dataStore = useAppStore();
+	const { user, onSignOut } = useMemo(() => dataStore.auth, [dataStore.auth]);
+	const lookupStore = useMemo(() => dataStore.lookup, [dataStore.lookup]);
+
+	const { routes, navigation } = useMemo(() => {
+		const routes = getRoutes(user?.roles);
+		const navigation = getNavigation(routes, user?.roles);
+		return {
+			routes,
+			navigation
+		};
+	}, [user?.roles]);
+
+	const handleHouseholdChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+		const id = +e.target.value;
+		lookupStore.setActiveHousehold(id);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	},[lookupStore.setActiveHousehold]);
+
+	const houseHoldSelect = useMemo(() => {
+		const options = lookupStore.households
+			? lookupStore.households.map(({ id, name }) => ({ id, name }))
+			: [];
+
+		if (!options.length) {
+			return null;
+		}
+
+		return (
+			<select
+				name="activeHousehold"
+				value={lookupStore.activeHousehold}
+				onChange={handleHouseholdChange}
+			>
+				{ options.map(({ id, name }) => (<option key={id} value={id}>{name}</option>)) }
+			</select>
+		);
+	}, [lookupStore.households, lookupStore.activeHousehold, handleHouseholdChange]);
 
 	return (
 		<AppProviders routes={routes}>
@@ -26,9 +62,8 @@ export const App = () => {
 					routes={routes}
 					user={user}
 					config={appConfig}
-					sideMenu={
-						<Menu items={getNavigation(routes, user?.roles)} />
-					}
+					sideBar={<Menu items={navigation} />}
+					topBar={houseHoldSelect}
 					onSignOut={onSignOut}
 				/>
 			</Authorization>
@@ -49,12 +84,11 @@ export const App = () => {
 }
 
 function AppProviders (props: { children: React.ReactNode; routes: IKeyedRoute }) {
-	const { children, routes } = props;
 	return (
 		<ThemeProvider theme={getTheme(appConfig.theme as Themes)}>
-			<AppContextProvider routes={routes}>
+			<AppContextProvider routes={props.routes}>
 				<SocketContextProvider>
-					<Router>{children}</Router>
+					<Router>{props.children}</Router>
 				</SocketContextProvider>
 			</AppContextProvider>
 		</ThemeProvider>

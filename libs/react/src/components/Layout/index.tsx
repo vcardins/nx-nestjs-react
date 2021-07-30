@@ -8,17 +8,19 @@ import { Layouts } from './layouts';
 interface ILayoutProps {
 	routes: IKeyedRoute;
 	user: ISignedUserOutput;
-	sideMenu: React.ReactElement;
+	sideBar?: React.ReactElement;
+	topBar?: React.ReactElement;
 	config: IAppConfig;
 	onSignOut: () => Promise<void>;
 }
 
 
-export const Layout = ({ config, routes, user, sideMenu, onSignOut }: ILayoutProps) => {
+export const Layout = (props: ILayoutProps) => {
+	const { config, routes, user, sideBar, topBar, onSignOut } = props;
 	const location = useLocation();
 
 	const routesValues = (Object.values(routes) || []) as RouteObject[];
-	const matchingRoute = matchRoutes(routesValues, location)[0]?.route as IRoute;
+	const matchingRoute = matchRoutes(routesValues, location)?.[0]?.route as IRoute;
 	const activeRoute = useMemo(() => matchingRoute, [matchingRoute]);
 
 	useEffect(() => {
@@ -43,8 +45,9 @@ export const Layout = ({ config, routes, user, sideMenu, onSignOut }: ILayoutPro
 			activeRoute={activeRoute}
 			user={user}
 			onSignOut={onSignOut}
-			sideMenu={sideMenu}
-			userMenu={<span/>}
+			sideBar={sideBar}
+			topBar={topBar}
+			userBar={<span/>}
 		/>
 	);
 };

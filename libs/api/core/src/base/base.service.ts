@@ -50,8 +50,8 @@ export abstract class BaseService<T extends IBaseEntity> implements IBaseService
 		return this.repository.createQueryBuilder(this.modelName);
 	}
 
-	public async getAllMapped<TOutput extends { id: number }>(): Promise<Record<number, TOutput>> {
-		const items = await this.find();
+	public async getAllMapped<TOutput extends { id: number }>(preItems?: T[]): Promise<Record<number, TOutput>> {
+		const items = preItems || await this.find();
 		const outputItems = items.map((item) => plainToClass(this.options.outputModel, item));
 
 		return outputItems.reduce((result, item) => {

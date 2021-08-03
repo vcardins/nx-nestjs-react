@@ -1,14 +1,9 @@
-export const validationSchema = {
+import { schemas, JSONSchema7Extended } from '@xapp/shared/config';
+
+export const validationSchema: JSONSchema7Extended = {
 	properties: {
-		oldPassword: {
-			maxLength: 128,
-			type: 'string',
-			minLength: 1,
-		},
-		newPassword: {
-			type: 'string',
-			maxLength: 128,
-		},
+		oldPassword: schemas.password,
+		newPassword: schemas.password,
 	},
 	type: 'object',
 	required: ['oldPassword', 'newPassword'],

@@ -5,29 +5,40 @@ import { IHtmlField } from '@xapp/shared/types';
 import { FieldSet } from '../FieldSet';
 import { StyledInput } from './styles';
 
-type InputTypes = 'text' | 'password' | 'hidden' | 'number';
+type InputTypes = 'text' | 'textarea' | 'password' | 'hidden' | 'number';
 
 interface ITextInput extends IHtmlField {
 	type? : InputTypes;
 	component?: string | Element;
 }
 
-export function TextInput (props: ITextInput) {
+export function TextInput (props: ITextInput): React.ReactElement<any> {
 	const { id, name, label, value, labelLess, type, component, disabled } = props;
+	const fieldProps = {
+		id: id || name,
+		name,
+		value,
+		type,
+		disabled,
+	} as Field.IProps<string>;
 
 	if (type === 'hidden') {
 		return (
-			<Field type="hidden" value={value} />
+			<Field type="hidden" {...fieldProps} />
+		);
+	}
+
+	if (type === 'textarea') {
+		return (
+			<textarea {...fieldProps}>
+				{value}
+			</textarea>
 		);
 	}
 
 	const inputElement = (
 		<StyledInput
-			id={id || name}
-			name={name}
-			value={value}
-			type={type}
-			disabled={disabled}
+			{...fieldProps}
 			component={component}
 		/>
 	);

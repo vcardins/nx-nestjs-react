@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { ic_delete } from 'react-icons-kit/md/ic_delete';
 import { ic_check } from 'react-icons-kit/md/ic_check';
 import { ic_check_box } from 'react-icons-kit/md/ic_check_box';
-import { ic_send } from 'react-icons-kit/md/ic_send';
+import { ic_save } from 'react-icons-kit/md/ic_save';
 import { ic_refresh } from 'react-icons-kit/md/ic_refresh';
 /* eslint-enable camelcase */
 
@@ -78,7 +78,7 @@ const TodoPage = memo(() => {
 				/>
 				<FieldGroup sided>
 					<Submit loading={submitting} success={success}>
-						<Icon icon={ic_send} />
+						<Icon icon={ic_save} />
 					</Submit>
 					<Button onClick={() => read()}>
 						<Icon icon={ic_refresh} />

@@ -5,6 +5,7 @@ import { appConfig } from '@xapp/shared/config';
 
 
 import UserProfile from './UserProfile';
+import UserSettings from './UserSettings';
 // const element = React.lazy(() => import('./UserProfile'));
 
 export const UserProfilePageConfig: IPageConfig = {
@@ -25,7 +26,7 @@ export const UserProfilePageConfig: IPageConfig = {
 			key: PageKey.UserSettings,
 			caseSensitive: true,
 			path: '/user-settings',
-			element: React.lazy(() => import('./UserSettings')),
+			element: <UserSettings />,
 			title: 'My Settings',
 		},
 	],

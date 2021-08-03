@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 /* eslint-disable camelcase */
 import { ic_delete } from 'react-icons-kit/md/ic_delete';
-import { ic_send } from 'react-icons-kit/md/ic_send';
+import { ic_save } from 'react-icons-kit/md/ic_save';
 import { ic_refresh } from 'react-icons-kit/md/ic_refresh';
 /* eslint-enable camelcase */
 
@@ -81,7 +81,7 @@ const TaskTemplatePage = memo(() => {
 				/>
 				<FieldGroup sided>
 					<Submit loading={submitting} success={success}>
-						<Icon icon={ic_send} />
+						<Icon icon={ic_save} />
 					</Submit>
 					<Button onClick={() => read?.()}>
 						<Icon icon={ic_refresh} />
@@ -123,7 +123,7 @@ const TaskTemplatePage = memo(() => {
 						name="invitation-email"
 						value={formData.invitation.email}
 					/>
-					<TaskTemplateIcon icon={ic_send} onClick={() => invite({ taskId: task.id, ...formData.invitation })} />
+					<TaskTemplateIcon icon={ic_save} onClick={() => invite({ taskId: task.id, ...formData.invitation })} />
 				</TaskTemplateItemInvite> */}
 			</TaskTemplateItem>
 		);

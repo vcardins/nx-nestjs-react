@@ -1,19 +1,10 @@
-export const validationSchema = {
+import { schemas, JSONSchema7Extended } from '@xapp/shared/config';
+
+export const validationSchema: JSONSchema7Extended = {
 	properties: {
-		verificationKey: {
-			maxLength: 128,
-			type: 'string',
-			minLength: 1,
-		},
-		confirmPassword: {
-			type: 'string',
-			maxLength: 128,
-		},
-		password: {
-			maxLength: 128,
-			type: 'string',
-			minLength: 1,
-		},
+		verificationKey: schemas.longString,
+		confirmPassword: schemas.password,
+		password: schemas.password,
 	},
 	type: 'object',
 	required: ['verificationKey', 'confirmPassword', 'password'],

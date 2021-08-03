@@ -1,14 +1,9 @@
-// import { JSONSchemaType } from 'ajv';
-// import { HouseholdRoomInput } from '@xapp/shared/types';
+import { schemas, JSONSchema7Extended } from '@xapp/shared/config';
 
-export const validationSchema/*: JSONSchemaType<HouseholdRoomInput>*/ = {
+export const validationSchema: JSONSchema7Extended = {
 	properties: {
-		householdId: {
-			type: 'integer',
-		},
-		roomTypeId: {
-			type: 'integer',
-		},
+		householdId: schemas.id,
+		roomTypeId: schemas.id,
 		customName: {
 			maxLength: 60,
 			type: 'string',

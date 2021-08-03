@@ -1,11 +1,8 @@
-export const validationSchema = {
+import { schemas, JSONSchema7Extended } from '@xapp/shared/config';
+
+export const validationSchema: JSONSchema7Extended = {
 	properties: {
-		email: {
-			maxLength: 254,
-			type: 'string',
-			format: 'email',
-			minLength: 1,
-		},
+		email: schemas.email,
 	},
 	type: 'object',
 	required: ['email'],

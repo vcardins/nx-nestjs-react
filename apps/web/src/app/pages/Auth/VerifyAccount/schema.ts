@@ -1,10 +1,8 @@
-export const validationSchema = {
+import { schemas, JSONSchema7Extended } from '@xapp/shared/config';
+
+export const validationSchema: JSONSchema7Extended = {
 	properties: {
-		code: {
-			maxLength: 10,
-			type: 'string',
-			minLength: 1,
-		},
+		code: schemas.code,
 	},
 	type: 'object',
 	required: ['code'],

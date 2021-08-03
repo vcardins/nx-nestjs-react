@@ -5,6 +5,7 @@ import { appConfig } from '@xapp/shared/config';
 
 
 import VerifyEmail from './VerifyEmail';
+import VerifyPhone from './VerifyPhone';
 // const element = React.lazy(() => import('./VerifyEmail'));
 
 export const VerifyAccountPageConfig: IPageConfig = {
@@ -25,7 +26,7 @@ export const VerifyAccountPageConfig: IPageConfig = {
 			key: PageKey.VerifyPhone,
 			caseSensitive: true,
 			path: `${appConfig.routes.verifyAccount}/phone`,
-			element: React.lazy(() => import('./VerifyPhone')),
+			element: <VerifyPhone/>,
 			title: 'Verify your account phone number',
 		},
 	],

@@ -1,9 +1,9 @@
-import React, { memo, useEffect, useRef } from 'react';
+import React, { memo, useEffect, useMemo, useRef } from 'react';
 import { toast } from 'react-toastify';
 
 /* eslint-disable camelcase */
 import { ic_delete } from 'react-icons-kit/md/ic_delete';
-import { ic_send } from 'react-icons-kit/md/ic_send';
+import { ic_save } from 'react-icons-kit/md/ic_save';
 import { ic_refresh } from 'react-icons-kit/md/ic_refresh';
 /* eslint-enable camelcase */
 
@@ -17,6 +17,7 @@ import {
 	Button,
 	Icon,
 	InlineEdit,
+	Select,
 } from '@xapp/react';
 import { TaskInput } from '@xapp/shared/types';
 
@@ -25,23 +26,55 @@ import { useAppStore } from '@xapp/state';
 import { validationSchema } from './schema';
 import { TaskList, TaskItem, TaskIcon, TaskItemInfo } from './components';
 
+
 const initialValues: TaskInput = {
 	name: '',
-	estimatedCompletionTime: 0,
 	notes: '',
-	templateId:  null,
-	frequencyId:  null,
-	householdRoomId:  null,
+	estimatedCompletionTime: 0,
+	templateId:  0,
+	frequencyId:  0,
+	householdRoomId:  0,
 };
 
 const TaskPage = memo(() => {
 	const formRef = useRef({ valid: false });
 	const { items, isApiReady, read, save, remove, error, clearError } = useAppStore((state) => state.task);
+	const { lookup: lookupState, settings: settingsState } = useAppStore();
 
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<TaskInput>({
 		initialValues,
+		validationSchema,
 		onSubmit: save,
 	});
+
+	const activeHousehold = useMemo(() =>
+		lookupState.households?.find(({ id }) => id === settingsState.activeHousehold),
+	[lookupState.households, settingsState.activeHousehold]);
+
+	const rooms = useMemo(() => activeHousehold?.rooms
+		? activeHousehold?.rooms.map(({ id, name, customName }) => ({ id, name: customName ?? name }))
+		: []
+	, [activeHousehold?.rooms]);
+
+	const selectedRoom = useMemo(() => (activeHousehold && formData.householdRoomId)
+		? activeHousehold?.rooms?.find(({ id }) => id === Number(formData.householdRoomId))
+		: null
+	, [activeHousehold, formData.householdRoomId]);
+
+	const templates = useMemo(() => selectedRoom?.roomTypeId
+		? lookupState?.tasksTemplates?.[selectedRoom?.roomTypeId]
+		: []
+	, [lookupState?.tasksTemplates, selectedRoom?.roomTypeId]);
+
+	const selectedTemplate = useMemo(() => (templates && formData.templateId)
+		? templates.find(({ id }) => id === Number(formData.templateId))
+		: null
+	, [formData.templateId, templates]);
+
+	const frequencies = useMemo(() => lookupState?.frequencies
+		? Object.values(lookupState?.frequencies).map(({ id, name }) => ({ id, name }))
+		: []
+	, [lookupState?.frequencies]);
 
 	useEffect(() => {
 		if (isApiReady) {
@@ -96,19 +129,19 @@ const TaskPage = memo(() => {
 				<Select
 					name="frequencyId"
 					label="Frequency"
-					value={selectedTemplate?.frequencyId || formData.frequencyId}
+					value={formData.frequencyId ?? selectedTemplate?.frequencyId}
 					items={frequencies}
 				/>
 				<TextInput
 					type="number"
 					label="Estimated Completion Time"
 					name="estimatedCompletionTime"
-					value={selectedTemplate?.estimatedTime || formData.estimatedCompletionTime}
+					value={formData.estimatedCompletionTime ?? selectedTemplate?.estimatedTime}
 					error={errors?.estimatedCompletionTime}
 				/>
 				<FieldGroup sided>
 					<Submit loading={submitting} success={success}>
-						<Icon icon={ic_send} />
+						<Icon icon={ic_save} />
 					</Submit>
 					<Button onClick={() => read()}>
 						<Icon icon={ic_refresh} />
@@ -133,7 +166,7 @@ const TaskPage = memo(() => {
 								name="invitation-email"
 								value={formData.invitation.email}
 							/>
-							<TaskIcon icon={ic_send} onClick={() => invite({ taskId: task.id, ...formData.invitation })} />
+							<TaskIcon icon={ic_save} onClick={() => invite({ taskId: task.id, ...formData.invitation })} />
 						</TaskItemInvite> */}
 					</TaskItem>
 				))}

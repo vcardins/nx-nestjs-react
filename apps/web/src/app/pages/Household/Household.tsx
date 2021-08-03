@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 /* eslint-disable camelcase */
 import { ic_delete } from 'react-icons-kit/md/ic_delete';
-import { ic_send } from 'react-icons-kit/md/ic_send';
+import { ic_save } from 'react-icons-kit/md/ic_save';
 import { ic_refresh } from 'react-icons-kit/md/ic_refresh';
 import { ic_home } from 'react-icons-kit/md/ic_home';
 import { ic_mail } from 'react-icons-kit/md/ic_mail';
@@ -95,7 +95,7 @@ const HouseholdPage = memo(() => {
 				/>
 				<FieldGroup sided>
 					<Submit loading={submitting} success={success}>
-						<Icon icon={ic_send} />
+						<Icon icon={ic_save} />
 					</Submit>
 					<Button onClick={() => read()}>
 						<Icon icon={ic_refresh} />

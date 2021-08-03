@@ -1,12 +1,14 @@
-export const validationSchema = {
+import { schemas, JSONSchema7Extended } from '@xapp/shared/config';
+
+export const validationSchema: JSONSchema7Extended = {
 	properties: {
-		name: {
-			maxLength: 254,
-			type: 'string',
-			minLength: 1,
-		},
+		name: schemas.mediumString,
+		estimatedCompletionTime: schemas.id,
+		templateId:  schemas.id,
+		frequencyId: schemas.id,
+		householdRoomId: schemas.id,
 	},
 	type: 'object',
-	required: ['name'],
-	description: 'A houselhold object',
+	required: ['householdRoomId', 'frequencyId', 'estimatedCompletionTime'],
+	description: 'A task object',
 };

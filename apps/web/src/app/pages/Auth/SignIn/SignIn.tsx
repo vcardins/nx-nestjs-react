@@ -25,6 +25,7 @@ const SignInPage = memo(() => {
 	const { onSignIn, getProviderUri } = useAppStore((state) => state.auth); // getOauthAccessToken
 	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<ISignInInput>({
 		initialValues,
+		validationSchema,
 		onSubmit: onSignIn,
 	});
 

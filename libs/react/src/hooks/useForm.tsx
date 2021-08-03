@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { JSONSchema7 } from 'json-schema';
 
 import { FieldValidationError } from '@xapp/shared/exceptions';
 
 export interface IUseFormProps<TInput> {
-	validationSchema?: any;
+	validationSchema?: JSONSchema7;
 	initialValues: TInput;
 	clearAfterSubmit?: boolean;
 	onSubmit: (data: TInput) => Promise<any>;
@@ -24,8 +25,16 @@ interface IUseFormResponse<TInput> {
 	) => void;
 }
 
+const isBoolean = (val: string | number | string) => {
+	const boolValuesRegex = /true|false/; // Add other /true|false|1|0|on|off/
+	if (val === undefined || val === null) return false;
+	return boolValuesRegex.test(val.toString().toLowerCase());
+};
+
+const isNumeric = (val: string | number | string) => !isNaN(+val);
+
 export function useForm<TInput>(props: IUseFormProps<TInput>, dependencies: string[] | number[] = []): IUseFormResponse<TInput> {
-	const { validationSchema, initialValues, clearAfterSubmit = true, onSubmit } = props;
+	const { initialValues, clearAfterSubmit = true, onSubmit } = props;
 	const navigate = useNavigate();
 
 	const [formData, setFormData] = useState<TInput>(initialValues);
@@ -36,26 +45,16 @@ export function useForm<TInput>(props: IUseFormProps<TInput>, dependencies: stri
 	const handleChange = (newData: TInput, event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
 		if (event) {
 			const { target: { name, value } } = event;
-			const type = validationSchema?.properties?.[name]?.type;
-			let updatedValue = null;
-			if (typeof type === 'string') {
-				switch (type) {
-					case 'integer':
-					case 'number':
-						updatedValue = Number(value);
-						break;
-					case 'boolean':
-						updatedValue = Boolean(value);
-						break;
-					default:
-						updatedValue = value;
-				}
+			let updatedValue: any;
+
+			if (isBoolean(value)) {
+				updatedValue = Boolean(value);
 			}
-			else if (Array.isArray(type)) {
-				const isNumeric = (type as string[]).some((item) => ['integer', 'number'].includes(item));
-				if (isNumeric) {
-					updatedValue = Number(value);
-				}
+			else if (isNumeric(value)) {
+				updatedValue = Number(value);
+			}
+			else {
+				updatedValue = value;
 			}
 
 			setFormData({ ...newData, [name]: updatedValue });

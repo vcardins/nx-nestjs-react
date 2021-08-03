@@ -1,24 +1,15 @@
-// import { JSONSchemaType } from 'ajv';
-// import { HouseholdRoomInput } from '@xapp/shared/types';
+import { schemas, JSONSchema7Extended } from '@xapp/shared/config';
 
-export const validationSchema/*: JSONSchemaType<HouseholdRoomInput>*/ = {
+export const validationSchema: JSONSchema7Extended = {
 	properties: {
-		email: {
-			maxLength: 255,
-			type: 'string',
-			minLength: 1,
-		},
+		email: schemas.email,
 		firstName: {
 			maxLength: 60,
 			type: 'string',
 			minLength: 1,
 		},
-		householdId: {
-			type: 'integer',
-		},
-		roomTypeId: {
-			type: 'integer',
-		},
+		householdId: schemas.id,
+		roomTypeId: schemas.id,
 	},
 	type: 'object',
 	required: ['email', 'firstName'],

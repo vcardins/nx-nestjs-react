@@ -33,7 +33,7 @@ const ChangePasswordPage = memo((props: IRoutedPageProps) => {
 					name="oldPassword"
 					autoComplete="true"
 					value={formData.oldPassword}
-					error={errors?.['oldPassword']}
+					error={errors?.oldPassword}
 				/>
 				<TextInput
 					type="password"
@@ -41,7 +41,7 @@ const ChangePasswordPage = memo((props: IRoutedPageProps) => {
 					name="newPassword"
 					autoComplete="true"
 					value={formData.newPassword}
-					error={errors?.['newPassword']}
+					error={errors?.newPassword}
 				/>
 				<FieldGroup sided>
 					<Submit loading={submitting} success={success} />

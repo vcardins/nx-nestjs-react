@@ -95,34 +95,34 @@ const SignUpPage = memo(() => {
 				name="email"
 				disabled={!!invitation}
 				value={formData.email}
-				error={errors?.['email']}
+				error={errors?.email}
 			/>
 			<TextInput
 				type="password"
 				label="Password"
 				name="password"
 				value={formData.password}
-				error={errors?.['password']}
+				error={errors?.password}
 			/>
 			<TextInput
 				type="password"
 				label="Confirm Password"
 				name="confirmPassword"
 				value={formData.confirmPassword}
-				error={errors?.['confirmPassword']}
+				error={errors?.confirmPassword}
 			/>
 			<FieldGroup sided>
 				<TextInput
 					label="First Name"
 					name="firstName"
 					value={formData.firstName}
-					error={errors?.['firstName']}
+					error={errors?.firstName}
 				/>
 				<TextInput
 					label="Last Name"
 					name="lastName"
 					value={formData.lastName}
-					error={errors?.['lastName']}
+					error={errors?.lastName}
 				/>
 			</FieldGroup>
 			<TextInput

@@ -65,13 +65,46 @@ const TaskPage = memo(() => {
 				onSubmit={handleSubmit}
 				schema={validationSchema}
 			>
+				<Select
+					name="householdRoomId"
+					label="Room"
+					value={formData.householdRoomId}
+					items={rooms}
+				/>
+				<Select
+					name="templateId"
+					label="Template"
+					value={formData.templateId}
+					items={templates}
+				/>
 				<TextInput
 					type="text"
 					label="Name"
 					name="name"
-					autoComplete="true"
+					placeholder={selectedTemplate?.name}
 					value={formData.name}
-					error={errors?.['name']}
+					error={errors?.name}
+				/>
+				<TextInput
+					type="textarea"
+					label="Notes"
+					name="notes"
+					autoComplete="true"
+					value={formData.notes}
+					error={errors?.notes}
+				/>
+				<Select
+					name="frequencyId"
+					label="Frequency"
+					value={selectedTemplate?.frequencyId || formData.frequencyId}
+					items={frequencies}
+				/>
+				<TextInput
+					type="number"
+					label="Estimated Completion Time"
+					name="estimatedCompletionTime"
+					value={selectedTemplate?.estimatedTime || formData.estimatedCompletionTime}
+					error={errors?.estimatedCompletionTime}
 				/>
 				<FieldGroup sided>
 					<Submit loading={submitting} success={success}>

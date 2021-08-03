@@ -28,7 +28,7 @@ const VerifyMobilePage = memo(() => {
 				name="code"
 				autoComplete="true"
 				value={formData.code}
-				error={errors?.['code']}
+				error={errors?.code}
 			/>
 			<FieldGroup sided>
 				<Submit loading={submitting} success={success} loadingText="Verifying">

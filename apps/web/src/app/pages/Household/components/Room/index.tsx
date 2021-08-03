@@ -62,7 +62,7 @@ export const HouseholdRoom = memo((props: IHouseholdRoomProps) => {
 				name="customName"
 				autoComplete="true"
 				value={formData.customName}
-				error={errors?.['customName']}
+				error={errors?.customName}
 			/>
 			<FieldGroup sided>
 				<Submit loading={submitting} success={success}>

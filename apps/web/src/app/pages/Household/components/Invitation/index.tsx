@@ -53,7 +53,7 @@ export const HouseholdInvitation = memo((props: IHouseholdInvitationProps) => {
 				name="email"
 				autoComplete="true"
 				value={formData.email}
-				error={errors?.['email']}
+				error={errors?.email}
 			/>
 			<TextInput
 				type="text"
@@ -61,7 +61,7 @@ export const HouseholdInvitation = memo((props: IHouseholdInvitationProps) => {
 				name="firstName"
 				autoComplete="true"
 				value={formData.firstName}
-				error={errors?.['firstName']}
+				error={errors?.firstName}
 			/>
 			<FieldGroup sided>
 				<Submit loading={submitting} success={success}>

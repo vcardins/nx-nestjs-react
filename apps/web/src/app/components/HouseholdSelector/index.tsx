@@ -13,7 +13,6 @@ export const HouseholdSelector = React.memo(({ items, activeHousehold, onActivat
 		onActivateHousehold(id);
 	};
 
-
 	useEffect(() => {
 		if (items?.[0]) {
 			onActivateHousehold(items[0].id);

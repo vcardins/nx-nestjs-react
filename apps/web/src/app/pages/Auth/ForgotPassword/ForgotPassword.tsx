@@ -36,7 +36,7 @@ const ForgotPasswordPage = memo(() => {
 				name="email"
 				autoComplete="true"
 				value={formData.email}
-				error={errors?.['email']}
+				error={errors?.email}
 			/>
 			<FieldGroup sided>
 				<Submit loading={submitting} success={success} />

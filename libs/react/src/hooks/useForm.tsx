@@ -4,51 +4,58 @@ import { useNavigate } from 'react-router-dom';
 
 import { FieldValidationError } from '@xapp/shared/exceptions';
 
-export interface IUseFormProps<T> {
+export interface IUseFormProps<TInput> {
 	validationSchema?: any;
-	initialValues: T;
+	initialValues: TInput;
 	clearAfterSubmit?: boolean;
-	onSubmit: (data: T) => Promise<any>;
+	onSubmit: (data: TInput) => Promise<any>;
 }
 
-interface IUseFormResponse<T> {
+interface IUseFormResponse<TInput> {
 	submitting: boolean;
 	success: boolean;
-	errors?: FieldValidationError['errors'];
-	formData: T;
+	errors?: FieldValidationError<TInput>['errors'];
+	formData: TInput;
 	handleSubmit: () => Promise<any>;
 	handleReset: () => void;
 	handleChange: (
-		data: T,
+		data: TInput,
 		event?: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | { target: { name: string; value: string }}
 	) => void;
 }
 
-export function useForm<T>(props: IUseFormProps<T>, dependencies: string[] | number[] = []): IUseFormResponse<T> {
+export function useForm<TInput>(props: IUseFormProps<TInput>, dependencies: string[] | number[] = []): IUseFormResponse<TInput> {
 	const { validationSchema, initialValues, clearAfterSubmit = true, onSubmit } = props;
 	const navigate = useNavigate();
 
-	const [formData, setFormData] = useState<T>(initialValues);
+	const [formData, setFormData] = useState<TInput>(initialValues);
 	const [submitting, setSubmitting] = useState(false);
 	const [success, setSuccess] = useState(false);
-	const [errors, setErrors] = useState<FieldValidationError['errors']>(new Set());
+	const [errors, setErrors] = useState<FieldValidationError<TInput>['errors']>({} as FieldValidationError<TInput>['errors']);
 
-	const handleChange = (newData: T, event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+	const handleChange = (newData: TInput, event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
 		if (event) {
 			const { target: { name, value } } = event;
 			const type = validationSchema?.properties?.[name]?.type;
 			let updatedValue = null;
-
-			switch (type) {
-				case 'integer':
-				case 'number':
+			if (typeof type === 'string') {
+				switch (type) {
+					case 'integer':
+					case 'number':
+						updatedValue = Number(value);
+						break;
+					case 'boolean':
+						updatedValue = Boolean(value);
+						break;
+					default:
+						updatedValue = value;
+				}
+			}
+			else if (Array.isArray(type)) {
+				const isNumeric = (type as string[]).some((item) => ['integer', 'number'].includes(item));
+				if (isNumeric) {
 					updatedValue = Number(value);
-					break;
-				case 'boolean':
-					updatedValue = Boolean(value);
-					break;
-				default:
-					updatedValue = value;
+				}
 			}
 
 			setFormData({ ...newData, [name]: updatedValue });
@@ -86,7 +93,7 @@ export function useForm<T>(props: IUseFormProps<T>, dependencies: string[] | num
 		finally {
 			setSubmitting(false);
 
-			if (clearAfterSubmit && !errors?.size) {
+			if (clearAfterSubmit && (errors && !Object.keys(errors).length)) {
 				setFormData(initialValues);
 			}
 		}

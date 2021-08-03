@@ -37,31 +37,31 @@ const UserProfilePage = memo(() => {
 					label="First Name"
 					name="firstName"
 					value={formData.firstName ?? ''}
-					error={errors?.['firstName']}
+					error={errors?.firstName}
 				/>
 				<TextInput
 					label="Last Name"
 					name="lastName"
 					value={formData.lastName ?? ''}
-					error={errors?.['lastName']}
+					error={errors?.lastName}
 				/>
 				<TextInput
 					label="Phone Number"
 					name="phoneNumber"
 					value={formData.phoneNumber ?? ''}
-					error={errors?.['phoneNumber']}
+					error={errors?.phoneNumber}
 				/>
 				<TextInput
 					label="Avatar"
 					name="avatar"
 					value={formData.pictureUrl ?? ''}
-					error={errors?.['pictureUrl']}
+					error={errors?.pictureUrl}
 				/>
 				<DatePicker
 					label="Date of Birth"
 					name="dateOfBirth"
 					value={formData.dateOfBirth ?? ''}
-					error={errors?.['dateOfBirth']}
+					error={errors?.dateOfBirth}
 					onDayChange={handleDayChange}
 				/>
 				<TextInput
@@ -69,7 +69,7 @@ const UserProfilePage = memo(() => {
 					label="Bio"
 					name="bio"
 					value={formData.bio ?? ''}
-					error={errors?.['bio']}
+					error={errors?.bio}
 				/>
 				<FieldGroup sided>
 					<Submit loading={submitting} success={success} />

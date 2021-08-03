@@ -47,14 +47,14 @@ const ResetPasswordPage = memo((props: IRoutedPageProps) => {
 					label="New Password"
 					name="password"
 					value={formData.password}
-					error={errors?.['password']}
+					error={errors?.password}
 				/>
 				<TextInput
 					type="password"
 					label="Confirm Password"
 					name="confirmPassword"
 					value={formData.confirmPassword}
-					error={errors?.['confirmPassword']}
+					error={errors?.confirmPassword}
 				/>
 				<FieldGroup sided>
 					<Submit loading={submitting} success={success} />

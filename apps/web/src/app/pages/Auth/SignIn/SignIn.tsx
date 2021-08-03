@@ -67,7 +67,7 @@ const SignInPage = memo(() => {
 				name="email"
 				autoComplete="true"
 				value={formData.email}
-				error={errors?.['email']}
+				error={errors?.email}
 			/>
 			<TextInput
 				type="password"
@@ -75,7 +75,7 @@ const SignInPage = memo(() => {
 				name="password"
 				autoComplete="true"
 				value={formData.password}
-				error={errors?.['password']}
+				error={errors?.password}
 			/>
 			{/* <Checkbox
 				name="remember"

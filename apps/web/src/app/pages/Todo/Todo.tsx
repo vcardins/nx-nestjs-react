@@ -74,7 +74,7 @@ const TodoPage = memo(() => {
 					name="title"
 					autoComplete="true"
 					value={formData.title}
-					error={errors?.['title']}
+					error={errors?.title}
 				/>
 				<FieldGroup sided>
 					<Submit loading={submitting} success={success}>

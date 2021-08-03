@@ -91,7 +91,7 @@ const HouseholdPage = memo(() => {
 					name="name"
 					autoComplete="true"
 					value={formData.name}
-					error={errors?.['name']}
+					error={errors?.name}
 				/>
 				<FieldGroup sided>
 					<Submit loading={submitting} success={success}>

@@ -81,7 +81,7 @@ export const HouseholdTask = memo((props: IHouseholdTaskProps) => {
 				name="name"
 				autoComplete="true"
 				value={formData.name || ''}
-				error={errors?.['name']}
+				error={errors?.name}
 			/>
 			<TextInput
 				type="number"
@@ -89,7 +89,7 @@ export const HouseholdTask = memo((props: IHouseholdTaskProps) => {
 				name="estimatedCompletionTime"
 				autoComplete="true"
 				value={formData.estimatedCompletionTime || ''}
-				error={errors?.['estimatedCompletionTime']}
+				error={errors?.estimatedCompletionTime}
 			/>
 			<TextInput
 				type="text"
@@ -97,7 +97,7 @@ export const HouseholdTask = memo((props: IHouseholdTaskProps) => {
 				name="notes"
 				autoComplete="true"
 				value={formData.notes}
-				error={errors?.['notes']}
+				error={errors?.notes}
 			/>
 			<Select
 				name="assignedUserId"

@@ -9,7 +9,6 @@ interface IExtendedIconProps extends IconProp {
 }
 
 const ExtendedIcon = styled(IconKit)<IExtendedIconProps>`
-	width: 12px;
 	line-height: 0;
 	${({ size }) => size && `font-size: ${size}px!important`};
 `;

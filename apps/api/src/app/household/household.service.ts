@@ -32,9 +32,10 @@ export class HouseholdService extends BaseService<Household> {
 		});
 	}
 
-	async getMemberHouseholds(memberId: number): Promise<HouseholdOutput[]> {
+	async getUserHouseholds(memberId: number): Promise<HouseholdOutput[]> {
 		this.queryBuilder = this.createQueryBuilder();
 		this.queryBuilder = this.queryBuilder.leftJoinAndSelect(`${this.modelName}.members`, 'members');
+		this.queryBuilder = this.queryBuilder.leftJoinAndSelect(`${this.modelName}.rooms`, 'rooms');
 
 		this.queryBuilder = this.queryBuilder.where('members.user_id = :id', {
 			id: +memberId,

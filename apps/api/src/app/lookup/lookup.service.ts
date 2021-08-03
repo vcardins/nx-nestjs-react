@@ -32,7 +32,7 @@ export class LookupService {
 		const frequencies = await this.frequencyService.getAllMapped<FrequencyOutput>();
 		const roomTypes = await this.roomTypeService.getAllMapped<HouseholdRoomOutput>();
 		const tasksTemplates = await this.taskTemplateService.getMappedValues();
-		const households = await this.householdService.getMemberHouseholds(userId);
+		const households = await this.householdService.getUserHouseholds(userId);
 
 		return {
 			dateFormats,

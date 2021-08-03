@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
@@ -33,23 +33,10 @@ export class TaskService extends BaseService<Task> {
 		return super.findAndCount(options);
 	}
 
-	getTaskByName(name: string) {
-		const tasks = this.items.filter((group) => group.name === name);
-
-		if (tasks.length) {
-			return tasks[0];
-		}
-
-		throw new NotFoundException(`Task with name "${name}" does not exists`);
-	}
-
 	async preloadAll() {
 		if (!this.items) {
 			const qb = this.createQueryBuilder();
-			const tasks = await qb
-				.getMany();
-
-
+			const tasks = await qb.getMany();
 			this.items = plainToClass(Task, tasks);
 
 			return this.items;

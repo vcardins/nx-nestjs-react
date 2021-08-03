@@ -1,4 +1,4 @@
-import { VerificationKeyPurpose } from '../enums';
+import { VerificationKeyPurpose } from '../../enums';
 
 export interface IUserAccount {
 	email: string;

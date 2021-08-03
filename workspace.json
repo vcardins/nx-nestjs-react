@@ -391,6 +391,8 @@
 						"outputPath": "dist/apps/web",
 						"index": "apps/web/src/index.html",
 						"main": "apps/web/src/main.tsx",
+						"optimization": true,
+						"statsJson": true,
 						"polyfills": "apps/web/src/polyfills.ts",
 						"tsConfig": "apps/web/tsconfig.app.json",
 						"assets": [

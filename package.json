@@ -5,6 +5,8 @@
 	"description": "Typescript driven monorepo boilerplate",
 	"license": "MIT",
 	"scripts": {
+		"analyze:web:prod": "nx run web:build --prod --stats-json",
+		"webpack-analyzer:web": "webpack-bundle-analyzer dist/apps/web/stats.json",
 		"build": "nx build",
 		"build:all": "run-s affected:prod build:libs build:apps",
 		"build:apps": "yarn ng build web --prod",
@@ -13,7 +15,7 @@
 		"nx": "nx",
 		"update": "nx migrate latest",
 		"clean": "./node_modules/.bin/del-cli dist client/docs database/*.db",
-		"docs": "./node_modules/.bin/typedoc --ignoreCompilerErrors --excludeExternals --out client/docs libs",
+		"docs": "./node_modules/.bin/typedoc --jsx --excludeExternals --out client/docs libs",
 		"help": "nx help",
 		"start": "nx serve",
 		"start:dev": "ng run web:serve",

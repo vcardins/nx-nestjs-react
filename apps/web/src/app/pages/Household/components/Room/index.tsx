@@ -29,7 +29,7 @@ export const HouseholdRoom = memo((props: IHouseholdRoomProps) => {
 	const lookupState = useAppStore((state) => state.lookup);
 	const { addRoom, error, clearError } = useAppStore((state) => state.household);
 
-	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<HouseholdRoomInput>({
+	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<HouseholdRoomInput>({
 		initialValues,
 		validationSchema,
 		onSubmit: addRoom,
@@ -46,7 +46,7 @@ export const HouseholdRoom = memo((props: IHouseholdRoomProps) => {
 		<Form
 			ref={formRef}
 			data={formData}
-			onChange={handleChange}
+			onChange={handleFieldChange}
 			onSubmit={handleSubmit}
 			schema={validationSchema}
 		>

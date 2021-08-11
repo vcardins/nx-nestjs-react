@@ -1,7 +1,9 @@
 import { Field } from 'react-jsonschema-form-validation';
 import styled from 'styled-components';
+import { fieldStyle } from '../styles';
 
 export const StyledSelect = styled(Field)`
+	${fieldStyle};
 	&:not([size]) {
 		display: block;
 		padding: 5px 10px;

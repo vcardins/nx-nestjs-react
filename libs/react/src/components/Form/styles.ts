@@ -1,8 +1,8 @@
 // @ts-ignore
 import { Field } from 'react-jsonschema-form-validation';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const StyledInput = styled(Field)`
+export const fieldStyle = css`
 	border: 1px solid ${({ theme }) => theme.colors.tertiary.lightGrey };
 	line-height: 1.25;
 	padding: 5px 10px;
@@ -12,4 +12,12 @@ export const StyledInput = styled(Field)`
 	&:hover {
 		border-color: ${({ theme }) => theme.colors.tertiary.grey };
 	}
+`;
+
+export const StyledInput = styled(Field)`
+	${fieldStyle}
+`;
+
+export const StyledTextarea = styled.textarea`
+	${fieldStyle}
 `;

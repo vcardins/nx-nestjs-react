@@ -3,7 +3,7 @@ import { Field } from 'react-jsonschema-form-validation';
 import { IHtmlField } from '@xapp/shared/types';
 
 import { FieldSet } from '../FieldSet';
-import { StyledInput } from './styles';
+import { StyledInput } from '../styles';
 
 type InputTypes = 'text' | 'textarea' | 'password' | 'hidden' | 'number';
 
@@ -25,14 +25,6 @@ export function TextInput (props: ITextInput): React.ReactElement<any> {
 	if (type === 'hidden') {
 		return (
 			<Field type="hidden" {...fieldProps} />
-		);
-	}
-
-	if (type === 'textarea') {
-		return (
-			<textarea {...fieldProps}>
-				{value}
-			</textarea>
 		);
 	}
 

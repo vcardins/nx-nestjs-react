@@ -17,7 +17,7 @@ const initialValues: IResetPasswordInput = {
 const ResetPasswordPage = memo((props: IRoutedPageProps) => {
 	const { resetPassword } = useAppStore((state) => state.account);
 
-	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<IResetPasswordInput>({
+	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<IResetPasswordInput>({
 		initialValues,
 		onSubmit: resetPassword,
 	});
@@ -37,7 +37,7 @@ const ResetPasswordPage = memo((props: IRoutedPageProps) => {
 			<Form
 				ref={formRef}
 				data={formData}
-				onChange={handleChange}
+				onChange={handleFieldChange}
 				onSubmit={handleSubmit}
 				schema={validationSchema}
 			>

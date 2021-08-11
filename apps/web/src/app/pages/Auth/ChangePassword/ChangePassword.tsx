@@ -9,7 +9,7 @@ import { validationSchema } from './schema';
 const ChangePasswordPage = memo((props: IRoutedPageProps) => {
 	const { changePassword } = useAppStore((state) => state.account);
 
-	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<IChangePasswordInput>({
+	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<IChangePasswordInput>({
 		initialValues: {
 			oldPassword: '',
 			newPassword: '',
@@ -23,7 +23,7 @@ const ChangePasswordPage = memo((props: IRoutedPageProps) => {
 			<Form
 				ref={formRef}
 				data={formData}
-				onChange={handleChange}
+				onChange={handleFieldChange}
 				onSubmit={handleSubmit}
 				schema={validationSchema}
 			>

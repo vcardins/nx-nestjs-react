@@ -41,7 +41,7 @@ export const HouseholdTask = memo((props: IHouseholdTaskProps) => {
 	const [taskTemplates, setTaskTemplates] = useState<TaskTemplateOutput[]>([]);
 	const { save, error, clearError } = useAppStore((state) => state.task);
 
-	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<TaskInput>({
+	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<TaskInput>({
 		initialValues,
 		validationSchema,
 		onSubmit: save,
@@ -64,7 +64,7 @@ export const HouseholdTask = memo((props: IHouseholdTaskProps) => {
 		<Form
 			ref={formRef}
 			data={formData}
-			onChange={handleChange}
+			onChange={handleFieldChange}
 			onSubmit={handleSubmit}
 			schema={validationSchema}
 		>

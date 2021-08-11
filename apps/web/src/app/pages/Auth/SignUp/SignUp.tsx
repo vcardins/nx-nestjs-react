@@ -29,7 +29,7 @@ const SignUpPage = memo(() => {
 	const { getInvitation, registerMember: signUpMember, invitation, error, store } = useAppStore((state) => state.household);
 	const formRef = useRef({ valid: false });
 
-	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<HouseholdMemberSignup>({
+	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<HouseholdMemberSignup>({
 		initialValues,
 		onSubmit: !invitationCode ? signUp : signUpMember,
 	});
@@ -42,7 +42,7 @@ const SignUpPage = memo(() => {
 
 	useEffect(() => {
 		if (invitation) {
-			handleChange({
+			handleFieldChange({
 				firstName: invitation?.invitee?.firstName,
 				lastName: '',
 				email: invitation?.invitee?.email ,
@@ -71,7 +71,7 @@ const SignUpPage = memo(() => {
 			ref={formRef}
 			data={formData}
 			disabled={submitting}
-			onChange={handleChange}
+			onChange={handleFieldChange}
 			onSubmit={handleSubmit}
 			schema={validationSchema}
 		>

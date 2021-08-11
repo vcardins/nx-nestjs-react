@@ -43,8 +43,8 @@ const ActionConfirmButtonWrapper = styled.div`
 const HouseholdPage = memo(() => {
 	const formRef = useRef({ valid: false });
 	const {
-		items = [],
 		isApiReady,
+		items,
 		read,
 		save,
 		remove,
@@ -54,16 +54,16 @@ const HouseholdPage = memo(() => {
 	} = useAppStore((state) => state.household);
 	const lookupStore = useAppStore((state) => state.lookup);
 
-	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<HouseholdInput>({
+	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<HouseholdInput>({
 		initialValues,
 		onSubmit: save,
 	});
 
 	useEffect(() => {
-		if (isApiReady) {
+		if (isApiReady && lookupStore.isApiReady) {
 			read();
 		}
-	}, [isApiReady, read]);
+	}, [isApiReady, lookupStore.isApiReady, read]);
 
 	useEffect(() => {
 		if (error) {
@@ -81,7 +81,7 @@ const HouseholdPage = memo(() => {
 			<Form
 				ref={formRef}
 				data={formData}
-				onChange={handleChange}
+				onChange={handleFieldChange}
 				onSubmit={handleSubmit}
 				schema={validationSchema}
 			>
@@ -173,7 +173,7 @@ const HouseholdPage = memo(() => {
 					)}
 				</Dropdown>
 				<Dropdown hideChevron={true} trigger={<HouseholdIcon icon={ic_check} />}>
-					{(onClose) => <HouseholdTask onClose={onClose} roomId={id} roomTypeId={roomTypeId} />}
+					{(onClose) => <HouseholdTask onClose={onClose} householdId={householdId} roomId={id} roomTypeId={roomTypeId} />}
 				</Dropdown>
 			</HouseholdItemInfo>
 		);

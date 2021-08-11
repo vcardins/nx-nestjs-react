@@ -35,7 +35,7 @@ const TodoPage = memo(() => {
 	const formRef = useRef({ valid: false });
 	const { items, isApiReady, read, save, remove, setComplete, error, clearError } = useAppStore((state) => state.todo);
 
-	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<TodoInput>({
+	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<TodoInput>({
 		initialValues,
 		onSubmit: async (data: TodoInput & { id?: number }) => {
 			save(data, data.id);
@@ -64,7 +64,7 @@ const TodoPage = memo(() => {
 			<Form
 				ref={formRef}
 				data={formData}
-				onChange={handleChange}
+				onChange={handleFieldChange}
 				onSubmit={handleSubmit}
 				schema={validationSchema}
 			>

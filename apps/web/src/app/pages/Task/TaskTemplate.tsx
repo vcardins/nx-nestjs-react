@@ -40,7 +40,7 @@ const TaskTemplatePage = memo(() => {
 	const { mappedItems, isApiReady, read, save, remove, error, clearError } = useAppStore((state) => state.taskTemplate);
 	const lookupStore = useAppStore((state) => state.lookup);
 
-	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<TaskTemplateInput>({
+	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<TaskTemplateInput>({
 		initialValues,
 		onSubmit: save,
 	});
@@ -69,7 +69,7 @@ const TaskTemplatePage = memo(() => {
 			<Form
 				ref={formRef}
 				data={formData}
-				onChange={handleChange}
+				onChange={handleFieldChange}
 				onSubmit={handleSubmit}
 				schema={validationSchema}
 			>

@@ -18,69 +18,73 @@ import {
 	Icon,
 	InlineEdit,
 	Select,
+	Checkbox,
 } from '@xapp/react';
 import { TaskInput } from '@xapp/shared/types';
-
 import { useAppStore } from '@xapp/state';
 
 import { validationSchema } from './schema';
 import { TaskList, TaskItem, TaskIcon, TaskItemInfo } from './components';
-
-
-const initialValues: TaskInput = {
-	name: '',
-	notes: '',
-	estimatedCompletionTime: 0,
-	templateId:  0,
-	frequencyId:  0,
-	householdRoomId:  0,
-};
+import { useHouseholdTask } from './useHouseholdTask';
 
 const TaskPage = memo(() => {
 	const formRef = useRef({ valid: false });
 	const { items, isApiReady, read, save, remove, error, clearError } = useAppStore((state) => state.task);
-	const { lookup: lookupState, settings: settingsState } = useAppStore();
+	const { lookup: lookupState, settings: settingsState, auth } = useAppStore();
 
-	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<TaskInput>({
+	const initialValues: TaskInput = {
+		name: '',
+		description: '',
+		estimatedCompletionTime: null,
+		householdId: settingsState.activeHousehold,
+		templateId:  null,
+		frequencyId: null,
+		householdRoomId: null,
+		isActive: true,
+		daysOfWeek: null,
+		rewardPoints: null,
+		assignedUserId: auth.user.id
+	};
+
+	const { formData, handleSubmit, handleFieldChange, handleFormChange, errors, submitting, success } = useForm<TaskInput>({
 		initialValues,
 		validationSchema,
 		onSubmit: save,
 	});
 
-	const activeHousehold = useMemo(() =>
-		lookupState.households?.find(({ id }) => id === settingsState.activeHousehold),
-	[lookupState.households, settingsState.activeHousehold]);
-
-	const rooms = useMemo(() => activeHousehold?.rooms
-		? activeHousehold?.rooms.map(({ id, name, customName }) => ({ id, name: customName ?? name }))
-		: []
-	, [activeHousehold?.rooms]);
-
-	const selectedRoom = useMemo(() => (activeHousehold && formData.householdRoomId)
-		? activeHousehold?.rooms?.find(({ id }) => id === Number(formData.householdRoomId))
-		: null
-	, [activeHousehold, formData.householdRoomId]);
-
-	const templates = useMemo(() => selectedRoom?.roomTypeId
-		? lookupState?.tasksTemplates?.[selectedRoom?.roomTypeId]
-		: []
-	, [lookupState?.tasksTemplates, selectedRoom?.roomTypeId]);
-
-	const selectedTemplate = useMemo(() => (templates && formData.templateId)
-		? templates.find(({ id }) => id === Number(formData.templateId))
-		: null
-	, [formData.templateId, templates]);
-
-	const frequencies = useMemo(() => lookupState?.frequencies
-		? Object.values(lookupState?.frequencies).map(({ id, name }) => ({ id, name }))
-		: []
-	, [lookupState?.frequencies]);
+	const { rooms, members, frequencies, templates, selectedTemplate } = useHouseholdTask({
+		userId: auth.user.id,
+		householdRoomId: formData.householdRoomId,
+		templateId: formData.templateId,
+		lookupState,
+		activeHouseholdId: settingsState.activeHousehold,
+	});
 
 	useEffect(() => {
-		if (isApiReady) {
-			read();
+		if (selectedTemplate?.id) {
+			handleFormChange({
+				frequencyId: selectedTemplate?.frequencyId,
+				estimatedCompletionTime: selectedTemplate?.estimatedCompletionTime,
+				rewardPoints: selectedTemplate?.rewardPoints,
+			});
 		}
-	}, [read, isApiReady]);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [selectedTemplate?.id]);
+
+	useEffect(() => {
+		if (settingsState.activeHousehold) {
+			handleFormChange({
+				householdId: settingsState.activeHousehold,
+			});
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [settingsState.activeHousehold]);
+
+	useEffect(() => {
+		if (isApiReady && settingsState.activeHousehold) {
+			read(null, settingsState.activeHousehold);
+		}
+	}, [read, isApiReady, settingsState.activeHousehold]);
 
 	useEffect(() => {
 		if (error) {
@@ -94,22 +98,24 @@ const TaskPage = memo(() => {
 			<Form
 				ref={formRef}
 				data={formData}
-				onChange={handleChange}
+				onChange={handleFieldChange}
 				onSubmit={handleSubmit}
 				schema={validationSchema}
 			>
 				<Select
 					name="householdRoomId"
 					label="Room"
-					value={formData.householdRoomId}
+					value={formData.householdRoomId ?? ''}
 					items={rooms}
 				/>
-				<Select
-					name="templateId"
-					label="Template"
-					value={formData.templateId}
-					items={templates}
-				/>
+				{!!formData.householdRoomId && (
+					<Select
+						name="templateId"
+						label="Template"
+						value={formData.templateId ?? ''}
+						items={templates}
+					/>
+				)}
 				<TextInput
 					type="text"
 					label="Name"
@@ -121,23 +127,43 @@ const TaskPage = memo(() => {
 				<TextInput
 					type="textarea"
 					label="Notes"
-					name="notes"
+					name="description"
+					component="textarea"
 					autoComplete="true"
-					value={formData.notes}
-					error={errors?.notes}
+					value={formData.description}
+					error={errors?.description}
 				/>
 				<Select
 					name="frequencyId"
 					label="Frequency"
-					value={formData.frequencyId ?? selectedTemplate?.frequencyId}
+					value={formData.frequencyId ?? selectedTemplate?.frequencyId ?? ''}
 					items={frequencies}
 				/>
 				<TextInput
 					type="number"
 					label="Estimated Completion Time"
 					name="estimatedCompletionTime"
-					value={formData.estimatedCompletionTime ?? selectedTemplate?.estimatedTime}
+					value={formData.estimatedCompletionTime ?? selectedTemplate?.estimatedCompletionTime ?? ''}
 					error={errors?.estimatedCompletionTime}
+				/>
+				<TextInput
+					type="number"
+					label="Reward Points"
+					name="rewardPoints"
+					value={formData.rewardPoints ?? selectedTemplate?.rewardPoints ?? ''}
+					error={errors?.rewardPoints}
+				/>
+				<Checkbox
+					label="Active"
+					name="isActive"
+					value={formData.isActive}
+					error={errors?.isActive}
+				/>
+				<Select
+					name="assignedUserId"
+					label="Assign To"
+					value={formData.assignedUserId ?? ''}
+					items={members}
 				/>
 				<FieldGroup sided>
 					<Submit loading={submitting} success={success}>

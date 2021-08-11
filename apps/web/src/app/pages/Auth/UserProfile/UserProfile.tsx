@@ -9,7 +9,7 @@ import { validationSchema } from './schema';
 const UserProfilePage = memo(() => {
 	const { userInfo, updateProfile } = useAppStore((state) => state.account);
 
-	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<IUserProfileInput>(
+	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<IUserProfileInput>(
 		{
 			initialValues: userInfo?.profile ?? ({} as IUserProfileInput),
 			clearAfterSubmit: false,
@@ -19,7 +19,7 @@ const UserProfilePage = memo(() => {
 	);
 
 	const handleDayChange = (dateOfBirth: Date) => {
-		handleChange(formData, { target: { name: 'dateOfBirth', value: formatDate(dateOfBirth) }});
+		handleFieldChange(formData, { target: { name: 'dateOfBirth', value: formatDate(dateOfBirth) }});
 	};
 
 	const formRef = useRef({ valid: false });
@@ -29,7 +29,7 @@ const UserProfilePage = memo(() => {
 			<Form
 				ref={formRef}
 				data={formData}
-				onChange={handleChange}
+				onChange={handleFieldChange}
 				onSubmit={handleSubmit}
 				schema={validationSchema}
 			>

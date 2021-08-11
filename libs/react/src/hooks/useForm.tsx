@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { JSONSchema7 } from 'json-schema';
 
 import { FieldValidationError } from '@xapp/shared/exceptions';
@@ -19,19 +19,21 @@ interface IUseFormResponse<TInput> {
 	formData: TInput;
 	handleSubmit: () => Promise<any>;
 	handleReset: () => void;
-	handleChange: (
+	handleFieldChange: (
 		data: TInput,
 		event?: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | { target: { name: string; value: string }}
 	) => void;
+
+	handleFormChange: (data: Partial<TInput>) => void;
 }
 
-const isBoolean = (val: string | number | string) => {
+const isBoolean = (val: string | number) => {
 	const boolValuesRegex = /true|false/; // Add other /true|false|1|0|on|off/
 	if (val === undefined || val === null) return false;
 	return boolValuesRegex.test(val.toString().toLowerCase());
 };
 
-const isNumeric = (val: string | number | string) => !isNaN(+val);
+const isNumeric = (val: string | number) => !isNaN(+val);
 
 export function useForm<TInput>(props: IUseFormProps<TInput>, dependencies: string[] | number[] = []): IUseFormResponse<TInput> {
 	const { initialValues, clearAfterSubmit = true, onSubmit } = props;
@@ -42,7 +44,10 @@ export function useForm<TInput>(props: IUseFormProps<TInput>, dependencies: stri
 	const [success, setSuccess] = useState(false);
 	const [errors, setErrors] = useState<FieldValidationError<TInput>['errors']>({} as FieldValidationError<TInput>['errors']);
 
-	const handleChange = (newData: TInput, event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+	const handleFieldChange = (
+		newData: TInput,
+		event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
+	) => {
 		if (event) {
 			const { target: { name, value } } = event;
 			let updatedValue: any;
@@ -61,6 +66,8 @@ export function useForm<TInput>(props: IUseFormProps<TInput>, dependencies: stri
 			setSuccess(false);
 		}
 	};
+
+	const handleFormChange = (newData: Partial<TInput>) => setFormData({ ...formData, ...newData });
 
 	const handleSubmit = async () => {
 		setSubmitting(true);
@@ -108,7 +115,8 @@ export function useForm<TInput>(props: IUseFormProps<TInput>, dependencies: stri
 
 	return {
 		formData,
-		handleChange,
+		handleFieldChange,
+		handleFormChange,
 		handleSubmit,
 		handleReset,
 		errors,

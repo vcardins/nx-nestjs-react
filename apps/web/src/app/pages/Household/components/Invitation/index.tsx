@@ -26,7 +26,7 @@ export const HouseholdInvitation = memo((props: IHouseholdInvitationProps) => {
 	const formRef = useRef({ valid: false });
 	const { invite, error, clearError } = useAppStore((state) => state.household);
 
-	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<HouseholdInvitationInput>({
+	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<HouseholdInvitationInput>({
 		initialValues,
 		validationSchema,
 		onSubmit: invite,
@@ -43,7 +43,7 @@ export const HouseholdInvitation = memo((props: IHouseholdInvitationProps) => {
 		<Form
 			ref={formRef}
 			data={formData}
-			onChange={handleChange}
+			onChange={handleFieldChange}
 			onSubmit={handleSubmit}
 			schema={validationSchema}
 		>

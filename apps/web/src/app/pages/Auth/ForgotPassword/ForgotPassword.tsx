@@ -17,7 +17,7 @@ const ForgotPasswordPage = memo(() => {
 	const { routes } = useContext(appContext);
 	const { forgotPassword } = useAppStore((state) => state.account);
 
-	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<IForgotPasswordInput>({
+	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<IForgotPasswordInput>({
 		initialValues,
 		onSubmit: forgotPassword,
 	});
@@ -29,7 +29,7 @@ const ForgotPasswordPage = memo(() => {
 	};
 
 	return (
-		<Form ref={formRef} data={formData} onChange={handleChange} onSubmit={handleSubmit} schema={validationSchema}>
+		<Form ref={formRef} data={formData} onChange={handleFieldChange} onSubmit={handleSubmit} schema={validationSchema}>
 			<TextInput
 				type="text"
 				label="Email"

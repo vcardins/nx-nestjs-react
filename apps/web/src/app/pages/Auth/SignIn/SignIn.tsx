@@ -23,7 +23,7 @@ const SignInPage = memo(() => {
 	// const location = useLocation();
 	const { routes } = useContext(appContext);
 	const { onSignIn, getProviderUri } = useAppStore((state) => state.auth); // getOauthAccessToken
-	const { formData, handleSubmit, handleChange, errors, submitting, success } = useForm<ISignInInput>({
+	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<ISignInInput>({
 		initialValues,
 		validationSchema,
 		onSubmit: onSignIn,
@@ -59,7 +59,7 @@ const SignInPage = memo(() => {
 		<Form
 			ref={formRef}
 			data={formData}
-			onChange={handleChange}
+			onChange={handleFieldChange}
 			onSubmit={handleSubmit}
 			schema={validationSchema}
 		>

@@ -1,3 +1,3 @@
 export interface IRestExceptionHandler {
-	( error: Error, statusCode?: number ): Promise<unknown>;
+	( error: Error, statusCode?: number ): Promise<unknown> | void;
 }

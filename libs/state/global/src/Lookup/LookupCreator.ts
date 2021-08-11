@@ -22,9 +22,6 @@ export const createLookup: StateCreator<ILookupState> = (set, get, api) => ({
 			resolve();
 		});
 	},
-	setActiveHousehold(activeHousehold: number): void {
-		set({ activeHousehold });
-	},
 	async read() {
 		const { status, store } = get();
 
@@ -37,7 +34,7 @@ export const createLookup: StateCreator<ILookupState> = (set, get, api) => ({
 		try {
 			const data = await store.read();
 
-			setSuccess(set)(data);
+			setSuccess(set)({ ...data, isApiReady: true });
 		}
 		catch (error) {
 			setError(set)(error);

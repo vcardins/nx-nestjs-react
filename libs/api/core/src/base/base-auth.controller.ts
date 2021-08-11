@@ -158,12 +158,12 @@ export function baseAuthControllerFactory<T extends IBaseEntity>(options: IBaseA
 		})
 		@ApiBadRequestResponse({ type: ApiException })
 		public async get(@Req() req,
+			@Response() response,
 			@Query('pageNumber', new ParseIntWithDefaultPipe(0)) pageNumber: number,
 			@Query('pageSize', new ParseIntWithDefaultPipe(0)) pageSize: number,
 			@Query('q') q?: string,
 			@Query('sortBy') sortBy?: string,
 			@Query('filter') rawFilter?: string,
-			@Response() response?,
 		) {
 			try {
 				const query: IPaginationQuery = {
@@ -229,7 +229,7 @@ export function baseAuthControllerFactory<T extends IBaseEntity>(options: IBaseA
 		@ApiOkResponse({ type: EntityOutput })
 		@ApiBadRequestResponse({ type: ApiException })
 		@ApiOperation(getOperationId(Entity.name, 'FindById'))
-		public async getById(@Param('id') id: string | number, @Response() response) {
+		public async getById(@Param('id') id: string | number, @Req() req, @Response() response) {
 			try {
 				if (this.beforeGetById) {
 					await this.beforeGetById(id);

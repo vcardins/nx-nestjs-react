@@ -7,11 +7,14 @@ import { RestMethod } from './RestMethod';
 import { IRestClientPayload } from './IRestClientPayload';
 import { IRestExceptionHandler } from './IRestExceptionHandler';
 
+const serverError = 'A server error has occurred';
+
 const errorMessages = {
 	206: 'Partial Content',
 	403: 'Access Forbidden',
 	404: 'Resource Not Found',
-	500: 'A server error has occurred',
+	500: serverError,
+	502: serverError,
 };
 
 interface IRestClientProps {
@@ -40,7 +43,7 @@ export class RestClient<TModel = any> {
 		this.authHeader = authHeader;
 		this.basePath = basePath;
 		this.idProp = idProp;
-		this.onHandleException = onHandleException;
+		this.onHandleException = onHandleException ?? ((error) => console.error(error));
 		this.onHandleUnauthorizedAccess = onHandleUnauthorizedAccess;
 	}
 
@@ -152,23 +155,21 @@ export class RestClient<TModel = any> {
 			body,
 		};
 
+		// try {
 		// eslint-disable-next-line no-undef
 		const promise = () => fetch(updatedUrl, request);
-
 		const response = await promise();
-
 		// window.location.href = `/error/${response.status}?url=${window.location.pathname}&msg=${response.statusText}`;
 		// throw new ValidationError('Error on communicating to the server. Please, check if the device is connected to the internet or contact the server administrator.');
 		const responseContentType = response.headers.get('content-type') || '';
-
 		switch (response.status) {
 			case 403:
 			case 404:
 			case 500:
+			case 502:
 			case 400:
 				// eslint-disable-next-line no-case-declarations
 				const error = await response.json();
-				// throw error; //new Error(error.message || errorMessages[response.status])
 				throw errorHandler?.(
 					new Error(error.message || errorMessages[response.status]),
 					response.status,

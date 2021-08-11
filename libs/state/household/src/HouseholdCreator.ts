@@ -86,7 +86,6 @@ export const createHousehold: StateCreator<IHouseholdState> =
 					setError(set)(error);
 				}
 			},
-
 			addRoom: async (data: HouseholdRoomInput) => {
 				const { items, store, status } = get();
 
@@ -112,7 +111,6 @@ export const createHousehold: StateCreator<IHouseholdState> =
 					setError(set)(error);
 				}
 			},
-
 			removeRoom: async (householdId: number, householdRoomId: number)  => {
 				const { items, store, status } = get();
 

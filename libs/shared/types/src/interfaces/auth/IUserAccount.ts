@@ -15,6 +15,7 @@ export interface IUserAccount {
 	dateAccountLocked: Date | null;
 	dateAccountClosed: Date | null;
 	joinedAt: Date;
+	phoneNumber?: string;
 	lastPasswordChanged: Date | null;
 	requiresPasswordReset: boolean;
 	lastFailedPasswordReset: Date | null;

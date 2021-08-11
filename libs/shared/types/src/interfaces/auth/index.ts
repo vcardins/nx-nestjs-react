@@ -16,6 +16,7 @@ export * from './IUserPreferences';
 export * from './IUserProfile';
 export * from './IUserProfileInput';
 export * from './IUserToken';
+export * from './IUserAccount';
 export * from './IVerifyAccountInput';
 export * from './IVerifyEmailInput';
 export * from './IVerifyPhoneNumberInput';

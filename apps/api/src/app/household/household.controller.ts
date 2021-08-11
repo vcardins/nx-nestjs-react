@@ -7,7 +7,7 @@ import {
 	baseAuthControllerFactory,
 	ResourceGroup,
 	getDefaultPermissions,
-	// Permissions,
+	Permissions,
 	ApiException,
 	Public,
 	Roles,
@@ -58,6 +58,28 @@ export class HouseholdController extends BaseController {
 		private readonly socketService: SocketGateway,
 	) {
 		super(service, socketService);
+	}
+
+	@Get()
+	@Roles(auth?.get?.roles)
+	@Permissions(...auth?.get?.permissions)
+	@ApiOkResponse({
+		type: HouseholdOutput,
+		isArray: true,
+	})
+	@ApiBadRequestResponse({ type: ApiException })
+	public async get(@Req() req: any, @Response() response?) {
+		try {
+			const userId = req.user?.id ? Number(req.user?.id) : null;
+
+			if (userId) {
+				const result = await this.service.getUserHouseholds(userId);
+				return response.send(result);
+			}
+		}
+		catch (e) {
+			throw new InternalServerErrorException(e);
+		}
 	}
 
 	@Post()

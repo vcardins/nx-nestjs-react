@@ -2,18 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectMapper } from 'nestjsx-automapper';
 import { Repository, getRepository } from 'typeorm';
+import { plainToClass } from 'class-transformer';
 
-import { BaseService, IFindAndCountResult, IPaginationQuery } from '@xapp/api/core';
+import { BaseService } from '@xapp/api/core';
 
 import { Household } from './entities/household.entity';
 import { HouseholdMember } from './entities/household_member.entity';
 import { MailService } from '@xapp/api/mail';
 import { UserService } from '@xapp/api/access-control';
 import { HouseholdOutput } from '@xapp/shared/types';
-import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class HouseholdService extends BaseService<Household> {
+	static modelName = 'household';
 	householdMembersRepository: Repository<HouseholdMember>;
 
 	constructor(
@@ -33,31 +34,33 @@ export class HouseholdService extends BaseService<Household> {
 	}
 
 	async getUserHouseholds(memberId: number): Promise<HouseholdOutput[]> {
-		this.queryBuilder = this.createQueryBuilder();
-		this.queryBuilder = this.queryBuilder.leftJoinAndSelect(`${this.modelName}.members`, 'members');
-		this.queryBuilder = this.queryBuilder.leftJoinAndSelect(`${this.modelName}.rooms`, 'rooms');
-
-		this.queryBuilder = this.queryBuilder.where('members.user_id = :id', {
-			id: +memberId,
-		});
-
+		this.queryBuilder = this
+			.createQueryBuilder()
+			.leftJoinAndSelect(`${this.modelName}.members`, 'members')
+			.leftJoinAndSelect(`${this.modelName}.rooms`, 'rooms')
+			.leftJoinAndSelect('members.user', 'user', 'members.userId = user.id')
+			.leftJoinAndSelect('rooms.roomType', 'roomType', 'rooms.roomTypeId = roomType.id')
+			.leftJoinAndSelect('user.userProfile', 'profile')
+			.where('members.user_id = :id', { id: +memberId })
+			.orderBy('rooms.custom_name', 'ASC')
+			.addOrderBy('roomType.name', 'ASC')
+			.select([
+				this.modelName,
+				'members.id',
+				'members.isDefault',
+				'members.type',
+				'members.userId',
+				'rooms',
+				'roomType.name',
+				'roomType.description',
+				'user.email',
+				'user.lastLogin',
+				'user.phoneNumber',
+				'profile.firstName',
+				'profile.lastName',
+			]);
 		const items = await this.queryBuilder.getMany();
 
-		return items.map((item) => plainToClass(HouseholdOutput, item));
-	}
-
-	async findAndCount (options: IPaginationQuery): Promise<IFindAndCountResult<Household> | Household[]> {
-		this.queryBuilder = this.createQueryBuilder();
-		this.queryBuilder = this.queryBuilder.leftJoinAndSelect(`${this.modelName}.rooms`, 'rooms');
-		this.queryBuilder = this.queryBuilder.leftJoinAndSelect(`${this.modelName}.members`, 'members');
-
-		if (options.q) {
-			this.queryBuilder = this.queryBuilder.where(`${this.modelName}.title like :q or ${this.modelName}.name like :q or ${this.modelName}.id = :id`, {
-				q: `%${options.q}%`,
-				id: +options.q,
-			});
-		}
-
-		return super.findAndCount(options);
+		return plainToClass(HouseholdOutput, items);
 	}
 }

@@ -1,4 +1,4 @@
-import { FrequencyOutput, HouseholdOutput, HouseholdRoomOutput, TaskTemplateOutput } from '..';
+import { FrequencyOutput, HouseholdOutput, RoomTypeOutput, TaskTemplateOutput } from '..';
 import { RoomTypes, UserRoles } from '../enums';
 
 export interface ILookup {
@@ -7,8 +7,7 @@ export interface ILookup {
 	authRoles: Record<string, UserRoles[]>;
 	userRoles: Record<string, string>;
 	frequencies: Record<number, FrequencyOutput>;
-	roomTypes: Record<number, HouseholdRoomOutput>;
+	roomTypes: Record<number, RoomTypeOutput>;
 	tasksTemplates: Record<RoomTypes, TaskTemplateOutput[]>;
 	households: HouseholdOutput[];
-	activeHousehold?: number;
 }

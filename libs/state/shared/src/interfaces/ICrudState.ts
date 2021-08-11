@@ -14,7 +14,7 @@ export interface ICrudState<
 	filters?: Filters<TFilter>;
 	isApiReady?: boolean;
 	sortBy?: QueryOptions['sortBy'];
-	read(filters?: Filters<TFilter>): Promise<void>;
+	read(filters?: Filters<TFilter>, id?: number): Promise<void>;
 	save(data: TInput, id?: number): Promise<void>;
 	remove(id: number): Promise<void>;
 }

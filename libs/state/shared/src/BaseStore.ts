@@ -32,7 +32,7 @@ export function createBaseStore<
 				resolve();
 			});
 		},
-		async read(filters?: TState['filters']) {
+		async read(filters?: TState['filters'], id?: number) {
 			const { status, store } = get();
 
 			if (status === ApiCallStatus.Loading) {
@@ -42,7 +42,7 @@ export function createBaseStore<
 			setLoading(set)();
 
 			try {
-				const items = await store?.readAll(filters);
+				const items = await store?.readAll(filters, id);
 				setSuccess<TState, { items: TOutput[] }>(set)({ items });
 			}
 			catch (error) {

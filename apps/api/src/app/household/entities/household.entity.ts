@@ -6,6 +6,7 @@ import { BaseEntity } from '@xapp/api/core';
 import { HouseholdRoom } from './household_room.entity';
 import { HouseholdMember } from './household_member.entity';
 import { HouseholdMemberInvitation } from './household_member_invitation.entity';
+import { Task } from '../../tasks/entities/task.entity';
 
 @Entity('household')
 export class Household extends BaseEntity {
@@ -17,6 +18,14 @@ export class Household extends BaseEntity {
 
 	@Column('varchar', { name: 'description', length: 255, nullable: true })
 	description?: string | null;
+
+	@OneToMany(
+		() => Task,
+		({ household }) => household,
+		{ eager: true, onDelete: 'CASCADE' },
+	)
+	@JoinColumn([{ name: 'household_id', referencedColumnName: 'id' }])
+	tasks: Task[];
 
 	@OneToMany(
 		() => HouseholdRoom,

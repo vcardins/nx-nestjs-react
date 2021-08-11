@@ -6,8 +6,8 @@ import {
 	AuthGroups,
 	DateFormat,
 	FrequencyOutput,
-	HouseholdRoomOutput,
 	ILookup,
+	RoomTypeOutput,
 } from '@xapp/shared/types';
 
 import { FrequencyService } from '../shared/frequency.service';
@@ -30,7 +30,7 @@ export class LookupService {
 		const authRoles = this.convertEnum(AuthGroups);
 		const userRoles = this.convertEnum(UserRoles);
 		const frequencies = await this.frequencyService.getAllMapped<FrequencyOutput>();
-		const roomTypes = await this.roomTypeService.getAllMapped<HouseholdRoomOutput>();
+		const roomTypes = await this.roomTypeService.getAllMapped<RoomTypeOutput>();
 		const tasksTemplates = await this.taskTemplateService.getMappedValues();
 		const households = await this.householdService.getUserHouseholds(userId);
 

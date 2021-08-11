@@ -10,26 +10,31 @@ import {
 	Button,
 	useForm,
 } from '@xapp/react';
-import { TaskInput, TaskOutput, TaskTemplateOutput } from '@xapp/shared/types';
+import { TaskInput, TaskOutput, TaskTemplateOutput, Frequencies } from '@xapp/shared/types';
 
 import { useAppStore } from '@xapp/state';
 
 import { validationSchema } from './schema';
 
 interface IHouseholdTaskProps {
+	householdId: TaskOutput['householdId'];
 	roomId: TaskOutput['householdRoomId'];
 	roomTypeId: number;
 	onClose: () => void;
 }
 
 export const HouseholdTask = memo((props: IHouseholdTaskProps) => {
-	const { roomId, roomTypeId, onClose } = props;
+	const { householdId, roomId, roomTypeId, onClose } = props;
 	const initialValues: TaskInput = {
 		name: null,
 		householdRoomId: roomId,
+		householdId,
 		estimatedCompletionTime: null,
-		frequencyId: null,
 		assignedUserId: null,
+		isActive: true,
+		daysOfWeek: 0,
+		rewardPoints: 1,
+		frequencyId: Frequencies.Weekly,
 	};
 	const formRef = useRef({ valid: false });
 	const lookupState = useAppStore((state) => state.lookup);
@@ -94,10 +99,10 @@ export const HouseholdTask = memo((props: IHouseholdTaskProps) => {
 			<TextInput
 				type="text"
 				label="Notes"
-				name="notes"
+				name="description"
 				autoComplete="true"
-				value={formData.notes}
-				error={errors?.notes}
+				value={formData.description}
+				error={errors?.description}
 			/>
 			<Select
 				name="assignedUserId"

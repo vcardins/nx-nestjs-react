@@ -4,14 +4,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
 import { InjectMapper } from 'nestjsx-automapper';
 
-import { BaseService, IFindAndCountResult, IPaginationQuery } from '@xapp/api/core';
+import { BaseService } from '@xapp/api/core';
+import { TaskOutput } from '@xapp/shared/types';
 import { Task } from './entities/task.entity';
 
 @Injectable()
 export class TaskService extends BaseService<Task> {
 	items: Task[] = [];
 
-	static modelName = 'tasks';
+	static modelName = 'task';
 
 	constructor(
 		@InjectRepository(Task) protected readonly repository: Repository<Task>,
@@ -20,17 +21,19 @@ export class TaskService extends BaseService<Task> {
 		super(repository, autoMapper);
 	}
 
-	async findAndCount (options: IPaginationQuery): Promise<IFindAndCountResult<Task> | Task[]> {
-		this.queryBuilder = this.createQueryBuilder();
+	async findHouseholdTasks (householdId: number): Promise<TaskOutput[]> {
+		this.queryBuilder = this
+			.createQueryBuilder()
+			.leftJoinAndSelect(`${this.modelName}.template`, 'template')
+			.leftJoinAndSelect('task', 'taskTemplate', 'task.task_template_id = taskTemplate.id')
+			.leftJoinAndSelect('task', 'household', 'task.household_id = household.id')
+			.where('task.household_id = :id', { id: +householdId })
+			.select([
+				this.modelName,
+				'taskTemplate',
+			]);
 
-		if (options.q) {
-			this.queryBuilder = this.queryBuilder.where(`${this.modelName}.name like :q or ${this.modelName}.name like :q or ${this.modelName}.id = :id`, {
-				q: `%${options.q}%`,
-				id: +options.q,
-			});
-		}
-
-		return super.findAndCount(options);
+		return plainToClass(TaskOutput, await this.queryBuilder.getMany());
 	}
 
 	async preloadAll() {

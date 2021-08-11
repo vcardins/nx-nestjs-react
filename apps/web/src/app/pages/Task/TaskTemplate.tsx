@@ -18,7 +18,7 @@ import {
 	Icon,
 	InlineEdit,
 } from '@xapp/react';
-import { TaskTemplateInput, TaskTemplateOutput } from '@xapp/shared/types';
+import { TaskTemplateInput, TaskTemplateOutput, Frequencies } from '@xapp/shared/types';
 
 import { useAppStore } from '@xapp/state';
 
@@ -27,10 +27,12 @@ import { TaskTemplateList, TaskTemplateItem, TaskTemplateItemInfo, TaskTemplateI
 
 const initialValues: TaskTemplateInput = {
 	name: '',
-	notes: '',
+	description: '',
 	isActive: true,
-	estimatedTime: 30,
+	estimatedCompletionTime: 30,
+	daysOfWeek: 0,
 	rewardPoints: 1,
+	frequencyId: Frequencies.Weekly,
 };
 
 const TaskTemplatePage = memo(() => {

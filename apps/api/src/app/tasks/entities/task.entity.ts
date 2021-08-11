@@ -1,28 +1,32 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
-import { BaseEntity } from '@xapp/api/core';
 import { HouseholdRoom } from './../../household/entities/household_room.entity';
 import { Frequency } from './../../shared/entities/frequency.entity';
 import { HouseholdMember } from './../../household/entities/household_member.entity';
 import { TaskTemplate } from './task_template.entity';
 import { TaskInstance } from './task_instance.entity';
+import { Household } from '../../household/entities/household.entity';
+import { BaseTask } from './base_task.entity';
 
 @Entity('task')
-export class Task extends BaseEntity {
+export class Task extends BaseTask {
 	@Column('varchar', { name: 'name', length: 120, nullable: true })
 	name: string;
+
+	@Column('text', { name: 'notes', nullable: true })
+	description?: string | null;
+
+	@Column('integer', { name: 'estimated_completion_time', nullable: true })
+	estimatedCompletionTime: number | null;
+
+	@Column('boolean', { name: 'is_active', nullable: true })
+	isActive: boolean | null;
 
 	@CreateDateColumn({ name: 'created_at' })
 	createdAt: Date;
 
 	@Column('datetime', { name: 'last_executed_at', nullable: true })
 	lastExecutedAt: Date | null;
-
-	@Column('text', { name: 'notes', nullable: true })
-	notes?: string | null;
-
-	@Column('integer', { name: 'estimated_completion_time', nullable: true })
-	estimatedCompletionTime: number | null;
 
 	@Column({ name: 'creator_user_id' })
 	creatorUserId: number;
@@ -36,6 +40,17 @@ export class Task extends BaseEntity {
 
 	@Column({ name: 'assigned_user_id' })
 	assignedUserId: number;
+
+	@Column({ name: 'household_id' })
+	householdId: number;
+
+	@ManyToOne(
+		() => Household,
+		({ tasks }) => tasks,
+		{ nullable: false, onDelete: 'CASCADE' },
+	)
+	@JoinColumn([{ name: 'household_id', referencedColumnName: 'id' }])
+	household: Household;
 
 	@ManyToOne(
 		() => HouseholdMember,

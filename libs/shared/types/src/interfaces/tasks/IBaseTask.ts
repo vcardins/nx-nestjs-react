@@ -1,6 +1,6 @@
-import { IBaseTask } from '../../interfaces';
 import { Frequencies } from '../../enums/Frequencies';
-export class TaskTemplateInput implements IBaseTask {
+
+export interface IBaseTask {
 	name: string;
 	description?: string | null;
 	isActive: boolean | null;

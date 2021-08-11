@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useRef } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 
 /* eslint-disable camelcase */

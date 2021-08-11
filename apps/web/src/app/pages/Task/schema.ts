@@ -7,8 +7,10 @@ export const validationSchema: JSONSchema7Extended = {
 		templateId:  schemas.id,
 		frequencyId: schemas.id,
 		householdRoomId: schemas.id,
+		assignedUserId: schemas.id,
+
 	},
 	type: 'object',
-	required: ['householdRoomId', 'frequencyId', 'estimatedCompletionTime'],
+	required: ['householdRoomId', 'frequencyId', 'estimatedCompletionTime', 'assignedUserId'],
 	description: 'A task object',
 };

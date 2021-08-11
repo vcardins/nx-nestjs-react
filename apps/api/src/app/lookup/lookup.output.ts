@@ -3,9 +3,9 @@ import {
 	UserRoles,
 	RoomTypes,
 	TaskTemplateOutput,
-	HouseholdRoomOutput,
 	HouseholdOutput,
 	ILookup,
+	RoomTypeOutput,
 } from '@xapp/shared/types';
 
 export class LookupOutput implements ILookup {
@@ -14,7 +14,7 @@ export class LookupOutput implements ILookup {
 	authRoles: Record<string, UserRoles[]>;
 	userRoles: Record<string, string>;
 	frequencies: Record<number, FrequencyOutput>;
-	roomTypes: Record<number, HouseholdRoomOutput>;
+	roomTypes: Record<number, RoomTypeOutput>;
 	tasksTemplates: Record<RoomTypes, TaskTemplateOutput[]>;
 	households: HouseholdOutput[];
 }

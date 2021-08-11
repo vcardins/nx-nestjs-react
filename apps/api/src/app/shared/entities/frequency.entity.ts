@@ -11,8 +11,8 @@ export class Frequency extends BaseEntity implements IBaseEntity {
 	@Column('varchar', { name: 'name', length: 20 })
 	name: string;
 
-	@Column('int', { name: 'days_apart' })
-	daysApart: number;
+	@Column('int', { name: 'days_interval' })
+	daysInterval: number;
 
 	@OneToMany(() => TaskTemplate, ({ frequency }) => frequency)
 	tasksTemplates: TaskTemplate[];

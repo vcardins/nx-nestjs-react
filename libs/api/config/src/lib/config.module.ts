@@ -5,6 +5,7 @@ import { MailConfig } from './mail.config';
 import { OAuthConfig } from './oath.config';
 import { DatabaseConfig } from './database.config';
 import { ApiConfig } from './api.config';
+import { GraphqlConfig } from './graphql.config';
 
 @Global()
 @Module({
@@ -13,11 +14,12 @@ import { ApiConfig } from './api.config';
 			isGlobal: true,
 			envFilePath: `.env${process.env.NODE_ENV ? `.${process.env.NODE_ENV}` : ''}`,
 			load: [
+				() => ({ api: ApiConfig() }),
 				() => ({ app: AppConfig() }),
+				() => ({ database: DatabaseConfig() }),
+				() => ({ graphql: GraphqlConfig() }),
 				() => ({ mail: MailConfig() }),
 				() => ({ oauth: OAuthConfig() }),
-				() => ({ database: DatabaseConfig() }),
-				() => ({ api: ApiConfig() }),
 			],
 		}),
 	],

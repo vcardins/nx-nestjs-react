@@ -2,11 +2,11 @@ import { DynamicModule, Module, Provider } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { AutomapperModule } from 'nestjsx-automapper';
 import { ScheduleModule } from '@nestjs/schedule';
+import { GraphQLModule } from '@nestjs/graphql';
 
-import { CoreModule } from '@xapp/api/core';
+import { CoreModule, CoreResolver } from '@xapp/api/core';
 import { AuthModule, AUTH_GUARD_TYPE } from '@xapp/api/auth';
-import { AccessControlModule } from '@xapp/api/access-control';
-import { UserModule } from '@xapp/api/access-control';
+import { AccessControlModule, UserModule } from '@xapp/api/access-control';
 import { DatabaseModule } from '@xapp/api/database';
 import { FilesModule } from '@xapp/api/files';
 import { ConfigModule } from '@xapp/api/config';
@@ -36,6 +36,10 @@ export class AppModule {
 			imports: [
 				PassportModule.register({ defaultStrategy: AUTH_GUARD_TYPE }),
 				ConfigModule,
+				// // The ConfigModule lives here
+				GraphQLModule.forRoot({
+					autoSchemaFile: true,
+				}),
 				UserModule,
 				AccessControlModule,
 				FilesModule,
@@ -57,7 +61,8 @@ export class AppModule {
 			providers: [
 				AppService,
 				...options.providers,
-				...(options.passportProviders ?? []),
+				...options.passportProviders,
+				CoreResolver,
 			],
 		};
 	}

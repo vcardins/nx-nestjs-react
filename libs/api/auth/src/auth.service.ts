@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
 import { OAuthProvider } from '@xapp/shared/types';
 import { CustomError } from '@xapp/shared/exceptions';
 import { getUtcDate } from '@xapp/shared/utils';
-import { ICoreConfig, CORE_CONFIG_TOKEN } from '@xapp/api/core';
+import { IRestApiConfig, CORE_CONFIG_TOKEN } from '@xapp/api/core';
 import { RoleService } from '@xapp/api/access-control';
 
 import { FACEBOOK_CONFIG_TOKEN } from './auth-tokens/configs/facebook.config';
@@ -32,7 +32,7 @@ export class AuthService {
 	private localUri: string;
 
 	constructor(
-		@Inject(CORE_CONFIG_TOKEN) private readonly coreConfig: ICoreConfig,
+		@Inject(CORE_CONFIG_TOKEN) private readonly apiConfig: IRestApiConfig,
 		@Inject(FACEBOOK_CONFIG_TOKEN) private readonly fbConfig: IFacebookConfig,
 		@Inject(GOOGLE_CONFIG_TOKEN) private readonly googleConfig: IGoogleConfig,
 		private readonly httpService: HttpService,
@@ -40,8 +40,8 @@ export class AuthService {
 		private readonly groupService: RoleService,
 		private readonly tokenService: JwtTokenService,
 	) {
-		const port = this.coreConfig.port ? `:${this.coreConfig.port}` : '';
-		this.localUri = `http://${this.coreConfig.domain}${port}`;
+		const port = this.apiConfig.port ? `:${this.apiConfig.port}` : '';
+		this.localUri = `http://${this.apiConfig.domain}${port}`;
 	}
 
 	async info(id: number) {

@@ -68,7 +68,7 @@ catch (error) {
 	}
 }
 
-export const ApiConfig = (): IRestApiConfig => ({
+export const ApiConfig = (): ICoreConfig => ({
 	env: {
 		name: envName,
 		port: appConfig.port,
@@ -95,7 +95,7 @@ export const ApiConfig = (): IRestApiConfig => ({
 					protocol: appConfig.protocol,
 					domain: appConfig.domain,
 					encryptionKey: appConfig.clientSecret,
-				} as ICoreConfig,
+				} as IRestApiConfig,
 			},
 			...CORE_APP_FILTERS,
 			...CORE_APP_PIPES,

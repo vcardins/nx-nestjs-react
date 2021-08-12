@@ -6,3 +6,4 @@ export * from './resource.decorator';
 export * from './roles.decorator';
 export * from './transform.interceptor';
 export * from './unmatch.decorator';
+export * from './core.resolver';

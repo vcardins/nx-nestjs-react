@@ -3,11 +3,11 @@ import { ValidationError } from 'class-validator';
 import { CORE_CONFIG_TOKEN } from '../configs/core.config';
 
 import { CustomValidationError, CustomError } from '../exceptions';
-import { ICoreConfig } from '../interfaces';
+import { IRestApiConfig } from '../interfaces';
 
 @Catch(SyntaxError, CustomValidationError, CustomError, HttpException)
 export class CustomExceptionFilter implements ExceptionFilter {
-	constructor(@Inject(CORE_CONFIG_TOKEN) private readonly coreConfig: ICoreConfig) {}
+	constructor(@Inject(CORE_CONFIG_TOKEN) private readonly apiConfig: IRestApiConfig) {}
 
 	private response(
 		exception: CustomValidationError | SyntaxError | Error | HttpException,
@@ -21,8 +21,8 @@ export class CustomExceptionFilter implements ExceptionFilter {
 
 		Logger.error(JSON.stringify(exception), undefined, CustomExceptionFilter.name);
 
-		if (request.originalUrl.indexOf('/api/') !== 0 && request.accepts('html') && this.coreConfig.indexFile) {
-			response.sendFile(this.coreConfig.indexFile);
+		if (request.originalUrl.indexOf('/api/') !== 0 && request.accepts('html') && this.apiConfig.indexFile) {
+			response.sendFile(this.apiConfig.indexFile);
 		}
 		else {
 			response.status(status ? status : HttpStatus.BAD_REQUEST).json(data);

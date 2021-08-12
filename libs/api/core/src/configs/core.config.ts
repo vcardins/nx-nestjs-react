@@ -1,6 +1,6 @@
-import { ICoreConfig } from '../interfaces';
+import { IRestApiConfig } from '../interfaces';
 
-export const DEFAULT_CORE_CONFIG: ICoreConfig = {
+export const DEFAULT_CORE_CONFIG: IRestApiConfig = {
 	port: 5000,
 	protocol: 'http',
 	domain: 'localhost',

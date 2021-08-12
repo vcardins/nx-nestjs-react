@@ -5,7 +5,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { plainToClass } from 'class-transformer';
 
 import { OAuthProvider } from '@xapp/shared/types';
-import { CORE_CONFIG_TOKEN, ICoreConfig, /*AccountOutput, RoleDto, */Public, SocketGateway } from '@xapp/api/core';
+import { CORE_CONFIG_TOKEN, IRestApiConfig, /*AccountOutput, RoleDto, */Public, SocketGateway } from '@xapp/api/core';
 import { UserDto } from '@xapp/api/access-control';
 
 // import { FacebookTokenOutput } from '../dto/facebook-token.output';
@@ -24,7 +24,7 @@ import { OAuthSignInInput } from './auth-tokens/dto/oauth-signIn.input';
 @Public()
 export class AuthController {
 	constructor(
-		@Inject(CORE_CONFIG_TOKEN) private readonly coreConfig: ICoreConfig,
+		@Inject(CORE_CONFIG_TOKEN) private readonly apiConfig: IRestApiConfig,
 		private readonly authService: AuthService,
 		private readonly tokenService: JwtTokenService,
 		private readonly socketService: SocketGateway,
@@ -41,7 +41,7 @@ export class AuthController {
 	}
 
 	private getHost(req: Request) {
-		return req.get('origin') || `${this.coreConfig.protocol}://${req.get('host')}`;
+		return req.get('origin') || `${this.apiConfig.protocol}://${req.get('host')}`;
 	}
 
 	@HttpCode(HttpStatus.OK)

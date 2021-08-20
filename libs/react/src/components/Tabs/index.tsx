@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useEffect, useCallback } from 'react';
+import React, { useMemo, useRef, useEffect } from 'react';
 
 import { TabsStyled, TabItemStyled, TabsLinksContainer, TabsContentsContainer, TabSlider } from './styles';
 import { ITabProps, ITabsProps, ITabLinkProps } from './types';
@@ -24,13 +24,6 @@ export const Tabs = (props: ITabsProps) => {
 	const tabsRefs = useMemo(() => children.map(() => React.createRef<HTMLLIElement>()), [children]);
 	const [selectedTab, setSelectedTab] = React.useState(selectedTabIndex !== -1 ? selectedTabIndex : 0);
 
-	const updateBorder = useCallback((offsetLeft: number, offsetWidth: number) => {
-		if (sliderRef.current) {
-			sliderRef.current.style.left = `${offsetLeft}px`;
-			sliderRef.current.style.width = `${offsetWidth}px`;
-		}
-	}, [sliderRef.current]);
-
 	const handleTabChange = (index: number, tab: ITabProps) => {
 		setSelectedTab(index);
 		props.onAfterChange?.(tab, index);
@@ -38,7 +31,10 @@ export const Tabs = (props: ITabsProps) => {
 
 	useEffect(() => {
 		const { offsetLeft, offsetWidth } = tabsRefs[selectedTab].current;
-		updateBorder(offsetLeft, offsetWidth);
+		if (sliderRef.current) {
+			sliderRef.current.style.left = `${offsetLeft}px`;
+			sliderRef.current.style.width = `${offsetWidth}px`;
+		}
 	}, [selectedTab, tabsRefs]);
 
 	const { links, content } = useMemo(() =>

@@ -1,36 +1,45 @@
-import React, { useMemo } from 'react';
-import styled from 'styled-components';
+import React, { useMemo, useRef, useEffect, useCallback } from 'react';
 
-import { TabLink, ITabLinkProps } from './TabLink';
-import { TabContent } from './TabContent';
+import { TabsStyled, TabItemStyled, TabsLinksContainer, TabsContentsContainer, TabSlider } from './styles';
+import { ITabProps, ITabsProps, ITabLinkProps } from './types';
 
-type ITabProps = Pick<ITabLinkProps, 'label' | 'disabled' | 'selected'>  & { children: React.ReactElement }
-
-interface ITabsProps {
-	children: React.ReactElement | React.ReactElement[];
-	onAfterChange?: (tab: ITabProps, index: number) => void;
-}
-
-const TabsStyled = styled.div`
-	display: flex;
-	flex-direction: column;
-`;
-
-const TabsLinksContainer = styled.ul`
-	list-style: none;
-	display: inline-flex;
-`;
-
-const TabsContentsContainer = styled.div`
-	flex: 1;
-`;
+export const TabLink = ({ selected, disabled, label, tabRef, onChange }: ITabLinkProps) => (
+	<TabItemStyled
+		ref={tabRef}
+		selected={selected}
+		disabled={disabled}
+		title={label}
+		onClick={() => !disabled ? onChange() : undefined}
+	>
+		{ label }
+	</TabItemStyled>
+);
 
 export const Tab = (props: ITabProps) => <div {...props} />;
 
 export const Tabs = (props: ITabsProps) => {
+	const sliderRef = useRef<HTMLDivElement>(null);
 	const children = props.children as React.ReactElement[];
 	const selectedTabIndex = children.findIndex((tab) => (tab.props as ITabProps).selected);
+	const tabsRefs = useMemo(() => children.map(() => React.createRef<HTMLLIElement>()), [children]);
 	const [selectedTab, setSelectedTab] = React.useState(selectedTabIndex !== -1 ? selectedTabIndex : 0);
+
+	const updateBorder = useCallback((offsetLeft: number, offsetWidth: number) => {
+		if (sliderRef.current) {
+			sliderRef.current.style.left = `${offsetLeft}px`;
+			sliderRef.current.style.width = `${offsetWidth}px`;
+		}
+	}, [sliderRef.current]);
+
+	const handleTabChange = (index: number, tab: ITabProps) => {
+		setSelectedTab(index);
+		props.onAfterChange?.(tab, index);
+	};
+
+	useEffect(() => {
+		const { offsetLeft, offsetWidth } = tabsRefs[selectedTab].current;
+		updateBorder(offsetLeft, offsetWidth);
+	}, [selectedTab, tabsRefs]);
 
 	const { links, content } = useMemo(() =>
 		(React.Children.toArray(children) as React.ReactElement[])
@@ -41,26 +50,22 @@ export const Tabs = (props: ITabsProps) => {
 				result.links.push(
 					<TabLink
 						key={label}
+						tabRef={tabsRefs[index]}
 						label={label}
 						disabled={disabled}
 						selected={isSelected}
-						onChange={() => {
-							setSelectedTab(index);
-							props.onAfterChange?.(tab.props as ITabProps, index);
-						}}
+						onChange={() => handleTabChange(index, tab.props as ITabProps)}
 					/>,
 				);
 
 				if (isSelected) {
-					result.content = (
-						<TabContent>
-							{children}
-						</TabContent>
-					);
+					result.content = children;
 				}
 
 				return result;
-			}, { links: [], content: null } as { links: React.ReactElement[]; content: React.ReactElement | null; })
+			},
+			{ links: [], content: null } as { links: React.ReactElement[]; content: React.ReactElement | null; },
+			)
 	, [selectedTab, children]);
 
 	return (
@@ -68,6 +73,7 @@ export const Tabs = (props: ITabsProps) => {
 			<TabsLinksContainer>
 				{ links }
 			</TabsLinksContainer>
+			<TabSlider ref={sliderRef}/>
 			<TabsContentsContainer>
 				{ content }
 			</TabsContentsContainer>

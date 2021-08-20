@@ -6,17 +6,14 @@ const DashboardPage = memo(() => {
 	return (
 		<Page title="Dashboard" padded>
 			<Tabs>
-				<Tab label="Dashboard">
+				<Tab label="Panel 1">
 					<p>Dashboard</p>
 				</Tab>
-				<Tab label="Dashboard 2">
+				<Tab label="Panel 2">
 					<p>Dashboard 2</p>
 				</Tab>
-				<Tab label="Dashboard 3" selected>
+				<Tab label="Long Panel 3">
 					<p>Dashboard 3</p>
-				</Tab>
-				<Tab label="Dashboard 4">
-					<p>Dashboard 4</p>
 				</Tab>
 			</Tabs>
 		</Page>

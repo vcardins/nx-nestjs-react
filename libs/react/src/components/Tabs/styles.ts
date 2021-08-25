@@ -30,6 +30,7 @@ export const TabsLinksContainer = styled.ul`
 export const TabsContentsContainer = styled.div`
 	flex: 1;
 	padding: 0.5em 0;
+	height: inherit;
 `;
 
 export const TabSlider = styled.div`

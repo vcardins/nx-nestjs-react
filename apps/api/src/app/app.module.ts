@@ -38,6 +38,7 @@ export class AppModule {
 				ConfigModule,
 				// // The ConfigModule lives here
 				GraphQLModule.forRoot({
+					installSubscriptionHandlers: true,
 					autoSchemaFile: true,
 				}),
 				UserModule,

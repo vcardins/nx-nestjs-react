@@ -25,7 +25,7 @@ export class FacebookStrategy {
 
 	private init(): void {
 		use(
-			OAuthProvider.Google,
+			OAuthProvider.Facebook,
 			new FacebookTokenStrategy(
 				{
 					clientID: this.fbConfig.clientID,

@@ -1,4 +1,5 @@
-import { DynamicModule, HttpModule, MiddlewareConsumer, Module, NestModule, Provider } from '@nestjs/common';
+import { DynamicModule, MiddlewareConsumer, Module, NestModule, Provider } from '@nestjs/common';
+import { HttpModule } from '@nestjs/axios';
 import { JwtModule } from '@nestjs/jwt';
 import { authenticate } from 'passport';
 
@@ -7,8 +8,7 @@ import { MailModule } from '@xapp/api/mail';
 import { FilesModule } from '@xapp/api/files';
 import { OAuthProvider } from '@xapp/shared/types';
 import { DatabaseModule } from '@xapp/api/database';
-import { UserModule } from '@xapp/api/access-control';
-import { AccessControlModule } from '@xapp/api/access-control';
+import { UserModule, AccessControlModule } from '@xapp/api/access-control';
 
 import { OauthTokensAccessToken } from './auth-tokens/oauth-tokens-access-token.entity';
 

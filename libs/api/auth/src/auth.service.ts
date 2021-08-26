@@ -1,15 +1,15 @@
-import { UserRoles, VerificationKeyPurpose } from '@xapp/shared/types';
 /* eslint-disable camelcase */
-import { BadRequestException, HttpService, Inject, Injectable, Logger/*, NotFoundException*/ } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, Logger/*, NotFoundException*/ } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
 import { plainToClass } from 'class-transformer';
 import { stringify } from 'querystring';
 import { map } from 'rxjs/operators';
 
-import { OAuthProvider } from '@xapp/shared/types';
+import { OAuthProvider, UserRoles, VerificationKeyPurpose } from '@xapp/shared/types';
 import { CustomError } from '@xapp/shared/exceptions';
 import { getUtcDate } from '@xapp/shared/utils';
 import { IRestApiConfig, CORE_CONFIG_TOKEN } from '@xapp/api/core';
-import { RoleService } from '@xapp/api/access-control';
+import { RoleService, User, UserDto, UserProfile, UserService } from '@xapp/api/access-control';
 
 import { FACEBOOK_CONFIG_TOKEN } from './auth-tokens/configs/facebook.config';
 import { IFacebookConfig } from './auth-tokens/interfaces/facebook-config.interface';
@@ -17,9 +17,7 @@ import { GOOGLE_CONFIG_TOKEN } from './auth-tokens/configs/google.config';
 import { IGoogleConfig } from './auth-tokens/interfaces/google-config.interface';
 import { JwtTokenService } from './auth-tokens/jwt-token.service';
 
-import { User, UserDto, UserProfile, UserService } from '@xapp/api/access-control';
-import { RedirectUriOutput } from './dto/redirect-uri.output';
-import { SignInInput, SignUpInput } from './dto';
+import { SignInInput, SignUpInput, RedirectUriOutput } from './dto';
 
 const defaultContentType = 'application/x-www-form-urlencoded';
 

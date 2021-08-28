@@ -2,7 +2,6 @@ import { DynamicModule, Module, Provider } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { AutomapperModule } from 'nestjsx-automapper';
 import { ScheduleModule } from '@nestjs/schedule';
-import { GraphQLModule } from '@nestjs/graphql';
 
 import { CoreModule, CoreResolver } from '@xapp/api/core';
 import { AuthModule, AUTH_GUARD_TYPE } from '@xapp/api/auth';
@@ -36,11 +35,6 @@ export class AppModule {
 			imports: [
 				PassportModule.register({ defaultStrategy: AUTH_GUARD_TYPE }),
 				ConfigModule,
-				// // The ConfigModule lives here
-				GraphQLModule.forRoot({
-					installSubscriptionHandlers: true,
-					autoSchemaFile: true,
-				}),
 				UserModule,
 				AccessControlModule,
 				FilesModule,

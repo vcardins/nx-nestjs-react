@@ -1,5 +1,5 @@
 import { Body, Controller, Response, InternalServerErrorException, Req, Post, Get, Param, BadRequestException, Delete, Patch } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBody, ApiCreatedResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { User, UserService } from '@xapp/api/access-control';
 
 import {
@@ -46,7 +46,6 @@ const BaseController = baseAuthControllerFactory<Household>({
 	auth,
 });
 
-@ApiBearerAuth()
 @Controller('/household')
 @ResourceGroup(Resources.Household)
 export class HouseholdController extends BaseController {

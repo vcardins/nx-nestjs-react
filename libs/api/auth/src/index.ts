@@ -1,10 +1,7 @@
 export * from './auth.module';
 
-export * from './filters/jwt-exception.filter';
-export * from './filters/index';
-
-export * from './guards/access.guard';
-export * from './guards/index';
+export * from './filters';
+export * from './guards';
 
 export * from './auth-tokens/dto/oauth-signIn.input';
 export * from './auth-tokens/dto/access-token.dto';

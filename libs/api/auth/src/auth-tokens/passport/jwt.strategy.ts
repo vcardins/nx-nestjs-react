@@ -3,8 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { plainToClass } from 'class-transformer';
 import { Strategy, ExtractJwt } from 'passport-jwt';
 
-import { User, UserService } from '@xapp/api/access-control';
-import { RoleService } from '@xapp/api/access-control';
+import { User, UserService, RoleService } from '@xapp/api/access-control';
 
 import { JWT_CONFIG_TOKEN } from '../configs/jwt.config';
 import { IJwtPayload } from '../interfaces/jwt-payload.interface';

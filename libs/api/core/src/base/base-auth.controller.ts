@@ -79,7 +79,6 @@ export function baseAuthControllerFactory<T extends IBaseEntity>(options: IBaseA
 
 	// tslint:disable-next-line: max-classes-per-file
 	@ApiTags(Entity.name)
-	@ApiBearerAuth() //
 	abstract class BaseAuthController {
 		protected readonly _service: BaseService<T>;
 		protected readonly _socket: SocketGateway;

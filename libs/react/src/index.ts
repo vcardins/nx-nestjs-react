@@ -4,6 +4,7 @@ export * from './components/Button';
 export * from './components/Center';
 export * from './components/DateFormatter';
 export * from './components/Dropdown';
+export * from './components/Drawer';
 export * from './components/Dropdown/types';
 export * from './components/Error';
 export * from './components/Form';

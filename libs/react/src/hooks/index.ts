@@ -8,3 +8,4 @@ export * from './useOuterClickNotifier';
 export * from './usePrevious';
 export * from './useTimeout';
 export * from './useUpdateEffect';
+export * from './useMountTransition';

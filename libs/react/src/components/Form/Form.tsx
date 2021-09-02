@@ -5,8 +5,9 @@ import { FieldGroup } from './FieldSet';
 
 // AjvErrors(AjvForm);
 
-export const Form = styled(AjvForm)`
-	padding: ${({ theme }) => theme.spacing.normal };
+export const Form = styled(AjvForm)<{ padded: boolean }>`
+	padding: ${({ theme, padded }) => padded ? theme.spacing.normal : 0};
+	box-sizing: border-box;
 
 	${FieldGroup} {
 		&:first-child { margin-top: 0 }

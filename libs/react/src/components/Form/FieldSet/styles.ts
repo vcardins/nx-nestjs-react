@@ -1,11 +1,12 @@
 import { FieldError } from 'react-jsonschema-form-validation';
 import styled, { css } from 'styled-components';
 
-export const FieldGroup = styled.div<{sided?: boolean}>`
+export const FieldGroup = styled.div<{ sided?: boolean; padded?: boolean }>`
 	display: flex;
 	flex-direction: ${(p) => p.sided ? 'row' : 'column' };
-	margin: 1em 0;
+	justify-content: flex-end;
 	flex: 1;
+	${({ padded }) => padded && css`margin: 1em 0;`}
 	${({ sided }) => sided
 		? css`
 			align-items: center;
@@ -15,7 +16,7 @@ export const FieldGroup = styled.div<{sided?: boolean}>`
 		`
 		: css`
 			>*{
-				min-width: 7.5em;
+				width: inherit;
 				&:not(:first-child) {
 					margin-top: 0.5em;
 				}

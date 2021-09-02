@@ -16,7 +16,7 @@ export const StyledButton = styled.button<IButtonProps>`
 	cursor: pointer;
 	padding: 4px 16px;
 	border: none;
-	border-radius: 2px;
+	border-radius: 3px;
 	background: ${({ theme, bgColor }) => bgColor || (theme as ITheme).colors.primary.blue };
 	transition: 0.1s ease 0s;
 	user-select: none;

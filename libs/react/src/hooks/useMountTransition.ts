@@ -8,7 +8,8 @@ export const useMountTransition = (isMounted: boolean, unmountDelay: number) => 
 
 		if (isMounted && !isTransitioning) {
 			setIsTransitioning(true);
-		} else if (!isMounted && isTransitioning) {
+		}
+		else if (!isMounted && isTransitioning) {
 			timeoutId = setTimeout(() => setIsTransitioning(false), unmountDelay);
 		}
 		return () => {

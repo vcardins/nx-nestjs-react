@@ -22,7 +22,6 @@ import {
 	ApiOkResponse,
 	ApiOperation,
 	ApiTags,
-	ApiBearerAuth,
 } from '@nestjs/swagger';
 
 import { Operations, UserRoles, IdType, SortDirections, QueryOptions } from '@xapp/shared/types';

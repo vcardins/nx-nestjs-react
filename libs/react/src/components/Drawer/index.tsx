@@ -10,13 +10,14 @@ interface IDrawerProps {
 	isOpen: boolean;
 	children: React.ReactElement;
 	position: 'left' | 'right' | 'bottom' | 'top';
+	size?: string;
 	removeWhenClosed?: boolean;
 	speed?: number;
+	overflow?: CSSStyleDeclaration['overflow'];
 	onClose: () => void;
 }
 
-
-const DrawerBackdrop = styled.div<{ onClick: IDrawerProps['onClose']}>`
+const DrawerBackdrop = styled.div<{ onClick: IDrawerProps['onClose'] }>`
 	visibility: hidden;
 	opacity: 0;
 	background: rgba(0, 0, 0, 0.5);
@@ -29,80 +30,94 @@ const DrawerBackdrop = styled.div<{ onClick: IDrawerProps['onClose']}>`
 	z-index: 0;
 `;
 
-const DrawerContent = styled.div<{ position: IDrawerProps['position']}>`
+const DrawerPanel = styled.div<Pick<IDrawerProps, 'size' | 'overflow' | 'position'>>`
+	overflow: ${({ overflow = 'auto' }) => overflow};
 	background: #fff;
-	width: 30%;
-	height: 100%;
-	overflow: auto;
 	position: fixed;
 	box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 	z-index: 1000;
+	scroll-margin-right: 1em;
 
-	${({ position }) => {
+	${({ position, size }) => {
 		switch (position) {
 			case 'left':
 				return css`
 					top: 0;
 					left: 0;
+					width: ${size};
+					height: 100%;
 					transform: translateX(-105%);
 				`;
 			case 'right':
 				return css`
 					top: 0;
 					right: 0;
+					width: ${size};
+					height: 100%;
 					transform: translateX(100%);
 				`;
-			case 'bottom':
+			case 'top':
 				return css`
 					top: 0;
 					left: 0;
 					right: 0;
 					width: 100%;
+					height: ${size};
 					transform: translateY(-100%);
-					height: 40%;
 				`;
-			case 'top':
+			case 'bottom':
 				return css`
 					bottom: 0;
 					left: 0;
 					right: 0;
 					width: 100%;
+					height: ${size};
 					transform: translateY(100%);
-					height: 40%;
 				`;
 		}
 	}}
 `;
 
+const getDrawerPosition = (position: IDrawerProps['position']) => {
+	switch (position) {
+		case 'left':
+		case 'right':
+			return css`
+				transform: translateX(0);
+			`;
+		case 'top':
+		case 'bottom':
+			return css`
+				transform: translateY(0);
+			`;
+	}
+};
 
-const DrawerContainer = styled.div<{ speed: IDrawerProps['speed']; open: boolean; position: IDrawerProps['position']; isTransitioning: boolean }>`
+const DrawerContainer = styled.div<Pick<IDrawerProps, 'speed' | 'isOpen' | 'position'> & { isTransitioning: boolean; }>`
 	${DrawerBackdrop} {
 		transition: opacity ${({ speed }) => `${speed}ms`} ease, visibility ${({ speed }) => `${speed}ms`} ease;
 	}
 
-	${DrawerContent} {
+	${DrawerPanel} {
 		transition: transform ${({ speed }) => `${speed}ms`} ease;
 	}
 
-	${({ isTransitioning, open, position }) => (isTransitioning && open) && css`
-		${DrawerBackdrop} {
-			visibility: visible;
-			opacity: 1;
-			pointer-events: auto;
-			z-index: 999;
-		}
+	${({ isTransitioning, isOpen, position }) =>
+		isTransitioning &&
+		isOpen &&
+		css`
+			${DrawerBackdrop} {
+				visibility: visible;
+				opacity: 1;
+				pointer-events: auto;
+				z-index: 999;
+			}
 
-	${() => {
-		switch (position) {
-			case 'left':
-			case 'right':
-				return css`transform: translateX(0);`;
-			case 'top':
-			case 'bottom':
-				return css`transform: translateY(0);`;
-		}
-	}}
-	`}
+			${DrawerPanel} {
+				transform: translateX(0);
+				${getDrawerPosition(position)}
+			}
+		`}
 `;
 
 function createPortalRoot(id: string) {
@@ -117,7 +132,17 @@ function createPortalRoot(id: string) {
  * https://letsbuildui.dev/articles/building-a-drawer-component-with-react-portals
  */
 export const Drawer = (props: IDrawerProps) => {
-	const { id = 'drawer-root', isOpen, children, onClose, position = 'right', speed = 300, removeWhenClosed = true } = props;
+	const {
+		id = 'drawer-root',
+		isOpen,
+		children,
+		onClose,
+		position = 'right',
+		speed = 300,
+		size = '40%',
+		overflow,
+		removeWhenClosed = true,
+	} = props;
 	const bodyRef = useRef(document.querySelector('body'));
 	const portalRootRef = useRef(document.getElementById(id) || createPortalRoot(id));
 	const isTransitioning = useMountTransition(isOpen, speed);
@@ -167,13 +192,18 @@ export const Drawer = (props: IDrawerProps) => {
 			<DrawerContainer
 				position={position}
 				speed={speed}
-				open={isOpen}
+				isOpen={isOpen}
 				isTransitioning={isTransitioning}
 				aria-hidden={isOpen ? 'false' : 'true'}
 			>
-				<DrawerContent position={position} role="dialog">
+				<DrawerPanel
+					position={position}
+					size={size}
+					role="dialog"
+					overflow={overflow}
+				>
 					{children}
-				</DrawerContent>
+				</DrawerPanel>
 				<DrawerBackdrop onClick={onClose} />
 			</DrawerContainer>
 		</FocusTrap>,

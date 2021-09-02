@@ -29,7 +29,6 @@ interface IDatePicker extends Omit<IHtmlField, 'value' | 'classNames'>, DayPicke
 export function DatePicker({ name, label, formatString = DATE_FORMAT, ...props }: IDatePicker) {
 	return (
 		<FieldSet name={name} label={label}>
-			{/* @ts-ignore */}
 			<DayPickerInput
 				{...props}
 				format={formatString}

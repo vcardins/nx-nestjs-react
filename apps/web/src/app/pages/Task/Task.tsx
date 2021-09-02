@@ -8,7 +8,7 @@ import { ic_refresh } from 'react-icons-kit/md/ic_refresh';
 /* eslint-enable camelcase */
 
 import {
-	Page,
+	Panel,
 	Form,
 	TextInput,
 	FieldGroup,
@@ -94,7 +94,7 @@ const TaskPage = memo(() => {
 	}, [error, clearError]);
 
 	return (
-		<Page title="Task" padded>
+		<Panel title="Task" padded>
 			<Form
 				ref={formRef}
 				data={formData}
@@ -197,7 +197,7 @@ const TaskPage = memo(() => {
 					</TaskItem>
 				))}
 			</TaskList>
-		</Page>
+		</Panel>
 	);
 });
 

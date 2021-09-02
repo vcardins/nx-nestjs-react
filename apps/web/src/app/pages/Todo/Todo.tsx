@@ -10,7 +10,7 @@ import { ic_refresh } from 'react-icons-kit/md/ic_refresh';
 /* eslint-enable camelcase */
 
 import {
-	Page,
+	Panel,
 	Form,
 	TextInput,
 	FieldGroup,
@@ -60,7 +60,7 @@ const TodoPage = memo(() => {
 	}
 
 	return (
-		<Page title="Todo" padded>
+		<Panel title="Todo" padded>
 			<Form
 				ref={formRef}
 				data={formData}
@@ -88,7 +88,7 @@ const TodoPage = memo(() => {
 			<TodoList>
 				{(items || []).map(renderItem)}
 			</TodoList>
-		</Page>
+		</Panel>
 	);
 
 	function renderItem(todo: TodoOutput) {

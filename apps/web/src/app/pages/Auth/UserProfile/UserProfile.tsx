@@ -1,6 +1,6 @@
 import React, { memo, useRef } from 'react';
 
-import { Form, TextInput, Page, Submit, FieldGroup, DatePicker, formatDate, useForm } from '@xapp/react';
+import { Form, TextInput, Panel, Submit, FieldGroup, DatePicker, formatDate, useForm } from '@xapp/react';
 import { IUserProfileInput } from '@xapp/shared/types';
 import { useAppStore } from '@xapp/state';
 
@@ -25,7 +25,7 @@ const UserProfilePage = memo(() => {
 	const formRef = useRef({ valid: false });
 
 	return (
-		<Page title="User Profile" padded>
+		<Panel title="User Profile" padded>
 			<Form
 				ref={formRef}
 				data={formData}
@@ -75,7 +75,7 @@ const UserProfilePage = memo(() => {
 					<Submit loading={submitting} success={success} />
 				</FieldGroup>
 			</Form>
-		</Page>
+		</Panel>
 	);
 });
 

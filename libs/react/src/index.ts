@@ -13,7 +13,7 @@ export * from './components/InlineEdit';
 export * from './components/Layout';
 export * from './components/Logo';
 export * from './components/Menu';
-export * from './components/Page';
+export * from './components/Panel';
 export * from './components/PageLoading';
 export * from './components/SplashScreen';
 export * from './components/Suspense';

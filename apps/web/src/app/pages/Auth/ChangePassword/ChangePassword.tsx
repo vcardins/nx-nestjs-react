@@ -1,6 +1,6 @@
 import React, { memo, useRef } from 'react';
 
-import { Page, Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react';
+import { Panel, Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react';
 import { IChangePasswordInput, IRoutedPageProps } from '@xapp/shared/types';
 import { useAppStore } from '@xapp/state';
 
@@ -19,7 +19,7 @@ const ChangePasswordPage = memo((props: IRoutedPageProps) => {
 	const formRef = useRef({ valid: false });
 
 	return (
-		<Page title="Change Password" padded>
+		<Panel title="Change Password" padded>
 			<Form
 				ref={formRef}
 				data={formData}
@@ -47,7 +47,7 @@ const ChangePasswordPage = memo((props: IRoutedPageProps) => {
 					<Submit loading={submitting} success={success} />
 				</FieldGroup>
 			</Form>
-		</Page>
+		</Panel>
 	);
 });
 

@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
 
-import { Page, Tabs, Tab } from '@xapp/react';
+import { Panel, Tabs, Tab } from '@xapp/react';
 
 const DashboardPage = memo(() => {
 	return (
-		<Page title="Dashboard" padded>
+		<Panel title="Dashboard" padded>
 			<Tabs>
 				<Tab label="Panel 1">
 					<p>Dashboard</p>
@@ -16,7 +16,7 @@ const DashboardPage = memo(() => {
 					<p>Dashboard 3</p>
 				</Tab>
 			</Tabs>
-		</Page>
+		</Panel>
 	);
 });
 

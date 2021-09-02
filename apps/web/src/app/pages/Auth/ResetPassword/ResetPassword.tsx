@@ -1,7 +1,7 @@
 import React, { memo, useState, useRef, useEffect } from 'react';
 import { parse } from 'query-string';
 
-import { Page, Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react';
+import { Panel, Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react';
 import { IResetPasswordInput } from '@xapp/shared/types';
 
 import { validationSchema } from './schema';
@@ -33,7 +33,7 @@ const ResetPasswordPage = memo((props: IRoutedPageProps) => {
 	}, []);
 
 	return (
-		<Page title="Change Password" padded>
+		<Panel title="Change Password" padded>
 			<Form
 				ref={formRef}
 				data={formData}
@@ -60,7 +60,7 @@ const ResetPasswordPage = memo((props: IRoutedPageProps) => {
 					<Submit loading={submitting} success={success} />
 				</FieldGroup>
 			</Form>
-		</Page>
+		</Panel>
 	);
 });
 

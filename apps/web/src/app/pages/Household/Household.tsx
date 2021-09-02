@@ -1,18 +1,20 @@
 import styled from 'styled-components';
 
-import React, { memo, useEffect, useRef } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
 /* eslint-disable camelcase */
 import { ic_delete } from 'react-icons-kit/md/ic_delete';
 import { ic_save } from 'react-icons-kit/md/ic_save';
 import { ic_refresh } from 'react-icons-kit/md/ic_refresh';
+import { ic_close } from 'react-icons-kit/md/ic_close';
+import { ic_edit } from 'react-icons-kit/md/ic_edit';
 import { ic_home } from 'react-icons-kit/md/ic_home';
 import { ic_mail } from 'react-icons-kit/md/ic_mail';
 import { ic_check } from 'react-icons-kit/md/ic_check';
 /* eslint-enable camelcase */
 
-import { Page, Form, TextInput, FieldGroup, Submit, useForm, Button, Icon, InlineEdit, Dropdown } from '@xapp/react';
+import { Panel, Form, TextInput, FieldGroup, Submit, useForm, Button, Icon, InlineEdit, Dropdown, Drawer } from '@xapp/react';
 import { HouseholdInput, HouseholdMemberOutput, HouseholdOutput, HouseholdRoomOutput } from '@xapp/shared/types';
 
 import { useAppStore } from '@xapp/state';
@@ -41,6 +43,7 @@ const ActionConfirmButtonWrapper = styled.div`
 `;
 
 const HouseholdPage = memo(() => {
+	const [isOpen, setIsOpen] = useState(false);
 	const formRef = useRef({ valid: false });
 	const {
 		isApiReady,
@@ -77,33 +80,58 @@ const HouseholdPage = memo(() => {
 	}
 
 	return (
-		<Page title="Household" padded>
-			<Form
-				ref={formRef}
-				data={formData}
-				onChange={handleFieldChange}
-				onSubmit={handleSubmit}
-				schema={validationSchema}
-			>
-				<TextInput
-					type="text"
-					label="Name"
-					name="name"
-					autoComplete="true"
-					value={formData.name}
-					error={errors?.name}
-				/>
-				<FieldGroup sided>
-					<Submit loading={submitting} success={success}>
-						<Icon icon={ic_save} />
-					</Submit>
-					<Button onClick={() => read()}>
-						<Icon icon={ic_refresh} />
-					</Button>
-				</FieldGroup>
-			</Form>
+		<Panel tag="household-page" title="Household" padded>
 			<HouseholdList>{items?.map(renderItem)}</HouseholdList>
-		</Page>
+			<FieldGroup sided padded>
+				<Button onClick={() => read()}>
+					<Icon icon={ic_refresh} />
+				</Button>
+				<Button onClick={() => setIsOpen(!isOpen)}>
+					<Icon icon={ic_edit} />
+				</Button>
+			</FieldGroup>
+			<Drawer
+				id="household-form"
+				isOpen={isOpen}
+				size="300px"
+				onClose={() => setIsOpen(false)}
+				position="right"
+				overflow="hidden"
+			>
+				<Form
+					ref={formRef}
+					data={formData}
+					onChange={handleFieldChange}
+					onSubmit={handleSubmit}
+					schema={validationSchema}
+				>
+					<Panel
+						tag="household-form"
+						title="Create Household"
+						padded
+						footer={
+							<FieldGroup sided>
+								<Submit loading={submitting} success={success}>
+									<Icon icon={ic_save} /> Save
+								</Submit>
+								<Button onClick={() => setIsOpen(false)}>
+									<Icon icon={ic_close} /> Clear
+								</Button>
+							</FieldGroup>
+						}
+					>
+						<TextInput
+							type="text"
+							label="Name"
+							name="name"
+							autoComplete="true"
+							value={formData.name}
+							error={errors?.name}
+						/>
+					</Panel>
+				</Form>
+			</Drawer>
+		</Panel>
 	);
 
 	function renderItem(household: HouseholdOutput) {

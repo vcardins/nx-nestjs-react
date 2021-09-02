@@ -1,8 +1,8 @@
 import React from 'react';
-import { Page } from '@xapp/react';
+import { Panel } from '@xapp/react';
 
 function UserSettingsPage() {
-	return <Page title="User Settings" />;
+	return <Panel title="User Settings" />;
 }
 
 export default UserSettingsPage;

@@ -1,3 +1,4 @@
+export * from './TextAlignment';
 export * from './ApplicationType';
 export * from './auth';
 export * from './DateFormat';

@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
 /* eslint-disable camelcase */
@@ -16,9 +16,11 @@ import {
 	useForm,
 	Button,
 	Icon,
+	Table, ITableColumn,
+	Drawer,
 	InlineEdit,
 } from '@xapp/react';
-import { TaskTemplateInput, TaskTemplateOutput, Frequencies } from '@xapp/shared/types';
+import { TaskTemplateInput, TaskTemplateOutput, Frequencies, TextAlignment } from '@xapp/shared/types';
 
 import { useAppStore } from '@xapp/state';
 
@@ -35,7 +37,21 @@ const initialValues: TaskTemplateInput = {
 	frequencyId: Frequencies.Weekly,
 };
 
+const planets = ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto'];
+const rows = Array.from({ length: planets.length * 5 }, (_, i) => ({
+	distance: i + 1,
+	name: planets[Math.floor(Math.random() * planets.length)],
+	moons: i % 9 + 1,
+}));
+
+const columns: ITableColumn[] = [
+	{ name: 'distance', label: 'Distance', width: 50, fixedLeft: true },
+	{ name: 'name', label: 'Name' },
+	{ name: 'moons', label: 'Moons', width: 50, align: TextAlignment.Center, fixedRight: true },
+]
+
 const TaskTemplatePage = memo(() => {
+	const [isFormOpen, setIsFormOpen] = useState(false);
 	const formRef = useRef({ valid: false });
 	const { mappedItems, isApiReady, read, save, remove, error, clearError } = useAppStore((state) => state.taskTemplate);
 	const lookupStore = useAppStore((state) => state.lookup);
@@ -58,6 +74,14 @@ const TaskTemplatePage = memo(() => {
 		}
 	}, [error, clearError]);
 
+	function handleClosePanel() {
+		setIsFormOpen(false);
+	}
+
+	function handleSubmitForm() {
+		handleSubmit(handleClosePanel);
+	}
+
 	// Object.keys(mappedItems[roomTypeId]).forEach((frequencyId) => {
 	// 	const frequency = lookupStore?.frequencies?.[frequencyId];
 	// 	const tasks = mappedItems[roomTypeId][frequencyId];
@@ -65,32 +89,57 @@ const TaskTemplatePage = memo(() => {
 	// 	return tasks.map(renderTaskTemplate);
 	// })
 	return (
-		<Panel title="Task Template" padded>
-			<Form
-				ref={formRef}
-				data={formData}
-				onChange={handleFieldChange}
-				onSubmit={handleSubmit}
-				schema={validationSchema}
+		<Panel
+			title="Task Template"
+			tag="task-template"
+			overflow="hidden"
+		>
+			<Drawer
+				id="household-form"
+				isOpen={isFormOpen}
+				size="300px"
+				onClose={handleClosePanel}
+				position="right"
+				overflow="hidden"
 			>
-				<TextInput
-					type="text"
-					label="Name"
-					name="name"
-					autoComplete="true"
-					value={formData.name}
-					error={errors?.name}
-				/>
-				<FieldGroup sided>
-					<Submit loading={submitting} success={success}>
-						<Icon icon={ic_save} />
-					</Submit>
-					<Button onClick={() => read?.()}>
-						<Icon icon={ic_refresh} />
-					</Button>
-				</FieldGroup>
-			</Form>
-			<TaskTemplateList>
+				<Panel
+					tag="household-form"
+					title="Create Household"
+					padded
+					footer={
+						<FieldGroup sided>
+							<Submit loading={submitting} success={success}>
+								<Icon icon={ic_save} />
+							</Submit>
+							<Button onClick={() => read?.()}>
+								<Icon icon={ic_refresh} />
+							</Button>
+						</FieldGroup>
+					}
+				>
+					<Form
+						ref={formRef}
+						data={formData}
+						onChange={handleFieldChange}
+						onSubmit={handleSubmitForm}
+						schema={validationSchema}
+					>
+						<TextInput
+							type="text"
+							label="Name"
+							name="name"
+							autoComplete="true"
+							value={formData.name}
+							error={errors?.name}
+						/>
+					</Form>
+				</Panel>
+			</Drawer>
+			<Table
+				columns={columns}
+				rows={rows}
+			/>
+			{/* <TaskTemplateList>
 				{lookupStore?.roomTypes && Object.keys(mappedItems).map((roomTypeId) => {
 					const roomType = lookupStore?.roomTypes?.[roomTypeId];
 					return (
@@ -103,7 +152,7 @@ const TaskTemplatePage = memo(() => {
 						</div>
 					);
 			})}
-			</TaskTemplateList>
+			</TaskTemplateList> */}
 		</Panel>
 	);
 

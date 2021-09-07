@@ -1,5 +1,5 @@
-import { ITheme } from '@xapp/shared/types';
 import { rgb, hsl, lighten, desaturate } from 'polished';
+import { ITheme } from '@xapp/shared/types';
 import { Common } from './Common';
 
 const primaryColor = rgb(25, 80, 150);
@@ -17,6 +17,7 @@ const primary = {
 };
 
 const secondary = {
+	lightestBlue: rgb(230, 240, 250),
 	lightBlue: lighten(0.50, primaryColor),
 	blue: lighten(0.25, primaryColor),
 	midBlue: hsl(210, 1, 0.50),

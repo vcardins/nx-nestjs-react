@@ -22,6 +22,7 @@ export * from './components/UserCard';
 export * from './components/Progress';
 export * from './components/Notifier';
 export * from './components/Popover';
+export * from './components/Table';
 
 export * from './hooks/useForm';
 export * from './hooks/useKeyPress';

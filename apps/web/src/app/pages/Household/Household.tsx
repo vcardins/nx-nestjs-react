@@ -43,7 +43,7 @@ const ActionConfirmButtonWrapper = styled.div`
 `;
 
 const HouseholdPage = memo(() => {
-	const [isOpen, setIsOpen] = useState(false);
+	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const formRef = useRef({ valid: false });
 	const {
 		isApiReady,
@@ -79,6 +79,14 @@ const HouseholdPage = memo(() => {
 		save({ name }, data.id);
 	}
 
+	function handleClosePanel() {
+		setIsDrawerOpen(false);
+	}
+
+	function handleSubmitForm() {
+		handleSubmit(handleClosePanel);
+	}
+
 	return (
 		<Panel tag="household-page" title="Household" padded>
 			<HouseholdList>{items?.map(renderItem)}</HouseholdList>
@@ -86,15 +94,15 @@ const HouseholdPage = memo(() => {
 				<Button onClick={() => read()}>
 					<Icon icon={ic_refresh} />
 				</Button>
-				<Button onClick={() => setIsOpen(!isOpen)}>
+				<Button onClick={() => setIsDrawerOpen(!isDrawerOpen)}>
 					<Icon icon={ic_edit} />
 				</Button>
 			</FieldGroup>
 			<Drawer
 				id="household-form"
-				isOpen={isOpen}
+				isOpen={isDrawerOpen}
 				size="300px"
-				onClose={() => setIsOpen(false)}
+				onClose={handleClosePanel}
 				position="right"
 				overflow="hidden"
 			>
@@ -102,7 +110,7 @@ const HouseholdPage = memo(() => {
 					ref={formRef}
 					data={formData}
 					onChange={handleFieldChange}
-					onSubmit={handleSubmit}
+					onSubmit={handleSubmitForm}
 					schema={validationSchema}
 				>
 					<Panel
@@ -114,8 +122,8 @@ const HouseholdPage = memo(() => {
 								<Submit loading={submitting} success={success}>
 									<Icon icon={ic_save} /> Save
 								</Submit>
-								<Button onClick={() => setIsOpen(false)}>
-									<Icon icon={ic_close} /> Clear
+								<Button onClick={handleClosePanel}>
+									<Icon icon={ic_close} /> Close
 								</Button>
 							</FieldGroup>
 						}

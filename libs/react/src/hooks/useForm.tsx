@@ -17,7 +17,7 @@ interface IUseFormResponse<TInput> {
 	success: boolean;
 	errors?: FieldValidationError<TInput>['errors'];
 	formData: TInput;
-	handleSubmit: () => Promise<any>;
+	handleSubmit: (onSuccess?: () => void) => Promise<any>;
 	handleReset: () => void;
 	handleFieldChange: (
 		data: TInput,
@@ -69,13 +69,14 @@ export function useForm<TInput>(props: IUseFormProps<TInput>, dependencies: stri
 
 	const handleFormChange = (newData: Partial<TInput>) => setFormData({ ...formData, ...newData });
 
-	const handleSubmit = async () => {
+	const handleSubmit = async (onSuccess?: () => void) => {
 		setSubmitting(true);
 
 		try {
 			const response = await onSubmit(formData);
 
 			setSuccess(true);
+			onSuccess?.();
 
 			if (response?.message) {
 				toast.info(response.message);

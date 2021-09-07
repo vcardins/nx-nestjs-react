@@ -6,6 +6,10 @@ export const FieldGroup = styled.div<{ sided?: boolean; padded?: boolean }>`
 	flex-direction: ${(p) => p.sided ? 'row' : 'column' };
 	justify-content: flex-end;
 	flex: 1;
+	&:not(:last-child) {
+		margin-bottom: 1em;
+	}
+
 	${({ padded }) => padded && css`margin: 1em 0;`}
 	${({ sided }) => sided
 		? css`

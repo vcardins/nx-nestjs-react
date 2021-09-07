@@ -1,7 +1,9 @@
+import { CSSProperties } from 'react';
 import styled, { css } from 'styled-components';
 
 export const PanelHeader = styled.div`
 	grid-area: header;
+	max-height: 60px;
 	display: flex;
 	align-items: center;
 	padding: ${({ theme }) => theme.spacing.normal };
@@ -26,14 +28,15 @@ export const PanelActionsWrapper = styled.div`
 	margin-left: auto;
 `;
 
-export const PanelBody = styled.main<{ padded: boolean }>`
+export const PanelBody = styled.main<{ padded: boolean; overflow?: CSSProperties['overflow']; }>`
 	grid-area: body;
 	${({ padded = false }) => padded && css`padding: 1em`};
-	overflow: auto;
+	overflow: ${({ overflow = 'auto' } ) => overflow};
 `;
 
 export const PanelFooter = styled.div<{ padded: boolean }>`
 	grid-area: footer;
+	max-height: 60px;
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
@@ -41,14 +44,15 @@ export const PanelFooter = styled.div<{ padded: boolean }>`
 	background-color: ${({ theme }) => theme.colors.tertiary.lightestGrey};
 `;
 
-export const PanelWrapper = styled.div`
-	height: 100vh;
+export const PanelWrapper = styled.div<{ hasHeader: boolean; hasFooter: boolean }>`
+	height: 100%;
 	display: grid;
-	grid-template:
-		'header'
-		'body'
-		'footer';
+	grid-template: ${({ hasHeader, hasFooter }) =>
+		`${hasHeader ? '\'header\'' : ''} 'body' ${hasFooter ? '\'footer\'' : ''}`
+	};
 	grid-template-columns: 1fr;
-	grid-template-rows: auto 1fr auto;
+	grid-template-rows: ${({ hasHeader, hasFooter }) =>
+		`${hasHeader ? 'auto' : ''} 1fr ${hasFooter ? 'auto' : ''}`
+	};
 `;
 

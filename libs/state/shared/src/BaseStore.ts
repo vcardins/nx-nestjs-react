@@ -21,6 +21,7 @@ export function createBaseStore<
 	return (set: SetState<TState>, get: GetState<TState>) => ({
 		status: ApiCallStatus.Idle,
 		items: [] as TOutput[],
+		checkedItems: [] as KeyType[],
 		sortBy: { id: SortDirections.ASC },
 		error: null,
 		isApiReady: false,
@@ -99,6 +100,30 @@ export function createBaseStore<
 		},
 		clearError() {
 			set({ error: null });
+		},
+		checkItems(id: KeyType | KeyType[]) {
+			const { checkedItems } = get();
+
+			// Accept an array as `itemId` to replace whatever the
+			// selection is (used to implement check/uncheck-all).
+			let value: KeyType | KeyType[];
+
+			if (Array.isArray(id)) {
+				value = id;
+			}
+			// Otherwise proceed to check/uncheck single id.
+			else {
+				const index = checkedItems.indexOf(id);
+
+				if (index === -1) {
+					value = [...checkedItems, id];
+				}
+				else {
+					value = checkedItems.filter((index) => index !== id);
+				}
+			}
+
+			set({ checkedItems: value });
 		},
 		...extraMethods?.(set, get),
 	});

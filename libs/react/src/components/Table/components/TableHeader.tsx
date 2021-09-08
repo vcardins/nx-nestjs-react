@@ -63,7 +63,7 @@ export const TableHeader = (props: ITableHeader & { align?: TextAlignment }) => 
 			<>
 				<Title role="column-children">{children}</Title>
 				<Sorter role="column-sorter" onClick={handleSort}>
-				{sortOrder === null ? '' : 'o'}
+					{sortOrder === null ? '' : 'o'}
 					{sortOrder === SortDirections.ASC ? '▲' : ''}
 					{sortOrder === SortDirections.DESC ? '▼' : ''}
 				</Sorter>
@@ -84,7 +84,7 @@ export const TableHeader = (props: ITableHeader & { align?: TextAlignment }) => 
 			ref={forwardRef}
 			sortable={sortOrder !== null}
 			className={classNames}
-			align={align || TextAlignment.Left}
+			align={align}
 			data-fixed-left={fixedLeft}
 			data-fixed-right={fixedLeft}
 			data-name={name}

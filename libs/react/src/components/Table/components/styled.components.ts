@@ -68,6 +68,7 @@ export const TableWrapper = styled.div<{ colsWidths: (number | 'auto')[]; rows: 
 
 		${({ theme, rowHeight }) => css`
 			background: repeating-linear-gradient(${theme.colors.secondary.lightestBlue} 0 ${rowHeight}px, transparent ${rowHeight}px ${rowHeight * 2}px);
+			[role='column-header'],
 			[role='tablecell'] {
 				height: ${rowHeight}px;
 				width: 100%;
@@ -96,17 +97,19 @@ export const TableWrapper = styled.div<{ colsWidths: (number | 'auto')[]; rows: 
 	@media (min-width: 769px) {
 		overflow-y: auto;
 
-		& + [role='grid'] {
+		& + [role='table'] {
 			margin-left: 1rem;
 		}
 
 		${TableContent} {
+			[role='column-header'],
 			[role='tablecell'] {
 				display: flex;
 				align-items: center;
 				border-right: 1px solid ${({ theme }) => theme.colors.tertiary.lightGrey};
+			}
 
-
+			[role='tablecell'] {
 				[data-fixed-left='true'],
 				[data-fixed-right='true'] {
 					z-index: 1;
@@ -135,7 +138,7 @@ export const TableWrapper = styled.div<{ colsWidths: (number | 'auto')[]; rows: 
 	@media (max-width: 768px) {
 		overflow-y: auto;
 
-		& + [role='grid'] {
+		& + [role='table'] {
 			margin-top: 2rem;
 		}
 

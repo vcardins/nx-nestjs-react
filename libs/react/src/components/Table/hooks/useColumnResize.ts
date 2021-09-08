@@ -4,7 +4,7 @@ import { ITableColumn } from '../types';
 const handleTextSelection = (isMouseMoving = false) =>
 	document.body.style.userSelect = isMouseMoving ? 'none' : 'auto';
 
-interface IUseTableResize {
+interface IUseColumnResize {
 	columns: ITableColumn[];
 	tableRef: MutableRefObject<HTMLDivElement>;
 	minCellWidth: number;
@@ -12,7 +12,7 @@ interface IUseTableResize {
 	onStartResizingColumn: (index: number) => void;
 }
 
-export const useColumnResize = (props: IUseTableResize): void => {
+export const useColumnResize = (props: IUseColumnResize): void => {
 	const { columns, resizingColumnIndex, minCellWidth, tableRef, onStartResizingColumn } = props;
 	const handleMouseDown = (index: number) => onStartResizingColumn(index);
 

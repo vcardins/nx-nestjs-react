@@ -74,7 +74,7 @@ export interface ITableHeader extends Pick<ITableColumn, 'name' | 'sortDirection
 	index: number;
 	isLast: boolean;
 	isResizing: boolean;
-	children: ReactElement;
+	children: ReactElement | string;
 	onResize?: (headerIndex: number) => void;
 	onSort?: (index: number, sort: SortDirections) => void;
 	tableHeight: number | 'auto';
@@ -101,7 +101,7 @@ export interface ITableProps<T extends IColumnKey> {
 	expandedItems?: ColumnKeyType[];
 	allowCheckAll?: boolean;
 	customRenderers?: CustomRenderers<T>;
-	onCheckItems?: (ids: ColumnKeyType[]) => void;
+	onCheckItems?: (ids: ColumnKeyType | ColumnKeyType[]) => void;
 	onExpandItem?: (ids: ColumnKeyType) => void;
 	onBuildIds?: {
 		header?: (key: ColumnKeyType) => string;

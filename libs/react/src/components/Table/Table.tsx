@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef, useMemo, useLayoutEffect } from 'react';
+import React, { useMemo, useRef } from 'react';
 
-import { SortDirections } from '@xapp/shared/types';
-import { ITableColumn, ITableProps, ITableState } from './types';
+import { TextAlignment } from '@xapp/shared/types';
+import { ITableProps, ITableRefsProps, ITableConfig, TableCellFormats } from './types';
 import {
 	TableHeader,
 	TableCell,
@@ -13,207 +13,137 @@ import {
 	TopShadow,
 } from './components';
 
-import { useColumnResize } from './hooks';
+import { useTableManager, useRenderer as renderers } from './hooks';
 
-const defaults = {
+const defaults: ITableConfig = {
 	rowHeight: 25,
 	rowsPerBody: 50,
 	minCellWidth: 40,
 };
 
-export function Table<T = any>(props: ITableProps<T>) {
-	const tableWrapperRef = useRef<HTMLDivElement>();
-	const tableRef = useRef<HTMLDivElement>();
-	const topShadowRef = useRef<HTMLDivElement>();
-	const { columns = [], rows = [], rowHeight = 25, rowsPerBody = 100, minCellWidth = 40 } = props;
-	const [resizingColumnIndex, setResizingColumnIndex] = useState<number | null>(null);
-	const [state, setState] = useState<ITableState<T>>({
-		// eslint-disable-next-line @typescript-eslint/no-use-before-define
-		columns: getColumns(columns),
-		rows,
-		loading: false,
-		total: rows.length,
-		rowHeight,
-		rowsPerBody,
-		visibleStart: 0,
-		visibleEnd: rowsPerBody,
-		displayStart: 0,
-		displayEnd: rowsPerBody * 2,
-		scroll: 0,
-		shouldUpdate: false,
-	});
+export function Table<T extends { id: number | string }= any>(props: ITableProps<T>) {
+	const refs: ITableRefsProps = {
+		wrapper: useRef<HTMLDivElement>(null),
+		body: useRef<HTMLDivElement>(null),
+		topShadow: useRef<HTMLDivElement>(null),
+		bottomShadow: useRef<HTMLDivElement>(null),
+	};
+	const config = { ...defaults, ...props.config };
 
-	useColumnResize({
-		columns: state.columns,
+	const {
+		data,
+		headers,
+		columnsWidths,
+		state,
 		resizingColumnIndex,
-		minCellWidth,
-		tableRef,
-		onStartResizingColumn: setResizingColumnIndex,
-	});
+		onStartResizingColumn,
+		onCheckAll,
+	} = useTableManager({ ...props, config, refs });
 
-	const columnsWidth = useMemo(
-		() => state.columns.map((col) => (col.width ? col.width + 10 : 'auto')),
-		[state.columns],
-	);
-
-	function sortDataByColumn(index: number, order: SortDirections) {
-		const updateRows = [...state.rows].sort((a, b) => {
-			if (a[index] === b[index]) {
-				return 0;
-			}
-			else if (order === SortDirections.DESC) {
-				return a[index] < b[index] ? 1 : -1;
-			}
-			return a[index] > b[index] ? 1 : -1;
-		});
-
-		setState((prevState) => ({
-			...prevState,
-			rows: updateRows,
-			shouldUpdate: true,
-		}));
-	}
-
-	function handleSortColumn(index: number, sortOrder: SortDirections | null) {
-		let sortIndex = 0;
-		let sort = sortOrder;
-
-		const columns = state.columns.map((col, i) => {
-			if (i === index) {
-				if (columns[i].sort === null) {
-					sortIndex = i;
-					sort = SortDirections.ASC;
-				}
-				else if (columns[i].sort === SortDirections.ASC) {
-					sortIndex = i;
-					sort = SortDirections.DESC;
-				}
-				else {
-					columns[i].sort = null;
-					columns[0].sort = SortDirections.ASC;
-				}
-			}
-			else {
-				columns[i].sort = null;
-			}
-
-			return {
-				...col,
-				sort,
-			};
-		});
-
-		sortDataByColumn(sortIndex, sortOrder);
-		setState((prevState) => ({ ...prevState, columns }));
-	}
-
-	function getColumns(columns: ITableColumn[]) {
-		return columns.map((col, index) => ({
-			index,
-			...col,
-			forwardRef: useRef(),
-			onSort: (sort: SortDirections | null) => handleSortColumn(index, sort),
-		}));
-	}
-
-	function handleScrolling() {
-		const scroll = tableWrapperRef.current.scrollTop;
-		const visibleStart = Math.floor(scroll / state.rowHeight);
-		const visibleEnd = Math.floor(Math.min(visibleStart + state.rowsPerBody, state.total - 1)) + state.rowHeight;
-		const displayStart = Math.floor(Math.max(0, Math.floor(scroll / state.rowHeight) - state.rowsPerBody * 1.5));
-		const displayEnd =
-			Math.floor(Math.min(displayStart + 4 * state.rowsPerBody, state.total - 1)) + state.rowHeight;
-		if (
-			state.shouldUpdate ||
-			!(visibleStart >= state.displayStart && visibleEnd + state.rowsPerBody <= state.displayEnd)
-		) {
-			setState((prevState) => ({
-				...prevState,
-				visibleStart,
-				visibleEnd,
-				displayStart,
-				displayEnd,
-				scroll,
-				shouldUpdate: false,
-			}));
+	const tableHeaders = useMemo(() => headers.map((column, index) => {
+		let children: React.ReactElement;
+		let align: TextAlignment;
+		switch (column.format) {
+			case TableCellFormats.Checkbox:
+				align = TextAlignment.Center;
+				children = renderers[TableCellFormats.Checkbox]({
+					id: props.onBuildIds?.header?.(column.name),
+					disabled: !data.length,
+					onChange: onCheckAll,
+				});
+				break;
+			case TableCellFormats.Expander:
+				align = TextAlignment.Center;
+				children = null;
+				break;
+			default:
+				children = (
+					<TableCellContent>
+						{ renderers[TableCellFormats.String]({ data: column.label }) }
+					</TableCellContent>
+				);
+				break;
 		}
 
-		topShadowRef.current.style.display = scroll > 0 ? 'block' : 'none';
-	}
+		return (
+			<TableHeader
+				{...column}
+				key={`column-${index}`}
+				index={index}
+				isLast={index === headers.length - 1}
+				isResizing={index === resizingColumnIndex}
+				align={align}
+				onResize={onStartResizingColumn}
+				tableHeight={refs.body.current?.offsetHeight || 'auto'}
+			>
+				{children}
+			</TableHeader>
+		);
+	}), [headers, resizingColumnIndex, refs.body.current?.offsetHeight, onCheckAll, onStartResizingColumn]);
 
-	useEffect(() => {
-		window.requestAnimationFrame(() => {
-			if (tableRef.current) {
-				const rowHeight = Math.floor(
-					tableRef.current.querySelector<HTMLDivElement>('[role=tablecell]').offsetHeight,
-				);
-				const contentHeight = Math.floor(tableRef.current.offsetHeight);
-				const rowsPerBody = Math.floor(contentHeight / rowHeight);
-
-				setState((prevState) => ({
-					...prevState,
-					rowHeight: rowHeight < 1 ? 30 : rowHeight,
-					rowsPerBody,
-					visibleStart: 0,
-					visibleEnd: rowsPerBody,
-					displayStart: 0,
-					displayEnd: rowsPerBody * 4,
-				}));
-			}
-		});
-	}, [tableRef.current]);
-
-	useLayoutEffect(() => {
-		tableWrapperRef.current?.addEventListener('scroll', handleScrolling, false);
-	}, [tableWrapperRef.current, handleScrolling]);
-
-	const tableHeaders = useMemo(
-		() =>
-			state.columns.map((column, index) => (
-				<TableHeader
-					{...column}
-					key={`column-${index}`}
-					index={index}
-					isLast={index === state.columns.length - 1}
-					isResizing={index === resizingColumnIndex}
-					onResize={setResizingColumnIndex}
-					tableHeight={tableRef.current?.offsetHeight || 'auto'}
-				/>
-			)),
-		[state.columns, tableRef.current?.offsetHeight],
-	);
-
-	const tableRows = useMemo(() => {
-		const virtualRows = state.rows.slice(state.displayStart, state.displayEnd);
-		return virtualRows.reduce((result, row, rowIndex) => {
-			// eslint-disable-next-line no-param-reassign
-			result = result.concat(
-				state.columns.map((column, colIndex) => (
+	const tableRows = useMemo(() => data.reduce((result, row, rowIndex) => {
+		let children: React.ReactElement;
+		let align: TextAlignment;
+		// eslint-disable-next-line no-param-reassign
+		result = result.concat(
+			headers.map((column, colIndex) => {
+				switch (column.format) {
+					case TableCellFormats.Checkbox:
+						align = TextAlignment.Center;
+						children = props.onCheckItems
+							? renderers[TableCellFormats.Checkbox]({
+								id: props.onBuildIds?.checkbox?.(column.name, row.id),
+								checked: props.checkedItems?.includes(row.id),
+								onChange: () => props.onCheckItems(row.id),
+							})
+							: null;
+						break;
+					case TableCellFormats.Expander:
+						align = TextAlignment.Center;
+						children = props.onExpandItem
+							? renderers[TableCellFormats.Expander]({
+								id: props.onBuildIds?.expander?.(column.name, row.id),
+								isExpanded: props.expandedItems?.includes(row.id),
+								onClick: () => props.onExpandItem(row.id),
+							})
+							: null;
+						break;
+					default:
+						align = column.align;
+						children = (
+							<TableCellContent>
+								{ renderers[column.format ?? TableCellFormats.String]({ data: row[column.name] }) }
+							</TableCellContent>
+						);
+						break;
+				}
+				return (
 					<TableCell
 						key={`${rowIndex}-${colIndex}`}
-						row={rowIndex}
 						column={colIndex}
-						align={column.align}
+						align={align}
 						fixedLeft={column.fixedLeft}
 						fixedRight={column.fixedRight}
 					>
-						<TableCellContent>{row[column.name]}</TableCellContent>
+						{ children }
 					</TableCell>
-				)),
-			);
-			return result;
-		}, []);
-	}, [state.rows, state.displayStart, state.displayEnd, state.columns]);
+				);
+			}),
+		);
+		return result;
+	}, [] as React.ReactNode[])
+	, [headers, data]);
 
 	return (
-		<TableWrapper role="table" ref={tableWrapperRef} cols={columnsWidth} rows={state.rows.length}>
-			<TopShadow top={defaults.rowHeight} ref={topShadowRef} />
-			<TableContent
-				ref={tableRef}
-				height={state.total * state.rowHeight}
-				paddingTop={state.displayStart * state.rowHeight}
-				paddingBottom={state.rowHeight * 1.5}
-			>
+		<TableWrapper
+			role="table"
+			ref={refs.wrapper}
+			rows={tableRows.length}
+			colsWidths={columnsWidths}
+			rowHeight={state.rowHeight}
+		>
+			<TopShadow top={state.rowHeight} ref={refs.topShadow} />
+			<TableContent ref={refs.body}>
 				{tableHeaders}
 				{tableRows}
 			</TableContent>

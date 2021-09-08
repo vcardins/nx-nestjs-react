@@ -1,14 +1,14 @@
-import { useLayoutEffect, useState, useEffect, MutableRefObject } from 'react';
+import { useLayoutEffect, useEffect, MutableRefObject, Dispatch, SetStateAction } from 'react';
 import { IColumnKey, ITableState } from '../types';
 
 interface IUseScrolling<T extends IColumnKey = any> {
 	tableRef: MutableRefObject<HTMLDivElement>;
 	topShadowRef: MutableRefObject<HTMLDivElement>;
 	state: ITableState<T>;
-	onUpdateState: typeof useState;
+	onUpdateState: Dispatch<SetStateAction<ITableState<T>>>;
 }
 
-export const useScrolling = (props: IUseScrolling): void => {
+export const useScrolling = <T extends IColumnKey = any>(props: IUseScrolling<T>): void => {
 	const { state, topShadowRef, tableRef, onUpdateState } = props;
 
 	function handleScrolling() {
@@ -60,5 +60,9 @@ export const useScrolling = (props: IUseScrolling): void => {
 
 	useLayoutEffect(() => {
 		tableRef.current?.addEventListener('scroll', handleScrolling, false);
-	}, [tableRef.current, handleScrolling]);
+
+		return () => {
+			tableRef.current?.removeEventListener('scroll', handleScrolling);
+		};
+	}, []);
 };

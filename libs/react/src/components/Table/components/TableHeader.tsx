@@ -34,17 +34,17 @@ export const Resizer = styled.div<{ active?: boolean; height: number | 'auto' }>
 
 export const TableHeader = (props: ITableHeader) => {
 	const { index, name, label, sortDirection, forwardRef, fixedLeft, fixedRight, tableHeight, isLast, isResizing, onResize, onSort } = props;
-	const [sortOrder, setSortOrder] = useState<SortDirections>(sortDirection || SortDirections.NONE);
+	const [sortOrder, setSortOrder] = useState<SortDirections | null>(sortDirection || null);
 
 	const handleSort = () => {
 		let updatedSortOrder: SortDirections;
-		if (sortOrder === SortDirections.NONE) {
+		if (sortOrder === null) {
 			updatedSortOrder = SortDirections.ASC;
 		}
 		else {
 			updatedSortOrder = sortOrder === SortDirections.ASC
 				? SortDirections.DESC
-				: SortDirections.NONE;
+				: null;
 		}
 		onSort(index, updatedSortOrder);
 		setSortOrder(updatedSortOrder);
@@ -52,14 +52,14 @@ export const TableHeader = (props: ITableHeader) => {
 
 	const classNames = [
 		(fixedLeft || fixedRight) && 'cell-header-pinned',
-		sortDirection !== SortDirections.NONE && 'cell-header-sortable',
+		sortDirection !== null && 'cell-header-sortable',
 	].filter(Boolean).join(' ');
 
 	return (
 		<TableHeaderWrapper
 			role="column-header"
 			ref={forwardRef}
-			sortable={sortOrder !== SortDirections.NONE}
+			sortable={sortOrder !== null}
 			className={classNames}
 			data-fixed-left={fixedLeft}
 			data-fixed-right={fixedLeft}
@@ -68,7 +68,7 @@ export const TableHeader = (props: ITableHeader) => {
 		>
 			<Title role="column-label">{label}</Title>
 			<Sorter role="column-sorter" onClick={handleSort}>
-				{sortOrder === SortDirections.NONE ? '' : 'o'}
+				{sortOrder === null ? '' : 'o'}
 				{sortOrder === SortDirections.ASC ? '▲' : ''}
 				{sortOrder === SortDirections.DESC ? '▼' : ''}
 			</Sorter>

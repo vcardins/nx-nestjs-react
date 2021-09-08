@@ -74,13 +74,13 @@ export function Table<T = any>(props: ITableProps<T>) {
 		}));
 	}
 
-	function handleSortColumn(index: number, sortOrder: SortDirections) {
+	function handleSortColumn(index: number, sortOrder: SortDirections | null) {
 		let sortIndex = 0;
 		let sort = sortOrder;
 
 		const columns = state.columns.map((col, i) => {
 			if (i === index) {
-				if (columns[i].sort === SortDirections.NONE) {
+				if (columns[i].sort === null) {
 					sortIndex = i;
 					sort = SortDirections.ASC;
 				}
@@ -89,12 +89,12 @@ export function Table<T = any>(props: ITableProps<T>) {
 					sort = SortDirections.DESC;
 				}
 				else {
-					columns[i].sort = SortDirections.NONE;
+					columns[i].sort = null;
 					columns[0].sort = SortDirections.ASC;
 				}
 			}
 			else {
-				columns[i].sort = SortDirections.NONE;
+				columns[i].sort = null;
 			}
 
 			return {
@@ -112,7 +112,7 @@ export function Table<T = any>(props: ITableProps<T>) {
 			index,
 			...col,
 			forwardRef: useRef(),
-			onSort: (sort: SortDirections) => handleSortColumn(index, sort),
+			onSort: (sort: SortDirections | null) => handleSortColumn(index, sort),
 		}));
 	}
 

@@ -16,7 +16,7 @@ import {
 	useForm,
 	Button,
 	Icon,
-	Table, ITableColumn, TableCellFormats,
+	Table, ITableColumn, TableCellFormats, ColumnKeyType,
 	Drawer,
 	InlineEdit,
 } from '@xapp/react';
@@ -55,10 +55,9 @@ const columns: ITableColumn[] = [
 
 const TaskTemplatePage = memo(() => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-	const [checkedItems, setCheckedItems] = useState<number[]>([] as number[]);
 
 	const formRef = useRef({ valid: false });
-	const { mappedItems, isApiReady, read, save, remove, error, clearError } = useAppStore((state) => state.taskTemplate);
+	const { mappedItems, isApiReady, read, save, remove, error, checkedItems, checkItems, clearError } = useAppStore((state) => state.taskTemplate);
 	const lookupStore = useAppStore((state) => state.lookup);
 
 	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<TaskTemplateInput>({
@@ -144,7 +143,7 @@ const TaskTemplatePage = memo(() => {
 				columns={columns}
 				data={data}
 				checkedItems={checkedItems}
-				onCheckItems={(ids) => setCheckedItems(ids as number[])}
+				onCheckItems={checkItems}
 			/>
 			{/* <TaskTemplateList>
 				{lookupStore?.roomTypes && Object.keys(mappedItems).map((roomTypeId) => {

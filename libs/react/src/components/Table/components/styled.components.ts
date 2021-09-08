@@ -45,10 +45,7 @@ export const TopShadow = styled.div<{ top: number }>`
 	background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
 `;
 
-export const TableContent = styled.div<{ height: number; paddingTop: number; paddingBottom: number }>`
-	height: ${({ height }) => `${height}px`};
-	padding-top: ${({ paddingTop }) => `${paddingTop}px`};
-	padding-bottom: ${({ paddingBottom }) => `${paddingBottom}px`};
+export const TableContent = styled.div`
 	position: relative;
 `;
 
@@ -56,7 +53,7 @@ export const TableCellContent = styled.span`
 	${cellStyle};
 `;
 
-export const TableWrapper = styled.div<{ cols: (number | 'auto')[]; rows: number }>`
+export const TableWrapper = styled.div<{ colsWidths: (number | 'auto')[]; rows: number; rowHeight: number }>`
 	flex: 1;
 	flex-direction: column;
 	font-size: 1em;
@@ -65,16 +62,17 @@ export const TableWrapper = styled.div<{ cols: (number | 'auto')[]; rows: number
 	${TableContent} {
 		display: grid;
 		grid-template-rows: repeat(${({ rows }) => rows}, min-content) max-content;
-		grid-template-columns: ${({ cols }) => cols.map((col) => (col > 0 ? `${col}px ` : ' auto '))};
+		grid-template-columns: ${({ colsWidths }) => colsWidths.map((col) => (col > 0 ? `${col}px ` : ' auto '))};
 		flex: 1;
 		z-index: 1;
 
-		[role='tablecell'] {
-			width: 100%;
-			&[data-tag='odd'] {
-				background-color: ${({ theme }) => theme.colors.secondary.lightestBlue};
+		${({ theme, rowHeight }) => css`
+			background: repeating-linear-gradient(${theme.colors.secondary.lightestBlue} 0 ${rowHeight}px, transparent ${rowHeight}px ${rowHeight * 2}px);
+			[role='tablecell'] {
+				height: ${rowHeight}px;
+				width: 100%;
 			}
-		}
+		`}
 
 		[role='column-header'] {
 			${tableHeaderStyle};
@@ -119,11 +117,9 @@ export const TableWrapper = styled.div<{ cols: (number | 'auto')[]; rows: number
 			[data-fixed-left='true'] {
 				left: 0;
 			}
-
 			[data-fixed-right='true'] {
 				right: 0;
 			}
-
 			[data-align='left'] {
 				justify-content: flex-start;
 			}

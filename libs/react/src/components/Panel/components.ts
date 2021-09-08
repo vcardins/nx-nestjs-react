@@ -49,10 +49,10 @@ export const PanelWrapper = styled.div<{ hasHeader: boolean; hasFooter: boolean 
 	display: grid;
 	grid-template: ${({ hasHeader, hasFooter }) =>
 		`${hasHeader ? '\'header\'' : ''} 'body' ${hasFooter ? '\'footer\'' : ''}`
-	};
+};
 	grid-template-columns: 1fr;
 	grid-template-rows: ${({ hasHeader, hasFooter }) =>
 		`${hasHeader ? 'auto' : ''} 1fr ${hasFooter ? 'auto' : ''}`
-	};
+};
 `;
 

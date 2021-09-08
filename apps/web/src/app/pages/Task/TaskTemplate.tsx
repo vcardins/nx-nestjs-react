@@ -16,7 +16,7 @@ import {
 	useForm,
 	Button,
 	Icon,
-	Table, ITableColumn,
+	Table, ITableColumn, TableCellFormats,
 	Drawer,
 	InlineEdit,
 } from '@xapp/react';
@@ -38,20 +38,25 @@ const initialValues: TaskTemplateInput = {
 };
 
 const planets = ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto'];
-const rows = Array.from({ length: planets.length * 5 }, (_, i) => ({
-	distance: i + 1,
+
+const data = Array.from({ length: planets.length * 5 }, (_, i) => ({
+	id: i + 1,
+	distance: Math.floor(Math.random() * 1000),
 	name: planets[Math.floor(Math.random() * planets.length)],
 	moons: i % 9 + 1,
 }));
 
 const columns: ITableColumn[] = [
-	{ name: 'distance', label: 'Distance', width: 50, fixedLeft: true },
-	{ name: 'name', label: 'Name' },
-	{ name: 'moons', label: 'Moons', width: 50, align: TextAlignment.Center, fixedRight: true },
+	{ name: 'id', label: 'ID', width: 30, fixedLeft: true, resizable: false, format: TableCellFormats.Checkbox },
+	{ name: 'name', label: 'Name', format: TableCellFormats.StringUpperCase },
+	{ name: 'distance', label: 'Distance', width: 50, align: TextAlignment.Center, fixedRight: true, format: TableCellFormats.Decimal },
+	{ name: 'moons', label: 'Moons', width: 50, align: TextAlignment.Center, fixedRight: true, format: TableCellFormats.Integer },
 ]
 
 const TaskTemplatePage = memo(() => {
-	const [isFormOpen, setIsFormOpen] = useState(false);
+	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+	const [checkedItems, setCheckedItems] = useState<number[]>([] as number[]);
+
 	const formRef = useRef({ valid: false });
 	const { mappedItems, isApiReady, read, save, remove, error, clearError } = useAppStore((state) => state.taskTemplate);
 	const lookupStore = useAppStore((state) => state.lookup);
@@ -75,7 +80,7 @@ const TaskTemplatePage = memo(() => {
 	}, [error, clearError]);
 
 	function handleClosePanel() {
-		setIsFormOpen(false);
+		setIsDrawerOpen(false);
 	}
 
 	function handleSubmitForm() {
@@ -96,7 +101,7 @@ const TaskTemplatePage = memo(() => {
 		>
 			<Drawer
 				id="household-form"
-				isOpen={isFormOpen}
+				isOpen={isDrawerOpen}
 				size="300px"
 				onClose={handleClosePanel}
 				position="right"
@@ -137,7 +142,9 @@ const TaskTemplatePage = memo(() => {
 			</Drawer>
 			<Table
 				columns={columns}
-				rows={rows}
+				data={data}
+				checkedItems={checkedItems}
+				onCheckItems={(ids) => setCheckedItems(ids as number[])}
 			/>
 			{/* <TaskTemplateList>
 				{lookupStore?.roomTypes && Object.keys(mappedItems).map((roomTypeId) => {

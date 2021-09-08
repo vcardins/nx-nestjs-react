@@ -31,7 +31,7 @@ export const Panel = ({ id, tag, title, subTitle, icon, children, actions, padde
 		hasHeader={!!title}
 		hasFooter={!!footer}
 	>
-		{title && (
+		{(title || actions) && (
 			<PanelHeader id={`${tag}-header`}>
 				<PanelTitleWrapper>
 					<PanelTitle id={`${tag}-title`}>

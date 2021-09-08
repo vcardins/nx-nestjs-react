@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { SortDirections } from '@xapp/shared/types';
+import { SortDirections, TextAlignment } from '@xapp/shared/types';
 import { ITableHeader } from '../types';
-
-export const TableHeaderWrapper = styled.div<{ sortable: boolean }>``;
+export const TableHeaderWrapper = styled.div<{ sortable: boolean; align: TextAlignment }>`
+	display: flex;
+	align-items: ${({ align }) => align};
+	justify-content: ${({ align }) => align};
+`;
 
 export const Title = styled.span`
 	display: flex;
@@ -32,8 +35,8 @@ export const Resizer = styled.div<{ active?: boolean; height: number | 'auto' }>
 	${({ active }) => active && 'border-color: #517ea5;'};
 `;
 
-export const TableHeader = (props: ITableHeader) => {
-	const { index, name, label, sortDirection, forwardRef, fixedLeft, fixedRight, tableHeight, isLast, isResizing, onResize, onSort } = props;
+export const TableHeader = (props: ITableHeader & { align?: TextAlignment }) => {
+	const { index, name, align, children, sortDirection, forwardRef, fixedLeft, fixedRight, tableHeight, isLast, isResizing, onResize, onSort } = props;
 	const [sortOrder, setSortOrder] = useState<SortDirections | null>(sortDirection || null);
 
 	const handleSort = () => {
@@ -54,6 +57,26 @@ export const TableHeader = (props: ITableHeader) => {
 		(fixedLeft || fixedRight) && 'cell-header-pinned',
 		sortDirection !== null && 'cell-header-sortable',
 	].filter(Boolean).join(' ');
+	const content = React.isValidElement(children)
+		? children
+		: (
+			<>
+				<Title role="column-children">{children}</Title>
+				<Sorter role="column-sorter" onClick={handleSort}>
+				{sortOrder === null ? '' : 'o'}
+					{sortOrder === SortDirections.ASC ? '▲' : ''}
+					{sortOrder === SortDirections.DESC ? '▼' : ''}
+				</Sorter>
+				{!isLast && (
+					<Resizer
+						role="column-sorter"
+						height={tableHeight}
+						onMouseDown={() => onResize(index)}
+						active={isResizing}
+					/>
+				)}
+			</>
+		);
 
 	return (
 		<TableHeaderWrapper
@@ -61,25 +84,13 @@ export const TableHeader = (props: ITableHeader) => {
 			ref={forwardRef}
 			sortable={sortOrder !== null}
 			className={classNames}
+			align={align || TextAlignment.Left}
 			data-fixed-left={fixedLeft}
 			data-fixed-right={fixedLeft}
 			data-name={name}
 			data-sortable={sortDirection}
 		>
-			<Title role="column-label">{label}</Title>
-			<Sorter role="column-sorter" onClick={handleSort}>
-				{sortOrder === null ? '' : 'o'}
-				{sortOrder === SortDirections.ASC ? '▲' : ''}
-				{sortOrder === SortDirections.DESC ? '▼' : ''}
-			</Sorter>
-			{!isLast && (
-				<Resizer
-					role="column-sorter"
-					height={tableHeight}
-					onMouseDown={() => onResize(index)}
-					active={isResizing}
-				/>
-			)}
+			{ content }
 		</TableHeaderWrapper>
 	);
 };

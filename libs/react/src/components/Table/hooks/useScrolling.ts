@@ -1,7 +1,7 @@
 import { useLayoutEffect, useState, useEffect, MutableRefObject } from 'react';
-import { ITableState } from '../types';
+import { IColumnKey, ITableState } from '../types';
 
-interface IUseScrolling<T = any> {
+interface IUseScrolling<T extends IColumnKey = any> {
 	tableRef: MutableRefObject<HTMLDivElement>;
 	topShadowRef: MutableRefObject<HTMLDivElement>;
 	state: ITableState<T>;

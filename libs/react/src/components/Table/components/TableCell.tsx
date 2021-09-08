@@ -2,27 +2,23 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { TextAlignment } from '@xapp/shared/types';
+import { ITableCellProps } from '../types';
 
-export interface ITableCellProps {
-	row: number;
-	column: number;
-	align?: TextAlignment;
-	fixedLeft?: boolean;
-	fixedRight?: boolean;
-	children?: React.ReactNode;
-}
-
-export const StyledTableCell = styled.div``;
+export const StyledTableCell = styled.div<{ align: TextAlignment }>`
+	display: flex;
+	align-items: ${({ align }) => align};
+	justify-content: ${({ align }) => align};
+`;
 
 export const TableCellLabel = styled.div``;
 
 export const TableCell = (props: ITableCellProps) => {
-	const { children, row, fixedLeft, fixedRight } = props;
+	const { children, align, fixedLeft, fixedRight } = props;
 
 	return (
 		<StyledTableCell
 			role="tablecell"
-			data-tag={row % 2 === 0 ? 'even' : 'odd'}
+			align={align}
 			data-fixed-left={fixedLeft}
 			data-fixed-right={fixedRight}
 		>

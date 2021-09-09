@@ -2,7 +2,6 @@ import styled, { css } from 'styled-components';
 
 import { TextAlignment } from '@xapp/shared/types';
 
-
 const tableHeaderStyle = css`
 	position: sticky;
 	top: 0;
@@ -11,6 +10,13 @@ const tableHeaderStyle = css`
 	font-weight: 700;
 	z-index: 2;
 	width: 100%;
+
+	a {
+		width: 100%;
+		> * {
+			width: auto;
+		}
+	}
 
 	svg {
 		color: ${({ theme }) => theme.colors.tertiary.lightGrey};

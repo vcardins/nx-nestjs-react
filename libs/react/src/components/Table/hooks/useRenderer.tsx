@@ -1,18 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
 import numeral from 'numeral';
 
-import { TableCell } from '../components';
+import { ActionLink, TableCell, DownArrow, UpArrow } from '../components';
 
 import { TableCellFormats, CharCase, ICheckboxOptions, IExpanderOptions, ICommonRenderer, RenderProps } from '../types';
 
 type JSX = React.ReactElement;
-
-const ExpandIcon = styled.i`
-	width: auto;
-	margin: 0;
-	content: '+';
-`;
 
 function checkboxRenderer(checkbox: ICheckboxOptions): JSX {
 	return (
@@ -26,11 +19,12 @@ function checkboxRenderer(checkbox: ICheckboxOptions): JSX {
 }
 
 function expanderRenderer(expander: IExpanderOptions): JSX {
+	const { isExpanded, ...rest } = expander;
 	return (
 		expander && (
-			<ExpandIcon
-				{...expander}
-			/>
+			<ActionLink {...rest}>
+				{ !isExpanded ? <DownArrow/> : <UpArrow/> }
+			</ActionLink>
 		)
 	);
 }

@@ -4,8 +4,7 @@ import { Link as NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const Link = styled(NavLink)`
-	display: flex;
-	width: 100%;
+	display: inherit;
 `;
 
 interface IActionLinkProps {

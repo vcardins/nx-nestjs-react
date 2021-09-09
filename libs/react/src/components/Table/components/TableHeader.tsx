@@ -55,17 +55,26 @@ export const TableHeader = (props: ITableHeader & { isControl?: boolean }) => {
 			return children;
 		}
 
+		let icon = null;
+		switch (sortDirection) {
+			case SortDirections.ASC: icon = <UpArrow />; break;
+			case SortDirections.DESC: icon = <DownArrow />; break;
+			default: icon = <UpAndDownArrows color="#ccc" size="6px"/>;
+		}
+
 		return (
 			<>
 				<ActionLink onClick={onSort}>
 					{children}
-					<Sorter>
-						{!sortDirection && <UpAndDownArrows />}
-						{sortDirection === SortDirections.ASC ? <UpArrow /> : ''}
-						{sortDirection === SortDirections.DESC ? <DownArrow /> : ''}
-					</Sorter>
+					<Sorter>{icon}</Sorter>
 				</ActionLink>
-				{resizable && <Resizer height={tableHeight} onMouseDown={() => onResize(index)} active={isResizing} />}
+				{resizable && (
+					<Resizer
+						height={tableHeight}
+						onMouseDown={() => onResize(index)}
+						active={isResizing}
+					/>
+				)}
 			</>
 		);
 	}, [children, tableHeight, index, isResizing, sortDirection, resizable, onSort]);

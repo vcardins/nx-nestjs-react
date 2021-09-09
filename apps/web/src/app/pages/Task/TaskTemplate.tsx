@@ -47,8 +47,8 @@ const data = Array.from({ length: planets.length * 5 }, (_, i) => ({
 }));
 
 const columns: ITableColumn[] = [
-	{ name: 'id', label: 'ID', width: 30, fixedLeft: true, resizable: false, format: TableCellFormats.Checkbox },
-	{ name: 'name', label: 'Name', format: TableCellFormats.StringUpperCase },
+	{ name: 'id', label: 'ID', width: 32, fixedLeft: true, resizable: false, format: TableCellFormats.Checkbox },
+	{ name: 'name', label: 'Name', format: TableCellFormats.StringUpperCase  },
 	{ name: 'distance', label: 'Distance', width: 50, align: TextAlignment.Center, fixedRight: true, format: TableCellFormats.Decimal },
 	{ name: 'moons', label: 'Moons', width: 50, align: TextAlignment.Center, fixedRight: true, format: TableCellFormats.Integer },
 ]

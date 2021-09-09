@@ -1,3 +1,4 @@
+export * from './ActionLink';
 export * from './TableCell';
 export * from './TableHeader';
 export * from './Spinner';

@@ -1,21 +1,21 @@
 import { useState, useMemo, useRef, useCallback, ChangeEvent } from 'react';
 
-import { SortDirections } from '@xapp/shared/types';
-
 import { useColumnResize, useScrolling, useColumnSorting } from '.';
-import { ITableColumn, ITableProps, ITableState, ITableRefsProps, IColumnKey } from '../types';
+import { ITableProps, ITableState, ITableRefsProps, IColumnKey, ITableColumn, TableCellFormats } from '../types';
+
+const getWidth = (col: ITableColumn) => {
+	if ([TableCellFormats.Checkbox, TableCellFormats.Expander].includes(col.format)) {
+		return 32;
+	}
+
+	return col.width
+		? col.width + 25
+		: col.width;
+};
 
 export const useTableManager = <T extends IColumnKey = any>(
 	props: ITableProps<T> & { refs: ITableRefsProps },
-): {
-	headers: ITableColumn[];
-	data: T[];
-	columnsWidths: (number | 'auto')[];
-	state: ITableState<T>;
-	resizingColumnIndex: number;
-	onStartResizingColumn: (id: number) => void;
-	onCheckAll: (e: ChangeEvent<HTMLInputElement>) => void;
-} => {
+) => {
 	const {
 		columns = [],
 		data = [],
@@ -27,7 +27,12 @@ export const useTableManager = <T extends IColumnKey = any>(
 	const [resizingColumnIndex, setResizingColumnIndex] = useState<number | null>(null);
 	const [state, setState] = useState<ITableState<T>>({
 		// eslint-disable-next-line @typescript-eslint/no-use-before-define
-		columns: getColumns(columns),
+		columns: columns.map((col, index) => ({
+			index,
+			...col,
+			width: getWidth(col),
+			forwardRef: useRef(),
+		})),
 		data,
 		loading: false,
 		total: data.length,
@@ -62,18 +67,9 @@ export const useTableManager = <T extends IColumnKey = any>(
 	});
 
 	const columnsWidths = useMemo(
-		() => state.columns.map((col) => (col.width ? col.width + 10 : 'auto')),
+		() => state.columns.map((col) => (col.width ? col.width : 'auto')),
 		[state.columns],
 	);
-
-	function getColumns(columns: ITableColumn[]) {
-		return columns.map((col, index) => ({
-			index,
-			...col,
-			forwardRef: useRef(),
-			onSort: (sort: SortDirections) => onColumnSorting(index, sort),
-		}));
-	}
 
 	const handleCheckAll = useCallback(
 		({ target: { checked } }: ChangeEvent<HTMLInputElement>) => {
@@ -98,14 +94,6 @@ export const useTableManager = <T extends IColumnKey = any>(
 		resizingColumnIndex,
 		onStartResizingColumn: setResizingColumnIndex,
 		onCheckAll: handleCheckAll,
+		onColumnSorting,
 	};
-	// , [
-	// 	tableHeaders,
-	// 	state.data,
-	// 	columnsWidths,
-	// 	state,
-	// 	resizingColumnIndex,
-	// 	setResizingColumnIndex,
-	// 	handleCheckAll
-	// ]);
 };

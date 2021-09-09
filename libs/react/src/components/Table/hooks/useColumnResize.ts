@@ -31,7 +31,7 @@ export const useColumnResize = (props: IUseColumnResize): void => {
 				if (updatedWidth < minCellWidth) {
 					updatedWidth = minCellWidth;
 				}
-				return updatedWidth ? `${updatedWidth}px` : 'auto';
+				return `${updatedWidth}px`; // : 'auto';
 			});
 			tableRef.current.style.gridTemplateColumns = `${gridColumns.join(' ')}`;
 		}),

@@ -17,7 +17,7 @@ import { useTableManager, useRenderer as renderers } from './hooks';
 
 const defaults: ITableConfig = {
 	rowHeight: 25,
-	rowsPerBody: 50,
+	rowsPerBody: 25,
 	minCellWidth: 40,
 };
 
@@ -38,13 +38,17 @@ export function Table<T extends { id: number | string }= any>(props: ITableProps
 		resizingColumnIndex,
 		onStartResizingColumn,
 		onCheckAll,
+		onColumnSorting,
 	} = useTableManager({ ...props, config, refs });
 
 	const tableHeaders = useMemo(() => headers.map((column, index) => {
 		let children: React.ReactElement;
 		let align: TextAlignment;
+		let isControl = false;
+
 		switch (column.format) {
 			case TableCellFormats.Checkbox:
+				isControl = true;
 				align = TextAlignment.Center;
 				children = renderers[TableCellFormats.Checkbox]({
 					id: props.onBuildIds?.header?.(column.name),
@@ -53,14 +57,13 @@ export function Table<T extends { id: number | string }= any>(props: ITableProps
 				});
 				break;
 			case TableCellFormats.Expander:
+				isControl = true;
 				align = TextAlignment.Center;
 				children = null;
 				break;
 			default:
 				children = (
-					<TableCellContent>
-						{ renderers[TableCellFormats.String]({ data: column.label }) }
-					</TableCellContent>
+					renderers[TableCellFormats.String]({ data: column.label })
 				);
 				break;
 		}
@@ -72,11 +75,12 @@ export function Table<T extends { id: number | string }= any>(props: ITableProps
 				index={index}
 				isLast={index === headers.length - 1}
 				isResizing={index === resizingColumnIndex}
-				align={align}
+				isControl={isControl}
 				onResize={onStartResizingColumn}
+				onSort={() => onColumnSorting(index)}
 				tableHeight={refs.body.current?.offsetHeight || 'auto'}
 			>
-				{children}
+				<TableCellContent align={align}>{children}</TableCellContent>
 			</TableHeader>
 		);
 	}), [headers, resizingColumnIndex, refs.body.current?.offsetHeight, onCheckAll, onStartResizingColumn]);
@@ -111,9 +115,7 @@ export function Table<T extends { id: number | string }= any>(props: ITableProps
 					default:
 						align = column.align;
 						children = (
-							<TableCellContent>
-								{ renderers[column.format ?? TableCellFormats.String]({ data: row[column.name] }) }
-							</TableCellContent>
+							renderers[column.format ?? TableCellFormats.String]({ data: row[column.name] })
 						);
 						break;
 				}
@@ -121,11 +123,10 @@ export function Table<T extends { id: number | string }= any>(props: ITableProps
 					<TableCell
 						key={`${rowIndex}-${colIndex}`}
 						column={colIndex}
-						align={align}
 						fixedLeft={column.fixedLeft}
 						fixedRight={column.fixedRight}
 					>
-						{ children }
+						<TableCellContent align={align}>{ children }</TableCellContent>
 					</TableCell>
 				);
 			}),

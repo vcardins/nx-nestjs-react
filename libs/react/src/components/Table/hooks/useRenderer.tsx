@@ -4,7 +4,7 @@ import numeral from 'numeral';
 
 import { TableCell } from '../components';
 
-import { ITableCellProps, TableCellFormats, CharCase, ICheckboxOptions, IExpanderOptions, ICommonRenderer, RenderProps } from '../types';
+import { TableCellFormats, CharCase, ICheckboxOptions, IExpanderOptions, ICommonRenderer, RenderProps } from '../types';
 
 type JSX = React.ReactElement;
 

@@ -43,13 +43,13 @@ export interface ITableColumn {
 	editable?: boolean;
 	fixedLeft?: boolean;
 	fixedRight?: boolean;
-	forwardRef?: MutableRefObject<HTMLDivElement>;
 	hidden?: boolean;
 	label: string;
 	name: string;
 	resizable?: boolean;
 	searchable?: boolean;
 	sortDirection?: SortDirections;
+	forwardRef?: MutableRefObject<HTMLDivElement>;
 	visible?: boolean;
 	width?: number;
 	format?: TableCellFormats;
@@ -70,13 +70,13 @@ export interface IExpanderOptions {
 	onClick(): any;
 }
 
-export interface ITableHeader extends Pick<ITableColumn, 'name' | 'sortDirection' | 'forwardRef' | 'fixedLeft' | 'fixedRight' | 'format'> {
+export interface ITableHeader extends ITableColumn {
 	index: number;
 	isLast: boolean;
 	isResizing: boolean;
 	children: ReactElement | string;
 	onResize?: (headerIndex: number) => void;
-	onSort?: (index: number, sort: SortDirections) => void;
+	onSort?: () => void;
 	tableHeight: number | 'auto';
 }
 
@@ -112,7 +112,7 @@ export interface ITableProps<T extends IColumnKey> {
 }
 
 export interface ITableState<T extends IColumnKey> {
-	columns: Pick<ITableColumn, 'name' | 'label' | 'sortDirection' | 'width' | 'align' | 'fixedLeft' | 'fixedRight' | 'format'>[];
+	columns: ITableColumn[];
 	data?: T[];
 	loading: boolean;
 	total: number;

@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components';
 
+import { TextAlignment } from '@xapp/shared/types';
+
 
 const tableHeaderStyle = css`
 	position: sticky;
@@ -49,8 +51,11 @@ export const TableContent = styled.div`
 	position: relative;
 `;
 
-export const TableCellContent = styled.span`
+export const TableCellContent = styled.span<{ align: TextAlignment }>`
 	${cellStyle};
+	display: flex;
+	align-items: ${({ align }) => align};
+	justify-content: ${({ align }) => align};
 `;
 
 export const TableWrapper = styled.div<{ colsWidths: (number | 'auto')[]; rows: number; rowHeight: number }>`
@@ -67,7 +72,7 @@ export const TableWrapper = styled.div<{ colsWidths: (number | 'auto')[]; rows: 
 		z-index: 1;
 
 		${({ theme, rowHeight }) => css`
-			background: repeating-linear-gradient(${theme.colors.secondary.lightestBlue} 0 ${rowHeight}px, transparent ${rowHeight}px ${rowHeight * 2}px);
+			background: repeating-linear-gradient(transparent 0 ${rowHeight}px, ${theme.colors.secondary.lightestBlue} ${rowHeight}px ${rowHeight * 2}px);
 			[role='column-header'],
 			[role='tablecell'] {
 				height: ${rowHeight}px;

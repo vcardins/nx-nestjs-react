@@ -1,5 +1,5 @@
 import React from 'react';
-import { IIconProps } from './types';
+import { IIconProps } from '../types';
 
 export const UpAndDownArrows = ({ color = '#eee', size = '12px' }: IIconProps) => (
 	<svg

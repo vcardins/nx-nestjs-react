@@ -1,7 +1,12 @@
-import { ReactNode, ChangeEvent, ReactElement, MutableRefObject, RefObject } from 'react';
+import { CSSProperties, ReactNode, ChangeEvent, ReactElement, MutableRefObject, RefObject } from 'react';
 
 import { SortDirections, TextAlignment } from '@xapp/shared/types';
 import { TableCellFormats } from './enums';
+
+export interface IIconProps {
+	color?: CSSProperties['color'];
+	size?: CSSProperties['width'];
+}
 
 
 export interface ITableCellProps {
@@ -102,7 +107,7 @@ export interface ITableProps<T extends IColumnKey> {
 	allowCheckAll?: boolean;
 	customRenderers?: CustomRenderers<T>;
 	onCheckItems?: (ids: ColumnKeyType | ColumnKeyType[]) => void;
-	onExpandItem?: (ids: ColumnKeyType) => void;
+	onExpandItem?: (ids: ColumnKeyType | ColumnKeyType[]) => void;
 	onBuildIds?: {
 		header?: (key: ColumnKeyType) => string;
 		cell?: IdBuilder;

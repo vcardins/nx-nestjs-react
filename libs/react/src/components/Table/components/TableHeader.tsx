@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import styled, { css } from 'styled-components';
 
 import { SortDirections } from '@xapp/shared/types';
-import { DownArrow, UpArrow, UpAndDownArrows } from '../assets';
+import { DownArrow, UpArrow, UpAndDownArrows } from './';
 
 import { ITableHeader } from '../types';
 import { ActionLink } from './ActionLink';

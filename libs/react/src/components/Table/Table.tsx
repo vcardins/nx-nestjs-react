@@ -5,6 +5,7 @@ import { ITableProps, ITableRefsProps, ITableConfig, TableCellFormats } from './
 import {
 	TableHeader,
 	TableCell,
+	ExpandedCell,
 	Spinner,
 	BottomShadow,
 	TableCellContent,
@@ -20,6 +21,12 @@ const defaults: ITableConfig = {
 	rowsPerBody: 25,
 	minCellWidth: 40,
 };
+
+const Loading = () => (
+	<ExpandedCell align={TextAlignment.Center} bg="#efefef">
+		Loading ...
+	</ExpandedCell>
+);
 
 export function Table<T extends { id: number | string }= any>(props: ITableProps<T>) {
 	const refs: ITableRefsProps = {
@@ -85,60 +92,77 @@ export function Table<T extends { id: number | string }= any>(props: ITableProps
 		);
 	}), [headers, resizingColumnIndex, refs.body.current?.offsetHeight, onCheckAll, onStartResizingColumn]);
 
-	const tableRows = useMemo(() => data.reduce((result, item, rowIndex) => {
-		let children: React.ReactElement;
-		let align: TextAlignment;
-		// eslint-disable-next-line no-param-reassign
-		result = result.concat(
-			headers.map((column, colIndex) => {
-				switch (column.format) {
-					case TableCellFormats.Checkbox:
-						align = TextAlignment.Center;
-						children = props.onCheckItems
-							? renderers[TableCellFormats.Checkbox]({
+	const tableRows = useMemo(() => props.isDataLoaded
+		? data.reduce((result, item, rowIndex) => {
+			let children: React.ReactElement;
+			let align: TextAlignment;
+			if (!props.isDataLoaded) {
+				return [];
+			}
+			const isExpanded = props.expandedItems.includes(item.id);
+			const expandedContent = isExpanded ? props.onGetExpandedContent?.(item) : null;
+
+			// eslint-disable-next-line no-param-reassign
+			result = result.concat(
+				headers.map((column, colIndex) => {
+					switch (column.format) {
+						case TableCellFormats.Checkbox:
+							align = TextAlignment.Center;
+							children = props.onCheckItems
+								? renderers[TableCellFormats.Checkbox]({
 									id: props.onBuildIds?.checkbox?.(column.key, item.id),
-								checked: props.checkedItems?.includes(item.id),
-								onChange: () => props.onCheckItems(item.id),
-							})
-							: null;
-						break;
-					case TableCellFormats.Expander:
-						align = TextAlignment.Center;
-						children = (props.onExpandItems && props.onGetExpandedContent)
-							? renderers[TableCellFormats.Expander]({
+									checked: props.checkedItems?.includes(item.id),
+									onChange: () => props.onCheckItems(item.id),
+								})
+								: null;
+							break;
+						case TableCellFormats.Expander:
+							align = TextAlignment.Center;
+							children = (props.onExpandItems && props.onGetExpandedContent)
+								? renderers[TableCellFormats.Expander]({
 									id: props.onBuildIds?.expander?.(column.key, item.id),
-								isExpanded: props.expandedItems?.includes(item.id),
-								onClick: () => props.onExpandItems(item.id),
-							})
-							: null;
-						break;
-					default:
-						align = column.align;
-						const defaultRenderer = renderers[column.format ?? TableCellFormats.String];
+									isExpanded: props.expandedItems?.includes(item.id),
+									onClick: () => props.onExpandItems(item.id),
+								})
+								: null;
+							break;
+						default:
+							align = column.align;
+							const defaultRenderer = renderers[column.format ?? TableCellFormats.String];
 							const customRenderer = props.customRenderers?.[column.key];
 							const data = customRenderer ? customRenderer({ item, column }) : item[column.key];
-						children = defaultRenderer({ data });
-						break;
-				}
-				return (
-					<TableCell
-						key={`${rowIndex}-${colIndex}`}
-						column={colIndex}
-						fixedLeft={column.fixedLeft}
-						fixedRight={column.fixedRight}
-					>
-						<TableCellContent align={align}>
-							{ children }
-						</TableCellContent>
-					</TableCell>
+							children = defaultRenderer({ data });
+							break;
+					}
+					return (
+						<TableCell
+							key={`${rowIndex}-${colIndex}`}
+							column={colIndex}
+							fixedLeft={column.fixedLeft}
+							fixedRight={column.fixedRight}
+						>
+							<TableCellContent align={align}>
+								{ children }
+							</TableCellContent>
+						</TableCell>
+					);
+				}),
+			);
+
+			if (expandedContent) {
+				result.push(
+					<ExpandedCell bg="#fff">
+						{ expandedContent }
+					</ExpandedCell>,
 				);
-			}),
-		);
-		return result;
-	}, [] as React.ReactNode[])
+			}
+
+			return result;
+		}, [] as React.ReactNode[])
+		: []
 	, [
 		headers,
-		props.isDataReady,
+		props.isDataLoaded,
 		props.customRenderers,
 		props.expandedItems,
 		props.checkedItems,
@@ -156,11 +180,11 @@ export function Table<T extends { id: number | string }= any>(props: ITableProps
 		>
 			<TopShadow top={state.rowHeight} ref={refs.topShadow} />
 			<TableContent ref={refs.body}>
-				{tableHeaders}
-				{!props.isDataReady ? 'Loading ...' : tableRows}
+				{ tableHeaders }
+				{ props.isDataLoaded ? tableRows : <Loading /> }
 			</TableContent>
 			<BottomShadow />
-			<Spinner visible={state.loading} size="small" />
+			{/* <Spinner visible={props.isDataLoaded} size="small" /> */}
 		</TableWrapper>
 	);
 }

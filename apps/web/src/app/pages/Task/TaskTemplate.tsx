@@ -75,10 +75,10 @@ const TaskTemplatePage = memo(() => {
 	});
 
 	useEffect(() => {
-		if (isApiReady) {
+		if (isApiReady && !items.length) {
 			read();
 		}
-	}, [isApiReady, read]);
+	}, [isApiReady, items.length, read]);
 
 	useEffect(() => {
 		if (error) {

@@ -4,3 +4,4 @@ export * from './styled.components';
 export * from './TableCell';
 export * from './TableHeader';
 export * from './Icons';
+export * from './ExpandedCell';

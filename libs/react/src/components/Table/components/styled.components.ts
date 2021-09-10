@@ -1,3 +1,4 @@
+import { CSSProperties } from 'react';
 import styled, { css } from 'styled-components';
 
 import { TextAlignment } from '@xapp/shared/types';
@@ -37,7 +38,6 @@ const cellStyle = css`
 	overflow: hidden;
 	text-overflow: ellipsis;
 	width: inherit;
-	height: inherit;
 `;
 
 export const BottomShadow = styled.div`
@@ -57,12 +57,26 @@ export const TableContent = styled.div`
 	position: relative;
 `;
 
-export const TableCellContent = styled.span<{ align: TextAlignment }>`
+export const TableCellContent = styled.span<{ align?: TextAlignment }>`
 	${cellStyle};
 	${({ align }) => align && css`
 		text-align: ${align};
 	`};
 `;
+
+export const ExpandedTableCell = styled.div<{ align?: TextAlignment; bg: CSSProperties['color'] }>`
+	display: grid;
+	grid-column: 1/-1;
+	align-items: center;
+	${({ align }) => align === TextAlignment.Center && css`
+		justify-content: ${align};
+	`};
+
+	${({ bg }) => bg && css`
+		background-color: ${bg};
+	`};
+`;
+
 
 export const TableWrapper = styled.div<{ colsWidths: (number | 'auto')[]; rows: number; rowHeight: number }>`
 	flex: 1;

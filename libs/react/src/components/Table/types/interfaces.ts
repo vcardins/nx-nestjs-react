@@ -8,6 +8,11 @@ export interface IIconProps {
 	size?: CSSProperties['width'];
 }
 
+export interface IExpandedCellProps {
+	children: React.ReactNode;
+	align?: TextAlignment;
+	bg?: CSSProperties['color'];
+}
 
 export interface ITableCellProps {
 	id?: string;
@@ -15,6 +20,7 @@ export interface ITableCellProps {
 	align?: TextAlignment;
 	fixedLeft?: boolean;
 	fixedRight?: boolean;
+	role?: string;
 	children?: ReactNode;
 }
 
@@ -97,7 +103,7 @@ export type CustomRenderers<TItem> = Record<string, CustomRenderer<Partial<TItem
 type IdBuilder = (key: string, id: KeyType) => string;;
 
 export interface ITableProps<T extends IColumnKey> {
-	isDataReady?: boolean;
+	isDataLoaded?: boolean;
 	columns: ITableColumn[];
 	data?: T[];
 	config?: ITableConfig;
@@ -107,7 +113,7 @@ export interface ITableProps<T extends IColumnKey> {
 	customRenderers?: CustomRenderers<T>;
 	onCheckItems?: (ids: KeyType | KeyType[]) => void;
 	onExpandItems?: (ids: KeyType | KeyType[]) => void;
-	onGetExpandedContent?: (item: T) => Promise<ReactNode>;
+	onGetExpandedContent?: (item: T) => ReactElement;
 
 	onBuildIds?: {
 		header?: (key: KeyType) => string;

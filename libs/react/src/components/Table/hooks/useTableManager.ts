@@ -21,23 +21,22 @@ function buildColumns(props: { columns: ITableColumn[]; addCheckbox: boolean; ad
 			resizable: false,
 			sortable: false,
 			filterable: false,
-			name: 'checkbox',
-		},
+			key: 'checkbox',
+		} as ITableColumn,
 		props.addExpander && {
 			format: TableCellFormats.Expander,
 			width: 32,
 			resizable: false,
 			sortable: false,
 			filterable: false,
-			name: 'expander',
-		},
+			key: 'expander',
+		} as ITableColumn,
 		...props.columns,
 	].filter(Boolean) as ITableColumn[];
 
 	return columns.map((col, index) => ({
 		...col,
 		index,
-		key: col.name || index,
 		width: getWidth(col),
 		forwardRef: useRef(),
 	}));

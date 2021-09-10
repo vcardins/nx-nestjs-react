@@ -51,7 +51,7 @@ export function Table<T extends { id: number | string }= any>(props: ITableProps
 				isControl = true;
 				align = TextAlignment.Center;
 				children = renderers[TableCellFormats.Checkbox]({
-					id: props.onBuildIds?.header?.(column.name),
+					id: props.onBuildIds?.header?.(column.key),
 					disabled: !data.length,
 					onChange: onCheckAll,
 				});
@@ -96,7 +96,7 @@ export function Table<T extends { id: number | string }= any>(props: ITableProps
 						align = TextAlignment.Center;
 						children = props.onCheckItems
 							? renderers[TableCellFormats.Checkbox]({
-								id: props.onBuildIds?.checkbox?.(column.name, item.id),
+									id: props.onBuildIds?.checkbox?.(column.key, item.id),
 								checked: props.checkedItems?.includes(item.id),
 								onChange: () => props.onCheckItems(item.id),
 							})
@@ -106,7 +106,7 @@ export function Table<T extends { id: number | string }= any>(props: ITableProps
 						align = TextAlignment.Center;
 						children = (props.onExpandItems && props.onGetExpandedContent)
 							? renderers[TableCellFormats.Expander]({
-								id: props.onBuildIds?.expander?.(column.name, item.id),
+									id: props.onBuildIds?.expander?.(column.key, item.id),
 								isExpanded: props.expandedItems?.includes(item.id),
 								onClick: () => props.onExpandItems(item.id),
 							})
@@ -115,8 +115,8 @@ export function Table<T extends { id: number | string }= any>(props: ITableProps
 					default:
 						align = column.align;
 						const defaultRenderer = renderers[column.format ?? TableCellFormats.String];
-						const customRenderer = props.customRenderers?.[column.name];
-						const data = customRenderer ? customRenderer({ item, column }) : item[column.name];
+							const customRenderer = props.customRenderers?.[column.key];
+							const data = customRenderer ? customRenderer({ item, column }) : item[column.key];
 						children = defaultRenderer({ data });
 						break;
 				}

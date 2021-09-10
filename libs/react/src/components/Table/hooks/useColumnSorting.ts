@@ -12,7 +12,7 @@ export const useColumnSorting = <T extends IColumnKey = any>(props: IUseColumnSo
 	const { state, onUpdateState } = props;
 
 	function handleSortColumn(sortIndex: number) {
-		const sortKey = state.columns[sortIndex].name;
+		const sortKey = state.columns[sortIndex].key;
 		let sortDirection: SortDirections;
 
 		const columns = state.columns.map((col, i) => {

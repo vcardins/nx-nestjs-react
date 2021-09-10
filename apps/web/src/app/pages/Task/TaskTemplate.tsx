@@ -38,14 +38,14 @@ const initialValues: TaskTemplateInput = {
 };
 
 const columns: ITableColumn[] = [
-	{ name: 'roomTypeId', label: 'Room Type', width: 80 },
-	{ name: 'name', label: 'Name', width: 250 },
-	{ name: 'description', label: 'Description' },
-	{ name: 'estimatedCompletionTime', label: 'ECT', width: 35, align: TextAlignment.Center, fixedRight: true, format: TableCellFormats.Integer },
-	{ name: 'rewardPoints', label: 'Reward Points', width: 80, align: TextAlignment.Center, format: TableCellFormats.Integer },
-	{ name: 'frequencyId', label: 'Frequency', width: 80 },
-	{ name: 'daysOfWeek', label: 'Days', width: 35, align: TextAlignment.Center },
-	{ name: 'isActive', label: 'Active', width: 40, align: TextAlignment.Center, fixedRight: true, format: TableCellFormats.Boolean },
+	{ key: 'roomTypeId', label: 'Room Type', width: 80 },
+	{ key: 'name', label: 'Name', width: 250 },
+	{ key: 'description', label: 'Description' },
+	{ key: 'estimatedCompletionTime', label: 'ECT', width: 35, align: TextAlignment.Center, fixedRight: true, format: TableCellFormats.Integer },
+	{ key: 'rewardPoints', label: 'Reward Points', width: 80, align: TextAlignment.Center, format: TableCellFormats.Integer },
+	{ key: 'frequencyId', label: 'Frequency', width: 80 },
+	{ key: 'daysOfWeek', label: 'Days', width: 35, align: TextAlignment.Center },
+	{ key: 'isActive', label: 'Active', width: 40, align: TextAlignment.Center, fixedRight: true, format: TableCellFormats.Boolean },
 ]
 
 const TaskTemplatePage = memo(() => {
@@ -149,7 +149,7 @@ const TaskTemplatePage = memo(() => {
 				</Panel>
 			</Drawer>
 			<Table
-				isDataReady={status === 'success'}
+				isDataLoaded={status === 'success'}
 				columns={columns}
 				data={items}
 				checkedItems={checkedItems}
@@ -185,16 +185,14 @@ const TaskTemplatePage = memo(() => {
 				return lookupStore?.frequencies?.[item.frequencyId]?.name;
 			},
 			daysOfWeek: ({ item, column }: RenderProps<TaskTemplateOutput>) => {
-				return <>{item.daysOfWeek}</>;
+				return <span>{item.daysOfWeek}</span>;
 			},
 		};
 	}
 
-	async function getExpandedContent(item: TaskTemplateOutput) {
-		return Promise.resolve(
-			<div>
-				<p>{item.name}</p>
-			</div>
+	function getExpandedContent(item: TaskTemplateOutput) {
+		return (
+			<p>{item.name}</p>
 		);
 	}
 

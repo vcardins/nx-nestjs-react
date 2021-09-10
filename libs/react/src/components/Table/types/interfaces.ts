@@ -48,7 +48,7 @@ export interface ITableColumn {
 	fixedRight?: boolean;
 	hidden?: boolean;
 	label?: string;
-	name: string;
+	key: string;
 	resizable?: boolean;
 	searchable?: boolean;
 	sortDirection?: SortDirections;
@@ -282,7 +282,7 @@ export interface IDataTableProps<Item, TFilter = any> {
 		checkbox?: (item: ModelKey<Item>) => string;
 		checkAll?: () => string;
 		cell?: (item: ModelKey<Item>, columnKey: string) => string;
-		header?(key: ITableColumn['name']): string;
+		header?(key: ITableColumn['key']): string;
 	};
 	/** Method to be called when the table is scrolled along the x-axis */
 	onHorizontalScroll?: () => boolean;

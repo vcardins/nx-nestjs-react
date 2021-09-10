@@ -3,11 +3,11 @@ import React from 'react';
 import { ITableCellProps } from '../types';
 
 export const TableCell = (props: ITableCellProps) => {
-	const { children, fixedLeft, fixedRight } = props;
+	const { children, fixedLeft, fixedRight, role = 'tablecell' } = props;
 
 	return (
 		<div
-			role="tablecell"
+			role={role}
 			data-fixed-left={fixedLeft}
 			data-fixed-right={fixedRight}
 		>

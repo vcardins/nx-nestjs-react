@@ -24,7 +24,8 @@ export const useTableManager = <T extends IColumnKey = any>(
 		onCheckItems,
 		refs,
 	} = props;
-	const [resizingColumnIndex, setResizingColumnIndex] = useState<number | null>(null);
+
+	const [resizingColumnIndex, onStartResizingColumn] = useState<number | null>(null);
 	const [state, setState] = useState<ITableState<T>>({
 		// eslint-disable-next-line @typescript-eslint/no-use-before-define
 		columns: columns.map((col, index) => ({
@@ -46,25 +47,21 @@ export const useTableManager = <T extends IColumnKey = any>(
 		shouldUpdate: false,
 	});
 
+	useEffect(() => {
+		setState((prevState) => ({ ...prevState, data: props.data }));
+	}, [props.data]);
+
 	useColumnResize({
 		columns: state.columns,
 		resizingColumnIndex,
 		minCellWidth,
 		tableRef: refs.body,
-		onStartResizingColumn: setResizingColumnIndex,
+		onStartResizingColumn,
 	});
 
-	useScrolling<T>({
-		state,
-		topShadowRef: refs.topShadow,
-		tableRef: refs.wrapper,
-		onUpdateState: setState,
-	});
+	useScrolling<T>({ refs, state, onUpdateState: setState });
 
-	const { onColumnSorting } = useColumnSorting<T>({
-		state,
-		onUpdateState: setState,
-	});
+	const { onColumnSorting } = useColumnSorting<T>({ state, onUpdateState: setState });
 
 	const columnsWidths = useMemo(
 		() => state.columns.map((col) => (col.width ? col.width : 'auto')),
@@ -75,24 +72,24 @@ export const useTableManager = <T extends IColumnKey = any>(
 		({ target: { checked } }: ChangeEvent<HTMLInputElement>) => {
 			if (!allowCheckAll) return;
 
-			const allItemIds = checked ? data.map((item) => item.id) : [];
+			const allItemIds = checked ? state.data.map((item) => item.id) : [];
 
 			if (typeof onCheckItems === 'function') {
 				onCheckItems(allItemIds);
 			}
 		},
-		[onCheckItems, data],
+		[onCheckItems, state.data],
 	);
 
-	const tableHeaders = useMemo(() => state.columns, [state.columns, refs.body.current?.offsetHeight]);
+	const headers = useMemo(() => state.columns, [state.columns, refs.body.current?.offsetHeight]);
 
 	return {
-		headers: tableHeaders,
+		headers,
 		data: state.data.slice(state.displayStart, state.displayEnd),
 		columnsWidths,
 		state,
 		resizingColumnIndex,
-		onStartResizingColumn: setResizingColumnIndex,
+		onStartResizingColumn,
 		onCheckAll: handleCheckAll,
 		onColumnSorting,
 	};

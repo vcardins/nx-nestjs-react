@@ -1,23 +1,22 @@
 import { useLayoutEffect, useEffect, MutableRefObject, Dispatch, SetStateAction } from 'react';
-import { IColumnKey, ITableState } from '../types';
+import { IColumnKey, ITableState, ITableRefsProps } from '../types';
 
 interface IUseScrolling<T extends IColumnKey = any> {
-	tableRef: MutableRefObject<HTMLDivElement>;
-	topShadowRef: MutableRefObject<HTMLDivElement>;
+	refs: ITableRefsProps;
 	state: ITableState<T>;
 	onUpdateState: Dispatch<SetStateAction<ITableState<T>>>;
 }
 
 export const useScrolling = <T extends IColumnKey = any>(props: IUseScrolling<T>): void => {
-	const { state, topShadowRef, tableRef, onUpdateState } = props;
+	const { state, refs, onUpdateState } = props;
 
 	function handleScrolling() {
-		const scroll = tableRef.current.scrollTop;
+		const scroll = refs.wrapper.current.scrollTop;
 		const visibleStart = Math.floor(scroll / state.rowHeight);
 		const visibleEnd = Math.floor(Math.min(visibleStart + state.rowsPerBody, state.total - 1)) + state.rowHeight;
 		const displayStart = Math.floor(Math.max(0, Math.floor(scroll / state.rowHeight) - state.rowsPerBody * 1.5));
-		const displayEnd =
-			Math.floor(Math.min(displayStart + 4 * state.rowsPerBody, state.total - 1)) + state.rowHeight;
+		const displayEnd = Math.floor(Math.min(displayStart + 4 * state.rowsPerBody, state.total - 1)) + state.rowHeight;
+
 		if (
 			state.shouldUpdate ||
 			!(visibleStart >= state.displayStart && visibleEnd + state.rowsPerBody <= state.displayEnd)
@@ -33,21 +32,21 @@ export const useScrolling = <T extends IColumnKey = any>(props: IUseScrolling<T>
 			}));
 		}
 
-		topShadowRef.current.style.display = scroll > 0 ? 'block' : 'none';
+		refs.topShadow.current.style.display = scroll > 0 ? 'block' : 'none';
 	}
 
 	useEffect(() => {
 		window.requestAnimationFrame(() => {
-			if (tableRef.current) {
-				const rowHeight = Math.floor(
-					tableRef.current.querySelector<HTMLDivElement>('[role=tablecell]').offsetHeight,
-				);
-				const contentHeight = Math.floor(tableRef.current.offsetHeight);
+			if (refs.body.current && state.data?.length) {
+				const firstTableCell = refs.body.current.querySelector<HTMLDivElement>('[role="tablecell"]');
+				const rowHeight = Math.floor(firstTableCell?.offsetHeight || 0);
+
+				const contentHeight = Math.floor(refs.body.current.offsetHeight);
 				const rowsPerBody = Math.floor(contentHeight / rowHeight);
 
 				onUpdateState((prevState) => ({
 					...prevState,
-					rowHeight: rowHeight < 1 ? 30 : rowHeight,
+					rowHeight: rowHeight < 1 ? 25 : rowHeight,
 					rowsPerBody,
 					visibleStart: 0,
 					visibleEnd: rowsPerBody,
@@ -56,13 +55,13 @@ export const useScrolling = <T extends IColumnKey = any>(props: IUseScrolling<T>
 				}));
 			}
 		});
-	}, [tableRef.current]);
+	}, [refs.body.current, state.data]);
 
 	useLayoutEffect(() => {
-		tableRef.current?.addEventListener('scroll', handleScrolling, false);
+		refs.wrapper.current?.addEventListener('scroll', handleScrolling, false);
 
 		return () => {
-			tableRef.current?.removeEventListener('scroll', handleScrolling);
+			refs.wrapper.current?.removeEventListener('scroll', handleScrolling);
 		};
 	}, []);
 };

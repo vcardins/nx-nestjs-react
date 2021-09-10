@@ -64,20 +64,19 @@ function numberRendererFactory(format?: string) {
 	};
 }
 
-
-function timeRenderer({ cellProps, data }: ICommonRenderer<number>): JSX {
+function timeRenderer({ data }: ICommonRenderer<number>): JSX {
 	return (
-		<TableCell {...cellProps}>
+		<>
 			{numeral(data).format('00:00:00')}
-		</TableCell>
+		</>
 	);
 }
 
-function booleanRenderer({ cellProps, data }: ICommonRenderer<boolean>): JSX {
+function booleanRenderer({ data }: ICommonRenderer<boolean>): JSX {
 	return (
-		<TableCell {...cellProps}>
+		<>
 			{!!data ? 'Yes' : 'No'}
-		</TableCell>
+		</>
 	);
 }
 

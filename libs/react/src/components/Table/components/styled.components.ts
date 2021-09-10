@@ -59,9 +59,9 @@ export const TableContent = styled.div`
 
 export const TableCellContent = styled.span<{ align: TextAlignment }>`
 	${cellStyle};
-	display: flex;
-	align-items: ${({ align }) => align};
-	justify-content: ${({ align }) => align};
+	${({ align }) => align && css`
+		text-align: ${align};
+	`};
 `;
 
 export const TableWrapper = styled.div<{ colsWidths: (number | 'auto')[]; rows: number; rowHeight: number }>`

@@ -126,7 +126,9 @@ export function Table<T extends { id: number | string }= any>(props: ITableProps
 						fixedLeft={column.fixedLeft}
 						fixedRight={column.fixedRight}
 					>
-						<TableCellContent align={align}>{ children }</TableCellContent>
+						<TableCellContent align={align}>
+							{ children }
+						</TableCellContent>
 					</TableCell>
 				);
 			}),

@@ -27,12 +27,13 @@ export const useColumnResize = (props: IUseColumnResize): void => {
 			const width = e.clientX - rect.left;
 
 			const gridColumns = columns.map((col, i) => {
-				let updatedWidth = i !== resizingColumnIndex ? col.width : width;
+				let updatedWidth = i !== resizingColumnIndex ? (col.width || 'auto') : width;
 				if (updatedWidth < minCellWidth) {
 					updatedWidth = minCellWidth;
 				}
-				return `${updatedWidth}px`; // : 'auto';
+				return typeof updatedWidth === 'string' ? updatedWidth : `${updatedWidth}px`;
 			});
+
 			tableRef.current.style.gridTemplateColumns = `${gridColumns.join(' ')}`;
 		}),
 	[resizingColumnIndex, columns, minCellWidth],

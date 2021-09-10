@@ -7,5 +7,5 @@ export interface IStoreState<TStore = any> extends IApiCallState {
 	reset?: () => void;
 	clearError: () => void;
 	checkedItems?: KeyType[];
-	checkItems?: (items: KeyType[]) => void;
+	setCheckedItems?: (items: KeyType[]) => void;
 }

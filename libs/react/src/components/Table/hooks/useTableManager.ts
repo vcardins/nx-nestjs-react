@@ -1,20 +1,50 @@
-import { useState, useMemo, useRef, useCallback, ChangeEvent } from 'react';
+import { useState, useMemo, useRef, useCallback, ChangeEvent, useEffect } from 'react';
 
 import { useColumnResize, useScrolling, useColumnSorting } from '.';
 import { ITableProps, ITableState, ITableRefsProps, IColumnKey, ITableColumn, TableCellFormats } from '../types';
 
-const getWidth = (col: ITableColumn) => {
-	if ([TableCellFormats.Checkbox, TableCellFormats.Expander].includes(col.format)) {
-		return 32;
-	}
+function buildColumns(props: { columns: ITableColumn[]; addCheckbox: boolean; addExpander: boolean }) {
+	const getWidth = (col: ITableColumn) => {
+		if ([TableCellFormats.Checkbox, TableCellFormats.Expander].includes(col.format)) {
+			return 32;
+		}
 
-	return col.width
-		? col.width + 25
-		: col.width;
-};
+		return col.width
+			? col.width + 25
+			: col.width;
+	};
+
+	const columns = [
+		props.addCheckbox && {
+			format: TableCellFormats.Checkbox,
+			width: 32,
+			resizable: false,
+			sortable: false,
+			filterable: false,
+			name: 'checkbox',
+		},
+		props.addExpander && {
+			format: TableCellFormats.Expander,
+			width: 32,
+			resizable: false,
+			sortable: false,
+			filterable: false,
+			name: 'expander',
+		},
+		...props.columns,
+	].filter(Boolean) as ITableColumn[];
+
+	return columns.map((col, index) => ({
+		...col,
+		index,
+		key: col.name || index,
+		width: getWidth(col),
+		forwardRef: useRef(),
+	}));
+}
 
 export const useTableManager = <T extends IColumnKey = any>(
-	props: ITableProps<T> & { refs: ITableRefsProps },
+	props: ITableProps<T> & { refs: ITableRefsProps; },
 ) => {
 	const {
 		columns = [],
@@ -28,12 +58,11 @@ export const useTableManager = <T extends IColumnKey = any>(
 	const [resizingColumnIndex, onStartResizingColumn] = useState<number | null>(null);
 	const [state, setState] = useState<ITableState<T>>({
 		// eslint-disable-next-line @typescript-eslint/no-use-before-define
-		columns: columns.map((col, index) => ({
-			index,
-			...col,
-			width: getWidth(col),
-			forwardRef: useRef(),
-		})),
+		columns: buildColumns({
+			columns,
+			addCheckbox: typeof props.onCheckItems === 'function',
+			addExpander: (typeof props.onExpandItems === 'function' && typeof props.onGetExpandedContent === 'function' ),
+		}),
 		data,
 		loading: false,
 		total: data.length,

@@ -9,6 +9,28 @@ interface Class<TDataContext> {
 
 type TStore<TOutput, TInput, TFilter> = DataContext<TOutput, TInput, TInput & { id: KeyType }, TFilter>;
 
+export function storeValues(id: KeyType | KeyType[], collection: KeyType[]) {
+	// Accept an array as `itemId` to replace whatever the
+	// selection is (used to implement check/uncheck-all).
+	let value: KeyType | KeyType[];
+
+	if (Array.isArray(id)) {
+		value = id;
+	}
+	// Otherwise proceed to check/uncheck single id.
+	else {
+		const index = collection.indexOf(id);
+
+		if (index === -1) {
+			value = [...collection, id];
+		}
+		else {
+			value = collection.filter((index) => index !== id);
+		}
+	}
+
+	return value;
+}
 export function createBaseStore<
 	TState extends ICrudState<TStore<TOutput, TInput, TState['filters']>, TOutput, TInput, TState['filters']>,
 	TInput = any,
@@ -101,29 +123,11 @@ export function createBaseStore<
 		clearError() {
 			set({ error: null });
 		},
-		checkItems(id: KeyType | KeyType[]) {
+		setCheckedItems(id: KeyType | KeyType[]) {
 			const { checkedItems } = get();
+			const values = storeValues(id, checkedItems);
 
-			// Accept an array as `itemId` to replace whatever the
-			// selection is (used to implement check/uncheck-all).
-			let value: KeyType | KeyType[];
-
-			if (Array.isArray(id)) {
-				value = id;
-			}
-			// Otherwise proceed to check/uncheck single id.
-			else {
-				const index = checkedItems.indexOf(id);
-
-				if (index === -1) {
-					value = [...checkedItems, id];
-				}
-				else {
-					value = checkedItems.filter((index) => index !== id);
-				}
-			}
-
-			set({ checkedItems: value });
+			set({ checkedItems: values });
 		},
 		...extraMethods?.(set, get),
 	});

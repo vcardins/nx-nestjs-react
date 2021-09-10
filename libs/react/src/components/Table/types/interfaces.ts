@@ -1,6 +1,6 @@
-import { CSSProperties, ReactNode, ChangeEvent, ReactElement, MutableRefObject, RefObject } from 'react';
+import { CSSProperties, ReactNode, ChangeEvent, ReactElement, MutableRefObject } from 'react';
 
-import { SortDirections, TextAlignment } from '@xapp/shared/types';
+import { SortDirections, TextAlignment, KeyType } from '@xapp/shared/types';
 import { TableCellFormats } from './enums';
 
 export interface IIconProps {
@@ -36,10 +36,8 @@ export interface ITableConfig {
 	minCellWidth: number;
 }
 
-export type ColumnKeyType = number | string;
-
 export interface IColumnKey {
-	id: ColumnKeyType;
+	id: KeyType;
 }
 
 
@@ -49,7 +47,7 @@ export interface ITableColumn {
 	fixedLeft?: boolean;
 	fixedRight?: boolean;
 	hidden?: boolean;
-	label: string;
+	label?: string;
 	name: string;
 	resizable?: boolean;
 	searchable?: boolean;
@@ -93,23 +91,26 @@ export interface ITableRefsProps {
 }
 
 export type ModelKey<TItem> = TItem & ITableRowStatus & IWithId;
-export type CustomRenderer<TItem> = (props: RenderProps<TItem>) => ReactElement | undefined; // Must be or contain a fixed-data-table-2/Cell
-export type CustomRenderers<TItem> = Record<string, CustomRenderer<TItem>>;
+export type CustomRenderer<TItem> = (props: RenderProps<TItem>) => ReactElement | string | undefined;
+export type CustomRenderers<TItem> = Record<string, CustomRenderer<Partial<TItem>>>;
 
-type IdBuilder = (key: string, id: ColumnKeyType) => string;;
+type IdBuilder = (key: string, id: KeyType) => string;;
 
 export interface ITableProps<T extends IColumnKey> {
+	isDataReady?: boolean;
 	columns: ITableColumn[];
 	data?: T[];
 	config?: ITableConfig;
-	checkedItems?: ColumnKeyType[];
-	expandedItems?: ColumnKeyType[];
+	checkedItems?: KeyType[];
+	expandedItems?: KeyType[];
 	allowCheckAll?: boolean;
 	customRenderers?: CustomRenderers<T>;
-	onCheckItems?: (ids: ColumnKeyType | ColumnKeyType[]) => void;
-	onExpandItem?: (ids: ColumnKeyType | ColumnKeyType[]) => void;
+	onCheckItems?: (ids: KeyType | KeyType[]) => void;
+	onExpandItems?: (ids: KeyType | KeyType[]) => void;
+	onGetExpandedContent?: (item: T) => Promise<ReactNode>;
+
 	onBuildIds?: {
-		header?: (key: ColumnKeyType) => string;
+		header?: (key: KeyType) => string;
 		cell?: IdBuilder;
 		checkbox?: IdBuilder;
 		expander?: IdBuilder;
@@ -183,36 +184,12 @@ export interface IPendingUpdates<T> extends Record<IKey, T> {}
 
 export type RenderProps<Item> = {
 	// -- Table Data
-	tableProps: { itemsLength: number; };
-	columnProps: ITableColumn;
-	cellProps: ICellProps,
-	cellInstance: RefObject<any>;
-	cellInstancesMap: MutableRefObject<{}>;
+	// tableProps: { itemsLength: number; };
+	column: ITableColumn;
 	item: Item;
-	renderer?: (props: any) => ReactElement;
 	cellData?: ReactNode;
 	cellDataPlaceholder?: ReactNode;
 	pendingUpdates?: IPendingUpdates<Item>;
-	// -- Item Check/Uncheck Feature
-	checkbox?: ICheckboxOptions;
-	expander?: IExpanderOptions;
-	// -- Others (custom)
-	id?: string;
-	path?: string;
-	icon?: ReactNode;
-	children?: ReactNode;
-	maxSelect?: number;
-	tooltip?: string;
-	hideDisabledPrograms? : boolean;
-	// -- Flags for applying highlights/blocking edit functionality
-	isReadOnly?: boolean;
-	isReviewable?: boolean;
-	// -- Edit functionality
-	onEnterEdit?: (...args: any[]) => any;
-	onResetEdit?: (...args: any[]) => any;
-	onSave?(...args: any[]): any;
-	onChange?(...args: any[]): any;
-	onBeforeSave?(value: any): boolean;
 }
 
 export type IKey = string | number | symbol;

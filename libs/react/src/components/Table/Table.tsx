@@ -85,7 +85,7 @@ export function Table<T extends { id: number | string }= any>(props: ITableProps
 		);
 	}), [headers, resizingColumnIndex, refs.body.current?.offsetHeight, onCheckAll, onStartResizingColumn]);
 
-	const tableRows = useMemo(() => data.reduce((result, row, rowIndex) => {
+	const tableRows = useMemo(() => data.reduce((result, item, rowIndex) => {
 		let children: React.ReactElement;
 		let align: TextAlignment;
 		// eslint-disable-next-line no-param-reassign
@@ -96,27 +96,28 @@ export function Table<T extends { id: number | string }= any>(props: ITableProps
 						align = TextAlignment.Center;
 						children = props.onCheckItems
 							? renderers[TableCellFormats.Checkbox]({
-								id: props.onBuildIds?.checkbox?.(column.name, row.id),
-								checked: props.checkedItems?.includes(row.id),
-								onChange: () => props.onCheckItems(row.id),
+								id: props.onBuildIds?.checkbox?.(column.name, item.id),
+								checked: props.checkedItems?.includes(item.id),
+								onChange: () => props.onCheckItems(item.id),
 							})
 							: null;
 						break;
 					case TableCellFormats.Expander:
 						align = TextAlignment.Center;
-						children = props.onExpandItem
+						children = (props.onExpandItems && props.onGetExpandedContent)
 							? renderers[TableCellFormats.Expander]({
-								id: props.onBuildIds?.expander?.(column.name, row.id),
-								isExpanded: props.expandedItems?.includes(row.id),
-								onClick: () => props.onExpandItem(row.id),
+								id: props.onBuildIds?.expander?.(column.name, item.id),
+								isExpanded: props.expandedItems?.includes(item.id),
+								onClick: () => props.onExpandItems(item.id),
 							})
 							: null;
 						break;
 					default:
 						align = column.align;
-						children = (
-							renderers[column.format ?? TableCellFormats.String]({ data: row[column.name] })
-						);
+						const defaultRenderer = renderers[column.format ?? TableCellFormats.String];
+						const customRenderer = props.customRenderers?.[column.name];
+						const data = customRenderer ? customRenderer({ item, column }) : item[column.name];
+						children = defaultRenderer({ data });
 						break;
 				}
 				return (
@@ -135,7 +136,15 @@ export function Table<T extends { id: number | string }= any>(props: ITableProps
 		);
 		return result;
 	}, [] as React.ReactNode[])
-	, [headers, data]);
+	, [
+		headers,
+		props.isDataReady,
+		props.customRenderers,
+		props.expandedItems,
+		props.checkedItems,
+		props.customRenderers,
+		props.onBuildIds,
+	]);
 
 	return (
 		<TableWrapper
@@ -148,7 +157,7 @@ export function Table<T extends { id: number | string }= any>(props: ITableProps
 			<TopShadow top={state.rowHeight} ref={refs.topShadow} />
 			<TableContent ref={refs.body}>
 				{tableHeaders}
-				{tableRows}
+				{!props.isDataReady ? 'Loading ...' : tableRows}
 			</TableContent>
 			<BottomShadow />
 			<Spinner visible={state.loading} size="small" />

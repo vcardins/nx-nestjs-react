@@ -16,7 +16,7 @@ import {
 	useForm,
 	Button,
 	Icon,
-	Table, ITableColumn, TableCellFormats, ColumnKeyType,
+	Table, ITableColumn, TableCellFormats, RenderProps,
 	Drawer,
 	InlineEdit,
 } from '@xapp/react';
@@ -37,27 +37,36 @@ const initialValues: TaskTemplateInput = {
 	frequencyId: Frequencies.Weekly,
 };
 
-const planets = ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto'];
-
-const data = Array.from({ length: planets.length * 5 }, (_, i) => ({
-	id: i + 1,
-	distance: Math.floor(Math.random() * 1000),
-	name: planets[Math.floor(Math.random() * planets.length)],
-	moons: i % 9 + 1,
-}));
-
 const columns: ITableColumn[] = [
-	{ name: 'id', label: 'ID', width: 32, fixedLeft: true, resizable: false, format: TableCellFormats.Checkbox },
-	{ name: 'name', label: 'Name', format: TableCellFormats.StringUpperCase  },
-	{ name: 'distance', label: 'Distance', width: 50, align: TextAlignment.Center, fixedRight: true, format: TableCellFormats.Decimal },
-	{ name: 'moons', label: 'Moons', width: 50, align: TextAlignment.Center, fixedRight: true, format: TableCellFormats.Integer },
+	{ name: 'roomTypeId', label: 'Room Type', width: 80 },
+	{ name: 'name', label: 'Name', width: 250 },
+	{ name: 'description', label: 'Description' },
+	{ name: 'estimatedCompletionTime', label: 'ECT', width: 35, align: TextAlignment.Center, fixedRight: true, format: TableCellFormats.Integer },
+	{ name: 'rewardPoints', label: 'Reward Points', width: 80, align: TextAlignment.Center, format: TableCellFormats.Integer },
+	{ name: 'frequencyId', label: 'Frequency', width: 80 },
+	{ name: 'daysOfWeek', label: 'Days', width: 35, align: TextAlignment.Center },
+	{ name: 'isActive', label: 'Active', width: 40, align: TextAlignment.Center, fixedRight: true, format: TableCellFormats.Boolean },
 ]
 
 const TaskTemplatePage = memo(() => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
 	const formRef = useRef({ valid: false });
-	const { mappedItems, isApiReady, read, save, remove, error, checkedItems, checkItems, clearError } = useAppStore((state) => state.taskTemplate);
+	const {
+		mappedItems,
+		items,
+		isApiReady,
+		read,
+		save,
+		remove,
+		status,
+		error,
+		checkedItems,
+		setCheckedItems,
+		expandedItems,
+		setExpandedItems,
+		clearError,
+	} = useAppStore((state) => state.taskTemplate);
 	const lookupStore = useAppStore((state) => state.lookup);
 
 	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<TaskTemplateInput>({
@@ -140,10 +149,15 @@ const TaskTemplatePage = memo(() => {
 				</Panel>
 			</Drawer>
 			<Table
+				isDataReady={status === 'success'}
 				columns={columns}
-				data={data}
+				data={items}
 				checkedItems={checkedItems}
-				onCheckItems={checkItems}
+				onCheckItems={setCheckedItems}
+				expandedItems={expandedItems}
+				onExpandItems={setExpandedItems}
+				customRenderers={getCustomRenderers()}
+				onGetExpandedContent={getExpandedContent}
 			/>
 			{/* <TaskTemplateList>
 				{lookupStore?.roomTypes && Object.keys(mappedItems).map((roomTypeId) => {
@@ -161,6 +175,28 @@ const TaskTemplatePage = memo(() => {
 			</TaskTemplateList> */}
 		</Panel>
 	);
+
+	function getCustomRenderers() {
+		return {
+			roomTypeId: ({ item, column }: RenderProps<TaskTemplateOutput>) => {
+				return lookupStore?.roomTypes?.[item.roomTypeId]?.name;
+			},
+			frequencyId: ({ item, column }: RenderProps<TaskTemplateOutput>) => {
+				return lookupStore?.frequencies?.[item.frequencyId]?.name;
+			},
+			daysOfWeek: ({ item, column }: RenderProps<TaskTemplateOutput>) => {
+				return <>{item.daysOfWeek}</>;
+			},
+		};
+	}
+
+	async function getExpandedContent(item: TaskTemplateOutput) {
+		return Promise.resolve(
+			<div>
+				<p>{item.name}</p>
+			</div>
+		);
+	}
 
 	function renderTaskTemplate(task: TaskTemplateOutput) {
 		return (

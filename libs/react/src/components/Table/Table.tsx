@@ -1,7 +1,7 @@
-import React, { useMemo, useRef } from 'react';
+import React, { CSSProperties, useMemo, useRef } from 'react';
 
 import { TextAlignment } from '@xapp/shared/types';
-import { ITableProps, ITableRefsProps, TableCellFormats } from './types';
+import { ITableProps, ITableRefsProps, TableCellFormats, IColumnKey } from './types';
 import {
 	TableContainer,
 	Table,
@@ -15,13 +15,13 @@ import {
 import { useTableManager, useRenderer as renderers } from './hooks';
 import { theme } from './theme';
 
-const Loading = () => (
-	<ExpandedCell align={TextAlignment.Center} bg="#efefef">
+const Loading = ({ bg = '#efefef' }: { bg: CSSProperties['color'] }) => (
+	<ExpandedCell align={TextAlignment.Center} bg={bg}>
 		Loading ...
 	</ExpandedCell>
 );
 
-export function DataTable<T extends { id: number | string }= any>(props: ITableProps<T>) {
+export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 	const refs: ITableRefsProps = {
 		wrapper: useRef<HTMLDivElement>(null),
 		body: useRef<HTMLDivElement>(null),
@@ -29,6 +29,7 @@ export function DataTable<T extends { id: number | string }= any>(props: ITableP
 		bottomShadow: useRef<HTMLDivElement>(null),
 	};
 	const config = { ...theme, ...props.theme };
+	const { idProp = 'id', onBuildIds } = props;
 
 	const {
 		data,
@@ -39,7 +40,7 @@ export function DataTable<T extends { id: number | string }= any>(props: ITableP
 		onStartResizingColumn,
 		onCheckAll,
 		onColumnSorting,
-	} = useTableManager({ ...props, theme: config, refs });
+	} = useTableManager<T>({ ...props, theme: config, refs });
 
 	const tableHeaders = useMemo(() => headers.map((column, index) => {
 		let children: React.ReactElement;
@@ -51,7 +52,7 @@ export function DataTable<T extends { id: number | string }= any>(props: ITableP
 				isControl = true;
 				align = TextAlignment.Center;
 				children = renderers[TableCellFormats.Checkbox]({
-					id: props.onBuildIds?.header?.(column.key),
+					id: onBuildIds?.header?.(column.key),
 					disabled: !data.length,
 					onChange: onCheckAll,
 				});
@@ -71,6 +72,7 @@ export function DataTable<T extends { id: number | string }= any>(props: ITableP
 		return (
 			<TableHeader
 				{...column}
+				id={onBuildIds?.header?.(column.key)}
 				key={`column-${index}`}
 				index={index}
 				isLast={index === headers.length - 1}
@@ -92,7 +94,7 @@ export function DataTable<T extends { id: number | string }= any>(props: ITableP
 			if (!props.isDataLoaded) {
 				return [];
 			}
-			const isExpanded = props.expandedItems.includes(item.id);
+			const isExpanded = props.expandedItems.includes(item[idProp]);
 			const expandedContent = isExpanded ? props.onGetExpandedContent?.(item) : null;
 
 			// eslint-disable-next-line no-param-reassign
@@ -103,10 +105,10 @@ export function DataTable<T extends { id: number | string }= any>(props: ITableP
 							align = TextAlignment.Center;
 							children = props.onCheckItems
 								? renderers[TableCellFormats.Checkbox]({
-									id: props.onBuildIds?.checkbox?.(column.key, item.id),
+									id: onBuildIds?.checkbox?.(column.key, item),
 									fixedLeft: true,
-									checked: props.checkedItems?.includes(item.id),
-									onChange: () => props.onCheckItems(item.id),
+									checked: props.checkedItems?.includes(item[idProp]),
+									onChange: () => props.onCheckItems(item[idProp]),
 								})
 								: null;
 							break;
@@ -114,10 +116,10 @@ export function DataTable<T extends { id: number | string }= any>(props: ITableP
 							align = TextAlignment.Center;
 							children = (props.onExpandItems && props.onGetExpandedContent)
 								? renderers[TableCellFormats.Expander]({
-									id: props.onBuildIds?.expander?.(column.key, item.id),
+									id: onBuildIds?.expander?.(column.key, item),
 									fixedLeft: true,
-									isExpanded: props.expandedItems?.includes(item.id),
-									onClick: () => props.onExpandItems(item.id),
+									isExpanded: props.expandedItems?.includes(item[idProp]),
+									onClick: () => props.onExpandItems(item[idProp]),
 								})
 								: null;
 							break;
@@ -131,9 +133,11 @@ export function DataTable<T extends { id: number | string }= any>(props: ITableP
 					}
 					return (
 						<TableCell
+							id={onBuildIds?.cell?.(column.key, item)}
 							key={`${rowIndex}-${colIndex}`}
 							fixedLeft={column.fixedLeft}
 							fixedRight={column.fixedRight}
+							order={rowIndex % 2 === 0 ? 'even' : 'odd'}
 						>
 							<TableCellContent align={align}>
 								{ children }
@@ -145,7 +149,11 @@ export function DataTable<T extends { id: number | string }= any>(props: ITableP
 
 			if (expandedContent) {
 				result.push(
-					<ExpandedCell bg="#fff">
+					<ExpandedCell
+						key={`expanded-${item[idProp]}`}
+						bg={rowIndex % 2 === 0 ? theme.evenRowColor : theme.oddRowColor}
+						borderColor={theme.borderColor}
+					>
 						{ expandedContent }
 					</ExpandedCell>,
 				);
@@ -161,7 +169,7 @@ export function DataTable<T extends { id: number | string }= any>(props: ITableP
 		props.expandedItems,
 		props.checkedItems,
 		props.customRenderers,
-		props.onBuildIds,
+		onBuildIds,
 	]);
 
 	return (
@@ -176,7 +184,7 @@ export function DataTable<T extends { id: number | string }= any>(props: ITableP
 			<TopShadow top={state.rowHeight} ref={refs.topShadow} />
 			<Table role="table" ref={refs.body}>
 				{ tableHeaders }
-				{ props.isDataLoaded ? tableRows : <Loading /> }
+				{ props.isDataLoaded ? tableRows : <Loading bg={theme.borderColor} /> }
 			</Table>
 			<BottomShadow />
 			{/* <Spinner visible={props.isDataLoaded} size="small" /> */}

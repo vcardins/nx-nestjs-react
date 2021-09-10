@@ -16,7 +16,7 @@ import {
 	useForm,
 	Button,
 	Icon,
-	DataTable, ITableColumn, TableCellFormats, RenderProps,
+	DataTable, ITableColumn, TableCellFormats, RenderProps, IdBuilder,
 	Drawer,
 	InlineEdit,
 } from '@xapp/react';
@@ -47,6 +47,14 @@ const columns: ITableColumn[] = [
 	{ key: 'daysOfWeek', label: 'Days', width: 35, align: TextAlignment.Center },
 	{ key: 'isActive', label: 'Active', width: 40, align: TextAlignment.Center, fixedRight: true, format: TableCellFormats.Boolean },
 ]
+
+const handleBuildIds = {
+	header: (key: string) => `header-${key}`,
+	cell: (key: string, { id }: TaskTemplateOutput) => `cell-${key}-${id}`,
+	checkbox: (key: string, { id }: TaskTemplateOutput) => `checkbox-${key}-${id}`,
+	allCheckbox: () => 'checkbox-all',
+	expander: (key: string, { id }: TaskTemplateOutput) => `expander-${key}-${id}`,
+}
 
 const TaskTemplatePage = memo(() => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -152,6 +160,7 @@ const TaskTemplatePage = memo(() => {
 				isDataLoaded={status === 'success'}
 				columns={columns}
 				data={items}
+				onBuildIds={handleBuildIds}
 				checkedItems={checkedItems}
 				onCheckItems={setCheckedItems}
 				expandedItems={expandedItems}

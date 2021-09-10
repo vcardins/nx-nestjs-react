@@ -7,6 +7,7 @@ import { DownArrow, UpArrow, UpAndDownArrows, Sorter, Resizer, ActionLink, Table
 
 export const TableHeader = (props: ITableHeader & { isControl?: boolean }) => {
 	const {
+		id,
 		index,
 		children,
 		isControl,
@@ -52,6 +53,7 @@ export const TableHeader = (props: ITableHeader & { isControl?: boolean }) => {
 
 	return (
 		<TableCell
+			id={id}
 			role="th"
 			forwardRef={forwardRef}
 			fixedLeft={fixedLeft}

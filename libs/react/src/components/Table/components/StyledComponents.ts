@@ -38,17 +38,25 @@ export const Table = styled.div`
 	position: relative;
 `;
 
-export const TableCellContent = styled.span<{ align?: TextAlignment }>`
+export const TableCellContent = styled.span<{ align?: TextAlignment; bg?: CSSProperties['color'] }>`
 	${cellStyle};
 	${({ align }) => align && css`
 		text-align: ${align};
 	`};
+	${({ bg = 'transparent' }) => css`
+		background-color: ${bg};
+	`};
 `;
 
-export const ExpandedTableCell = styled.div<{ align?: TextAlignment; bg: CSSProperties['color'] }>`
+export const ExpandedTableCell = styled.div<{ align?: TextAlignment; bg: CSSProperties['color']; borderColor: CSSProperties['borderColor'] }>`
 	display: grid;
 	grid-column: 1/-1;
 	align-items: center;
+	${({ borderColor }) => borderColor && css`
+		padding: 0.5em;
+		border: 1px solid ${borderColor};
+	`};
+
 	${({ align }) => align === TextAlignment.Center && css`
 		justify-content: ${align};
 	`};
@@ -72,13 +80,23 @@ export const TableContainer = styled.div<{ colsWidths: (number | 'auto')[]; rows
 		z-index: 1;
 
 		${({ theme, rowHeight }) => css`
-			background: repeating-linear-gradient(${ theme.evenRowColor} 0 ${rowHeight}px, ${theme.oddRowColor} ${rowHeight}px ${rowHeight * 2}px);
+			/* background: repeating-linear-gradient(${ theme.evenRowColor} 0 ${rowHeight}px, ${theme.oddRowColor} ${rowHeight}px ${rowHeight * 2}px); */
 			[role='th'],
 			[role='td'] {
 				height: ${rowHeight}px;
 				width: 100%;
 			}
 		`}
+
+		[role='td'] {
+			&[data-order="odd"] {
+				background-color: ${theme.oddRowColor};
+			}
+
+			&[data-order="even"] {
+				background-color: ${theme.evenRowColor};
+			}
+		}
 
 		[role='th'] {
 			position: sticky;
@@ -109,10 +127,6 @@ export const TableContainer = styled.div<{ colsWidths: (number | 'auto')[]; rows
 					flex: 0 1 auto;
 				}
 			}
-		}
-
-		[role='column-label'] {
-			${cellStyle};
 		}
 	}
 

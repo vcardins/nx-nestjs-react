@@ -3,7 +3,12 @@ import { useState, useMemo, useRef, useCallback, ChangeEvent, useEffect } from '
 import { useColumnResize, useScrolling, useColumnSorting } from '.';
 import { ITableProps, ITableState, ITableRefsProps, IColumnKey, ITableColumn, TableCellFormats } from '../types';
 
-function buildColumns(props: { columns: ITableColumn[]; addCheckbox: boolean; addExpander: boolean }) {
+function buildColumns<T extends IColumnKey = any>(props: {
+	columns: ITableColumn[];
+	onBuildIds: ITableProps<T>['onBuildIds'];
+	addCheckbox: boolean;
+	addExpander: boolean;
+}) {
 	const getWidth = (col: ITableColumn) => {
 		if ([TableCellFormats.Checkbox, TableCellFormats.Expander].includes(col.format)) {
 			return 32;
@@ -16,6 +21,7 @@ function buildColumns(props: { columns: ITableColumn[]; addCheckbox: boolean; ad
 
 	const columns = [
 		props.addCheckbox && {
+			id: props.onBuildIds?.checkboxAll?.(),
 			format: TableCellFormats.Checkbox,
 			width: 32,
 			resizable: false,
@@ -53,16 +59,20 @@ export const useTableManager = <T extends IColumnKey = any>(
 		theme: { rowHeight, rowsPerBody, minCellWidth },
 		allowCheckAll = true,
 		onCheckItems,
+		onExpandItems,
+		onGetExpandedContent,
+		onBuildIds,
 		refs,
 	} = props;
 
 	const [resizingColumnIndex, onStartResizingColumn] = useState<number | null>(null);
 	const [state, setState] = useState<ITableState<T>>({
 		// eslint-disable-next-line @typescript-eslint/no-use-before-define
-		columns: buildColumns({
+		columns: buildColumns<T>({
 			columns,
-			addCheckbox: typeof props.onCheckItems === 'function',
-			addExpander: (typeof props.onExpandItems === 'function' && typeof props.onGetExpandedContent === 'function' ),
+			onBuildIds,
+			addCheckbox: typeof onCheckItems === 'function',
+			addExpander: (typeof onExpandItems === 'function' && typeof onGetExpandedContent === 'function' ),
 		}),
 		data,
 		loading: false,

@@ -25,15 +25,17 @@ export interface IExpandedCellProps {
 	children: ReactNode;
 	align?: TextAlignment;
 	bg?: CSSProperties['color'];
+	borderColor?: CSSProperties['borderColor'];
 }
 
 export interface ITableCellProps {
-	role?: string;
 	id?: string;
+	role?: string;
 	forwardRef?: MutableRefObject<HTMLDivElement>;
 	align?: TextAlignment;
 	fixedLeft?: boolean;
 	fixedRight?: boolean;
+	order?: 'even' | 'odd';
 	children?: ReactNode;
 }
 
@@ -52,7 +54,6 @@ export interface ICheckboxRenderer extends ICommonRenderer {
 export interface IColumnKey {
 	id: KeyType;
 }
-
 
 export interface ITableColumn {
 	align?: TextAlignment;
@@ -87,6 +88,7 @@ export interface IExpanderOptions {
 }
 
 export interface ITableHeader extends ITableColumn {
+	id?: string;
 	index: number;
 	isLast: boolean;
 	isResizing: boolean;
@@ -107,10 +109,11 @@ export type ModelKey<TItem> = TItem & ITableRowStatus & IWithId;
 export type CustomRenderer<TItem> = (props: RenderProps<TItem>) => ReactElement | string | undefined;
 export type CustomRenderers<TItem> = Record<string, CustomRenderer<Partial<TItem>>>;
 
-type IdBuilder = (key: string, id: KeyType) => string;;
+export type IdBuilder<T> = (key: string, item: T) => string;
 
-export interface ITableProps<T extends IColumnKey> {
+export interface ITableProps<T extends IColumnKey = any> {
 	isDataLoaded?: boolean;
+	idProp?: string;
 	columns: ITableColumn[];
 	data?: T[];
 	theme?: ITableTheme;
@@ -123,10 +126,11 @@ export interface ITableProps<T extends IColumnKey> {
 	onGetExpandedContent?: (item: T) => ReactElement;
 
 	onBuildIds?: {
-		header?: (key: KeyType) => string;
-		cell?: IdBuilder;
-		checkbox?: IdBuilder;
-		expander?: IdBuilder;
+		header?: (key: string) => string;
+		cell?: IdBuilder<T>;
+		checkbox?: IdBuilder<T>;
+		checkboxAll?: () => string;
+		expander?: IdBuilder<T>;
 	}
 }
 

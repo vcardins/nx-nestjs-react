@@ -1,26 +1,19 @@
 import React, { useMemo, useRef } from 'react';
 
 import { TextAlignment } from '@xapp/shared/types';
-import { ITableProps, ITableRefsProps, ITableConfig, TableCellFormats } from './types';
+import { ITableProps, ITableRefsProps, TableCellFormats } from './types';
 import {
+	TableContainer,
+	Table,
 	TableHeader,
 	TableCell,
-	ExpandedCell,
-	Spinner,
-	BottomShadow,
 	TableCellContent,
-	TableContent,
-	TableWrapper,
+	ExpandedCell,
+	BottomShadow,
 	TopShadow,
 } from './components';
-
 import { useTableManager, useRenderer as renderers } from './hooks';
-
-const defaults: ITableConfig = {
-	rowHeight: 25,
-	rowsPerBody: 25,
-	minCellWidth: 40,
-};
+import { theme } from './theme';
 
 const Loading = () => (
 	<ExpandedCell align={TextAlignment.Center} bg="#efefef">
@@ -28,14 +21,14 @@ const Loading = () => (
 	</ExpandedCell>
 );
 
-export function Table<T extends { id: number | string }= any>(props: ITableProps<T>) {
+export function DataTable<T extends { id: number | string }= any>(props: ITableProps<T>) {
 	const refs: ITableRefsProps = {
 		wrapper: useRef<HTMLDivElement>(null),
 		body: useRef<HTMLDivElement>(null),
 		topShadow: useRef<HTMLDivElement>(null),
 		bottomShadow: useRef<HTMLDivElement>(null),
 	};
-	const config = { ...defaults, ...props.config };
+	const config = { ...theme, ...props.theme };
 
 	const {
 		data,
@@ -46,7 +39,7 @@ export function Table<T extends { id: number | string }= any>(props: ITableProps
 		onStartResizingColumn,
 		onCheckAll,
 		onColumnSorting,
-	} = useTableManager({ ...props, config, refs });
+	} = useTableManager({ ...props, theme: config, refs });
 
 	const tableHeaders = useMemo(() => headers.map((column, index) => {
 		let children: React.ReactElement;
@@ -111,6 +104,7 @@ export function Table<T extends { id: number | string }= any>(props: ITableProps
 							children = props.onCheckItems
 								? renderers[TableCellFormats.Checkbox]({
 									id: props.onBuildIds?.checkbox?.(column.key, item.id),
+									fixedLeft: true,
 									checked: props.checkedItems?.includes(item.id),
 									onChange: () => props.onCheckItems(item.id),
 								})
@@ -121,6 +115,7 @@ export function Table<T extends { id: number | string }= any>(props: ITableProps
 							children = (props.onExpandItems && props.onGetExpandedContent)
 								? renderers[TableCellFormats.Expander]({
 									id: props.onBuildIds?.expander?.(column.key, item.id),
+									fixedLeft: true,
 									isExpanded: props.expandedItems?.includes(item.id),
 									onClick: () => props.onExpandItems(item.id),
 								})
@@ -137,7 +132,6 @@ export function Table<T extends { id: number | string }= any>(props: ITableProps
 					return (
 						<TableCell
 							key={`${rowIndex}-${colIndex}`}
-							column={colIndex}
 							fixedLeft={column.fixedLeft}
 							fixedRight={column.fixedRight}
 						>
@@ -171,20 +165,21 @@ export function Table<T extends { id: number | string }= any>(props: ITableProps
 	]);
 
 	return (
-		<TableWrapper
-			role="table"
+		<TableContainer
+			role="table-container"
 			ref={refs.wrapper}
 			rows={tableRows.length}
 			colsWidths={columnsWidths}
+			theme={theme}
 			rowHeight={state.rowHeight}
 		>
 			<TopShadow top={state.rowHeight} ref={refs.topShadow} />
-			<TableContent ref={refs.body}>
+			<Table role="table" ref={refs.body}>
 				{ tableHeaders }
 				{ props.isDataLoaded ? tableRows : <Loading /> }
-			</TableContent>
+			</Table>
 			<BottomShadow />
 			{/* <Spinner visible={props.isDataLoaded} size="small" /> */}
-		</TableWrapper>
+		</TableContainer>
 	);
 }

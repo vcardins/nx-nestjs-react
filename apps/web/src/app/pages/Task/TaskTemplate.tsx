@@ -16,7 +16,7 @@ import {
 	useForm,
 	Button,
 	Icon,
-	Table, ITableColumn, TableCellFormats, RenderProps,
+	DataTable, ITableColumn, TableCellFormats, RenderProps,
 	Drawer,
 	InlineEdit,
 } from '@xapp/react';
@@ -148,7 +148,7 @@ const TaskTemplatePage = memo(() => {
 					</Form>
 				</Panel>
 			</Drawer>
-			<Table
+			<DataTable
 				isDataLoaded={status === 'success'}
 				columns={columns}
 				data={items}

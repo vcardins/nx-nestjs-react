@@ -2,27 +2,8 @@ import { CSSProperties } from 'react';
 import styled, { css } from 'styled-components';
 
 import { TextAlignment } from '@xapp/shared/types';
-
-const tableHeaderStyle = css`
-	position: sticky;
-	top: 0;
-	background-color: ${({ theme }) => theme.colors.primary.white};
-	border-bottom: 1px solid ${({ theme }) => theme.colors.tertiary.lightGrey};
-	font-weight: 700;
-	z-index: 2;
-	width: 100%;
-
-	a {
-		width: 100%;
-		> * {
-			width: auto;
-		}
-	}
-
-	svg {
-		color: ${({ theme }) => theme.colors.tertiary.lightGrey};
-	}
-`;
+import { theme } from '../theme';
+import { ITableTheme } from '../types';
 
 const shadowStyle = css`
 	position: absolute;
@@ -33,7 +14,7 @@ const shadowStyle = css`
 `;
 
 const cellStyle = css`
-	padding: 0.25em 0.5em;
+	padding: ${theme.cellPadding};
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -53,7 +34,7 @@ export const TopShadow = styled.div<{ top: number }>`
 	background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
 `;
 
-export const TableContent = styled.div`
+export const Table = styled.div`
 	position: relative;
 `;
 
@@ -77,14 +58,13 @@ export const ExpandedTableCell = styled.div<{ align?: TextAlignment; bg: CSSProp
 	`};
 `;
 
-
-export const TableWrapper = styled.div<{ colsWidths: (number | 'auto')[]; rows: number; rowHeight: number }>`
+export const TableContainer = styled.div<{ colsWidths: (number | 'auto')[]; rows: number; theme: ITableTheme; rowHeight: ITableTheme['rowHeight'] }>`
 	flex: 1;
 	flex-direction: column;
 	font-size: 1em;
 	height: 100%;
 
-	${TableContent} {
+	${Table} {
 		display: grid;
 		grid-template-rows: repeat(${({ rows }) => rows}, min-content) max-content;
 		grid-template-columns: ${({ colsWidths }) => colsWidths.map((col) => (col > 0 ? `${col}px ` : ' auto '))};
@@ -92,16 +72,33 @@ export const TableWrapper = styled.div<{ colsWidths: (number | 'auto')[]; rows: 
 		z-index: 1;
 
 		${({ theme, rowHeight }) => css`
-			background: repeating-linear-gradient(transparent 0 ${rowHeight}px, ${theme.colors.secondary.lightestBlue} ${rowHeight}px ${rowHeight * 2}px);
-			[role='column-header'],
-			[role='tablecell'] {
+			background: repeating-linear-gradient(${ theme.evenRowColor} 0 ${rowHeight}px, ${theme.oddRowColor} ${rowHeight}px ${rowHeight * 2}px);
+			[role='th'],
+			[role='td'] {
 				height: ${rowHeight}px;
 				width: 100%;
 			}
 		`}
 
-		[role='column-header'] {
-			${tableHeaderStyle};
+		[role='th'] {
+			position: sticky;
+			top: 0;
+			background-color: ${theme.white};
+			border-bottom: 1px solid ${theme.borderColor};
+			font-weight: 700;
+			z-index: 2;
+			width: 100%;
+
+			a {
+				width: 100%;
+				> * {
+					width: auto;
+				}
+			}
+
+			svg {
+				opacity: 0.5
+			}
 
 			&[data='sortable'] {
 				cursor: pointer;
@@ -122,21 +119,21 @@ export const TableWrapper = styled.div<{ colsWidths: (number | 'auto')[]; rows: 
 	@media (min-width: 769px) {
 		overflow-y: auto;
 
-		& + [role='table'] {
+		& + [role='table-container'] {
 			margin-left: 1rem;
 		}
 
-		${TableContent} {
-			[role='column-header'],
-			[role='tablecell'] {
+		${Table} {
+			[role='th'],
+			[role='td'] {
 				display: flex;
 				align-items: center;
-				border-right: 1px solid ${({ theme }) => theme.colors.tertiary.lightGrey};
+				border-right: 1px solid ${({ theme }) => theme.borderColor};
 			}
 
-			[role='tablecell'] {
-				[data-fixed-left='true'],
-				[data-fixed-right='true'] {
+			[role='td'] {
+				&[data-fixed-left='true'],
+				&[data-fixed-right='true'] {
 					z-index: 1;
 					position: sticky;
 				}
@@ -163,37 +160,30 @@ export const TableWrapper = styled.div<{ colsWidths: (number | 'auto')[]; rows: 
 	@media (max-width: 768px) {
 		overflow-y: auto;
 
-		& + [role='table'] {
+		& + [role='table-container'] {
 			margin-top: 2rem;
 		}
 
-		${TableContent} {
+		${Table} {
 			grid-template-columns: 1;
 
-			> [role='column-header'] {
+			> [role='th'] {
 				display: none;
 			}
 
-			> [role='tablecell'] {
+			> [role='td'] {
 				padding: 0.25rem;
-			}
-
-			.label {
-				display: block;
-				font-weight: 700;
 			}
 		}
 	}
 `;
-
-
-export const TableHeaderWrapper = styled.div``;
 
 export const Sorter = styled.span`
 	display: flex;
 	align-items: center;
 	padding: 0.25em 2px;
 `;
+
 export const Resizer = styled.div<{ active?: boolean; height: number | 'auto' }>`
 	display: block;
 	position: absolute;

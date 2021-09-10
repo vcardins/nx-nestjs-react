@@ -1,4 +1,4 @@
-import { useCallback, useEffect, MutableRefObject } from 'react';
+import { useCallback, useEffect, MutableRefObject, CSSProperties } from 'react';
 import { ITableColumn } from '../types';
 
 const handleTextSelection = (isMouseMoving = false) =>
@@ -7,7 +7,7 @@ const handleTextSelection = (isMouseMoving = false) =>
 interface IUseColumnResize {
 	columns: ITableColumn[];
 	tableRef: MutableRefObject<HTMLDivElement>;
-	minCellWidth: number;
+	minCellWidth: CSSProperties['width'];
 	resizingColumnIndex: number;
 	onStartResizingColumn: (index: number) => void;
 }

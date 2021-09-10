@@ -3,24 +3,37 @@ import { CSSProperties, ReactNode, ChangeEvent, ReactElement, MutableRefObject }
 import { SortDirections, TextAlignment, KeyType } from '@xapp/shared/types';
 import { TableCellFormats } from './enums';
 
+export interface ITableTheme {
+	fontSize?: CSSProperties['fontSize'];
+	textColor?: CSSProperties['color'];
+	rowHeight: number;
+	rowsPerBody: number;
+	cellPadding?: CSSProperties['padding'];
+	white: CSSProperties['color'];
+	evenRowColor: CSSProperties['color'];
+	oddRowColor: CSSProperties['color'];
+	minCellWidth: CSSProperties['width'];
+	borderColor: CSSProperties['borderColor'];
+}
+
 export interface IIconProps {
 	color?: CSSProperties['color'];
 	size?: CSSProperties['width'];
 }
 
 export interface IExpandedCellProps {
-	children: React.ReactNode;
+	children: ReactNode;
 	align?: TextAlignment;
 	bg?: CSSProperties['color'];
 }
 
 export interface ITableCellProps {
+	role?: string;
 	id?: string;
-	column: number;
+	forwardRef?: MutableRefObject<HTMLDivElement>;
 	align?: TextAlignment;
 	fixedLeft?: boolean;
 	fixedRight?: boolean;
-	role?: string;
 	children?: ReactNode;
 }
 
@@ -34,12 +47,6 @@ export interface ICommonRenderer<T = any> {
 export interface ICheckboxRenderer extends ICommonRenderer {
 	checked?: boolean
 	onCheck: (id: number) => void
-}
-
-export interface ITableConfig {
-	rowHeight: number;
-	rowsPerBody: number;
-	minCellWidth: number;
 }
 
 export interface IColumnKey {
@@ -106,7 +113,7 @@ export interface ITableProps<T extends IColumnKey> {
 	isDataLoaded?: boolean;
 	columns: ITableColumn[];
 	data?: T[];
-	config?: ITableConfig;
+	theme?: ITableTheme;
 	checkedItems?: KeyType[];
 	expandedItems?: KeyType[];
 	allowCheckAll?: boolean;

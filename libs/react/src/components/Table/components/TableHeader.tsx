@@ -1,11 +1,9 @@
 import React, { useMemo } from 'react';
 
 import { SortDirections } from '@xapp/shared/types';
-import { DownArrow, UpArrow, UpAndDownArrows, TableHeaderWrapper, Sorter, Resizer } from './';
 
 import { ITableHeader } from '../types';
-import { ActionLink } from './ActionLink';
-
+import { DownArrow, UpArrow, UpAndDownArrows, Sorter, Resizer, ActionLink, TableCell } from './';
 
 export const TableHeader = (props: ITableHeader & { isControl?: boolean }) => {
 	const {
@@ -15,6 +13,8 @@ export const TableHeader = (props: ITableHeader & { isControl?: boolean }) => {
 		sortDirection,
 		forwardRef,
 		tableHeight,
+		fixedLeft,
+		fixedRight,
 		resizable = true,
 		isResizing,
 		onResize,
@@ -51,11 +51,13 @@ export const TableHeader = (props: ITableHeader & { isControl?: boolean }) => {
 	}, [children, tableHeight, index, isResizing, sortDirection, resizable, onSort]);
 
 	return (
-		<TableHeaderWrapper
-			role="column-header"
-			ref={forwardRef}
+		<TableCell
+			role="th"
+			forwardRef={forwardRef}
+			fixedLeft={fixedLeft}
+			fixedRight={fixedRight}
 		>
 			{content}
-		</TableHeaderWrapper>
+		</TableCell>
 	);
 };

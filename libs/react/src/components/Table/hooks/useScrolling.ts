@@ -38,7 +38,7 @@ export const useScrolling = <T extends IColumnKey = any>(props: IUseScrolling<T>
 	useEffect(() => {
 		window.requestAnimationFrame(() => {
 			if (refs.body.current && state.data?.length) {
-				const firstTableCell = refs.body.current.querySelector<HTMLDivElement>('[role="tablecell"]');
+				const firstTableCell = refs.body.current.querySelector<HTMLDivElement>('[role="td"]');
 				const rowHeight = Math.floor(firstTableCell?.offsetHeight || 0);
 
 				const contentHeight = Math.floor(refs.body.current.offsetHeight);

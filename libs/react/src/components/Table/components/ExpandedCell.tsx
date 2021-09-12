@@ -5,7 +5,7 @@ import { ExpandedTableCell, TableCellContent } from './';
 
 export const ExpandedCell = ({ children, align, bg, borderColor }: IExpandedCellProps) => (
 	<ExpandedTableCell align={align} bg={bg} borderColor={borderColor}>
-		<TableCellContent bg="#fff">
+		<TableCellContent>
 			{ children }
 		</TableCellContent>
 	</ExpandedTableCell>

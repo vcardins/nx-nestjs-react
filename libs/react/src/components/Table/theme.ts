@@ -9,6 +9,7 @@ export const theme:ITableTheme = {
 	textColor: '#444',
 	evenRowColor: 'transparent',
 	oddRowColor: '#e6f0fa',
+	messageRowColor: '#efefef',
 	minCellWidth: '40px',
 	borderColor: '#d1d1d1',
 };

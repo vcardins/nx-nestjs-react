@@ -4,8 +4,9 @@ import styled, { css } from 'styled-components';
 import { IIconProps } from '../types';
 import { ReactComponent as ArrowDown } from './svg/angle-bottom.svg';
 import { ReactComponent as ArrowUp } from './svg/angle-top.svg';
+import { ReactComponent as LoaderIcon } from './svg/loader.svg';
 
-const ArrowsWrapper = styled.span<IIconProps>`
+const IconWrapper = styled.span<IIconProps>`
 	line-height: 0;
 	${({ color = '#444', size = '8px' }) => css`
 		svg {
@@ -17,9 +18,9 @@ const ArrowsWrapper = styled.span<IIconProps>`
 `;
 
 export const Arrows = ({ direction, ...props }: IIconProps & { direction: 'up' | 'down'}) => (
-	<ArrowsWrapper {...props}>
+	<IconWrapper {...props}>
 		{ direction === 'up' ? <ArrowUp /> : <ArrowDown /> }
-	</ArrowsWrapper>
+	</IconWrapper>
 );
 
 export const DownArrow = (props: IIconProps) => <Arrows {...props} direction="down" />;
@@ -35,4 +36,22 @@ export const UpAndDownArrows = (props: IIconProps) => (
 		<UpArrow  {...props} />
 		<DownArrow  {...props} />
 	</UpDownWrapper>
+);
+
+const LoaderWrapper = styled(IconWrapper)<{ speed?: number }>`
+	[role="spinner"] {
+		animation: loader ${({ speed = 2 }) => `${speed}s`} infinite linear;
+		transform: translateZ(0);
+	}
+
+	@keyframes loader{
+		0% { transform: rotate(0deg); }
+		100% { transform: rotate(360deg); }
+	}
+`;
+
+export const Loader = (props: IIconProps) => (
+	<LoaderWrapper {...props}>
+		<LoaderIcon role="spinner"/>
+	</LoaderWrapper>
 );

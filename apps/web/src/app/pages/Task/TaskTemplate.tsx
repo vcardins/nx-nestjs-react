@@ -26,6 +26,7 @@ import { useAppStore } from '@xapp/state';
 
 import { validationSchema } from './schema';
 import { TaskTemplateList, TaskTemplateItem, TaskTemplateItemInfo, TaskTemplateIcon } from './components/TaskTemplate';
+import { ApiCallStatus } from '@xapp/state/shared';
 
 const initialValues: TaskTemplateInput = {
 	name: '',
@@ -157,9 +158,11 @@ const TaskTemplatePage = memo(() => {
 				</Panel>
 			</Drawer>
 			<DataTable
-				isDataLoaded={status === 'success'}
+				id="task-template-data-table"
+				isLoading={status === ApiCallStatus.Loading}
 				columns={columns}
 				data={items}
+				noRecordsMessage="No templates found"
 				onBuildIds={handleBuildIds}
 				checkedItems={checkedItems}
 				onCheckItems={setCheckedItems}

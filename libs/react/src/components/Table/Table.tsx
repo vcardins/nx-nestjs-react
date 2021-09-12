@@ -9,15 +9,16 @@ import {
 	TableCell,
 	TableCellContent,
 	ExpandedCell,
+	Loading,
 	BottomShadow,
 	TopShadow,
 } from './components';
 import { useTableManager, useRenderer as renderers } from './hooks';
 import { theme } from './theme';
 
-const Loading = ({ bg = '#efefef' }: { bg: CSSProperties['color'] }) => (
-	<ExpandedCell align={TextAlignment.Center} bg={bg}>
-		Loading ...
+const MessageCell = ({ children }: { children: React.ReactElement | string }) => (
+	<ExpandedCell align={TextAlignment.Center} bg={theme.messageRowColor}>
+		{ children }
 	</ExpandedCell>
 );
 
@@ -87,13 +88,27 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 		);
 	}), [headers, resizingColumnIndex, refs.body.current?.offsetHeight, onCheckAll, onStartResizingColumn]);
 
-	const tableRows = useMemo(() => props.isDataLoaded
-		? data.reduce((result, item, rowIndex) => {
+	const tableBody = useMemo(() => {
+		if (props.isLoading) {
+			return (
+				<MessageCell>
+					<Loading />
+				</MessageCell>
+			);
+		}
+
+		if (!data.length) {
+			return (
+				<MessageCell>
+					{ props.noRecordsMessage || 'No Records found'}
+				</MessageCell>
+			);
+		}
+
+		return data.reduce((result, item, rowIndex) => {
 			let children: React.ReactElement;
 			let align: TextAlignment;
-			if (!props.isDataLoaded) {
-				return [];
-			}
+
 			const isExpanded = props.expandedItems.includes(item[idProp]);
 			const expandedContent = isExpanded ? props.onGetExpandedContent?.(item) : null;
 
@@ -160,34 +175,37 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 			}
 
 			return result;
-		}, [] as React.ReactNode[])
-		: []
-	, [
+		}, [] as React.ReactNode[]);
+	}, [
 		headers,
-		props.isDataLoaded,
+		props.data,
+		props.idProp,
+		props.isLoading,
 		props.customRenderers,
 		props.expandedItems,
 		props.checkedItems,
-		props.customRenderers,
-		onBuildIds,
+		props.onGetExpandedContent,
+		props.onBuildIds,
+		props.onExpandItems,
+		props.onCheckItems,
 	]);
 
 	return (
 		<TableContainer
 			role="table-container"
 			ref={refs.wrapper}
-			rows={tableRows.length}
+				rows={data.length}
 			colsWidths={columnsWidths}
 			theme={theme}
 			rowHeight={state.rowHeight}
 		>
 			<TopShadow top={state.rowHeight} ref={refs.topShadow} />
-			<Table role="table" ref={refs.body}>
-				{ tableHeaders }
-				{ props.isDataLoaded ? tableRows : <Loading bg={theme.borderColor} /> }
+				<Table id={props.id} role="table" ref={refs.body}>
+					{ tableHeader }
+					{ tableBody }
 			</Table>
 			<BottomShadow />
-			{/* <Spinner visible={props.isDataLoaded} size="small" /> */}
+				{/* <Spinner visible={props.isLoading} size="small" /> */}
 		</TableContainer>
 	);
 }

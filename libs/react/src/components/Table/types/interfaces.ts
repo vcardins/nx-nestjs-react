@@ -7,11 +7,13 @@ export interface ITableTheme {
 	fontSize?: CSSProperties['fontSize'];
 	textColor?: CSSProperties['color'];
 	rowHeight: number;
+	headerHeight?: number;
 	rowsPerBody: number;
 	cellPadding?: CSSProperties['padding'];
 	white: CSSProperties['color'];
 	evenRowColor: CSSProperties['color'];
 	oddRowColor: CSSProperties['color'];
+	messageRowColor: CSSProperties['color'];
 	minCellWidth: CSSProperties['width'];
 	borderColor: CSSProperties['borderColor'];
 }
@@ -112,7 +114,7 @@ export type CustomRenderers<TItem> = Record<string, CustomRenderer<Partial<TItem
 export type IdBuilder<T> = (key: string, item: T) => string;
 
 export interface ITableProps<T extends IColumnKey = any> {
-	isDataLoaded?: boolean;
+	id?: string;
 	idProp?: string;
 	columns: ITableColumn[];
 	data?: T[];
@@ -120,11 +122,12 @@ export interface ITableProps<T extends IColumnKey = any> {
 	checkedItems?: KeyType[];
 	expandedItems?: KeyType[];
 	allowCheckAll?: boolean;
+	isLoading?: boolean;
+	noRecordsMessage?: string;
 	customRenderers?: CustomRenderers<T>;
 	onCheckItems?: (ids: KeyType | KeyType[]) => void;
 	onExpandItems?: (ids: KeyType | KeyType[]) => void;
 	onGetExpandedContent?: (item: T) => ReactElement;
-
 	onBuildIds?: {
 		header?: (key: string) => string;
 		cell?: IdBuilder<T>;

@@ -43,7 +43,7 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 		onColumnSorting,
 	} = useTableManager<T>({ ...props, theme: config, refs });
 
-	const tableHeaders = useMemo(() => headers.map((column, index) => {
+	const tableHeader = useMemo(() => headers.map((column, index) => {
 		let children: React.ReactElement;
 		let align: TextAlignment;
 		let isControl = false;
@@ -194,18 +194,18 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 		<TableContainer
 			role="table-container"
 			ref={refs.wrapper}
-				rows={data.length}
+			rows={data.length}
 			colsWidths={columnsWidths}
 			theme={theme}
 			rowHeight={state.rowHeight}
 		>
 			<TopShadow top={state.rowHeight} ref={refs.topShadow} />
-				<Table id={props.id} role="table" ref={refs.body}>
-					{ tableHeader }
-					{ tableBody }
+			<Table id={props.id} role="table" ref={refs.body}>
+				{ tableHeader }
+				{ tableBody }
 			</Table>
 			<BottomShadow />
-				{/* <Spinner visible={props.isLoading} size="small" /> */}
+			{/* <Spinner visible={props.isLoading} size="small" /> */}
 		</TableContainer>
 	);
 }

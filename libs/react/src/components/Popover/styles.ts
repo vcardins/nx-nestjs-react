@@ -1,5 +1,5 @@
-import React from 'react';
 import styled, { css } from 'styled-components';
+import { IDropdownWrapper } from './types';
 
 const buildArrow = (border: number, color: string, arrowPosition: number) => css`
 	content: '';
@@ -14,16 +14,9 @@ const buildArrow = (border: number, color: string, arrowPosition: number) => css
 	border-bottom: ${border}px solid ${color};
 `;
 
-export interface IDropdownWrapper {
-	arrowPosition?: number;
-	children?: React.ReactNode;
-	position?: string;
-}
-
-export const Wrapper = styled.div<IDropdownWrapper>`
+export const PopoverWrapper = styled.div<IDropdownWrapper>`
 	position: relative;
 	${({ position }) => position}: 0;
-	top: 20px;
 	border: 1px solid ${({ theme }) => theme.colors.tertiary.lighterGrey };
 	z-index: 999;
 	padding: 2px;
@@ -40,7 +33,7 @@ export const Wrapper = styled.div<IDropdownWrapper>`
 	}
 `;
 
-export const Container = styled.div`
+export const PopoverContainer = styled.div`
 	position: absolute;
 	background: #fff;
 	border-radius: 4px;

@@ -54,25 +54,22 @@
 				}
 			}
 		},
-		"api-core": {
-			"root": "libs/api/core",
-			"sourceRoot": "libs/api/core/src",
+		"api-access-control": {
+			"root": "libs/api/access-control",
+			"sourceRoot": "libs/api/access-control/src",
 			"projectType": "library",
 			"schematics": {},
 			"architect": {
 				"lint": {
-					"builder": "@nrwl/linter:lint",
+					"builder": "@nrwl/linter:eslint",
 					"options": {
-						"linter": "eslint",
-						"tsConfig": ["libs/api/core/tsconfig.lib.json", "libs/api/core/tsconfig.spec.json"],
-						"exclude": ["**/node_modules/**", "!libs/api/core/**/*"]
+						"lintFilePatterns": ["libs/api/access-control/**/*.ts"]
 					}
 				},
 				"test": {
 					"builder": "@nrwl/jest:jest",
 					"options": {
-						"jestConfig": "libs/api/core/jest.config.js",
-						"tsConfig": "libs/api/core/tsconfig.spec.json",
+						"jestConfig": "libs/api/access-control/jest.config.js",
 						"passWithNoTests": true
 					}
 				}
@@ -102,78 +99,6 @@
 				}
 			}
 		},
-		"api-database": {
-			"root": "libs/api/database",
-			"sourceRoot": "libs/api/database/src",
-			"projectType": "library",
-			"schematics": {},
-			"architect": {
-				"lint": {
-					"builder": "@nrwl/linter:eslint",
-					"options": {
-						"linter": "eslint",
-						"tsConfig": ["libs/api/database/tsconfig.lib.json", "libs/api/database/tsconfig.spec.json"],
-						"exclude": ["**/node_modules/**", "!libs/api/database/**/*"]
-					}
-				}
-			}
-		},
-		"shared-assets": {
-			"root": "libs/shared/assets",
-			"sourceRoot": "libs/shared/assets/src",
-			"projectType": "library",
-			"schematics": {},
-			"architect": {}
-		},
-		"shared-exceptions": {
-			"root": "libs/shared/exceptions",
-			"sourceRoot": "libs/shared/exceptions/src",
-			"projectType": "library",
-			"schematics": {},
-			"architect": {
-				"lint": {
-					"builder": "@nrwl/linter:eslint",
-					"options": {
-						"lintFilePatterns": ["libs/shared/exceptions/**/*.ts"]
-					}
-				}
-			}
-		},
-		"shared-utils": {
-			"root": "libs/shared/utils",
-			"sourceRoot": "libs/shared/utils/src",
-			"projectType": "library",
-			"schematics": {},
-			"architect": {
-				"lint": {
-					"builder": "@nrwl/linter:eslint",
-					"options": {
-						"lintFilePatterns": ["libs/shared/utils/**/*.ts"]
-					}
-				},
-				"test": {
-					"builder": "@nrwl/jest:jest",
-					"options": {
-						"jestConfig": "libs/shared/utils/jest.config.js",
-						"passWithNoTests": true
-					}
-				}
-			}
-		},
-		"shared-config": {
-			"root": "libs/shared/config",
-			"sourceRoot": "libs/shared/config/src",
-			"projectType": "library",
-			"schematics": {},
-			"architect": {
-				"lint": {
-					"builder": "@nrwl/linter:eslint",
-					"options": {
-						"lintFilePatterns": ["libs/shared/config/**/*.ts"]
-					}
-				}
-			}
-		},
 		"api-config": {
 			"root": "libs/api/config",
 			"sourceRoot": "libs/api/config/src",
@@ -188,23 +113,42 @@
 				}
 			}
 		},
-		"api-mail": {
-			"root": "libs/api/mail",
-			"sourceRoot": "libs/api/mail/src",
+		"api-core": {
+			"root": "libs/api/core",
+			"sourceRoot": "libs/api/core/src",
+			"projectType": "library",
+			"schematics": {},
+			"architect": {
+				"lint": {
+					"builder": "@nrwl/linter:lint",
+					"options": {
+						"linter": "eslint",
+						"tsConfig": ["libs/api/core/tsconfig.lib.json", "libs/api/core/tsconfig.spec.json"],
+						"exclude": ["**/node_modules/**", "!libs/api/core/**/*"]
+					}
+				},
+				"test": {
+					"builder": "@nrwl/jest:jest",
+					"options": {
+						"jestConfig": "libs/api/core/jest.config.js",
+						"tsConfig": "libs/api/core/tsconfig.spec.json",
+						"passWithNoTests": true
+					}
+				}
+			}
+		},
+		"api-database": {
+			"root": "libs/api/database",
+			"sourceRoot": "libs/api/database/src",
 			"projectType": "library",
 			"schematics": {},
 			"architect": {
 				"lint": {
 					"builder": "@nrwl/linter:eslint",
 					"options": {
-						"lintFilePatterns": ["libs/api/mail/**/*.ts"]
-					}
-				},
-				"test": {
-					"builder": "@nrwl/jest:jest",
-					"options": {
-						"jestConfig": "libs/api/mail/jest.config.js",
-						"passWithNoTests": true
+						"linter": "eslint",
+						"tsConfig": ["libs/api/database/tsconfig.lib.json", "libs/api/database/tsconfig.spec.json"],
+						"exclude": ["**/node_modules/**", "!libs/api/database/**/*"]
 					}
 				}
 			}
@@ -225,6 +169,27 @@
 					"builder": "@nrwl/jest:jest",
 					"options": {
 						"jestConfig": "libs/api/files/jest.config.js",
+						"passWithNoTests": true
+					}
+				}
+			}
+		},
+		"api-mail": {
+			"root": "libs/api/mail",
+			"sourceRoot": "libs/api/mail/src",
+			"projectType": "library",
+			"schematics": {},
+			"architect": {
+				"lint": {
+					"builder": "@nrwl/linter:eslint",
+					"options": {
+						"lintFilePatterns": ["libs/api/mail/**/*.ts"]
+					}
+				},
+				"test": {
+					"builder": "@nrwl/jest:jest",
+					"options": {
+						"jestConfig": "libs/api/mail/jest.config.js",
 						"passWithNoTests": true
 					}
 				}
@@ -253,22 +218,121 @@
 				}
 			}
 		},
-		"api-access-control": {
-			"root": "libs/api/access-control",
-			"sourceRoot": "libs/api/access-control/src",
+		"shared": {
+			"root": "libs/shared",
+			"sourceRoot": "libs/shared/src",
+			"projectType": "library",
+			"architect": {
+				"lint": {
+					"builder": "@nrwl/linter:eslint",
+					"outputs": ["{options.outputFile}"],
+					"options": {
+						"lintFilePatterns": ["libs/shared/**/*.ts"]
+					}
+				},
+				"test": {
+					"builder": "@nrwl/jest:jest",
+					"outputs": ["coverage/libs/shared"],
+					"options": {
+						"jestConfig": "libs/shared/jest.config.js",
+						"passWithNoTests": true
+					}
+				}
+			}
+		},
+		"shared-api": {
+			"root": "libs/shared/api",
+			"sourceRoot": "libs/shared/api/src",
+			"projectType": "library",
+			"architect": {
+				"lint": {
+					"builder": "@nrwl/linter:eslint",
+					"options": {
+						"lintFilePatterns": ["libs/shared/api/**/*.ts"]
+					}
+				},
+				"test": {
+					"builder": "@nrwl/jest:jest",
+					"outputs": ["coverage/libs/shared/api"],
+					"options": {
+						"jestConfig": "libs/shared/api/jest.config.js",
+						"passWithNoTests": true
+					}
+				}
+			}
+		},
+		"shared-assets": {
+			"root": "libs/shared/assets",
+			"sourceRoot": "libs/shared/assets/src",
+			"projectType": "library",
+			"schematics": {},
+			"architect": {}
+		},
+		"shared-config": {
+			"root": "libs/shared/config",
+			"sourceRoot": "libs/shared/config/src",
 			"projectType": "library",
 			"schematics": {},
 			"architect": {
 				"lint": {
 					"builder": "@nrwl/linter:eslint",
 					"options": {
-						"lintFilePatterns": ["libs/api/access-control/**/*.ts"]
+						"lintFilePatterns": ["libs/shared/config/**/*.ts"]
+					}
+				}
+			}
+		},
+		"shared-exceptions": {
+			"root": "libs/shared/exceptions",
+			"sourceRoot": "libs/shared/exceptions/src",
+			"projectType": "library",
+			"schematics": {},
+			"architect": {
+				"lint": {
+					"builder": "@nrwl/linter:eslint",
+					"options": {
+						"lintFilePatterns": ["libs/shared/exceptions/**/*.ts"]
+					}
+				}
+			}
+		},
+		"shared-types": {
+			"root": "libs/shared/types",
+			"sourceRoot": "libs/shared/types/src",
+			"projectType": "library",
+			"architect": {
+				"lint": {
+					"builder": "@nrwl/linter:eslint",
+					"options": {
+						"lintFilePatterns": ["libs/shared/types/**/*.ts"]
+					}
+				},
+				"test": {
+					"builder": "@nrwl/jest:jest",
+					"outputs": ["coverage/libs/shared/types"],
+					"options": {
+						"jestConfig": "libs/shared/types/jest.config.js",
+						"passWithNoTests": true
+					}
+				}
+			}
+		},
+		"shared-utils": {
+			"root": "libs/shared/utils",
+			"sourceRoot": "libs/shared/utils/src",
+			"projectType": "library",
+			"schematics": {},
+			"architect": {
+				"lint": {
+					"builder": "@nrwl/linter:eslint",
+					"options": {
+						"lintFilePatterns": ["libs/shared/utils/**/*.ts"]
 					}
 				},
 				"test": {
 					"builder": "@nrwl/jest:jest",
 					"options": {
-						"jestConfig": "libs/api/access-control/jest.config.js",
+						"jestConfig": "libs/shared/utils/jest.config.js",
 						"passWithNoTests": true
 					}
 				}
@@ -295,22 +359,85 @@
 				}
 			}
 		},
-		"state-todo": {
-			"root": "libs/state/todo",
-			"sourceRoot": "libs/state/todo/src",
+		"state-account": {
+			"root": "libs/state/account",
+			"sourceRoot": "libs/state/account/src",
 			"projectType": "library",
 			"architect": {
 				"lint": {
 					"builder": "@nrwl/linter:eslint",
 					"options": {
-						"lintFilePatterns": ["libs/state/todo/**/*.ts"]
+						"lintFilePatterns": ["libs/state/account/**/*.ts"]
 					}
 				},
 				"test": {
 					"builder": "@nrwl/jest:jest",
-					"outputs": ["coverage/libs/state/todo"],
+					"outputs": ["coverage/libs/state/account"],
 					"options": {
-						"jestConfig": "libs/state/todo/jest.config.js",
+						"jestConfig": "libs/state/account/jest.config.js",
+						"passWithNoTests": true
+					}
+				}
+			}
+		},
+		"state-auth": {
+			"root": "libs/state/auth",
+			"sourceRoot": "libs/state/auth/src",
+			"projectType": "library",
+			"architect": {
+				"lint": {
+					"builder": "@nrwl/linter:eslint",
+					"options": {
+						"lintFilePatterns": ["libs/state/auth/**/*.ts"]
+					}
+				},
+				"test": {
+					"builder": "@nrwl/jest:jest",
+					"outputs": ["coverage/libs/state/auth"],
+					"options": {
+						"jestConfig": "libs/state/auth/jest.config.js",
+						"passWithNoTests": true
+					}
+				}
+			}
+		},
+		"state-global": {
+			"root": "libs/state/global",
+			"sourceRoot": "libs/state/global/src",
+			"projectType": "library",
+			"architect": {
+				"lint": {
+					"builder": "@nrwl/linter:eslint",
+					"options": {
+						"lintFilePatterns": ["libs/state/global/**/*.ts"]
+					}
+				},
+				"test": {
+					"builder": "@nrwl/jest:jest",
+					"outputs": ["coverage/libs/state/global"],
+					"options": {
+						"jestConfig": "libs/state/global/jest.config.js",
+						"passWithNoTests": true
+					}
+				}
+			}
+		},
+		"state-household": {
+			"root": "libs/state/household",
+			"sourceRoot": "libs/state/household/src",
+			"projectType": "library",
+			"architect": {
+				"lint": {
+					"builder": "@nrwl/linter:eslint",
+					"options": {
+						"lintFilePatterns": ["libs/state/household/**/*.ts"]
+					}
+				},
+				"test": {
+					"builder": "@nrwl/jest:jest",
+					"outputs": ["coverage/libs/state/household"],
+					"options": {
+						"jestConfig": "libs/state/household/jest.config.js",
 						"passWithNoTests": true
 					}
 				}
@@ -337,43 +464,64 @@
 				}
 			}
 		},
-		"state-account": {
-			"root": "libs/state/account",
-			"sourceRoot": "libs/state/account/src",
+		"state-task": {
+			"root": "libs/state/task",
+			"sourceRoot": "libs/state/task/src",
 			"projectType": "library",
 			"architect": {
 				"lint": {
 					"builder": "@nrwl/linter:eslint",
 					"options": {
-						"lintFilePatterns": ["libs/state/account/**/*.ts"]
+						"lintFilePatterns": ["libs/state/task/**/*.ts"]
 					}
 				},
 				"test": {
 					"builder": "@nrwl/jest:jest",
-					"outputs": ["coverage/libs/state/account"],
+					"outputs": ["coverage/libs/state/task"],
 					"options": {
-						"jestConfig": "libs/state/account/jest.config.js",
+						"jestConfig": "libs/state/task/jest.config.js",
 						"passWithNoTests": true
 					}
 				}
 			}
 		},
-		"state-global": {
-			"root": "libs/state/global",
-			"sourceRoot": "libs/state/global/src",
+		"state-task-template": {
+			"root": "libs/state/taskTemplate",
+			"sourceRoot": "libs/state/taskTemplate/src",
 			"projectType": "library",
 			"architect": {
 				"lint": {
 					"builder": "@nrwl/linter:eslint",
 					"options": {
-						"lintFilePatterns": ["libs/state/global/**/*.ts"]
+						"lintFilePatterns": ["libs/state/taskTemplate/**/*.ts"]
 					}
 				},
 				"test": {
 					"builder": "@nrwl/jest:jest",
-					"outputs": ["coverage/libs/state/global"],
+					"outputs": ["coverage/libs/state/taskTemplate"],
 					"options": {
-						"jestConfig": "libs/state/global/jest.config.js",
+						"jestConfig": "libs/state/taskTemplate/jest.config.js",
+						"passWithNoTests": true
+					}
+				}
+			}
+		},
+		"state-todo": {
+			"root": "libs/state/todo",
+			"sourceRoot": "libs/state/todo/src",
+			"projectType": "library",
+			"architect": {
+				"lint": {
+					"builder": "@nrwl/linter:eslint",
+					"options": {
+						"lintFilePatterns": ["libs/state/todo/**/*.ts"]
+					}
+				},
+				"test": {
+					"builder": "@nrwl/jest:jest",
+					"outputs": ["coverage/libs/state/todo"],
+					"options": {
+						"jestConfig": "libs/state/todo/jest.config.js",
 						"passWithNoTests": true
 					}
 				}
@@ -481,132 +629,6 @@
 					"builder": "@nrwl/linter:eslint",
 					"options": {
 						"lintFilePatterns": ["apps/web-e2e/**/*.{js,ts}"]
-					}
-				}
-			}
-		},
-		"shared-api": {
-			"root": "libs/shared/api",
-			"sourceRoot": "libs/shared/api/src",
-			"projectType": "library",
-			"architect": {
-				"lint": {
-					"builder": "@nrwl/linter:eslint",
-					"options": {
-						"lintFilePatterns": ["libs/shared/api/**/*.ts"]
-					}
-				},
-				"test": {
-					"builder": "@nrwl/jest:jest",
-					"outputs": ["coverage/libs/shared/api"],
-					"options": {
-						"jestConfig": "libs/shared/api/jest.config.js",
-						"passWithNoTests": true
-					}
-				}
-			}
-		},
-		"shared-types": {
-			"root": "libs/shared/types",
-			"sourceRoot": "libs/shared/types/src",
-			"projectType": "library",
-			"architect": {
-				"lint": {
-					"builder": "@nrwl/linter:eslint",
-					"options": {
-						"lintFilePatterns": ["libs/shared/types/**/*.ts"]
-					}
-				},
-				"test": {
-					"builder": "@nrwl/jest:jest",
-					"outputs": ["coverage/libs/shared/types"],
-					"options": {
-						"jestConfig": "libs/shared/types/jest.config.js",
-						"passWithNoTests": true
-					}
-				}
-			}
-		},
-		"state-household": {
-			"root": "libs/state/household",
-			"sourceRoot": "libs/state/household/src",
-			"projectType": "library",
-			"architect": {
-				"lint": {
-					"builder": "@nrwl/linter:eslint",
-					"options": {
-						"lintFilePatterns": ["libs/state/household/**/*.ts"]
-					}
-				},
-				"test": {
-					"builder": "@nrwl/jest:jest",
-					"outputs": ["coverage/libs/state/household"],
-					"options": {
-						"jestConfig": "libs/state/household/jest.config.js",
-						"passWithNoTests": true
-					}
-				}
-			}
-		},
-		"state-auth": {
-			"root": "libs/state/auth",
-			"sourceRoot": "libs/state/auth/src",
-			"projectType": "library",
-			"architect": {
-				"lint": {
-					"builder": "@nrwl/linter:eslint",
-					"options": {
-						"lintFilePatterns": ["libs/state/auth/**/*.ts"]
-					}
-				},
-				"test": {
-					"builder": "@nrwl/jest:jest",
-					"outputs": ["coverage/libs/state/auth"],
-					"options": {
-						"jestConfig": "libs/state/auth/jest.config.js",
-						"passWithNoTests": true
-					}
-				}
-			}
-		},
-		"state-task": {
-			"root": "libs/state/task",
-			"sourceRoot": "libs/state/task/src",
-			"projectType": "library",
-			"architect": {
-				"lint": {
-					"builder": "@nrwl/linter:eslint",
-					"options": {
-						"lintFilePatterns": ["libs/state/task/**/*.ts"]
-					}
-				},
-				"test": {
-					"builder": "@nrwl/jest:jest",
-					"outputs": ["coverage/libs/state/task"],
-					"options": {
-						"jestConfig": "libs/state/task/jest.config.js",
-						"passWithNoTests": true
-					}
-				}
-			}
-		},
-		"state-task-template": {
-			"root": "libs/state/taskTemplate",
-			"sourceRoot": "libs/state/taskTemplate/src",
-			"projectType": "library",
-			"architect": {
-				"lint": {
-					"builder": "@nrwl/linter:eslint",
-					"options": {
-						"lintFilePatterns": ["libs/state/taskTemplate/**/*.ts"]
-					}
-				},
-				"test": {
-					"builder": "@nrwl/jest:jest",
-					"outputs": ["coverage/libs/state/taskTemplate"],
-					"options": {
-						"jestConfig": "libs/state/taskTemplate/jest.config.js",
-						"passWithNoTests": true
 					}
 				}
 			}

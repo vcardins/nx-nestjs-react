@@ -117,7 +117,7 @@ const TaskTemplatePage = memo(() => {
 			overflow="hidden"
 		>
 			<Drawer
-				id="household-form"
+				id="task-template-form"
 				isOpen={isDrawerOpen}
 				size="300px"
 				onClose={handleClosePanel}
@@ -125,7 +125,7 @@ const TaskTemplatePage = memo(() => {
 				overflow="hidden"
 			>
 				<Panel
-					tag="household-form"
+					tag="task-template-form"
 					title="Create Household"
 					padded
 					footer={

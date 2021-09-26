@@ -1,7 +1,7 @@
 import { CSSProperties, ReactNode, ChangeEvent, ReactElement, MutableRefObject } from 'react';
 
 import { SortDirections, TextAlignment, KeyType } from '@xapp/shared/types';
-import { TableCellFormats } from './enums';
+import { TableCellFormats, ColumnStick } from './enums';
 
 export interface ITableTheme {
 	fontSize?: CSSProperties['fontSize'];
@@ -35,8 +35,7 @@ export interface ITableCellProps {
 	role?: string;
 	forwardRef?: MutableRefObject<HTMLDivElement>;
 	align?: TextAlignment;
-	fixedLeft?: boolean;
-	fixedRight?: boolean;
+	fixed?: ColumnStick;
 	order?: 'even' | 'odd';
 	children?: ReactNode;
 }
@@ -60,8 +59,7 @@ export interface IColumnKey {
 export interface ITableColumn {
 	align?: TextAlignment;
 	editable?: boolean;
-	fixedLeft?: boolean;
-	fixedRight?: boolean;
+	fixed?: ColumnStick;
 	hidden?: boolean;
 	label?: string;
 	key: string;
@@ -71,6 +69,8 @@ export interface ITableColumn {
 	forwardRef?: MutableRefObject<HTMLDivElement>;
 	visible?: boolean;
 	width?: number;
+	left?: number;
+	right?: number;
 	format?: TableCellFormats;
 }
 
@@ -103,6 +103,7 @@ export interface ITableHeader extends ITableColumn {
 export interface ITableRefsProps {
 	wrapper: MutableRefObject<HTMLDivElement>;
 	body: MutableRefObject<HTMLDivElement>;
+	header: MutableRefObject<HTMLDivElement>;
 	topShadow: MutableRefObject<HTMLDivElement>;
 	bottomShadow: MutableRefObject<HTMLDivElement>;
 }
@@ -130,6 +131,7 @@ export interface ITableProps<T extends IColumnKey = any> {
 	onGetExpandedContent?: (item: T) => ReactElement;
 	onBuildIds?: {
 		header?: (key: string) => string;
+		row?: (item: T) => string;
 		cell?: IdBuilder<T>;
 		checkbox?: IdBuilder<T>;
 		checkboxAll?: () => string;

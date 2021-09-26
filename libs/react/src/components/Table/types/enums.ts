@@ -25,3 +25,8 @@ export enum CharCase {
 	UpperCase,
 	TitleCase,
 }
+
+export enum ColumnStick {
+	Left = 'left',
+	Right = 'right',
+}

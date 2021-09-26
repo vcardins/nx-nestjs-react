@@ -16,7 +16,7 @@ import {
 	useForm,
 	Button,
 	Icon,
-	DataTable, ITableColumn, TableCellFormats, RenderProps, IdBuilder,
+	DataTable, ITableColumn, TableCellFormats, ColumnStick, RenderProps, IdBuilder,
 	Drawer,
 	InlineEdit,
 } from '@xapp/react';
@@ -40,21 +40,25 @@ const initialValues: TaskTemplateInput = {
 
 const columns: ITableColumn[] = [
 	{ key: 'roomTypeId', label: 'Room Type', width: 80 },
-	{ key: 'name', label: 'Name', width: 250 },
+	{ key: 'name', label: 'Name', width: 250, fixed: ColumnStick.Left },
 	{ key: 'description', label: 'Description' },
-	{ key: 'estimatedCompletionTime', label: 'ECT', width: 35, align: TextAlignment.Center, fixedRight: true, format: TableCellFormats.Integer },
+	{ key: 'estimatedCompletionTime', label: 'ECT', width: 35, align: TextAlignment.Center, fixed: ColumnStick.Right, format: TableCellFormats.Integer },
 	{ key: 'rewardPoints', label: 'Reward Points', width: 80, align: TextAlignment.Center, format: TableCellFormats.Integer },
 	{ key: 'frequencyId', label: 'Frequency', width: 80 },
 	{ key: 'daysOfWeek', label: 'Days', width: 35, align: TextAlignment.Center },
-	{ key: 'isActive', label: 'Active', width: 40, align: TextAlignment.Center, fixedRight: true, format: TableCellFormats.Boolean },
+	{ key: 'isActive', label: 'Active', width: 40, align: TextAlignment.Center, fixed: ColumnStick.Right, format: TableCellFormats.Boolean },
 ]
 
+const domain = 'task-template';
+const tableTag = `${domain}-table`;
+
 const handleBuildIds = {
-	header: (key: string) => `header-${key}`,
-	cell: (key: string, { id }: TaskTemplateOutput) => `cell-${key}-${id}`,
-	checkbox: (key: string, { id }: TaskTemplateOutput) => `checkbox-${key}-${id}`,
+	header: (key: string) => `${tableTag}-header-${key}`,
+	row: ({ id }: TaskTemplateOutput) => `${tableTag}-row-${id}`,
+	cell: (key: string, { id }: TaskTemplateOutput) => `${tableTag}-cell-${key}-${id}`,
+	checkbox: (key: string, { id }: TaskTemplateOutput) => `${tableTag}-checkbox-${key}-${id}`,
 	allCheckbox: () => 'checkbox-all',
-	expander: (key: string, { id }: TaskTemplateOutput) => `expander-${key}-${id}`,
+	expander: (key: string, { id }: TaskTemplateOutput) => `${tableTag}-expander-${key}-${id}`,
 }
 
 const TaskTemplatePage = memo(() => {
@@ -113,7 +117,7 @@ const TaskTemplatePage = memo(() => {
 	return (
 		<Panel
 			title="Task Template"
-			tag="task-template"
+			tag={domain}
 			overflow="hidden"
 		>
 			<Drawer

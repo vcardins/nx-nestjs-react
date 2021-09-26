@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef, useCallback, ChangeEvent, useEffect } from 'react';
 
 import { useColumnResize, useScrolling, useColumnSorting } from '.';
-import { ITableProps, ITableState, ITableRefsProps, IColumnKey, ITableColumn, TableCellFormats } from '../types';
+import { ITableProps, ITableState, ITableRefsProps, IColumnKey, ITableColumn, TableCellFormats, ColumnStick } from '../types';
 
 function buildColumns<T extends IColumnKey = any>(props: {
 	columns: ITableColumn[];
@@ -25,7 +25,7 @@ function buildColumns<T extends IColumnKey = any>(props: {
 			format: TableCellFormats.Checkbox,
 			width: 32,
 			resizable: false,
-			fixedLeft: true,
+			fixed: ColumnStick.Left,
 			sortable: false,
 			filterable: false,
 			key: 'checkbox',
@@ -34,7 +34,7 @@ function buildColumns<T extends IColumnKey = any>(props: {
 			format: TableCellFormats.Expander,
 			width: 32,
 			resizable: false,
-			fixedLeft: true,
+			fixed: ColumnStick.Left,
 			sortable: false,
 			filterable: false,
 			key: 'expander',
@@ -95,7 +95,8 @@ export const useTableManager = <T extends IColumnKey = any>(
 		columns: state.columns,
 		resizingColumnIndex,
 		minCellWidth,
-		tableRef: refs.body,
+		tableBodyRef: refs.body,
+		tableHeaderRef: refs.header,
 		onStartResizingColumn,
 	});
 
@@ -121,7 +122,22 @@ export const useTableManager = <T extends IColumnKey = any>(
 		[onCheckItems, state.data],
 	);
 
-	const headers = useMemo(() => state.columns, [state.columns, refs.body.current?.offsetHeight]);
+	const calcPosition = (pos: ColumnStick, collection: ITableColumn[], column: ITableColumn, index: number) => ({
+		...column,
+		[pos]: index === 0 ? index : collection.slice(0, index).reduce((result, { width }) => result + (width ?? 0), 0),
+	});
+
+	const headers = useMemo(() => {
+		let left = state.columns.filter(({ fixed }) => fixed === ColumnStick.Left);
+		left = left.map((col, index) => calcPosition(ColumnStick.Left, left, col, index));
+
+		const center = state.columns.filter(({ fixed }) => fixed === undefined);
+
+		let right  = [...state.columns].reverse().filter(({ fixed }) => fixed === ColumnStick.Right);
+		right = right.map((col, index) => calcPosition(ColumnStick.Right, right, col, index));
+
+		return [...left, ...center, ...right.reverse()];
+	}, [state.columns]);
 
 	return {
 		headers,

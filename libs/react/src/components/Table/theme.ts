@@ -7,7 +7,7 @@ export const theme:ITableTheme = {
 	cellPadding: '0.25em 0.5em',
 	white: '#fff',
 	textColor: '#444',
-	evenRowColor: 'transparent',
+	evenRowColor: '#fff',
 	oddRowColor: '#e6f0fa',
 	messageRowColor: '#efefef',
 	minCellWidth: '40px',

@@ -2,8 +2,12 @@ import React from 'react';
 
 import { ITableCellProps } from '../types';
 
-export const TableCell = (props: ITableCellProps) => {
-	const { id, children, fixedLeft, fixedRight, forwardRef, order, role = 'td' } = props;
+export const TableCell = (props: ITableCellProps & { left?: number; right?: number }) => {
+	const { id, children, fixed, forwardRef, order, left, right, role = 'td' } = props;
+	const style = {
+		left: left !== null ? `${left}px` : undefined,
+		right: right !== null ? `${right}px` : undefined,
+	};
 
 	return (
 		<div
@@ -11,8 +15,8 @@ export const TableCell = (props: ITableCellProps) => {
 			ref={forwardRef}
 			role={role}
 			data-order={order}
-			data-fixed-left={fixedLeft}
-			data-fixed-right={fixedRight}
+			style={style}
+			data-fixed={fixed}
 		>
 			{children}
 		</div>

@@ -6,14 +6,15 @@ const handleTextSelection = (isMouseMoving = false) =>
 
 interface IUseColumnResize {
 	columns: ITableColumn[];
-	tableRef: MutableRefObject<HTMLDivElement>;
+	tableBodyRef: MutableRefObject<HTMLDivElement>;
+	tableHeaderRef: MutableRefObject<HTMLDivElement>;
 	minCellWidth: CSSProperties['width'];
 	resizingColumnIndex: number;
 	onStartResizingColumn: (index: number) => void;
 }
 
 export const useColumnResize = (props: IUseColumnResize): void => {
-	const { columns, resizingColumnIndex, minCellWidth, tableRef, onStartResizingColumn } = props;
+	const { columns, resizingColumnIndex, minCellWidth, tableBodyRef, tableHeaderRef, onStartResizingColumn } = props;
 	const handleMouseDown = (index: number) => onStartResizingColumn(index);
 
 	const handleMouseMove = useCallback((e: MouseEvent) =>
@@ -34,7 +35,13 @@ export const useColumnResize = (props: IUseColumnResize): void => {
 				return typeof updatedWidth === 'string' ? updatedWidth : `${updatedWidth}px`;
 			});
 
-			tableRef.current.style.gridTemplateColumns = `${gridColumns.join(' ')}`;
+			const gridColumsSizes = `${gridColumns.join(' ')}`;
+			tableHeaderRef.current.style.gridTemplateColumns = gridColumsSizes;
+
+			Array.from(tableBodyRef.current.childNodes).forEach((e, i)=> {
+				(e as any).style.gridTemplateColumns = gridColumsSizes;
+			});
+
 		}),
 	[resizingColumnIndex, columns, minCellWidth],
 	);

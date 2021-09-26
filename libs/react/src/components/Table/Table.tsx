@@ -1,7 +1,7 @@
-import React, { CSSProperties, useMemo, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 
 import { TextAlignment } from '@xapp/shared/types';
-import { ITableProps, ITableRefsProps, TableCellFormats, IColumnKey } from './types';
+import { ITableProps, ITableRefsProps, IColumnKey, TableCellFormats, ColumnStick } from './types';
 import {
 	TableContainer,
 	Table,
@@ -9,6 +9,9 @@ import {
 	TableCell,
 	TableCellContent,
 	ExpandedCell,
+	THead,
+	TR,
+	TBody,
 	Loading,
 	BottomShadow,
 	TopShadow,
@@ -25,12 +28,13 @@ const MessageCell = ({ children }: { children: React.ReactElement | string }) =>
 export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 	const refs: ITableRefsProps = {
 		wrapper: useRef<HTMLDivElement>(null),
+		header: useRef<HTMLDivElement>(null),
 		body: useRef<HTMLDivElement>(null),
 		topShadow: useRef<HTMLDivElement>(null),
 		bottomShadow: useRef<HTMLDivElement>(null),
 	};
 	const config = { ...theme, ...props.theme };
-	const { idProp = 'id', onBuildIds } = props;
+	const { idProp = 'id', onBuildIds, noRecordsMessage = 'No Records found' } = props;
 
 	const {
 		data,
@@ -43,14 +47,18 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 		onColumnSorting,
 	} = useTableManager<T>({ ...props, theme: config, refs });
 
+	const gridTemplateColumns = headers.map(({ width }) => width ? ` ${width}px` : ' auto').join(' ');
+
 	const tableHeader = useMemo(() => headers.map((column, index) => {
 		let children: React.ReactElement;
 		let align: TextAlignment;
 		let isControl = false;
+		let fixed: ColumnStick;
 
 		switch (column.format) {
 			case TableCellFormats.Checkbox:
 				isControl = true;
+				fixed = ColumnStick.Left;
 				align = TextAlignment.Center;
 				children = renderers[TableCellFormats.Checkbox]({
 					id: onBuildIds?.header?.(column.key),
@@ -60,19 +68,19 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 				break;
 			case TableCellFormats.Expander:
 				isControl = true;
+				fixed = ColumnStick.Left;
 				align = TextAlignment.Center;
 				children = null;
 				break;
 			default:
-				children = (
-					renderers[TableCellFormats.String]({ data: column.label })
-				);
+				fixed = column.fixed;
+				children = renderers[TableCellFormats.String]({ data: column.label });
 				break;
 		}
 
 		return (
 			<TableHeader
-				{...column}
+				{...{ ...column, fixed }}
 				id={onBuildIds?.header?.(column.key)}
 				key={`column-${index}`}
 				index={index}
@@ -100,7 +108,7 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 		if (!data.length) {
 			return (
 				<MessageCell>
-					{ props.noRecordsMessage || 'No Records found'}
+					{ noRecordsMessage }
 				</MessageCell>
 			);
 		}
@@ -108,69 +116,88 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 		return data.reduce((result, item, rowIndex) => {
 			let children: React.ReactElement;
 			let align: TextAlignment;
+			let fixed: ColumnStick;
+			let cellId: string;
 
 			const isExpanded = props.expandedItems.includes(item[idProp]);
 			const expandedContent = isExpanded ? props.onGetExpandedContent?.(item) : null;
 
 			// eslint-disable-next-line no-param-reassign
+			const columns = headers.map((column, colIndex) => {
+				switch (column.format) {
+					case TableCellFormats.Checkbox:
+						cellId = onBuildIds?.cell?.('checkbox', item);
+						align = TextAlignment.Center;
+						fixed = ColumnStick.Left;
+						children = props.onCheckItems
+							? renderers[TableCellFormats.Checkbox]({
+								id: onBuildIds?.checkbox?.(column.key, item),
+								fixed: ColumnStick.Left,
+								checked: props.checkedItems?.includes(item[idProp]),
+								onChange: () => props.onCheckItems(item[idProp]),
+							})
+							: null;
+						break;
+					case TableCellFormats.Expander:
+						align = TextAlignment.Center;
+						fixed = ColumnStick.Left;
+						cellId = onBuildIds?.cell?.('expander', item);
+						children = (props.onExpandItems && props.onGetExpandedContent)
+							? renderers[TableCellFormats.Expander]({
+								id: onBuildIds?.expander?.(column.key, item),
+								fixed: ColumnStick.Left,
+								isExpanded: props.expandedItems?.includes(item[idProp]),
+								onClick: () => props.onExpandItems(item[idProp]),
+							})
+							: null;
+						break;
+					default:
+						cellId = onBuildIds?.cell?.(column.key, item);
+						align = column.align;
+						fixed = column.fixed;
+						const defaultRenderer = renderers[column.format ?? TableCellFormats.String];
+						const customRenderer = props.customRenderers?.[column.key];
+						const data = customRenderer ? customRenderer({ item, column }) : item[column.key];
+						children = defaultRenderer({ data });
+						break;
+				}
+
+				return (
+					<TableCell
+						id={cellId}
+						key={`${rowIndex}-${colIndex}`}
+						fixed={fixed}
+						left={column.left}
+						right={column.right}
+					>
+						<TableCellContent align={align}>
+							{ children }
+						</TableCellContent>
+					</TableCell>
+				);
+			});
+
+			// eslint-disable-next-line no-param-reassign
 			result = result.concat(
-				headers.map((column, colIndex) => {
-					switch (column.format) {
-						case TableCellFormats.Checkbox:
-							align = TextAlignment.Center;
-							children = props.onCheckItems
-								? renderers[TableCellFormats.Checkbox]({
-									id: onBuildIds?.checkbox?.(column.key, item),
-									fixedLeft: true,
-									checked: props.checkedItems?.includes(item[idProp]),
-									onChange: () => props.onCheckItems(item[idProp]),
-								})
-								: null;
-							break;
-						case TableCellFormats.Expander:
-							align = TextAlignment.Center;
-							children = (props.onExpandItems && props.onGetExpandedContent)
-								? renderers[TableCellFormats.Expander]({
-									id: onBuildIds?.expander?.(column.key, item),
-									fixedLeft: true,
-									isExpanded: props.expandedItems?.includes(item[idProp]),
-									onClick: () => props.onExpandItems(item[idProp]),
-								})
-								: null;
-							break;
-						default:
-							align = column.align;
-							const defaultRenderer = renderers[column.format ?? TableCellFormats.String];
-							const customRenderer = props.customRenderers?.[column.key];
-							const data = customRenderer ? customRenderer({ item, column }) : item[column.key];
-							children = defaultRenderer({ data });
-							break;
-					}
-					return (
-						<TableCell
-							id={onBuildIds?.cell?.(column.key, item)}
-							key={`${rowIndex}-${colIndex}`}
-							fixedLeft={column.fixedLeft}
-							fixedRight={column.fixedRight}
-							order={rowIndex % 2 === 0 ? 'even' : 'odd'}
-						>
-							<TableCellContent align={align}>
-								{ children }
-							</TableCellContent>
-						</TableCell>
-					);
-				}),
+				<TR
+					key={rowIndex}
+					id={onBuildIds?.row?.(item)} bg={rowIndex % 2 === 0 ? theme.evenRowColor : theme.oddRowColor}
+					style={{ gridTemplateColumns }}
+				>
+					{columns}
+				</TR>,
 			);
 
 			if (expandedContent) {
 				result.push(
-					<ExpandedCell
-						key={`expanded-${item[idProp]}`}
-						bg={rowIndex % 2 === 0 ? theme.evenRowColor : theme.oddRowColor}
-						borderColor={theme.borderColor}
-					>
-						{ expandedContent }
-					</ExpandedCell>,
+					<TR bg={rowIndex % 2 === 0 ? theme.evenRowColor : theme.oddRowColor}>
+						<ExpandedCell
+							key={`expanded-${item[idProp]}`}
+							borderColor={theme.borderColor}
+						>
+							{ expandedContent }
+						</ExpandedCell>
+					</TR>,
 				);
 			}
 
@@ -200,12 +227,15 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 			rowHeight={state.rowHeight}
 		>
 			<TopShadow top={state.rowHeight} ref={refs.topShadow} />
-			<Table id={props.id} role="table" ref={refs.body}>
-				{ tableHeader }
-				{ tableBody }
+			<Table id={props.id} role="table">
+				<THead ref={refs.header} style={{ gridTemplateColumns }}>
+					{ tableHeader }
+				</THead>
+				<TBody ref={refs.body}>
+					{ tableBody }
+				</TBody>
 			</Table>
 			<BottomShadow />
-			{/* <Spinner visible={props.isLoading} size="small" /> */}
 		</TableContainer>
 	);
 }

@@ -5,7 +5,7 @@ import { SortDirections } from '@xapp/shared/types';
 import { ITableHeader } from '../types';
 import { DownArrow, UpArrow, UpAndDownArrows, Sorter, Resizer, ActionLink, TableCell } from './';
 
-export const TableHeader = (props: ITableHeader & { isControl?: boolean }) => {
+export const TableHeader = (props: ITableHeader & { isControl?: boolean; left?: number; right?: number }) => {
 	const {
 		id,
 		index,
@@ -14,8 +14,9 @@ export const TableHeader = (props: ITableHeader & { isControl?: boolean }) => {
 		sortDirection,
 		forwardRef,
 		tableHeight,
-		fixedLeft,
-		fixedRight,
+		fixed,
+		left,
+		right,
 		resizable = true,
 		isResizing,
 		onResize,
@@ -56,8 +57,9 @@ export const TableHeader = (props: ITableHeader & { isControl?: boolean }) => {
 			id={id}
 			role="th"
 			forwardRef={forwardRef}
-			fixedLeft={fixedLeft}
-			fixedRight={fixedRight}
+			left={left}
+			right={right}
+			fixed={fixed}
 		>
 			{content}
 		</TableCell>

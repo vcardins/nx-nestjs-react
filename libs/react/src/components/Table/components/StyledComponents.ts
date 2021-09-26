@@ -34,8 +34,21 @@ export const TopShadow = styled.div<{ top: number }>`
 	background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
 `;
 
+
+export const TR = styled.div<{ bg?: CSSProperties['color'] }>`
+	> div {
+		background-color: ${({ bg }) => bg};
+	}
+`;
+
+export const THead = styled.div`
+	display: grid;
+`;
+
+export const TBody = styled.div``;
+
 export const Table = styled.div`
-	position: relative;
+	display: grid;
 `;
 
 export const TableCellContent = styled.span<{ align?: TextAlignment; bg?: CSSProperties['color'] }>`
@@ -67,20 +80,18 @@ export const ExpandedTableCell = styled.div<{ align?: TextAlignment; bg: CSSProp
 `;
 
 export const TableContainer = styled.div<{ colsWidths: (number | 'auto')[]; rows: number; theme: ITableTheme; rowHeight: ITableTheme['rowHeight'] }>`
-	flex: 1;
-	flex-direction: column;
-	font-size: 1em;
 	height: 100%;
 
 	${Table} {
-		display: grid;
-		grid-template-rows: repeat(${({ rows }) => rows}, min-content) max-content;
-		grid-template-columns: ${({ colsWidths }) => colsWidths.map((col) => (col > 0 ? `${col}px ` : ' auto '))};
-		flex: 1;
 		z-index: 1;
 
-		${({ theme, rowHeight }) => css`
-			/* background: repeating-linear-gradient(${ theme.evenRowColor} 0 ${rowHeight}px, ${theme.oddRowColor} ${rowHeight}px ${rowHeight * 2}px); */
+		${TR},
+		${THead} {
+			display: grid;
+			grid-template-rows: repeat(${({ rows }) => rows}, min-content) max-content;
+		}
+
+		${({ rowHeight }) => css`
 			[role='th'],
 			[role='td'] {
 				height: ${rowHeight}px;
@@ -88,20 +99,12 @@ export const TableContainer = styled.div<{ colsWidths: (number | 'auto')[]; rows
 			}
 		`}
 
-		[role='td'] {
-			&[data-order="odd"] {
-				background-color: ${theme.oddRowColor};
+		${THead} {
+			> div {
+				background-color: ${theme.white};
 			}
-
-			&[data-order="even"] {
-				background-color: ${theme.evenRowColor};
-			}
-		}
-
-		[role='th'] {
 			position: sticky;
 			top: 0;
-			background-color: ${theme.white};
 			border-bottom: 1px solid ${theme.borderColor};
 			font-weight: 700;
 			z-index: 2;
@@ -116,16 +119,6 @@ export const TableContainer = styled.div<{ colsWidths: (number | 'auto')[]; rows
 
 			svg {
 				opacity: 0.5
-			}
-
-			&[data='sortable'] {
-				cursor: pointer;
-			}
-			div {
-				flex: 1;
-				&:last-child {
-					flex: 0 1 auto;
-				}
 			}
 		}
 	}
@@ -145,20 +138,11 @@ export const TableContainer = styled.div<{ colsWidths: (number | 'auto')[]; rows
 				border-right: 1px solid ${({ theme }) => theme.borderColor};
 			}
 
-			[role='td'] {
-				&[data-fixed-left='true'],
-				&[data-fixed-right='true'] {
-					z-index: 1;
-					position: sticky;
-				}
+			[data-fixed]{
+				z-index: 1;
+				position: sticky;
 			}
 
-			[data-fixed-left='true'] {
-				left: 0;
-			}
-			[data-fixed-right='true'] {
-				right: 0;
-			}
 			[data-align='left'] {
 				justify-content: flex-start;
 			}
@@ -200,7 +184,7 @@ export const Sorter = styled.span`
 
 export const Resizer = styled.div<{ active?: boolean; height: number | 'auto' }>`
 	display: block;
-	position: absolute;
+	/* position: absolute; */
 	cursor: col-resize;
 	width: 5px;
 	right: 0;

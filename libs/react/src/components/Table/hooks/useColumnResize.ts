@@ -35,13 +35,12 @@ export const useColumnResize = (props: IUseColumnResize): void => {
 				return typeof updatedWidth === 'string' ? updatedWidth : `${updatedWidth}px`;
 			});
 
-			const gridColumsSizes = `${gridColumns.join(' ')}`;
-			tableHeaderRef.current.style.gridTemplateColumns = gridColumsSizes;
+			const gridColumnsSizes = `${gridColumns.join(' ')}`;
+			tableHeaderRef.current.style.gridTemplateColumns = gridColumnsSizes;
 
-			Array.from(tableBodyRef.current.childNodes).forEach((e, i)=> {
-				(e as any).style.gridTemplateColumns = gridColumsSizes;
+			Array.from(tableBodyRef.current.childNodes).forEach((e) => {
+				(e as any).style.gridTemplateColumns = gridColumnsSizes;
 			});
-
 		}),
 	[resizingColumnIndex, columns, minCellWidth],
 	);

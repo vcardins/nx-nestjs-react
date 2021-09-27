@@ -104,8 +104,12 @@ export interface ITableRefsProps {
 	wrapper: MutableRefObject<HTMLDivElement>;
 	body: MutableRefObject<HTMLDivElement>;
 	header: MutableRefObject<HTMLDivElement>;
-	topShadow: MutableRefObject<HTMLDivElement>;
-	bottomShadow: MutableRefObject<HTMLDivElement>;
+	shadow: {
+		top: MutableRefObject<HTMLDivElement>,
+		right: MutableRefObject<HTMLDivElement>,
+		bottom: MutableRefObject<HTMLDivElement>,
+		left: MutableRefObject<HTMLDivElement>,
+	};
 }
 
 export type ModelKey<TItem> = TItem & ITableRowStatus & IWithId;
@@ -150,7 +154,7 @@ export interface ITableState<T extends IColumnKey> {
 	visibleEnd: number;
 	displayStart: number;
 	displayEnd: number;
-	scroll: number;
+	verticalScroll: number;
 	shouldUpdate: boolean;
 }
 export interface IColumnGrouping {

@@ -1,4 +1,4 @@
-import { useLayoutEffect, useEffect, MutableRefObject, Dispatch, SetStateAction } from 'react';
+import { useLayoutEffect, useEffect, Dispatch, SetStateAction } from 'react';
 import { IColumnKey, ITableState, ITableRefsProps } from '../types';
 
 interface IUseScrolling<T extends IColumnKey = any> {
@@ -11,10 +11,12 @@ export const useScrolling = <T extends IColumnKey = any>(props: IUseScrolling<T>
 	const { state, refs, onUpdateState } = props;
 
 	function handleScrolling() {
-		const scroll = refs.wrapper.current.scrollTop;
-		const visibleStart = Math.floor(scroll / state.rowHeight);
+		const verticalScroll = refs.wrapper.current.scrollTop;
+		const horizontalScroll = refs.wrapper.current.scrollLeft;
+
+		const visibleStart = Math.floor(verticalScroll / state.rowHeight);
 		const visibleEnd = Math.floor(Math.min(visibleStart + state.rowsPerBody, state.total - 1)) + state.rowHeight;
-		const displayStart = Math.floor(Math.max(0, Math.floor(scroll / state.rowHeight) - state.rowsPerBody * 1.5));
+		const displayStart = Math.floor(Math.max(0, Math.floor(verticalScroll / state.rowHeight) - state.rowsPerBody * 1.5));
 		const displayEnd = Math.floor(Math.min(displayStart + 4 * state.rowsPerBody, state.total - 1)) + state.rowHeight;
 
 		if (
@@ -27,12 +29,16 @@ export const useScrolling = <T extends IColumnKey = any>(props: IUseScrolling<T>
 				visibleEnd,
 				displayStart,
 				displayEnd,
-				scroll,
+				verticalScroll,
 				shouldUpdate: false,
 			}));
 		}
 
-		refs.topShadow.current.style.display = scroll > 0 ? 'block' : 'none';
+		refs.shadow.top.current.style.display = verticalScroll > 0 ? 'block' : 'none';
+		refs.shadow.bottom.current.style.display = verticalScroll > 0 ? 'block' : 'none';
+
+		refs.shadow.left.current.style.display = horizontalScroll > 0 ? 'block' : 'none';
+		refs.shadow.right.current.style.display = horizontalScroll > 0 ? 'block' : 'none';
 	}
 
 	useEffect(() => {

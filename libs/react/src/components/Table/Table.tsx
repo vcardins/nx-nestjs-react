@@ -6,7 +6,7 @@ import {
 	TableContainer,
 	Table,
 	TableHeader,
-	TableCell,
+	TD,
 	TableCellContent,
 	ExpandedCell,
 	THead,
@@ -15,6 +15,10 @@ import {
 	Loading,
 	BottomShadow,
 	TopShadow,
+	RightShadow,
+	LeftShadow,
+	Toolbar,
+	Footer,
 } from './components';
 import { useTableManager, useRenderer as renderers } from './hooks';
 import { theme } from './theme';
@@ -30,8 +34,12 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 		wrapper: useRef<HTMLDivElement>(null),
 		header: useRef<HTMLDivElement>(null),
 		body: useRef<HTMLDivElement>(null),
-		topShadow: useRef<HTMLDivElement>(null),
-		bottomShadow: useRef<HTMLDivElement>(null),
+		shadow: {
+			top: useRef<HTMLDivElement>(null),
+			right: useRef<HTMLDivElement>(null),
+			bottom: useRef<HTMLDivElement>(null),
+			left: useRef<HTMLDivElement>(null),
+		},
 	};
 	const config = { ...theme, ...props.theme };
 	const { idProp = 'id', onBuildIds, noRecordsMessage = 'No Records found' } = props;
@@ -39,6 +47,8 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 	const {
 		data,
 		headers,
+		shadowLeft,
+		shadowRight,
 		columnsWidths,
 		state,
 		resizingColumnIndex,
@@ -139,9 +149,9 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 							: null;
 						break;
 					case TableCellFormats.Expander:
+						cellId = onBuildIds?.cell?.('expander', item);
 						align = TextAlignment.Center;
 						fixed = ColumnStick.Left;
-						cellId = onBuildIds?.cell?.('expander', item);
 						children = (props.onExpandItems && props.onGetExpandedContent)
 							? renderers[TableCellFormats.Expander]({
 								id: onBuildIds?.expander?.(column.key, item),
@@ -163,7 +173,7 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 				}
 
 				return (
-					<TableCell
+					<TD
 						id={cellId}
 						key={`${rowIndex}-${colIndex}`}
 						fixed={fixed}
@@ -173,15 +183,18 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 						<TableCellContent align={align}>
 							{ children }
 						</TableCellContent>
-					</TableCell>
+					</TD>
 				);
 			});
+
+			const bgColor = rowIndex % 2 === 0 ? theme.evenRowColor : theme.oddRowColor;
 
 			// eslint-disable-next-line no-param-reassign
 			result = result.concat(
 				<TR
 					key={rowIndex}
-					id={onBuildIds?.row?.(item)} bg={rowIndex % 2 === 0 ? theme.evenRowColor : theme.oddRowColor}
+					id={onBuildIds?.row?.(item)}
+					bg={bgColor}
 					style={{ gridTemplateColumns }}
 				>
 					{columns}
@@ -190,7 +203,7 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 
 			if (expandedContent) {
 				result.push(
-					<TR bg={rowIndex % 2 === 0 ? theme.evenRowColor : theme.oddRowColor}>
+					<TR bg={bgColor}>
 						<ExpandedCell
 							key={`expanded-${item[idProp]}`}
 							borderColor={theme.borderColor}
@@ -220,22 +233,27 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 	return (
 		<TableContainer
 			role="table-container"
-			ref={refs.wrapper}
 			rows={data.length}
 			colsWidths={columnsWidths}
 			theme={theme}
 			rowHeight={state.rowHeight}
+			hasHeader={true}
+			hasFooter={true}
 		>
-			<TopShadow top={state.rowHeight} ref={refs.topShadow} />
-			<Table id={props.id} role="table">
+			<Toolbar>Toolbar</Toolbar>
+			<Table id={props.id} role="table" ref={refs.wrapper}>
+				<TopShadow top={state.rowHeight} ref={refs.shadow.top} />
+				<LeftShadow left={shadowLeft} ref={refs.shadow.left} />
+				<RightShadow right={shadowRight} ref={refs.shadow.right} />
 				<THead ref={refs.header} style={{ gridTemplateColumns }}>
 					{ tableHeader }
 				</THead>
 				<TBody ref={refs.body}>
 					{ tableBody }
 				</TBody>
+				<BottomShadow ref={refs.shadow.bottom}/>
 			</Table>
-			<BottomShadow />
+			<Footer>Footer</Footer>
 		</TableContainer>
 	);
 }

@@ -8,9 +8,20 @@ import { ITableTheme } from '../types';
 const shadowStyle = css`
 	position: absolute;
 	z-index: 3;
+`;
+
+const horizontalShadowStyle = css`
+	${shadowStyle};
 	height: 4px;
 	left: 0;
 	right: 0;
+`;
+
+const verticalShadowStyle = css`
+	${shadowStyle};
+	width: 4px;
+	height: 100%;
+	display: none;
 `;
 
 const cellStyle = css`
@@ -22,18 +33,29 @@ const cellStyle = css`
 `;
 
 export const BottomShadow = styled.div`
-	${shadowStyle};
-	bottom: 0;
+	${horizontalShadowStyle};
+	bottom: 30px;
 	background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
 `;
 
 export const TopShadow = styled.div<{ top: number }>`
-	${shadowStyle};
+	${horizontalShadowStyle};
 	margin-top: ${({ top }) => top}px;
 	display: none;
 	background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
 `;
 
+export const LeftShadow = styled.div<{ left: number }>`
+	${verticalShadowStyle};
+	left: ${({ left }) => left}px;
+	background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+`;
+
+export const RightShadow = styled.div<{ right: number }>`
+	${verticalShadowStyle};
+	right: ${({ right }) => right}px;
+	background-image: linear-gradient(270deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+`;
 
 export const TR = styled.div<{ bg?: CSSProperties['color'] }>`
 	> div {
@@ -49,6 +71,7 @@ export const TBody = styled.div``;
 
 export const Table = styled.div`
 	display: grid;
+	grid-template-rows: 26px 1fr;
 `;
 
 export const TableCellContent = styled.span<{ align?: TextAlignment; bg?: CSSProperties['color'] }>`
@@ -59,6 +82,22 @@ export const TableCellContent = styled.span<{ align?: TextAlignment; bg?: CSSPro
 	${({ bg = 'transparent' }) => css`
 		background-color: ${bg};
 	`};
+`;
+
+export const Toolbar = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	padding: 0.25em 0.5em;
+	border-bottom: 1px solid #eee;
+`;
+
+export const Footer = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	padding: 0.25em 0.5em;
+	border-top: 1px solid #eee;
 `;
 
 export const ExpandedTableCell = styled.div<{ align?: TextAlignment; bg: CSSProperties['color']; borderColor: CSSProperties['borderColor'] }>`
@@ -79,11 +118,22 @@ export const ExpandedTableCell = styled.div<{ align?: TextAlignment; bg: CSSProp
 	`};
 `;
 
-export const TableContainer = styled.div<{ colsWidths: (number | 'auto')[]; rows: number; theme: ITableTheme; rowHeight: ITableTheme['rowHeight'] }>`
+export const TableContainer = styled.div<{
+	colsWidths: (number | 'auto')[];
+	rows: number;
+	theme: ITableTheme;
+	rowHeight: ITableTheme['rowHeight'];
+	hasHeader?: boolean;
+	hasFooter?: boolean;
+}>`
 	height: 100%;
+	overflow: hidden;
+	display: grid;
+	grid-template-rows: ${({ hasHeader }) => hasHeader && '30px'} 1fr ${({ hasFooter }) => hasFooter && '30px'} ;
 
 	${Table} {
 		z-index: 1;
+		overflow: auto;
 
 		${TR},
 		${THead} {
@@ -124,12 +174,9 @@ export const TableContainer = styled.div<{ colsWidths: (number | 'auto')[]; rows
 	}
 
 	@media (min-width: 769px) {
-		overflow-y: auto;
-
 		& + [role='table-container'] {
 			margin-left: 1rem;
 		}
-
 		${Table} {
 			[role='th'],
 			[role='td'] {

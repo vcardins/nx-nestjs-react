@@ -39,8 +39,8 @@ const initialValues: TaskTemplateInput = {
 };
 
 const columns: ITableColumn[] = [
-	{ key: 'roomTypeId', label: 'Room Type', width: 80 },
-	{ key: 'name', label: 'Name', width: 250, fixed: ColumnStick.Left },
+	{ key: 'roomTypeId', label: 'Room Type', width: 80, fixed: ColumnStick.Left },
+	{ key: 'name', label: 'Name', width: 250 },
 	{ key: 'description', label: 'Description' },
 	{ key: 'estimatedCompletionTime', label: 'ECT', width: 35, align: TextAlignment.Center, fixed: ColumnStick.Right, format: TableCellFormats.Integer },
 	{ key: 'rewardPoints', label: 'Reward Points', width: 80, align: TextAlignment.Center, format: TableCellFormats.Integer },

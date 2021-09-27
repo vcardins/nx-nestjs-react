@@ -1,7 +1,7 @@
 import React from 'react';
 import numeral from 'numeral';
 
-import { ActionLink, TableCell, DownArrow, UpArrow } from '../components';
+import { ActionLink, DownArrow, UpArrow } from '../components';
 
 import { TableCellFormats, CharCase, ICheckboxOptions, IExpanderOptions, ICommonRenderer, RenderProps } from '../types';
 

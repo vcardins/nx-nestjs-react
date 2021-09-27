@@ -50,19 +50,16 @@ function buildColumns<T extends IColumnKey = any>(props: {
 	}));
 }
 
-export const useTableManager = <T extends IColumnKey = any>(
-	props: ITableProps<T> & { refs: ITableRefsProps; },
-) => {
+const calcPosition = (pos: ColumnStick, collection: ITableColumn[], column: ITableColumn, index: number): ITableColumn => ({
+	...column,
+	resizable: false,
+	[pos]: index === 0 ? index : collection.slice(0, index).reduce((result, { width }) => result + (width ?? 0), 0),
+});
+
+export const useTableManager = <T extends IColumnKey = any>(props: ITableProps<T> & { refs: ITableRefsProps; }) => {
 	const {
-		columns = [],
-		data = [],
-		theme: { rowHeight, rowsPerBody, minCellWidth },
-		allowCheckAll = true,
-		onCheckItems,
-		onExpandItems,
-		onGetExpandedContent,
-		onBuildIds,
-		refs,
+		columns = [], data = [], allowCheckAll = true, refs, theme,
+		onCheckItems, onExpandItems, onGetExpandedContent, onBuildIds,
 	} = props;
 
 	const [resizingColumnIndex, onStartResizingColumn] = useState<number | null>(null);
@@ -77,13 +74,13 @@ export const useTableManager = <T extends IColumnKey = any>(
 		data,
 		loading: false,
 		total: data.length,
-		rowHeight,
-		rowsPerBody,
+		rowHeight: theme.rowHeight,
+		rowsPerBody: theme.rowsPerBody,
 		visibleStart: 0,
-		visibleEnd: rowsPerBody,
+		visibleEnd: theme.rowsPerBody,
 		displayStart: 0,
-		displayEnd: rowsPerBody * 2,
-		scroll: 0,
+		displayEnd: theme.rowsPerBody * 2,
+		verticalScroll: 0,
 		shouldUpdate: false,
 	});
 
@@ -94,7 +91,7 @@ export const useTableManager = <T extends IColumnKey = any>(
 	useColumnResize({
 		columns: state.columns,
 		resizingColumnIndex,
-		minCellWidth,
+		minCellWidth: theme.minCellWidth,
 		tableBodyRef: refs.body,
 		tableHeaderRef: refs.header,
 		onStartResizingColumn,
@@ -122,12 +119,7 @@ export const useTableManager = <T extends IColumnKey = any>(
 		[onCheckItems, state.data],
 	);
 
-	const calcPosition = (pos: ColumnStick, collection: ITableColumn[], column: ITableColumn, index: number) => ({
-		...column,
-		[pos]: index === 0 ? index : collection.slice(0, index).reduce((result, { width }) => result + (width ?? 0), 0),
-	});
-
-	const headers = useMemo(() => {
+	const { headers, shadowLeft, shadowRight } = useMemo(() => {
 		let left = state.columns.filter(({ fixed }) => fixed === ColumnStick.Left);
 		left = left.map((col, index) => calcPosition(ColumnStick.Left, left, col, index));
 
@@ -136,11 +128,17 @@ export const useTableManager = <T extends IColumnKey = any>(
 		let right  = [...state.columns].reverse().filter(({ fixed }) => fixed === ColumnStick.Right);
 		right = right.map((col, index) => calcPosition(ColumnStick.Right, right, col, index));
 
-		return [...left, ...center, ...right.reverse()];
+		return {
+			headers: [...left, ...center, ...right.reverse()],
+			shadowLeft: left.reduce((result, { width }) => result + width, 0),
+			shadowRight: right.reduce((result, { width }) => result + width, 0),
+		};
 	}, [state.columns]);
 
 	return {
 		headers,
+		shadowLeft,
+		shadowRight,
 		data: state.data.slice(state.displayStart, state.displayEnd),
 		columnsWidths,
 		state,

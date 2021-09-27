@@ -3,24 +3,12 @@ import React, { useMemo } from 'react';
 import { SortDirections } from '@xapp/shared/types';
 
 import { ITableHeader } from '../types';
-import { DownArrow, UpArrow, UpAndDownArrows, Sorter, Resizer, ActionLink, TableCell } from './';
+import { DownArrow, UpArrow, UpAndDownArrows, Sorter, Resizer, ActionLink, TD } from './';
 
 export const TableHeader = (props: ITableHeader & { isControl?: boolean; left?: number; right?: number }) => {
 	const {
-		id,
-		index,
-		children,
-		isControl,
-		sortDirection,
-		forwardRef,
-		tableHeight,
-		fixed,
-		left,
-		right,
-		resizable = true,
-		isResizing,
-		onResize,
-		onSort,
+		id, index, children, isControl, sortDirection, forwardRef, tableHeight,
+		fixed, left, right, resizable = true, isResizing, onResize, onSort,
 	} = props;
 
 	const content = useMemo(() => {
@@ -53,7 +41,7 @@ export const TableHeader = (props: ITableHeader & { isControl?: boolean; left?: 
 	}, [children, tableHeight, index, isResizing, sortDirection, resizable, onSort]);
 
 	return (
-		<TableCell
+		<TD
 			id={id}
 			role="th"
 			forwardRef={forwardRef}
@@ -62,6 +50,6 @@ export const TableHeader = (props: ITableHeader & { isControl?: boolean; left?: 
 			fixed={fixed}
 		>
 			{content}
-		</TableCell>
+		</TD>
 	);
 };

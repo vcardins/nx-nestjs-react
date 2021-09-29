@@ -12,4 +12,6 @@ export const theme:ITableTheme = {
 	messageRowColor: '#efefef',
 	minCellWidth: '40px',
 	borderColor: '#d1d1d1',
+	headerHeight: '2em',
+	footerHeight: '2em',
 };

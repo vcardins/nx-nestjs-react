@@ -123,13 +123,13 @@ export const TableContainer = styled.div<{
 	rows: number;
 	theme: ITableTheme;
 	rowHeight: ITableTheme['rowHeight'];
-	hasHeader?: boolean;
-	hasFooter?: boolean;
+	showHeader?: boolean;
+	showFooter?: boolean;
 }>`
 	height: 100%;
 	overflow: hidden;
 	display: grid;
-	grid-template-rows: ${({ hasHeader }) => hasHeader && '30px'} 1fr ${({ hasFooter }) => hasFooter && '30px'} ;
+	grid-template-rows: ${({ showHeader }) => showHeader && `${theme.headerHeight}`} 1fr ${({ showFooter }) => showFooter && `${theme.footerHeight}`} ;
 
 	${Table} {
 		z-index: 1;

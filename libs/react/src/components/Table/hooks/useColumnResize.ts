@@ -1,20 +1,20 @@
-import { useCallback, useEffect, MutableRefObject, CSSProperties } from 'react';
-import { ITableColumn } from '../types';
+import { useCallback, useEffect, CSSProperties } from 'react';
+
+import { ITableColumn, ITableRefsProps } from '../types';
 
 const handleTextSelection = (isMouseMoving = false) =>
 	document.body.style.userSelect = isMouseMoving ? 'none' : 'auto';
 
 interface IUseColumnResize {
 	columns: ITableColumn[];
-	tableBodyRef: MutableRefObject<HTMLDivElement>;
-	tableHeaderRef: MutableRefObject<HTMLDivElement>;
+	refs: ITableRefsProps;
 	minCellWidth: CSSProperties['width'];
 	resizingColumnIndex: number;
 	onStartResizingColumn: (index: number) => void;
 }
 
 export const useColumnResize = (props: IUseColumnResize): void => {
-	const { columns, resizingColumnIndex, minCellWidth, tableBodyRef, tableHeaderRef, onStartResizingColumn } = props;
+	const { columns, resizingColumnIndex, minCellWidth, refs, onStartResizingColumn } = props;
 	const handleMouseDown = (index: number) => onStartResizingColumn(index);
 
 	const handleMouseMove = useCallback((e: MouseEvent) =>
@@ -36,9 +36,9 @@ export const useColumnResize = (props: IUseColumnResize): void => {
 			});
 
 			const gridColumnsSizes = `${gridColumns.join(' ')}`;
-			tableHeaderRef.current.style.gridTemplateColumns = gridColumnsSizes;
+			refs.header.current.style.gridTemplateColumns = gridColumnsSizes;
 
-			Array.from(tableBodyRef.current.childNodes).forEach((e) => {
+			Array.from(refs.body.current.childNodes).forEach((e) => {
 				(e as any).style.gridTemplateColumns = gridColumnsSizes;
 			});
 		}),

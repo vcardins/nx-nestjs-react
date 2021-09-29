@@ -92,8 +92,7 @@ export const useTableManager = <T extends IColumnKey = any>(props: ITableProps<T
 		columns: state.columns,
 		resizingColumnIndex,
 		minCellWidth: theme.minCellWidth,
-		tableBodyRef: refs.body,
-		tableHeaderRef: refs.header,
+		refs,
 		onStartResizingColumn,
 	});
 

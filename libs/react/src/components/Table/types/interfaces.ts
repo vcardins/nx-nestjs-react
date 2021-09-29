@@ -7,7 +7,6 @@ export interface ITableTheme {
 	fontSize?: CSSProperties['fontSize'];
 	textColor?: CSSProperties['color'];
 	rowHeight: number;
-	headerHeight?: number;
 	rowsPerBody: number;
 	cellPadding?: CSSProperties['padding'];
 	white: CSSProperties['color'];
@@ -16,6 +15,8 @@ export interface ITableTheme {
 	messageRowColor: CSSProperties['color'];
 	minCellWidth: CSSProperties['width'];
 	borderColor: CSSProperties['borderColor'];
+	headerHeight: CSSProperties['height'];
+	footerHeight: CSSProperties['height'];
 }
 
 export interface IIconProps {

@@ -237,8 +237,8 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 			colsWidths={columnsWidths}
 			theme={theme}
 			rowHeight={state.rowHeight}
-			hasHeader={true}
-			hasFooter={true}
+			showHeader={true}
+			showFooter={true}
 		>
 			<Toolbar>Toolbar</Toolbar>
 			<Table id={props.id} role="table" ref={refs.wrapper}>

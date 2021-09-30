@@ -2,9 +2,11 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 
 import { IIconProps } from '../types';
-import { ReactComponent as ArrowDown } from './svg/angle-bottom.svg';
-import { ReactComponent as ArrowUp } from './svg/angle-top.svg';
-import { ReactComponent as LoaderIcon } from './svg/loader.svg';
+import { ReactComponent as ArrowDown } from '../svg/angle-bottom.svg';
+import { ReactComponent as ArrowUp } from '../svg/angle-top.svg';
+import { ReactComponent as LoaderIcon } from '../svg/loader.svg';
+import { ReactComponent as TableIcon } from '../svg/table.svg';
+import { ReactComponent as FilterIcon } from '../svg/filter-line.svg';
 
 const IconWrapper = styled.span<IIconProps>`
 	line-height: 0;
@@ -16,6 +18,18 @@ const IconWrapper = styled.span<IIconProps>`
 		}
 	`}
 `;
+
+export const Columns = (props: IIconProps) => (
+	<IconWrapper {...props} size="12px">
+		<TableIcon />
+	</IconWrapper>
+);
+
+export const Filters = (props: IIconProps) => (
+	<IconWrapper {...props} size="12px">
+		<FilterIcon />
+	</IconWrapper>
+);
 
 export const Arrows = ({ direction, ...props }: IIconProps & { direction: 'up' | 'down'}) => (
 	<IconWrapper {...props}>

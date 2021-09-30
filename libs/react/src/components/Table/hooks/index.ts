@@ -3,3 +3,4 @@ export * from './useScrolling';
 export * from './useTableManager';
 export * from './useRenderer';
 export * from './useColumnSorting';
+export * from './useOnClickOutside';

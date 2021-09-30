@@ -2,8 +2,8 @@ import { CSSProperties } from 'react';
 import styled, { css } from 'styled-components';
 
 import { TextAlignment } from '@xapp/shared/types';
-import { theme } from '../theme';
-import { ITableTheme } from '../types';
+import { settings } from '../settings';
+import { ITableSettings } from '../types';
 
 const shadowStyle = css`
 	position: absolute;
@@ -25,7 +25,7 @@ const verticalShadowStyle = css`
 `;
 
 const cellStyle = css`
-	padding: ${theme.cellPadding};
+	padding: ${settings.cellPadding};
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -84,21 +84,6 @@ export const TableCellContent = styled.span<{ align?: TextAlignment; bg?: CSSPro
 	`};
 `;
 
-export const Toolbar = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: flex-end;
-	padding: 0.25em 0.5em;
-	border-bottom: 1px solid #eee;
-`;
-
-export const Footer = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: flex-end;
-	padding: 0.25em 0.5em;
-	border-top: 1px solid #eee;
-`;
 
 export const ExpandedTableCell = styled.div<{ align?: TextAlignment; bg: CSSProperties['color']; borderColor: CSSProperties['borderColor'] }>`
 	display: grid;
@@ -121,15 +106,15 @@ export const ExpandedTableCell = styled.div<{ align?: TextAlignment; bg: CSSProp
 export const TableContainer = styled.div<{
 	colsWidths: (number | 'auto')[];
 	rows: number;
-	theme: ITableTheme;
-	rowHeight: ITableTheme['rowHeight'];
+	settings: ITableSettings;
+	rowHeight: ITableSettings['rowHeight'];
 	showHeader?: boolean;
 	showFooter?: boolean;
 }>`
 	height: 100%;
 	overflow: hidden;
 	display: grid;
-	grid-template-rows: ${({ showHeader }) => showHeader && `${theme.headerHeight}`} 1fr ${({ showFooter }) => showFooter && `${theme.footerHeight}`} ;
+	grid-template-rows: ${({ showHeader }) => showHeader && `${settings.headerHeight}`} 1fr ${({ showFooter }) => showFooter && `${settings.footerHeight}`} ;
 
 	${Table} {
 		z-index: 1;
@@ -151,11 +136,11 @@ export const TableContainer = styled.div<{
 
 		${THead} {
 			> div {
-				background-color: ${theme.white};
+				background-color: ${settings.white};
 			}
 			position: sticky;
 			top: 0;
-			border-bottom: 1px solid ${theme.borderColor};
+			border-bottom: 1px solid ${settings.borderColor};
 			font-weight: 700;
 			z-index: 2;
 			width: 100%;
@@ -182,7 +167,7 @@ export const TableContainer = styled.div<{
 			[role='td'] {
 				display: flex;
 				align-items: center;
-				border-right: 1px solid ${({ theme }) => theme.borderColor};
+				border-right: 1px solid ${({ settings }) => settings.borderColor};
 			}
 
 			[data-fixed]{

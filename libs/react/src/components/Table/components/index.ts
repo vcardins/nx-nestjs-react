@@ -6,3 +6,6 @@ export * from './Loading';
 export * from './StyledComponents';
 export * from './TableCell';
 export * from './TableHeader';
+
+export * from './Toolbar';
+export * from './Footer';

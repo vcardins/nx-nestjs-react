@@ -3,7 +3,7 @@ import { CSSProperties, ReactNode, ChangeEvent, ReactElement, MutableRefObject }
 import { SortDirections, TextAlignment, KeyType } from '@xapp/shared/types';
 import { TableCellFormats, ColumnStick } from './enums';
 
-export interface ITableTheme {
+export interface ITableSettings {
 	fontSize?: CSSProperties['fontSize'];
 	textColor?: CSSProperties['color'];
 	rowHeight: number;
@@ -68,7 +68,6 @@ export interface ITableColumn {
 	searchable?: boolean;
 	sortDirection?: SortDirections;
 	forwardRef?: MutableRefObject<HTMLDivElement>;
-	visible?: boolean;
 	width?: number;
 	left?: number;
 	right?: number;
@@ -124,7 +123,7 @@ export interface ITableProps<T extends IColumnKey = any> {
 	idProp?: string;
 	columns: ITableColumn[];
 	data?: T[];
-	theme?: ITableTheme;
+	settings?: ITableSettings;
 	checkedItems?: KeyType[];
 	expandedItems?: KeyType[];
 	allowCheckAll?: boolean;
@@ -175,11 +174,6 @@ export interface ITableColumnGroup {
 	colSpan?: number;
 }
 
-export interface ITableSettings {
-	columns: ITableColumn[];
-	columnsGrouping?: IColumnGrouping;
-	heights: IHeightSet;
-}
 
 export interface ICheckboxOptions {
 	id?: string;

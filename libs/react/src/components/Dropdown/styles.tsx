@@ -6,7 +6,7 @@ const buildArrow = (border: number, color: string, arrowPosition: number) => css
 	width: 0;
 	height: 0;
 	position: absolute;
-	left: ${arrowPosition}%;
+	right: ${arrowPosition}px;
 	top: -${border}px;
 	margin-left: -${border}px;
 	border-left: ${border}px solid transparent;
@@ -48,11 +48,11 @@ export const DropdownContent = styled.div<IDropdownContent>`
 	}
 
 	&::before {
-		${({ theme, arrowPosition = 95, position }) => buildArrow(6, theme.colors.tertiary.lighterGrey, position === 'right' ? arrowPosition : 5)};
+		${({ theme, arrowPosition = 4, position }) => buildArrow(6, theme.colors.tertiary.lighterGrey, position === 'right' ? arrowPosition : 5)};
 	}
 
 	&::after {
-		${({ theme, arrowPosition = 95, position }) => buildArrow(5, theme.colors.primary.white, position === 'right' ? arrowPosition : 5)};
+		${({ theme, arrowPosition = 5, position }) => buildArrow(5, theme.colors.primary.white, position === 'right' ? arrowPosition : 5)};
 	}
 `;
 

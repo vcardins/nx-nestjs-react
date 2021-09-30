@@ -23,13 +23,11 @@ export const Dropdown = (props: IDropdownProps) => {
 			size={size}
 			highlightOnHover={false}
 		>
-			{label && <DropdownLabel>{label}</DropdownLabel>}
-			<DropdownContainer>
-				<DropdownTrigger onClick={toggleShow}>{ trigger }</DropdownTrigger>
-				<DropdownContent data-active={active} position={position}>
-					{ children(toggleShow) }
-				</DropdownContent>
-			</DropdownContainer>
+			<DropdownTrigger onClick={toggleShow}>{ trigger }</DropdownTrigger>
+			<DropdownContent data-active={active} position={position}>
+				{label && <DropdownLabel>{label}</DropdownLabel>}
+				{ children(toggleShow) }
+			</DropdownContent>
 		</DropdownWrapper>
 	);
 };

@@ -9,7 +9,7 @@ import { validationSchema } from './schema';
 const ChangePasswordPage = memo((props: IRoutedPageProps) => {
 	const { changePassword } = useAppStore((state) => state.account);
 
-	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<IChangePasswordInput>({
+	const form = useForm<IChangePasswordInput>({
 		initialValues: {
 			oldPassword: '',
 			newPassword: '',
@@ -22,9 +22,9 @@ const ChangePasswordPage = memo((props: IRoutedPageProps) => {
 		<Panel title="Change Password" padded>
 			<Form
 				ref={formRef}
-				data={formData}
-				onChange={handleFieldChange}
-				onSubmit={handleSubmit}
+				data={form.data}
+				onChange={form.onFieldChange}
+				onSubmit={form.onSubmit}
 				schema={validationSchema}
 			>
 				<TextInput
@@ -32,19 +32,19 @@ const ChangePasswordPage = memo((props: IRoutedPageProps) => {
 					label="Old Password"
 					name="oldPassword"
 					autoComplete="true"
-					value={formData.oldPassword}
-					error={errors?.oldPassword}
+					value={form.data.oldPassword}
+					error={form.errors?.oldPassword}
 				/>
 				<TextInput
 					type="password"
 					label="New Password"
 					name="newPassword"
 					autoComplete="true"
-					value={formData.newPassword}
-					error={errors?.newPassword}
+					value={form.data.newPassword}
+					error={form.errors?.newPassword}
 				/>
 				<FieldGroup sided>
-					<Submit loading={submitting} success={success} />
+					<Submit loading={form.submitting} success={form.success} />
 				</FieldGroup>
 			</Form>
 		</Panel>

@@ -29,7 +29,7 @@ export const HouseholdRoom = memo((props: IHouseholdRoomProps) => {
 	const lookupState = useAppStore((state) => state.lookup);
 	const { addRoom, error, clearError } = useAppStore((state) => state.household);
 
-	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<HouseholdRoomInput>({
+	const form = useForm<HouseholdRoomInput>({
 		initialValues,
 		validationSchema,
 		onSubmit: addRoom,
@@ -45,15 +45,15 @@ export const HouseholdRoom = memo((props: IHouseholdRoomProps) => {
 	return (
 		<Form
 			ref={formRef}
-			data={formData}
-			onChange={handleFieldChange}
-			onSubmit={handleSubmit}
+			data={form.data}
+			onChange={form.onFieldChange}
+			onSubmit={form.onSubmit}
 			schema={validationSchema}
 		>
 			<Select
 				name="roomTypeId"
 				label="Room Type"
-				value={formData.roomTypeId}
+				value={form.data.roomTypeId}
 				items={lookupState?.roomTypes && Object.values(lookupState?.roomTypes).map(({ id, name }) => ({ id, name })) }
 			/>
 			<TextInput
@@ -61,11 +61,11 @@ export const HouseholdRoom = memo((props: IHouseholdRoomProps) => {
 				label="Custom Name"
 				name="customName"
 				autoComplete="true"
-				value={formData.customName}
-				error={errors?.customName}
+				value={form.data.customName}
+				error={form.errors?.customName}
 			/>
 			<FieldGroup sided>
-				<Submit loading={submitting} success={success}>
+				<Submit loading={form.submitting} success={form.success}>
 					Save
 				</Submit>
 				<Button onClick={onClose}>

@@ -35,7 +35,7 @@ const TodoPage = memo(() => {
 	const formRef = useRef({ valid: false });
 	const { items, isApiReady, read, save, remove, setComplete, error, clearError } = useAppStore((state) => state.todo);
 
-	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<TodoInput>({
+	const form = useForm<TodoInput>({
 		initialValues,
 		onSubmit: async (data: TodoInput & { id?: number }) => {
 			save(data, data.id);
@@ -63,9 +63,9 @@ const TodoPage = memo(() => {
 		<Panel title="Todo" padded>
 			<Form
 				ref={formRef}
-				data={formData}
-				onChange={handleFieldChange}
-				onSubmit={handleSubmit}
+				data={form.data}
+				onChange={form.onFieldChange}
+				onSubmit={form.onSubmit}
 				schema={validationSchema}
 			>
 				<TextInput
@@ -73,11 +73,11 @@ const TodoPage = memo(() => {
 					label="Title"
 					name="title"
 					autoComplete="true"
-					value={formData.title}
-					error={errors?.title}
+					value={form.data.title}
+					error={form.errors?.title}
 				/>
 				<FieldGroup sided>
-					<Submit loading={submitting} success={success}>
+					<Submit loading={form.submitting} success={form.success}>
 						<Icon icon={ic_save} />
 					</Submit>
 					<Button onClick={() => read()}>

@@ -15,13 +15,9 @@ const initialValues: IForgotPasswordInput = {
 
 const ForgotPasswordPage = memo(() => {
 	const { routes } = useContext(appContext);
-	const { forgotPassword } = useAppStore((state) => state.account);
-
-	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<IForgotPasswordInput>({
-		initialValues,
-		onSubmit: forgotPassword,
-	});
 	const formRef = useRef({ valid: false });
+	const { forgotPassword } = useAppStore((state) => state.account);
+	const form = useForm<IForgotPasswordInput>({ initialValues, onSubmit: forgotPassword });
 
 	const routing = {
 		signIn: routes[PageKey.SignIn],
@@ -29,17 +25,17 @@ const ForgotPasswordPage = memo(() => {
 	};
 
 	return (
-		<Form ref={formRef} data={formData} onChange={handleFieldChange} onSubmit={handleSubmit} schema={validationSchema}>
+		<Form ref={formRef} data={form.data} onChange={form.onFieldChange} onSubmit={form.onSubmit} schema={validationSchema}>
 			<TextInput
 				type="text"
 				label="Email"
 				name="email"
 				autoComplete="true"
-				value={formData.email}
-				error={errors?.email}
+				value={form.data.email}
+				error={form.errors?.email}
 			/>
 			<FieldGroup sided>
-				<Submit loading={submitting} success={success} />
+				<Submit loading={form.submitting} success={form.success} />
 			</FieldGroup>
 			<FieldGroup>
 				<Link to={routing.signIn.path}>{routing.signIn.title}</Link>

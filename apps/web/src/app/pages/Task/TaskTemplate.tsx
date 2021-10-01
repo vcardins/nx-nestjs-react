@@ -147,9 +147,9 @@ const TaskTemplatePage = memo(() => {
 				>
 					<Form
 						ref={formRef}
-						data={form.formData}
-						onChange={form.handleFieldChange}
-						onSubmit={() => form.handleSubmit()}
+						data={form.data}
+						onChange={form.onFieldChange}
+						onSubmit={() => form.onSubmit()}
 						schema={validationSchema}
 					>
 						<TextInput
@@ -157,7 +157,7 @@ const TaskTemplatePage = memo(() => {
 							label="Name"
 							name="name"
 							autoComplete="true"
-							value={form.formData.name}
+							value={form.data.name}
 							error={form.errors?.name}
 						/>
 					</Form>

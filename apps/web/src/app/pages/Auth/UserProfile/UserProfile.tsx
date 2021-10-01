@@ -9,7 +9,7 @@ import { validationSchema } from './schema';
 const UserProfilePage = memo(() => {
 	const { userInfo, updateProfile } = useAppStore((state) => state.account);
 
-	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<IUserProfileInput>(
+	const form = useForm<IUserProfileInput>(
 		{
 			initialValues: userInfo?.profile ?? ({} as IUserProfileInput),
 			clearAfterSubmit: false,
@@ -19,7 +19,7 @@ const UserProfilePage = memo(() => {
 	);
 
 	const handleDayChange = (dateOfBirth: Date) => {
-		handleFieldChange(formData, { target: { name: 'dateOfBirth', value: formatDate(dateOfBirth) }});
+		form.onFieldChange(form.data, { target: { name: 'dateOfBirth', value: formatDate(dateOfBirth) }});
 	};
 
 	const formRef = useRef({ valid: false });
@@ -28,51 +28,51 @@ const UserProfilePage = memo(() => {
 		<Panel title="User Profile" padded>
 			<Form
 				ref={formRef}
-				data={formData}
-				onChange={handleFieldChange}
-				onSubmit={handleSubmit}
+				data={form.data}
+				onChange={form.onFieldChange}
+				onSubmit={form.onSubmit}
 				schema={validationSchema}
 			>
 				<TextInput
 					label="First Name"
 					name="firstName"
-					value={formData.firstName ?? ''}
-					error={errors?.firstName}
+					value={form.data.firstName ?? ''}
+					error={form.errors?.firstName}
 				/>
 				<TextInput
 					label="Last Name"
 					name="lastName"
-					value={formData.lastName ?? ''}
-					error={errors?.lastName}
+					value={form.data.lastName ?? ''}
+					error={form.errors?.lastName}
 				/>
 				<TextInput
 					label="Phone Number"
 					name="phoneNumber"
-					value={formData.phoneNumber ?? ''}
-					error={errors?.phoneNumber}
+					value={form.data.phoneNumber ?? ''}
+					error={form.errors?.phoneNumber}
 				/>
 				<TextInput
 					label="Avatar"
 					name="avatar"
-					value={formData.pictureUrl ?? ''}
-					error={errors?.pictureUrl}
+					value={form.data.pictureUrl ?? ''}
+					error={form.errors?.pictureUrl}
 				/>
 				<DatePicker
 					label="Date of Birth"
 					name="dateOfBirth"
-					value={formData.dateOfBirth ?? ''}
-					error={errors?.dateOfBirth}
+					value={form.data.dateOfBirth ?? ''}
+					error={form.errors?.dateOfBirth}
 					onDayChange={handleDayChange}
 				/>
 				<TextInput
 					component="textarea"
 					label="Bio"
 					name="bio"
-					value={formData.bio ?? ''}
-					error={errors?.bio}
+					value={form.data.bio ?? ''}
+					error={form.errors?.bio}
 				/>
 				<FieldGroup sided>
-					<Submit loading={submitting} success={success} />
+					<Submit loading={form.submitting} success={form.success} />
 				</FieldGroup>
 			</Form>
 		</Panel>

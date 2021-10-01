@@ -59,15 +59,15 @@ const TaskPage = memo(() => {
 
 	const { rooms, members, frequencies, templates, selectedTemplate } = useHouseholdTask({
 		userId: auth.user.id,
-		householdRoomId: form.formData.householdRoomId,
-		templateId: form.formData.templateId,
+		householdRoomId: form.data.householdRoomId,
+		templateId: form.data.templateId,
 		lookupState,
 		activeHouseholdId: settingsState.activeHousehold,
 	});
 
 	useEffect(() => {
 		if (selectedTemplate?.id) {
-			form.handleFormChange({
+			form.onFormChange({
 				frequencyId: selectedTemplate?.frequencyId,
 				estimatedCompletionTime: selectedTemplate?.estimatedCompletionTime,
 				rewardPoints: selectedTemplate?.rewardPoints,
@@ -78,7 +78,7 @@ const TaskPage = memo(() => {
 
 	useEffect(() => {
 		if (settingsState.activeHousehold) {
-			form.handleFormChange({
+			form.onFormChange({
 				householdId: settingsState.activeHousehold,
 			});
 		}
@@ -103,7 +103,7 @@ const TaskPage = memo(() => {
 	}
 
 	function handleSubmitForm() {
-		form.handleSubmit();
+		form.onSubmit();
 	}
 
 	return (
@@ -152,8 +152,8 @@ const TaskPage = memo(() => {
 			>
 				<Form
 					ref={formRef}
-					data={form.formData}
-					onChange={form.handleFieldChange}
+					data={form.data}
+					onChange={form.onFieldChange}
 					onSubmit={handleSubmitForm}
 					schema={validationSchema}
 				>
@@ -175,14 +175,14 @@ const TaskPage = memo(() => {
 						<Select
 							name="householdRoomId"
 							label="Room"
-							value={form.formData.householdRoomId ?? ''}
+							value={form.data.householdRoomId ?? ''}
 							items={rooms}
 						/>
-						{!!form.formData.householdRoomId && (
+						{!!form.data.householdRoomId && (
 							<Select
 								name="templateId"
 								label="Template"
-								value={form.formData.templateId ?? ''}
+								value={form.data.templateId ?? ''}
 								items={templates}
 							/>
 						)}
@@ -191,7 +191,7 @@ const TaskPage = memo(() => {
 							label="Name"
 							name="name"
 							placeholder={selectedTemplate?.name}
-							value={form.formData.name}
+							value={form.data.name}
 							error={form.errors?.name}
 						/>
 						<TextInput
@@ -200,39 +200,39 @@ const TaskPage = memo(() => {
 							name="description"
 							component="textarea"
 							autoComplete="true"
-							value={form.formData.description}
+							value={form.data.description}
 							error={form.errors?.description}
 						/>
 						<Select
 							name="frequencyId"
 							label="Frequency"
-							value={form.formData.frequencyId ?? selectedTemplate?.frequencyId ?? ''}
+							value={form.data.frequencyId ?? selectedTemplate?.frequencyId ?? ''}
 							items={frequencies}
 						/>
 						<TextInput
 							type="number"
 							label="Estimated Completion Time"
 							name="estimatedCompletionTime"
-							value={form.formData.estimatedCompletionTime ?? selectedTemplate?.estimatedCompletionTime ?? ''}
+							value={form.data.estimatedCompletionTime ?? selectedTemplate?.estimatedCompletionTime ?? ''}
 							error={form.errors?.estimatedCompletionTime}
 						/>
 						<TextInput
 							type="number"
 							label="Reward Points"
 							name="rewardPoints"
-							value={form.formData.rewardPoints ?? selectedTemplate?.rewardPoints ?? ''}
+							value={form.data.rewardPoints ?? selectedTemplate?.rewardPoints ?? ''}
 							error={form.errors?.rewardPoints}
 						/>
 						<Checkbox
 							label="Active"
 							name="isActive"
-							value={form.formData.isActive}
+							value={form.data.isActive}
 							error={form.errors?.isActive}
 						/>
 						<Select
 							name="assignedUserId"
 							label="Assign To"
-							value={form.formData.assignedUserId ?? ''}
+							value={form.data.assignedUserId ?? ''}
 							items={members}
 						/>
 					</Panel>

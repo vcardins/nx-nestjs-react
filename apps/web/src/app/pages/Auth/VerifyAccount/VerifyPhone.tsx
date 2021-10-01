@@ -13,7 +13,7 @@ const initialValues: IVerifyPhoneNumberInput = {
 const VerifyMobilePage = memo(() => {
 	const { verifyPhoneNumber } = useAppStore((state) => state.account);
 
-	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<IVerifyPhoneNumberInput>({
+	const form = useForm<IVerifyPhoneNumberInput>({
 		initialValues,
 		onSubmit: verifyPhoneNumber,
 	});
@@ -21,17 +21,17 @@ const VerifyMobilePage = memo(() => {
 	const formRef = useRef({ valid: false });
 
 	return (
-		<Form ref={formRef} data={formData} onChange={handleFieldChange} onSubmit={handleSubmit} schema={validationSchema}>
+		<Form ref={formRef} data={form.data} onChange={form.onFieldChange} onSubmit={form.onSubmit} schema={validationSchema}>
 			<TextInput
 				type="text"
 				label="Code"
 				name="code"
 				autoComplete="true"
-				value={formData.code}
-				error={errors?.code}
+				value={form.data.code}
+				error={form.errors?.code}
 			/>
 			<FieldGroup sided>
-				<Submit loading={submitting} success={success} loadingText="Verifying">
+				<Submit loading={form.submitting} success={form.success} loadingText="Verifying">
 					Verify
 				</Submit>
 			</FieldGroup>

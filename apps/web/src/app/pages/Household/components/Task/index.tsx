@@ -41,7 +41,7 @@ export const HouseholdTask = memo((props: IHouseholdTaskProps) => {
 	const [taskTemplates, setTaskTemplates] = useState<TaskTemplateOutput[]>([]);
 	const { save, error, clearError } = useAppStore((state) => state.task);
 
-	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<TaskInput>({
+	const form = useForm<TaskInput>({
 		initialValues,
 		validationSchema,
 		onSubmit: save,
@@ -63,21 +63,21 @@ export const HouseholdTask = memo((props: IHouseholdTaskProps) => {
 	return (
 		<Form
 			ref={formRef}
-			data={formData}
-			onChange={handleFieldChange}
-			onSubmit={handleSubmit}
+			data={form.data}
+			onChange={form.onFieldChange}
+			onSubmit={form.onSubmit}
 			schema={validationSchema}
 		>
 			<Select
 				name="templateId"
 				label="Template"
-				value={formData.templateId}
+				value={form.data.templateId}
 				items={taskTemplates.map(({ id, name }) => ({ id, name }))}
 			/>
 			<Select
 				name="frequencyId"
 				label="Frequency"
-				value={formData.frequencyId}
+				value={form.data.frequencyId}
 				items={lookupState?.data ? Object.values(lookupState?.data?.frequencies).map(({ id, name }) => ({ id, name })) : []}
 			/>
 			<TextInput
@@ -85,34 +85,34 @@ export const HouseholdTask = memo((props: IHouseholdTaskProps) => {
 				label="Name"
 				name="name"
 				autoComplete="true"
-				value={formData.name || ''}
-				error={errors?.name}
+				value={form.data.name || ''}
+				error={form.errors?.name}
 			/>
 			<TextInput
 				type="number"
 				label="Estimated Completion"
 				name="estimatedCompletionTime"
 				autoComplete="true"
-				value={formData.estimatedCompletionTime || ''}
-				error={errors?.estimatedCompletionTime}
+				value={form.data.estimatedCompletionTime || ''}
+				error={form.errors?.estimatedCompletionTime}
 			/>
 			<TextInput
 				type="text"
 				label="Notes"
 				name="description"
 				autoComplete="true"
-				value={formData.description}
-				error={errors?.description}
+				value={form.data.description}
+				error={form.errors?.description}
 			/>
 			<Select
 				name="assignedUserId"
 				label="Assign To"
-				value={formData.assignedUserId}
+				value={form.data.assignedUserId}
 				items={[]}
 			/>
 
 			<FieldGroup sided>
-				<Submit loading={submitting} success={success}>
+				<Submit loading={form.submitting} success={form.success}>
 					Save
 				</Submit>
 				<Button onClick={onClose}>

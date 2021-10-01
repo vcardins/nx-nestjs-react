@@ -36,7 +36,7 @@ export const FiltersForm = React.memo(function FiltersForm(props: IFiltersFormPr
 			const { key, label, options } = control;
 			const id = `filter-${key}`;
 			let field: ReactElement;
-			const baseProps = { id, key: id, label, name: key, value: form.formData?.[key], error: form.errors[key] };
+			const baseProps = { id, key: id, label, name: key, value: form.data?.[key], error: form.errors[key] };
 
 			switch (control.type) {
 				case FilterControlType.Boolean:
@@ -68,7 +68,7 @@ export const FiltersForm = React.memo(function FiltersForm(props: IFiltersFormPr
 			}
 
 			return field;
-		}), [filterControls, form.formData]);
+		}), [filterControls, form.data]);
 
 	if (!fields) {
 		return null;
@@ -76,20 +76,20 @@ export const FiltersForm = React.memo(function FiltersForm(props: IFiltersFormPr
 
 	const handleApply = async (e: React.MouseEvent) => {
 		e.stopPropagation();
-		await form.handleSubmit();
+		await form.onSubmit();
 	};
 
 	const handleResetFilters = () => {
-		form.handleReset();
+		form.onReset();
 		onClearFilters();
 	};
 
 	return (
 		<StyledForm
 			ref={formRef}
-			data={form.formData}
+			data={form.data}
 			schema={false}
-			onChange={form.handleFieldChange}
+			onChange={form.onFieldChange}
 		>
 			<Panel
 				tag="filters-form"

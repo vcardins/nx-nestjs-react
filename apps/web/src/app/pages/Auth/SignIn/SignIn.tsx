@@ -23,7 +23,7 @@ const SignInPage = memo(() => {
 	// const location = useLocation();
 	const { routes } = useContext(appContext);
 	const { onSignIn, getProviderUri } = useAppStore((state) => state.auth); // getOauthAccessToken
-	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<ISignInInput>({
+	const form = useForm<ISignInInput>({
 		initialValues,
 		validationSchema,
 		onSubmit: onSignIn,
@@ -58,34 +58,34 @@ const SignInPage = memo(() => {
 	return (
 		<Form
 			ref={formRef}
-			data={formData}
-			onChange={handleFieldChange}
-			onSubmit={handleSubmit}
+			data={form.data}
+			onChange={form.onFieldChange}
+			onSubmit={form.onSubmit}
 			schema={validationSchema}
 		>
 			<TextInput
 				label="Email"
 				name="email"
 				autoComplete="true"
-				value={formData.email}
-				error={errors?.email}
+				value={form.data.email}
+				error={form.errors?.email}
 			/>
 			<TextInput
 				type="password"
 				label="Password"
 				name="password"
 				autoComplete="true"
-				value={formData.password}
-				error={errors?.password}
+				value={form.data.password}
+				error={form.errors?.password}
 			/>
 			{/* <Checkbox
 				name="remember"
 				label="Remember Me"
-				value={formData.rememberMe}
+				value={form.formData.rememberMe}
 				sided
 			/> */}
 			<FieldGroup sided>
-				<Submit loading={submitting} success={success} />
+				<Submit loading={form.submitting} success={form.success} />
 			</FieldGroup>
 			<FieldGroup>
 				<Link to={normalizePath(route.resetPassword.path)}>{route.resetPassword.title}</Link>

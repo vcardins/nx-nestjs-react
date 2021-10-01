@@ -17,7 +17,7 @@ const initialValues: IResetPasswordInput = {
 const ResetPasswordPage = memo((props: IRoutedPageProps) => {
 	const { resetPassword } = useAppStore((state) => state.account);
 
-	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<IResetPasswordInput>({
+	const form = useForm<IResetPasswordInput>({
 		initialValues,
 		onSubmit: resetPassword,
 	});
@@ -36,9 +36,9 @@ const ResetPasswordPage = memo((props: IRoutedPageProps) => {
 		<Panel title="Change Password" padded>
 			<Form
 				ref={formRef}
-				data={formData}
-				onChange={handleFieldChange}
-				onSubmit={handleSubmit}
+				data={form.data}
+				onChange={form.onFieldChange}
+				onSubmit={form.onSubmit}
 				schema={validationSchema}
 			>
 				<input type="hidden" value={verificationKey} />
@@ -46,18 +46,18 @@ const ResetPasswordPage = memo((props: IRoutedPageProps) => {
 					type="password"
 					label="New Password"
 					name="password"
-					value={formData.password}
-					error={errors?.password}
+					value={form.data.password}
+					error={form.errors?.password}
 				/>
 				<TextInput
 					type="password"
 					label="Confirm Password"
 					name="confirmPassword"
-					value={formData.confirmPassword}
-					error={errors?.confirmPassword}
+					value={form.data.confirmPassword}
+					error={form.errors?.confirmPassword}
 				/>
 				<FieldGroup sided>
-					<Submit loading={submitting} success={success} />
+					<Submit loading={form.submitting} success={form.success} />
 				</FieldGroup>
 			</Form>
 		</Panel>

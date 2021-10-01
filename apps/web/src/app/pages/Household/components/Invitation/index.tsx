@@ -26,7 +26,7 @@ export const HouseholdInvitation = memo((props: IHouseholdInvitationProps) => {
 	const formRef = useRef({ valid: false });
 	const { invite, error, clearError } = useAppStore((state) => state.household);
 
-	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<HouseholdInvitationInput>({
+	const form = useForm<HouseholdInvitationInput>({
 		initialValues,
 		validationSchema,
 		onSubmit: invite,
@@ -42,9 +42,9 @@ export const HouseholdInvitation = memo((props: IHouseholdInvitationProps) => {
 	return (
 		<Form
 			ref={formRef}
-			data={formData}
-			onChange={handleFieldChange}
-			onSubmit={handleSubmit}
+			data={form.data}
+			onChange={form.onFieldChange}
+			onSubmit={form.onSubmit}
 			schema={validationSchema}
 		>
 			<TextInput
@@ -52,19 +52,19 @@ export const HouseholdInvitation = memo((props: IHouseholdInvitationProps) => {
 				label="Email"
 				name="email"
 				autoComplete="true"
-				value={formData.email}
-				error={errors?.email}
+				value={form.data.email}
+				error={form.errors?.email}
 			/>
 			<TextInput
 				type="text"
 				label="First Name"
 				name="firstName"
 				autoComplete="true"
-				value={formData.firstName}
-				error={errors?.firstName}
+				value={form.data.firstName}
+				error={form.errors?.firstName}
 			/>
 			<FieldGroup sided>
-				<Submit loading={submitting} success={success}>
+				<Submit loading={form.submitting} success={form.success}>
 					Save
 				</Submit>
 				<Button onClick={onClose}>

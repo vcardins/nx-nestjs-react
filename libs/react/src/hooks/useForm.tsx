@@ -18,15 +18,15 @@ interface IUseFormResponse<TInput> {
 	submitting: boolean;
 	success: boolean;
 	errors?: FieldValidationError<TInput>['errors'];
-	formData: TInput;
-	handleSubmit: () => Promise<any>;
-	handleReset: () => void;
-	handleFieldChange: (
+	data: TInput;
+	onSubmit: () => Promise<any>;
+	onReset: () => void;
+	onFieldChange: (
 		data: TInput,
 		event?: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | { target: { name: string; value: string }}
 	) => void;
 
-	handleFormChange: (data: Partial<TInput>) => void;
+	onFormChange: (data: Partial<TInput>) => void;
 }
 
 const isBoolean = (val: string | number) => {
@@ -38,10 +38,10 @@ const isBoolean = (val: string | number) => {
 const isNumeric = (val: string | number) => !isNaN(+val);
 
 export function useForm<TInput, TTransformedInput = TInput>(props: IUseFormProps<TInput, TTransformedInput>, dependencies: string[] | number[] = []): IUseFormResponse<TInput> {
-	const { initialValues, clearAfterSubmit = true, onSubmit, onBeforeSubmit = (formData: TInput) => formData, onSuccess } = props;
+	const { initialValues, clearAfterSubmit = true, onSubmit, onBeforeSubmit = (data: TInput) => data, onSuccess } = props;
 	const navigate = useNavigate();
 
-	const [formData, setFormData] = useState<TInput>(initialValues);
+	const [data, setFormData] = useState<TInput>(initialValues);
 	const [submitting, setSubmitting] = useState(false);
 	const [success, setSuccess] = useState(false);
 	const [errors, setErrors] = useState<FieldValidationError<TInput>['errors']>({} as FieldValidationError<TInput>['errors']);
@@ -76,12 +76,12 @@ export function useForm<TInput, TTransformedInput = TInput>(props: IUseFormProps
 			setSuccess(false);
 		}
 	};
-	const handleFormChange = (newData: Partial<TInput>) => setFormData({ ...formData, ...newData });
+	const handleFormChange = (newData: Partial<TInput>) => setFormData({ ...data, ...newData });
 	const handleSubmit = async () => {
 		setSubmitting(true);
 
 		try {
-			const response = await onSubmit(onBeforeSubmit(formData) as TTransformedInput);
+			const response = await onSubmit(onBeforeSubmit(data) as TTransformedInput);
 
 			setSuccess(true);
 			onSuccess?.();
@@ -123,13 +123,13 @@ export function useForm<TInput, TTransformedInput = TInput>(props: IUseFormProps
 	const handleReset = () => setFormData(initialValues);
 
 	return {
-		formData,
-		handleFieldChange,
-		handleFormChange,
-		handleSubmit,
-		handleReset,
 		errors,
 		success,
 		submitting,
+		data,
+		onFieldChange: handleFieldChange,
+		onFormChange: handleFormChange,
+		onSubmit: handleSubmit,
+		onReset: handleReset,
 	};
 }

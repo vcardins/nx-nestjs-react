@@ -29,7 +29,7 @@ const SignUpPage = memo(() => {
 	const { getInvitation, registerMember: signUpMember, invitation, error, store } = useAppStore((state) => state.household);
 	const formRef = useRef({ valid: false });
 
-	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<HouseholdMemberSignup>({
+	const form = useForm<HouseholdMemberSignup>({
 		initialValues,
 		onSubmit: !invitationCode ? signUp : signUpMember,
 	});
@@ -42,7 +42,7 @@ const SignUpPage = memo(() => {
 
 	useEffect(() => {
 		if (invitation) {
-			handleFieldChange({
+			form.onFieldChange({
 				firstName: invitation?.invitee?.firstName,
 				lastName: '',
 				email: invitation?.invitee?.email ,
@@ -69,10 +69,10 @@ const SignUpPage = memo(() => {
 	return (
 		<Form
 			ref={formRef}
-			data={formData}
-			disabled={submitting}
-			onChange={handleFieldChange}
-			onSubmit={handleSubmit}
+			data={form.data}
+			disabled={form.submitting}
+			onChange={form.onFieldChange}
+			onSubmit={form.onSubmit}
 			schema={validationSchema}
 		>
 			{ invitation && !invitation?.acceptedAt && (
@@ -94,35 +94,35 @@ const SignUpPage = memo(() => {
 				label="Email"
 				name="email"
 				disabled={!!invitation}
-				value={formData.email}
-				error={errors?.email}
+				value={form.data.email}
+				error={form.errors?.email}
 			/>
 			<TextInput
 				type="password"
 				label="Password"
 				name="password"
-				value={formData.password}
-				error={errors?.password}
+				value={form.data.password}
+				error={form.errors?.password}
 			/>
 			<TextInput
 				type="password"
 				label="Confirm Password"
 				name="confirmPassword"
-				value={formData.confirmPassword}
-				error={errors?.confirmPassword}
+				value={form.data.confirmPassword}
+				error={form.errors?.confirmPassword}
 			/>
 			<FieldGroup sided>
 				<TextInput
 					label="First Name"
 					name="firstName"
-					value={formData.firstName}
-					error={errors?.firstName}
+					value={form.data.firstName}
+					error={form.errors?.firstName}
 				/>
 				<TextInput
 					label="Last Name"
 					name="lastName"
-					value={formData.lastName}
-					error={errors?.lastName}
+					value={form.data.lastName}
+					error={form.errors?.lastName}
 				/>
 			</FieldGroup>
 			<TextInput
@@ -131,7 +131,7 @@ const SignUpPage = memo(() => {
 				value={invitationCode}
 			/>
 			<FieldGroup sided>
-				<Submit loading={submitting} success={success} />
+				<Submit loading={form.submitting} success={form.success} />
 			</FieldGroup>
 			<FieldGroup>
 				<Link to={route.signIn.path?.split(':')[0]}>{route.signIn.title}</Link>

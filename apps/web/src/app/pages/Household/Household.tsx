@@ -85,7 +85,7 @@ const HouseholdPage = memo(() => {
 	}
 
 	function handleSubmitForm() {
-		form.handleSubmit();
+		form.onSubmit();
 	}
 
 	return (
@@ -109,8 +109,8 @@ const HouseholdPage = memo(() => {
 			>
 				<Form
 					ref={formRef}
-					data={form.formData}
-					onChange={form.handleFieldChange}
+					data={form.data}
+					onChange={form.onFieldChange}
 					onSubmit={handleSubmitForm}
 					schema={validationSchema}
 				>
@@ -134,7 +134,7 @@ const HouseholdPage = memo(() => {
 							label="Name"
 							name="name"
 							autoComplete="true"
-							value={form.formData.name}
+							value={form.data.name}
 							error={form.errors?.name}
 						/>
 					</Panel>

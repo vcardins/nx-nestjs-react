@@ -1,9 +1,10 @@
 import React from 'react';
-import { CSSObject } from 'styled-components';
+import { CSSProperties } from 'styled-components';
 
 export interface IButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	children?: React.ReactNode;
-	bgColor?: CSSObject;
-	hoverBgColor?: CSSObject;
+	bgColor?: CSSProperties['color'];
+	hoverBgColor?: CSSProperties['color'];
+	role?: 'primary' | 'secondary';
 	onClick?: (e: React.MouseEvent) => void;
 }

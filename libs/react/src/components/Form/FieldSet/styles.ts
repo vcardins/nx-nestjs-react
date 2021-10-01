@@ -4,10 +4,9 @@ import styled, { css } from 'styled-components';
 export const FieldGroup = styled.div<{ sided?: boolean; padded?: boolean }>`
 	display: flex;
 	flex-direction: ${(p) => p.sided ? 'row' : 'column' };
-	justify-content: flex-end;
 	flex: 1;
 	&:not(:last-child) {
-		margin-bottom: 1em;
+		margin-bottom: 0.5em;
 	}
 
 	${({ padded }) => padded && css`margin: 1em 0;`}
@@ -22,7 +21,7 @@ export const FieldGroup = styled.div<{ sided?: boolean; padded?: boolean }>`
 			>*{
 				width: inherit;
 				&:not(:first-child) {
-					margin-top: 0.5em;
+					margin-top: 0.25em;
 				}
 			}
 		`

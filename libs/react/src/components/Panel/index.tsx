@@ -12,22 +12,27 @@ import {
 	PanelFooter,
 } from './components';
 
-interface IPageProps {
+interface IPanelProps {
 	id?: string;
 	tag?: string;
 	title?: string | React.ReactElement;
 	subTitle?: string | React.ReactElement;
 	icon?: string;
+	compact?: boolean;
+	columns?: number;
 	children?: React.ReactNode;
 	footer?: React.ReactNode;
 	actions?: string | React.ReactNode;
 	overflow?: CSSProperties['overflow'];
+	maxHeight?: CSSProperties['height'];
 	padded?: boolean;
 }
 
-export const Panel = ({ id, tag, title, subTitle, icon, children, actions, padded, overflow, footer }: IPageProps) => (
+export const Panel = ({ id, tag, compact, title, maxHeight, columns, subTitle, icon, children, actions, padded, overflow, footer }: IPanelProps) => (
 	<PanelWrapper
 		id={id || `${tag}-container`}
+		compact={compact}
+		maxHeight={maxHeight}
 		hasHeader={!!title}
 		hasFooter={!!footer}
 	>
@@ -47,7 +52,7 @@ export const Panel = ({ id, tag, title, subTitle, icon, children, actions, padde
 				</PanelActionsWrapper>
 			</PanelHeader>
 		)}
-		<PanelBody id={`${tag}-body`} padded={padded} overflow={overflow}>
+		<PanelBody id={`${tag}-body`} padded={padded} overflow={overflow} columns={columns}>
 			{ children }
 		</PanelBody>
 		{footer && (

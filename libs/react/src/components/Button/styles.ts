@@ -14,10 +14,13 @@ export const StyledButton = styled.button<IButtonProps>`
 	min-height: fit-content;
 	color: ${({ theme }) => (theme as ITheme).colors.primary.white };
 	cursor: pointer;
-	padding: 4px 16px;
+	padding: 0.25em 0.5em;
 	border: none;
 	border-radius: 3px;
-	background: ${({ theme, bgColor }) => bgColor || (theme as ITheme).colors.primary.blue };
+	background-color: ${({ theme, bgColor, role }) => role === 'primary'
+		? bgColor || (theme as ITheme).colors.primary.blue
+		: bgColor || (theme as ITheme).colors.secondary.yellow
+};
 	transition: 0.1s ease 0s;
 	user-select: none;
 	outline: none;

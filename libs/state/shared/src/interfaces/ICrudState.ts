@@ -1,20 +1,19 @@
-import { QueryOptions } from '@xapp/shared/types';
+import { QueryOptions, DataFilter } from '@xapp/shared/types';
 import { DataContext } from '../DataContext';
 import { IStoreState } from './';
-
-type Filters<TFilter = any> = Record<string, TFilter>;
 
 export interface ICrudState<
 	TStore extends DataContext<TOutput, TInput> = any,
 	TOutput = any,
 	TInput = any,
-	TFilter = any,
 > extends IStoreState<TStore> {
 	items: TOutput[];
-	filters?: Filters<TFilter>;
+	filteredItems?: TOutput[] | null;
+	filters?: DataFilter;
 	isApiReady?: boolean;
 	sortBy?: QueryOptions['sortBy'];
-	read(filters?: Filters<TFilter>, id?: number): Promise<void>;
+	read(filters?: DataFilter, id?: number): Promise<void>;
 	save(data: TInput, id?: number): Promise<void>;
 	remove(id: number): Promise<void>;
+	filter?(filters?: DataFilter): Promise<void>;
 }

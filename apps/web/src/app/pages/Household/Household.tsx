@@ -57,9 +57,10 @@ const HouseholdPage = memo(() => {
 	} = useAppStore((state) => state.household);
 	const lookupStore = useAppStore((state) => state.lookup);
 
-	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<HouseholdInput>({
+	const form = useForm<HouseholdInput>({
 		initialValues,
 		onSubmit: save,
+		onSuccess: handleClosePanel,
 	});
 
 	useEffect(() => {
@@ -84,7 +85,7 @@ const HouseholdPage = memo(() => {
 	}
 
 	function handleSubmitForm() {
-		handleSubmit(handleClosePanel);
+		form.handleSubmit();
 	}
 
 	return (
@@ -108,8 +109,8 @@ const HouseholdPage = memo(() => {
 			>
 				<Form
 					ref={formRef}
-					data={formData}
-					onChange={handleFieldChange}
+					data={form.formData}
+					onChange={form.handleFieldChange}
 					onSubmit={handleSubmitForm}
 					schema={validationSchema}
 				>
@@ -119,7 +120,7 @@ const HouseholdPage = memo(() => {
 						padded
 						footer={
 							<FieldGroup sided>
-								<Submit loading={submitting} success={success}>
+								<Submit loading={form.submitting} success={form.success}>
 									<Icon icon={ic_save} /> Save
 								</Submit>
 								<Button onClick={handleClosePanel}>
@@ -133,8 +134,8 @@ const HouseholdPage = memo(() => {
 							label="Name"
 							name="name"
 							autoComplete="true"
-							value={formData.name}
-							error={errors?.name}
+							value={form.formData.name}
+							error={form.errors?.name}
 						/>
 					</Panel>
 				</Form>

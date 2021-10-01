@@ -1,3 +1,5 @@
+import { IdType } from '../IdType';
+
 type AutoComplete = 'true' | 'false';
 
 export interface IHtmlField {
@@ -6,7 +8,7 @@ export interface IHtmlField {
 	/* The unique field id */
 	id?: string;
 	/* The field value */
-	value?: string | number | boolean;
+	value?: IdType | IdType[] | boolean;
 	/* The field label */
 	label?: string;
 	/* The field label */

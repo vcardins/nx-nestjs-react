@@ -5,11 +5,13 @@ import { JSONSchema7 } from 'json-schema';
 
 import { FieldValidationError } from '@xapp/shared/exceptions';
 
-export interface IUseFormProps<TInput> {
+export interface IUseFormProps<TInput, TTransformedInput = TInput> {
 	validationSchema?: JSONSchema7;
 	initialValues: TInput;
 	clearAfterSubmit?: boolean;
-	onSubmit: (data: TInput) => Promise<any>;
+	onSubmit: (data: TTransformedInput) => Promise<any>;
+	onBeforeSubmit?: (data: TInput) => TTransformedInput;
+	onSuccess?: () => void;
 }
 
 interface IUseFormResponse<TInput> {
@@ -17,7 +19,7 @@ interface IUseFormResponse<TInput> {
 	success: boolean;
 	errors?: FieldValidationError<TInput>['errors'];
 	formData: TInput;
-	handleSubmit: (onSuccess?: () => void) => Promise<any>;
+	handleSubmit: () => Promise<any>;
 	handleReset: () => void;
 	handleFieldChange: (
 		data: TInput,
@@ -35,8 +37,8 @@ const isBoolean = (val: string | number) => {
 
 const isNumeric = (val: string | number) => !isNaN(+val);
 
-export function useForm<TInput>(props: IUseFormProps<TInput>, dependencies: string[] | number[] = []): IUseFormResponse<TInput> {
-	const { initialValues, clearAfterSubmit = true, onSubmit } = props;
+export function useForm<TInput, TTransformedInput = TInput>(props: IUseFormProps<TInput, TTransformedInput>, dependencies: string[] | number[] = []): IUseFormResponse<TInput> {
+	const { initialValues, clearAfterSubmit = true, onSubmit, onBeforeSubmit = (formData: TInput) => formData, onSuccess } = props;
 	const navigate = useNavigate();
 
 	const [formData, setFormData] = useState<TInput>(initialValues);
@@ -52,28 +54,34 @@ export function useForm<TInput>(props: IUseFormProps<TInput>, dependencies: stri
 			const { target: { name, value } } = event;
 			let updatedValue: any;
 
-			if (isBoolean(value)) {
-				updatedValue = Boolean(value);
-			}
-			else if (isNumeric(value)) {
-				updatedValue = Number(value);
+			if (value !== undefined && value !== '') {
+				if (isBoolean(value)) {
+					updatedValue = Boolean(value);
+				}
+				else if (isNumeric(value)) {
+					updatedValue = Number(value);
+				}
+				else if (['on', 'off'].includes(value)) {
+					updatedValue = value === 'on';
+				}
+				else {
+					updatedValue = value;
+				}
+				setFormData({ ...newData, [name]: updatedValue });
 			}
 			else {
-				updatedValue = value;
+				setFormData((prevState) => ({ ...prevState, [name]: undefined }));
 			}
 
-			setFormData({ ...newData, [name]: updatedValue });
 			setSuccess(false);
 		}
 	};
-
 	const handleFormChange = (newData: Partial<TInput>) => setFormData({ ...formData, ...newData });
-
-	const handleSubmit = async (onSuccess?: () => void) => {
+	const handleSubmit = async () => {
 		setSubmitting(true);
 
 		try {
-			const response = await onSubmit(formData);
+			const response = await onSubmit(onBeforeSubmit(formData) as TTransformedInput);
 
 			setSuccess(true);
 			onSuccess?.();

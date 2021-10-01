@@ -1,4 +1,4 @@
-import { CSSProperties } from 'react';
+import React, { CSSProperties } from 'react';
 
 export enum HorizontalPosition {
 	Left = 'left',
@@ -7,8 +7,9 @@ export enum HorizontalPosition {
 }
 
 export interface IDropdownContainer {
-	position?: HorizontalPosition;
 	active?: boolean;
+	padded?: boolean;
+	position?: HorizontalPosition;
 	width?: CSSProperties['width'];
 	height?: CSSProperties['height'];
 }
@@ -17,15 +18,11 @@ export interface IChevron {
 	hideChevron?: boolean;
 }
 
-export interface IDropdownProps extends IChevron {
-	trigger?: React.ReactElement;
+export interface IDropdownProps extends IChevron, Omit<IDropdownContainer, 'active'> {
+	trigger?: React.ReactNode;
 	title?: string;
-	children?: React.ReactElement;
-	footer?: React.ReactElement;
-	hideChevron?: boolean;
-	position?: HorizontalPosition;
-	width?: CSSProperties['width'];
-	height?: CSSProperties['height'];
+	children?: React.ReactNode;
+	footer?: React.ReactNode;
 }
 
 export interface IDropdownItem {

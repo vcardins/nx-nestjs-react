@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
 /* eslint-disable camelcase */
@@ -16,16 +16,17 @@ import {
 	useForm,
 	Button,
 	Icon,
-	DataTable, ITableColumn, TableCellFormats, ColumnStick, RenderProps, IdBuilder,
+	DataTable, RenderProps,
 	Drawer,
 	InlineEdit,
+	FiltersForm
 } from '@xapp/react';
-import { TaskTemplateInput, TaskTemplateOutput, Frequencies, TextAlignment } from '@xapp/shared/types';
+import { TaskTemplateInput, TaskTemplateOutput, Frequencies, FilterControlType, IFilterControlItem } from '@xapp/shared/types';
 
 import { useAppStore } from '@xapp/state';
 
 import { validationSchema } from './schema';
-import { TaskTemplateList, TaskTemplateItem, TaskTemplateItemInfo, TaskTemplateIcon } from './components/TaskTemplate';
+import { TaskTemplateItem, TaskTemplateItemInfo, TaskTemplateIcon } from './components/TaskTemplate';
 import { ApiCallStatus } from '@xapp/state/shared';
 
 const initialValues: TaskTemplateInput = {
@@ -37,17 +38,6 @@ const initialValues: TaskTemplateInput = {
 	rewardPoints: 1,
 	frequencyId: Frequencies.Weekly,
 };
-
-const columns: ITableColumn[] = [
-	{ key: 'roomTypeId', label: 'Room Type', width: 80, fixed: ColumnStick.Left },
-	{ key: 'name', label: 'Name', width: 250 },
-	{ key: 'description', label: 'Description' },
-	{ key: 'estimatedCompletionTime', label: 'ECT', width: 35, align: TextAlignment.Center, fixed: ColumnStick.Right, format: TableCellFormats.Integer },
-	{ key: 'rewardPoints', label: 'Reward Points', width: 80, align: TextAlignment.Center, format: TableCellFormats.Integer },
-	{ key: 'frequencyId', label: 'Frequency', width: 80 },
-	{ key: 'daysOfWeek', label: 'Days', width: 35, align: TextAlignment.Center },
-	{ key: 'isActive', label: 'Active', width: 40, align: TextAlignment.Center, fixed: ColumnStick.Right, format: TableCellFormats.Boolean },
-]
 
 const domain = 'task-template';
 const tableTag = `${domain}-table`;
@@ -61,30 +51,25 @@ const handleBuildIds = {
 	expander: (key: string, { id }: TaskTemplateOutput) => `${tableTag}-expander-${key}-${id}`,
 }
 
+const settings = {
+	maxExpandedContentHeight: '200px',
+};
+
 const TaskTemplatePage = memo(() => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
 	const formRef = useRef({ valid: false });
 	const {
-		mappedItems,
-		items,
-		isApiReady,
-		read,
-		save,
-		remove,
-		status,
-		error,
-		checkedItems,
-		setCheckedItems,
-		expandedItems,
-		setExpandedItems,
-		clearError,
+		isApiReady, headers, mappedItems, items, read, save, remove, filter,
+		status, filteredItems, checkedItems, setCheckedItems, expandedItems, setExpandedItems,
+		error, clearError,
 	} = useAppStore((state) => state.taskTemplate);
 	const lookupStore = useAppStore((state) => state.lookup);
 
-	const { formData, handleSubmit, handleFieldChange, errors, submitting, success } = useForm<TaskTemplateInput>({
+	const form = useForm<TaskTemplateInput>({
 		initialValues,
 		onSubmit: save,
+		onSuccess: handleClosePanel,
 	});
 
 	useEffect(() => {
@@ -104,9 +89,26 @@ const TaskTemplatePage = memo(() => {
 		setIsDrawerOpen(false);
 	}
 
-	function handleSubmitForm() {
-		handleSubmit(handleClosePanel);
-	}
+	const filterControls: IFilterControlItem[] = useMemo(() => (lookupStore?.frequencies && lookupStore?.roomTypes) && (
+		[
+			{ key: 'roomTypeId', type: FilterControlType.Select, label: 'Room Type', options: Object.values(lookupStore?.roomTypes).map(({ id, name }) => ({ id, name }))},
+			{ key: 'name', type: FilterControlType.Text, label: 'Name',},
+			{ key: 'estimatedCompletionTime', type: FilterControlType.Number, label: 'Completion Type' },
+			{ key: 'rewardPoints', type: FilterControlType.Number, label: 'Points' },
+			{ key: 'frequencyId', type: FilterControlType.Select, label: 'Frequency', options: Object.values(lookupStore?.frequencies).map(({ id, name }) => ({ id, name })) },
+			{ key: 'daysOfWeek', type: FilterControlType.Days, label: 'Days' },
+			{ key: 'isActive', type: FilterControlType.Boolean, label: 'Active' },
+		]),
+		[lookupStore?.roomTypes, lookupStore?.frequencies]
+	);
+
+	const filtersForm = useMemo(() => (
+		<FiltersForm
+			filterControls={filterControls}
+			onClearFilters={() => filter(null)}
+			onSubmit={filter}
+		/>
+	), [filterControls, filter]);
 
 	// Object.keys(mappedItems[roomTypeId]).forEach((frequencyId) => {
 	// 	const frequency = lookupStore?.frequencies?.[frequencyId];
@@ -134,7 +136,7 @@ const TaskTemplatePage = memo(() => {
 					padded
 					footer={
 						<FieldGroup sided>
-							<Submit loading={submitting} success={success}>
+							<Submit loading={form.submitting} success={form.success}>
 								<Icon icon={ic_save} />
 							</Submit>
 							<Button onClick={() => read?.()}>
@@ -145,9 +147,9 @@ const TaskTemplatePage = memo(() => {
 				>
 					<Form
 						ref={formRef}
-						data={formData}
-						onChange={handleFieldChange}
-						onSubmit={handleSubmitForm}
+						data={form.formData}
+						onChange={form.handleFieldChange}
+						onSubmit={() => form.handleSubmit()}
 						schema={validationSchema}
 					>
 						<TextInput
@@ -155,8 +157,8 @@ const TaskTemplatePage = memo(() => {
 							label="Name"
 							name="name"
 							autoComplete="true"
-							value={formData.name}
-							error={errors?.name}
+							value={form.formData.name}
+							error={form.errors?.name}
 						/>
 					</Form>
 				</Panel>
@@ -164,9 +166,8 @@ const TaskTemplatePage = memo(() => {
 			<DataTable
 				id="task-template-data-table"
 				isLoading={status === ApiCallStatus.Loading}
-				columns={columns}
-				data={items}
-				noRecordsMessage="No templates found"
+				columns={headers}
+				data={filteredItems ? filteredItems : items}
 				onBuildIds={handleBuildIds}
 				checkedItems={checkedItems}
 				onCheckItems={setCheckedItems}
@@ -174,24 +175,9 @@ const TaskTemplatePage = memo(() => {
 				onExpandItems={setExpandedItems}
 				customRenderers={getCustomRenderers()}
 				onGetExpandedContent={getExpandedContent}
-				settings={{
-					maxExpandedContentHeight: '200px',
-				}}
+				filtersForm={filtersForm}
+				settings={settings}
 			/>
-			{/* <TaskTemplateList>
-				{lookupStore?.roomTypes && Object.keys(mappedItems).map((roomTypeId) => {
-					const roomType = lookupStore?.roomTypes?.[roomTypeId];
-					return (
-						<div key={roomType.id}>
-							<br/>
-							<h3>{roomType.name}</h3>
-							<TaskTemplateList>
-								{ mappedItems[roomTypeId].map(renderTaskTemplate) }
-							</TaskTemplateList>
-						</div>
-					);
-			})}
-			</TaskTemplateList> */}
 		</Panel>
 	);
 
@@ -228,14 +214,14 @@ const TaskTemplatePage = memo(() => {
 					<input
 						type="text"
 						name="invitation-firstName"
-						value={formData.invitation.firstName}
+						value={form.formData.invitation.firstName}
 					/>
 					<input
 						type="text"
 						name="invitation-email"
-						value={formData.invitation.email}
+						value={form.formData.invitation.email}
 					/>
-					<TaskTemplateIcon icon={ic_save} onClick={() => invite({ taskId: task.id, ...formData.invitation })} />
+					<TaskTemplateIcon icon={ic_save} onClick={() => invite({ taskId: task.id, ...form.formData.invitation })} />
 				</TaskTemplateItemInvite> */}
 			</TaskTemplateItem>
 		);

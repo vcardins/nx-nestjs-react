@@ -50,23 +50,24 @@ const TaskPage = memo(() => {
 		assignedUserId: auth.user.id
 	};
 
-	const { formData, handleSubmit, handleFieldChange, handleFormChange, errors, submitting, success } = useForm<TaskInput>({
+	const form = useForm<TaskInput>({
 		initialValues,
 		validationSchema,
+		onSuccess: handleClosePanel,
 		onSubmit: save,
 	});
 
 	const { rooms, members, frequencies, templates, selectedTemplate } = useHouseholdTask({
 		userId: auth.user.id,
-		householdRoomId: formData.householdRoomId,
-		templateId: formData.templateId,
+		householdRoomId: form.formData.householdRoomId,
+		templateId: form.formData.templateId,
 		lookupState,
 		activeHouseholdId: settingsState.activeHousehold,
 	});
 
 	useEffect(() => {
 		if (selectedTemplate?.id) {
-			handleFormChange({
+			form.handleFormChange({
 				frequencyId: selectedTemplate?.frequencyId,
 				estimatedCompletionTime: selectedTemplate?.estimatedCompletionTime,
 				rewardPoints: selectedTemplate?.rewardPoints,
@@ -77,7 +78,7 @@ const TaskPage = memo(() => {
 
 	useEffect(() => {
 		if (settingsState.activeHousehold) {
-			handleFormChange({
+			form.handleFormChange({
 				householdId: settingsState.activeHousehold,
 			});
 		}
@@ -102,7 +103,7 @@ const TaskPage = memo(() => {
 	}
 
 	function handleSubmitForm() {
-		handleSubmit(handleClosePanel);
+		form.handleSubmit();
 	}
 
 	return (
@@ -121,14 +122,14 @@ const TaskPage = memo(() => {
 							<input
 								type="text"
 								name="invitation-firstName"
-								value={formData.invitation.firstName}
+								value={form.formData.invitation.firstName}
 							/>
 							<input
 								type="text"
 								name="invitation-email"
-								value={formData.invitation.email}
+								value={form.formData.invitation.email}
 							/>
-							<TaskIcon icon={ic_save} onClick={() => invite({ taskId: task.id, ...formData.invitation })} />
+							<TaskIcon icon={ic_save} onClick={() => invite({ taskId: task.id, ...form.formData.invitation })} />
 						</TaskItemInvite> */}
 					</TaskItem>
 				))}
@@ -151,8 +152,8 @@ const TaskPage = memo(() => {
 			>
 				<Form
 					ref={formRef}
-					data={formData}
-					onChange={handleFieldChange}
+					data={form.formData}
+					onChange={form.handleFieldChange}
 					onSubmit={handleSubmitForm}
 					schema={validationSchema}
 				>
@@ -162,7 +163,7 @@ const TaskPage = memo(() => {
 						padded
 						footer={
 							<FieldGroup sided>
-								<Submit loading={submitting} success={success}>
+								<Submit loading={form.submitting} success={form.success}>
 									<Icon icon={ic_save} />
 								</Submit>
 								<Button onClick={handleClosePanel}>
@@ -174,14 +175,14 @@ const TaskPage = memo(() => {
 						<Select
 							name="householdRoomId"
 							label="Room"
-							value={formData.householdRoomId ?? ''}
+							value={form.formData.householdRoomId ?? ''}
 							items={rooms}
 						/>
-						{!!formData.householdRoomId && (
+						{!!form.formData.householdRoomId && (
 							<Select
 								name="templateId"
 								label="Template"
-								value={formData.templateId ?? ''}
+								value={form.formData.templateId ?? ''}
 								items={templates}
 							/>
 						)}
@@ -190,8 +191,8 @@ const TaskPage = memo(() => {
 							label="Name"
 							name="name"
 							placeholder={selectedTemplate?.name}
-							value={formData.name}
-							error={errors?.name}
+							value={form.formData.name}
+							error={form.errors?.name}
 						/>
 						<TextInput
 							type="textarea"
@@ -199,39 +200,39 @@ const TaskPage = memo(() => {
 							name="description"
 							component="textarea"
 							autoComplete="true"
-							value={formData.description}
-							error={errors?.description}
+							value={form.formData.description}
+							error={form.errors?.description}
 						/>
 						<Select
 							name="frequencyId"
 							label="Frequency"
-							value={formData.frequencyId ?? selectedTemplate?.frequencyId ?? ''}
+							value={form.formData.frequencyId ?? selectedTemplate?.frequencyId ?? ''}
 							items={frequencies}
 						/>
 						<TextInput
 							type="number"
 							label="Estimated Completion Time"
 							name="estimatedCompletionTime"
-							value={formData.estimatedCompletionTime ?? selectedTemplate?.estimatedCompletionTime ?? ''}
-							error={errors?.estimatedCompletionTime}
+							value={form.formData.estimatedCompletionTime ?? selectedTemplate?.estimatedCompletionTime ?? ''}
+							error={form.errors?.estimatedCompletionTime}
 						/>
 						<TextInput
 							type="number"
 							label="Reward Points"
 							name="rewardPoints"
-							value={formData.rewardPoints ?? selectedTemplate?.rewardPoints ?? ''}
-							error={errors?.rewardPoints}
+							value={form.formData.rewardPoints ?? selectedTemplate?.rewardPoints ?? ''}
+							error={form.errors?.rewardPoints}
 						/>
 						<Checkbox
 							label="Active"
 							name="isActive"
-							value={formData.isActive}
-							error={errors?.isActive}
+							value={form.formData.isActive}
+							error={form.errors?.isActive}
 						/>
 						<Select
 							name="assignedUserId"
 							label="Assign To"
-							value={formData.assignedUserId ?? ''}
+							value={form.formData.assignedUserId ?? ''}
 							items={members}
 						/>
 					</Panel>

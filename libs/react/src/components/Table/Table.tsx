@@ -1,7 +1,7 @@
 import React, { useMemo, useRef } from 'react';
 
-import { TextAlignment } from '@xapp/shared/types';
-import { ITableProps, ITableRefsProps, IColumnKey, TableCellFormats, ColumnStick, ITableColumn } from './types';
+import { Positioning, DataFormats, IColumnHeader } from '@xapp/shared/types';
+import { ITableProps, ITableRefsProps, IColumnKey } from './types';
 import {
 	TableContainer,
 	Table,
@@ -24,18 +24,18 @@ import { useTableManager, useRenderer as renderers } from './hooks';
 import { defaultSettings } from './settings';
 
 const MessageCell = ({ children }: { children: React.ReactElement | string }) => (
-	<ExpandedCell align={TextAlignment.Center} bg={defaultSettings.messageRowColor}>
+	<ExpandedCell align={Positioning.Center} bg={defaultSettings.messageRowColor}>
 		{ children }
 	</ExpandedCell>
 );
 function buildColumns<T extends IColumnKey = any>(props: {
-	columns: ITableColumn[];
+	columns: IColumnHeader[];
 	onBuildIds: ITableProps<T>['onBuildIds'];
 	addCheckbox: boolean;
 	addExpander: boolean;
 }) {
-	const getWidth = (col: ITableColumn) => {
-		if ([TableCellFormats.Checkbox, TableCellFormats.Expander].includes(col.format)) {
+	const getWidth = (col: IColumnHeader) => {
+		if ([DataFormats.Checkbox, DataFormats.Expander].includes(col.format)) {
 			return 32;
 		}
 
@@ -47,25 +47,25 @@ function buildColumns<T extends IColumnKey = any>(props: {
 	const columns = [
 		props.addCheckbox && {
 			id: props.onBuildIds?.checkboxAll?.(),
-			format: TableCellFormats.Checkbox,
+			format: DataFormats.Checkbox,
 			width: 32,
 			resizable: false,
-			fixed: ColumnStick.Left,
+			fixed: Positioning.Left,
 			sortable: false,
 			filterable: false,
 			key: 'checkbox',
-		} as ITableColumn,
+		} as IColumnHeader,
 		props.addExpander && {
-			format: TableCellFormats.Expander,
+			format: DataFormats.Expander,
 			width: 32,
 			resizable: false,
-			fixed: ColumnStick.Left,
+			fixed: Positioning.Left,
 			sortable: false,
 			filterable: false,
 			key: 'expander',
-		} as ITableColumn,
+		} as IColumnHeader,
 		...props.columns,
-	].filter(Boolean) as ITableColumn[];
+	].filter(Boolean) as IColumnHeader[];
 
 	return columns.map((col, index) => ({
 		...col,
@@ -122,30 +122,30 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 
 	const tableHeader = useMemo(() => headers.filter(({ hidden }) => !hidden).map((column, index) => {
 		let children: React.ReactElement;
-		let align: TextAlignment;
+		let align: Positioning;
 		let isControl = false;
-		let fixed: ColumnStick;
+		let fixed: Positioning;
 
 		switch (column.format) {
-			case TableCellFormats.Checkbox:
+			case DataFormats.Checkbox:
 				isControl = true;
-				fixed = ColumnStick.Left;
-				align = TextAlignment.Center;
-				children = renderers[TableCellFormats.Checkbox]({
+				fixed = Positioning.Left;
+				align = Positioning.Center;
+				children = renderers[DataFormats.Checkbox]({
 					id: onBuildIds?.header?.(column.key),
 					disabled: !data.length,
 					onChange: onCheckAll,
 				});
 				break;
-			case TableCellFormats.Expander:
+			case DataFormats.Expander:
 				isControl = true;
-				fixed = ColumnStick.Left;
-				align = TextAlignment.Center;
+				fixed = Positioning.Left;
+				align = Positioning.Center;
 				children = null;
 				break;
 			default:
 				fixed = column.fixed;
-				children = renderers[TableCellFormats.String]({ data: column.label });
+				children = renderers[DataFormats.String]({ data: column.label });
 				break;
 		}
 
@@ -192,8 +192,8 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 
 		return data.reduce((result, item, rowIndex) => {
 			let children: React.ReactElement;
-			let align: TextAlignment;
-			let fixed: ColumnStick;
+			let align: Positioning;
+			let fixed: Positioning;
 			let cellId: string;
 
 			const isExpanded = props.expandedItems.includes(item[idProp]);
@@ -202,27 +202,27 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 			// eslint-disable-next-line no-param-reassign
 			const columns = headers.filter(({ hidden }) => !hidden).map((column, colIndex) => {
 				switch (column.format) {
-					case TableCellFormats.Checkbox:
+					case DataFormats.Checkbox:
 						cellId = onBuildIds?.cell?.('checkbox', item);
-						align = TextAlignment.Center;
-						fixed = ColumnStick.Left;
+						align = Positioning.Center;
+						fixed = Positioning.Left;
 						children = props.onCheckItems
-							? renderers[TableCellFormats.Checkbox]({
+							? renderers[DataFormats.Checkbox]({
 								id: onBuildIds?.checkbox?.(column.key, item),
-								fixed: ColumnStick.Left,
+								fixed: Positioning.Left,
 								checked: props.checkedItems?.includes(item[idProp]),
 								onChange: () => props.onCheckItems(item[idProp]),
 							})
 							: null;
 						break;
-					case TableCellFormats.Expander:
+					case DataFormats.Expander:
 						cellId = onBuildIds?.cell?.('expander', item);
-						align = TextAlignment.Center;
-						fixed = ColumnStick.Left;
+						align = Positioning.Center;
+						fixed = Positioning.Left;
 						children = (props.onExpandItems && props.onGetExpandedContent)
-							? renderers[TableCellFormats.Expander]({
+							? renderers[DataFormats.Expander]({
 								id: onBuildIds?.expander?.(column.key, item),
-								fixed: ColumnStick.Left,
+								fixed: Positioning.Left,
 								isExpanded: props.expandedItems?.includes(item[idProp]),
 								onClick: () => props.onExpandItems(item[idProp]),
 							})
@@ -232,7 +232,7 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 						cellId = onBuildIds?.cell?.(column.key, item);
 						align = column.align;
 						fixed = column.fixed;
-						const defaultRenderer = renderers[column.format ?? TableCellFormats.String];
+						const defaultRenderer = renderers[column.format ?? DataFormats.String];
 						const customRenderer = props.customRenderers?.[column.key];
 						const data = customRenderer ? customRenderer({ item, column }) : item[column.key];
 						children = defaultRenderer({ data });
@@ -286,7 +286,7 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 		}, [] as React.ReactNode[]);
 	}, [
 		headers,
-		props.data,
+		data,
 		props.idProp,
 		props.isLoading,
 		props.customRenderers,
@@ -312,6 +312,7 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 				id={`${props.id}-toolbar`}
 				columns={headers}
 				onToggleColumnDisplay={onToggleColumnDisplay}
+				filtersForm={props.filtersForm}
 			/>
 			<Table id={props.id} role="table" ref={refs.wrapper}>
 				<TopShadow top={state.rowHeight} ref={refs.shadow.top} />

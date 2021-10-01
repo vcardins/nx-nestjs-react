@@ -1,7 +1,6 @@
 import { CSSProperties, ReactNode, ChangeEvent, ReactElement, MutableRefObject } from 'react';
 
-import { SortDirections, TextAlignment, KeyType } from '@xapp/shared/types';
-import { TableCellFormats, ColumnStick } from './enums';
+import { SortDirections, Positioning, KeyType, IColumnHeader } from '@xapp/shared/types';
 
 export interface ITableSettings {
 	fontSize?: CSSProperties['fontSize'];
@@ -27,7 +26,7 @@ export interface IIconProps {
 
 export interface IExpandedCellProps {
 	children: ReactNode;
-	align?: TextAlignment;
+	align?: Positioning;
 	bg?: CSSProperties['color'];
 	borderColor?: CSSProperties['borderColor'];
 	maxHeight?: CSSProperties['height'];
@@ -37,8 +36,8 @@ export interface ITableCellProps {
 	id?: string;
 	role?: string;
 	forwardRef?: MutableRefObject<HTMLDivElement>;
-	align?: TextAlignment;
-	fixed?: ColumnStick;
+	align?: Positioning;
+	fixed?: Positioning;
 	order?: 'even' | 'odd';
 	children?: ReactNode;
 }
@@ -58,24 +57,6 @@ export interface ICheckboxRenderer extends ICommonRenderer {
 export interface IColumnKey {
 	id: KeyType;
 }
-
-export interface ITableColumn {
-	align?: TextAlignment;
-	editable?: boolean;
-	fixed?: ColumnStick;
-	hidden?: boolean;
-	label?: string;
-	key: string;
-	resizable?: boolean;
-	searchable?: boolean;
-	sortDirection?: SortDirections;
-	forwardRef?: MutableRefObject<HTMLDivElement>;
-	width?: number;
-	left?: number;
-	right?: number;
-	format?: TableCellFormats;
-}
-
 export interface ICheckboxOptions {
 	id?: string;
 	disabled: boolean;
@@ -91,7 +72,7 @@ export interface IExpanderOptions {
 	onClick(): any;
 }
 
-export interface ITableHeader extends ITableColumn {
+export interface ITableHeader extends IColumnHeader {
 	id?: string;
 	index: number;
 	isLast: boolean;
@@ -123,7 +104,7 @@ export type IdBuilder<T> = (key: string, item: T) => string;
 export interface ITableProps<T extends IColumnKey = any> {
 	id?: string;
 	idProp?: string;
-	columns: ITableColumn[];
+	columns: IColumnHeader[];
 	data?: T[];
 	settings?: ITableSettings;
 	checkedItems?: KeyType[];
@@ -131,10 +112,11 @@ export interface ITableProps<T extends IColumnKey = any> {
 	allowCheckAll?: boolean;
 	isLoading?: boolean;
 	noRecordsMessage?: string;
+	filtersForm?: ReactNode;
 	customRenderers?: CustomRenderers<T>;
 	onCheckItems?: (ids: KeyType | KeyType[]) => void;
 	onExpandItems?: (ids: KeyType | KeyType[]) => void;
-	onGetExpandedContent?: (item: T) => ReactElement;
+	onGetExpandedContent?: (item: T) => ReactNode;
 	onBuildIds?: {
 		header?: (key: string) => string;
 		row?: (item: T) => string;
@@ -146,7 +128,7 @@ export interface ITableProps<T extends IColumnKey = any> {
 }
 
 export interface ITableState<T extends IColumnKey> {
-	columns: ITableColumn[];
+	columns: IColumnHeader[];
 	data?: T[];
 	loading: boolean;
 	total: number;
@@ -208,7 +190,7 @@ export interface IPendingUpdates<T> extends Record<IKey, T> {}
 export type RenderProps<Item> = {
 	// -- Table Data
 	// tableProps: { itemsLength: number; };
-	column: ITableColumn;
+	column: IColumnHeader;
 	item: Item;
 	cellData?: ReactNode;
 	cellDataPlaceholder?: ReactNode;
@@ -230,7 +212,6 @@ export interface ITableRowStatus {
 	isFixed?: boolean;
 }
 
-
 export interface IPagingFilters {
 	pageSize: number;
 	pageNumber: number;
@@ -246,7 +227,7 @@ export interface IDataTableProps<Item, TFilter = any> {
 	/** Items to be rendered in the table */
 	items: ModelKey<Item>[];
 	/** Items header config */
-	headers: ITableColumn[] | (ITableColumn[] | undefined)[];
+	headers: IColumnHeader[] | (IColumnHeader[] | undefined)[];
 	/** Id of items which should be fixed to the top */
 	fixedRowIds?: number[];
 	/** Optional background-color to be applied to fixed rows */
@@ -305,7 +286,7 @@ export interface IDataTableProps<Item, TFilter = any> {
 		checkbox?: (item: ModelKey<Item>) => string;
 		checkAll?: () => string;
 		cell?: (item: ModelKey<Item>, columnKey: string) => string;
-		header?(key: ITableColumn['key']): string;
+		header?(key: IColumnHeader['key']): string;
 	};
 	/** Method to be called when the table is scrolled along the x-axis */
 	onHorizontalScroll?: () => boolean;

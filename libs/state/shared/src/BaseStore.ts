@@ -1,5 +1,7 @@
-import { SortDirections, KeyType } from '@xapp/shared/types';
 import { GetState, SetState } from 'zustand';
+
+import { SortDirections, KeyType, FilterControlType } from '@xapp/shared/types';
+
 import { ApiCallStatus, IAuthState, ICrudState, setError, setIdle, setLoading, setSuccess } from '.';
 import { DataContext } from './DataContext';
 
@@ -7,7 +9,7 @@ interface Class<TDataContext> {
 	new(authHeader: IAuthState['authHeader']): TDataContext;
 }
 
-type TStore<TOutput, TInput, TFilter> = DataContext<TOutput, TInput, TInput & { id: KeyType }, TFilter>;
+type TStore<TOutput, TInput> = DataContext<TOutput, TInput, TInput & { id: KeyType }>;
 
 export function storeValues(id: KeyType | KeyType[], collection: KeyType[]) {
 	// Accept an array as `itemId` to replace whatever the
@@ -32,18 +34,20 @@ export function storeValues(id: KeyType | KeyType[], collection: KeyType[]) {
 	return value;
 }
 export function createBaseStore<
-	TState extends ICrudState<TStore<TOutput, TInput, TState['filters']>, TOutput, TInput, TState['filters']>,
+	TState extends ICrudState<TStore<TOutput, TInput>, TOutput, TInput>,
 	TInput = any,
 	TOutput extends { id: KeyType } = any,
 >(
-	Store: Class<TStore<TOutput, TInput, TState['filters']>>,
+	Store: Class<TStore<TOutput, TInput>>,
 	initialStateValues?: Partial<TState>,
 	extraMethods?: (set: SetState<TState>, get: GetState<TState>) => Partial<TState>,
 ) {
 	return (set: SetState<TState>, get: GetState<TState>) => ({
 		status: ApiCallStatus.Idle,
 		items: [] as TOutput[],
+		filteredItems: null,
 		checkedItems: [] as KeyType[],
+		expandedItems: [] as KeyType[],
 		sortBy: { id: SortDirections.ASC },
 		error: null,
 		isApiReady: false,
@@ -128,6 +132,48 @@ export function createBaseStore<
 			const values = storeValues(id, checkedItems);
 
 			set({ checkedItems: values });
+		},
+		setExpandedItems(id: KeyType | KeyType[]) {
+			const { checkedItems } = get();
+			const values = storeValues(id, checkedItems);
+
+			set({ expandedItems: values });
+		},
+		async filter(filters: ICrudState['filters']) {
+			const { items } = get();
+			if (!filters || !Object.keys(filters).length) {
+				set({ filteredItems: null });
+				return;
+			}
+
+			setLoading(set)();
+
+			try {
+				const filteredItems = await new Promise<TOutput[]>((resolve) => {
+					setTimeout(() => {
+						const response = items.filter((item) => Object.keys(filters)
+							.filter((key) => !!filters[key])
+							.every((key) => {
+								const { type, value } = filters[key];
+								switch (type) {
+									case FilterControlType.Text:
+										return item[key]?.toLowerCase().indexOf(value.toLowerCase()) > -1;
+									case FilterControlType.Array:
+										return Array.isArray(value) ? value.includes(item[key]) : false;
+									default:
+										return item[key] === value;
+								}
+							}),
+						);
+						resolve(response);
+					}, 100);
+				});
+
+				setSuccess<TState, { filteredItems: TOutput[] }>(set)({ filteredItems });
+			}
+			catch (error) {
+				setError<TState, { filteredItems: TOutput[] }>(set)(error, { filteredItems: null });
+			}
 		},
 		...extraMethods?.(set, get),
 	});

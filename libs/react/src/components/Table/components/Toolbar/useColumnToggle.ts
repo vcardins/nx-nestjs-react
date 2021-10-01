@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import { ITableColumn } from '../../types';
+import { IColumnHeader } from '@xapp/shared/types';
 
-export const useColumnToggle = (columns: ITableColumn[], showColumnDisplayToggle: boolean) => {
+export const useColumnToggle = (columns: IColumnHeader[], showColumnDisplayToggle: boolean) => {
 	if (!showColumnDisplayToggle) return null;
 
 	return useMemo(() => {

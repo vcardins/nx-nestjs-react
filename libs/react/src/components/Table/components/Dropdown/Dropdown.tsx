@@ -1,8 +1,8 @@
 /* eslint-disable react/display-name */
-import React, { useState, useRef, CSSProperties } from 'react';
+import React, { useState, useRef } from 'react';
 
 import { useOnClickOutside } from '../../hooks/useOnClickOutside';
-import { IDropdownProps, IDropdownListProps, IDropdownItem, HorizontalPosition } from './types';
+import { IDropdownProps, IDropdownListProps, HorizontalPosition } from './types';
 import {
 	DropdownWrapper,
 	DropdownContent,
@@ -17,7 +17,7 @@ import {
 } from './styles';
 
 export const Dropdown = (props: IDropdownProps) => {
-	const { trigger, children, title, footer, position, width, height, hideChevron } = props;
+	const { trigger, children, padded = true, title, footer, position, width, height, hideChevron } = props;
 	const innerRef = useRef(null);
 	const [active, setActive] = useState(false);
 	const toggleShow = () => setActive(!active);
@@ -37,6 +37,7 @@ export const Dropdown = (props: IDropdownProps) => {
 				position={position || HorizontalPosition.Right}
 				width={width}
 				height={height}
+				padded={padded}
 			>
 				{ title && <DropdownTitle>{title}</DropdownTitle> }
 				<DropdownContent hasTitle={!!title} hasFooter={!!footer}>

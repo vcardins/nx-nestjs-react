@@ -87,9 +87,8 @@ export const DropdownFooter = styled.div`
 
 export const DropdownContent = styled.div<{ hasFooter?: boolean; hasTitle?: boolean }>`
 	overflow: auto;
-	padding: 0 0.25em;
-	margin-top: ${({ hasTitle }) => hasTitle && '0.5em'} ;
-	margin-bottom: ${({ hasFooter }) => hasFooter && '0.5em'} ;
+	margin-top: ${({ hasTitle }) => hasTitle && css`0.5em`} ;
+	margin-bottom: ${({ hasFooter }) => hasFooter && css`0.5em`} ;
 	max-height: 500px;
 `;
 
@@ -123,7 +122,7 @@ export const DropdownContainer = styled.div<IDropdownContainer>`
 			opacity: 1;
 			transform: translateY(0);
 		`
-	}
+}
 
 	&::before {
 		${({ theme, position }) => buildArrow({ isBefore: true, position, color: theme.colors.tertiary.lighterGrey })};

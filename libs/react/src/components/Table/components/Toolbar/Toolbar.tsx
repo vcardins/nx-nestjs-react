@@ -1,11 +1,12 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { ITableColumn } from '../../types';
+
+import { IColumnHeader } from '@xapp/shared/types';
 import { Dropdown, DropdownList } from '../Dropdown';
 import { Columns as TableIcon, Filters as FiltersIcon } from '../Icons';
 
 import { useColumnToggle } from './useColumnToggle';
-// import { useRowsFilter } from './useRowsFilter';
+import { ITableProps } from '../../types';
 
 const Wrapper = styled.div`
 	display: flex;
@@ -13,23 +14,20 @@ const Wrapper = styled.div`
 	justify-content: flex-end;
 	padding: 0.25em 1em;
 	border-bottom: 1px solid #eee;
+	user-select: none;
 	> :not(:last-child) {
 		margin-right: 0.75em
 	}
 `;
 
-interface ITableToolbarProps {
-	id?: string;
-	columns?: ITableColumn[];
-	onToggleColumnDisplay?: (key: ITableColumn['key'], visible: boolean) => void;
-	filters?: any;
-	onFilter?: () => void;
+interface ITableToolbarProps extends Pick<ITableProps, 'filtersForm' | 'id' | 'columns'> {
+	onToggleColumnDisplay?: (key: IColumnHeader['key'], visible: boolean) => void;
 }
 
 export const Toolbar = React.memo(function Toolbar(props: ITableToolbarProps) {
-	const { id, columns, onToggleColumnDisplay, filters, onFilter } = props;
+	const { id, columns, onToggleColumnDisplay, filtersForm } = props;
 	const showColumnDisplayToggle = typeof onToggleColumnDisplay === 'function';
-	const showItemsFilter = typeof onFilter === 'function';
+	const showItemsFilter = React.isValidElement(filtersForm);
 
 	const columnsToggler = useColumnToggle(columns, showColumnDisplayToggle);
 
@@ -41,11 +39,11 @@ export const Toolbar = React.memo(function Toolbar(props: ITableToolbarProps) {
 		<Wrapper id={id}>
 			{ showItemsFilter && (
 				<Dropdown
-					title="Filters"
 					trigger={<FiltersIcon/>}
-					footer={<button onClick={() => onFilter()}>Filter</button>}
+					padded={false}
+					title="Filters"
 				>
-					{filters}
+					{ filtersForm }
 				</Dropdown>
 			)}
 			{showColumnDisplayToggle && (
@@ -65,4 +63,3 @@ export const Toolbar = React.memo(function Toolbar(props: ITableToolbarProps) {
 		</Wrapper>
 	);
 });
-

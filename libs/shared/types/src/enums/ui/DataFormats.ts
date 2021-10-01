@@ -1,4 +1,4 @@
-export enum TableCellFormats {
+export enum DataFormats {
 	String = 1,
 	StringLowerCase,
 	StringUpperCase,
@@ -17,16 +17,4 @@ export enum TableCellFormats {
 	Boolean,
 	Checkbox,
 	Actions,
-}
-
-export enum CharCase {
-	None = 0,
-	LowerCase,
-	UpperCase,
-	TitleCase,
-}
-
-export enum ColumnStick {
-	Left = 'left',
-	Right = 'right',
 }

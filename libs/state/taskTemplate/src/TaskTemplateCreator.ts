@@ -1,14 +1,23 @@
 import { GetState, SetState, StateCreator, UseStore } from 'zustand';
 
 import { createStore, createBaseStore, storeValues, ICrudState, ApiCallStatus, setError, setLoading } from '@xapp/state/shared';
-import { TaskTemplateInput, TaskTemplateOutput, TaskTemplateOutputMapped, KeyType } from '@xapp/shared/types';
+import { TaskTemplateInput, TaskTemplateOutput, TaskTemplateOutputMapped, KeyType, Positioning, DataFormats, IColumnHeader } from '@xapp/shared/types';
 
 import { TaskTemplateStore } from './TaskTemplateStore';
 
-export interface ITaskTemplateState extends ICrudState<TaskTemplateStore, TaskTemplateOutput> {
+const headers: IColumnHeader[] = [
+	{ key: 'roomTypeId', label: 'Room Type', width: 80, fixed: Positioning.Left },
+	{ key: 'name', label: 'Name', width: 250 },
+	{ key: 'description', label: 'Description' },
+	{ key: 'estimatedCompletionTime', label: 'ECT', width: 35, align: Positioning.Center, fixed: Positioning.Right, format: DataFormats.Integer },
+	{ key: 'rewardPoints', label: 'Reward Points', width: 80, align: Positioning.Center, format: DataFormats.Integer },
+	{ key: 'frequencyId', label: 'Frequency', width: 80 },
+	{ key: 'daysOfWeek', label: 'Days', width: 35, align: Positioning.Center },
+	{ key: 'isActive', label: 'Active', width: 40, align: Positioning.Center, fixed: Positioning.Right, format: DataFormats.Boolean },
+];
+
+export interface ITaskTemplateState extends ICrudState<TaskTemplateStore, TaskTemplateOutput, TaskTemplateInput> {
 	mappedItems?: TaskTemplateOutputMapped;
-	expandedItems?: KeyType[];
-	setExpandedItems?: (items: KeyType | KeyType[]) => void;
 	read: (filters?: Record<string, unknown>) => Promise<void>;
 };
 
@@ -19,6 +28,7 @@ export const createTaskTemplate: StateCreator<ITaskTemplateState> =
 			store: new TaskTemplateStore(),
 			mappedItems: {} as TaskTemplateOutputMapped,
 			expandedItems: [],
+			headers,
 		},
 		(set: SetState<ITaskTemplateState>, get: GetState<ITaskTemplateState>) => ({
 			read: async (): Promise<void> => {

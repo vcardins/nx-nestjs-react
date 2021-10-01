@@ -28,31 +28,49 @@ export const PanelActionsWrapper = styled.div`
 	margin-left: auto;
 `;
 
-export const PanelBody = styled.main<{ padded: boolean; overflow?: CSSProperties['overflow']; }>`
+export const PanelBody = styled.main<{ padded: boolean; columns?: number; overflow?: CSSProperties['overflow']; }>`
 	grid-area: body;
-	${({ padded = false }) => padded && css`padding: 1em`};
-	overflow: ${({ overflow = 'auto' } ) => overflow};
+	display: grid;
+	grid-template-columns: ${({ columns = 1 }) => `repeat(${columns}, 1fr)`};
+	${({ columns }) => columns && css`gap: 0.5em 1em;`};
+	padding: ${({ padded = false }) => padded ? '1em' : '0.25em'};
+	overflow: ${({ overflow = 'auto' }) => overflow};
 `;
-
 export const PanelFooter = styled.div<{ padded: boolean }>`
 	grid-area: footer;
 	max-height: 60px;
 	display: flex;
 	align-items: center;
-	justify-content: flex-end;
-	${({ padded = false }) => padded && css`padding: 1em`};
+	padding: 0.75em;
+	margin-top: 0.5em;
 	background-color: ${({ theme }) => theme.colors.tertiary.lightestGrey};
+	> * {
+		justify-content: flex-end;
+	}
 `;
 
-export const PanelWrapper = styled.div<{ hasHeader: boolean; hasFooter: boolean }>`
-	height: 100%;
+export const PanelWrapper = styled.div<{ hasHeader: boolean; hasFooter: boolean; compact: boolean; maxHeight?: CSSProperties['height'] }>`
+	height: ${({ maxHeight = '100%' }) => maxHeight};
 	display: grid;
-	grid-template: ${({ hasHeader, hasFooter }) =>
-		`${hasHeader ? '\'header\'' : ''} 'body' ${hasFooter ? '\'footer\'' : ''}`
-};
+	grid-template: ${({ hasHeader, hasFooter }) => `${hasHeader ? '\'header\'' : ''} 'body' ${hasFooter ? '\'footer\'' : ''}`};
 	grid-template-columns: 1fr;
-	grid-template-rows: ${({ hasHeader, hasFooter }) =>
-		`${hasHeader ? 'auto' : ''} 1fr ${hasFooter ? 'auto' : ''}`
-};
+	grid-template-rows: ${({ hasHeader, hasFooter }) => `${hasHeader ? 'auto' : ''} 1fr ${hasFooter ? 'auto' : ''}`};
+
+	${({ compact }) => compact && css`
+		width: max-content;
+		${PanelHeader} {
+			padding: ${({ theme }) => theme.spacing.mini };
+		}
+		${PanelTitle} {
+			font-size: 12px;
+		}
+		${PanelSubTitle} {
+			font-size: 10px;
+		}
+		${PanelFooter} {
+			border-top: 1px solid ${({ theme }) => theme.colors.tertiary.lightestGrey};
+			background-color: transparent;
+		}
+	`}
 `;
 

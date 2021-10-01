@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React from 'react';
 import styled from 'styled-components';
-import { ITableColumn } from '../../types';
+
+import { IColumnHeader } from '@xapp/shared/types';
 
 const Wrapper = styled.div`
 	display: flex;
@@ -13,7 +14,7 @@ const Wrapper = styled.div`
 
 interface ITableFooterProps {
 	id?: string;
-	columns?: ITableColumn[];
+	columns?: IColumnHeader[];
 }
 
 export const Footer = React.memo(function Footer({ id, columns }: ITableFooterProps) {

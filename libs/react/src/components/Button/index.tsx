@@ -3,7 +3,7 @@ import { StyledButton } from './styles';
 import { IButtonProps } from './IButtonProps';
 
 
-export function Button({ children, type = 'button', onClick, ...props }: IButtonProps) {
+export function Button({ children, type = 'button', role = 'primary', onClick, ...props }: IButtonProps) {
 	const buttonRef = useRef<HTMLButtonElement>();
 
 	function animate(e: any) {
@@ -30,6 +30,7 @@ export function Button({ children, type = 'button', onClick, ...props }: IButton
 	return (
 		<StyledButton
 			{...props}
+			role={role}
 			ref={buttonRef}
 			type={type}
 			onClick={handleClick}

@@ -21,16 +21,12 @@ const secondary = {
 	lightBlue: lighten(0.50, primaryColor),
 	blue: lighten(0.25, primaryColor),
 	midBlue: hsl(210, 1, 0.50),
-
 	lightGreen: hsl(120, 1, 0.95),
 	green: desaturate(.07, green),
-
 	lightYellow: hsl(60, 1, 0.95),
-	yellow: hsl(42, 1, 1),
-
+	yellow: rgb(245, 215, 125),
 	lightPurple: hsl(220, 0.58, 0.90),
 	purple: hsl(282, 0.80, 0.63),
-
 	lightRed: hsl(0, 1, 0.97),
 	red: hsl(353, 0.84, 0.84),
 	darkRed: hsl(0, 0.80, 0.30),

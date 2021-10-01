@@ -38,11 +38,11 @@ function getOptions (keyValueProps: ISelectField['keyValueProps'], items: ISelec
 }
 
 export function Select (props: ISelectField) {
-	const { id, name, label, value, items = [], emptyValueLabel = 'Please select' } = props;
+	const { id, name, label, value = '', items = [], emptyValueLabel = 'Please select' } = props;
 	const keyValueProps = props.keyValueProps || { id: 'name' };
 	const allItems = !emptyValueLabel
 		? items
-		: [{ id: 0, name: emptyValueLabel } as IKeyValue].concat(items);
+		: [{ id: '', name: emptyValueLabel } as IKeyValue].concat(items);
 	const options = getOptions(keyValueProps, allItems);
 
 	const selectElement = (
@@ -50,7 +50,7 @@ export function Select (props: ISelectField) {
 			id={id || name}
 			name={name}
 			component="select"
-			value={value || 0}
+			value={value}
 		>
 			{ options }
 		</StyledSelect>

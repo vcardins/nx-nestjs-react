@@ -3,7 +3,8 @@ import numeral from 'numeral';
 
 import { ActionLink, DownArrow, UpArrow } from '../components';
 
-import { TableCellFormats, CharCase, ICheckboxOptions, IExpanderOptions, ICommonRenderer, RenderProps } from '../types';
+import { CharCase, DataFormats } from '@xapp/shared/types';
+import { ICheckboxOptions, IExpanderOptions, ICommonRenderer, RenderProps } from '../types';
 
 type JSX = React.ReactElement;
 
@@ -81,20 +82,20 @@ function booleanRenderer({ data }: ICommonRenderer<boolean>): JSX {
 }
 
 export const useRenderer: any = {
-	[TableCellFormats.Checkbox]: checkboxRenderer,
-	[TableCellFormats.Expander]: expanderRenderer,
-	[TableCellFormats.String]: stringRendererFactory(),
-	[TableCellFormats.StringLowerCase]: stringRendererFactory(CharCase.LowerCase),
-	[TableCellFormats.StringUpperCase]: stringRendererFactory(CharCase.UpperCase),
-	[TableCellFormats.StringTitleCase]: stringRendererFactory(CharCase.TitleCase),
-	[TableCellFormats.Integer]: numberRendererFactory(),
-	[TableCellFormats.Decimal]: numberRendererFactory('0,0'),
-	[TableCellFormats.Dollar]: numberRendererFactory('$'),
-	[TableCellFormats.Percentage]: numberRendererFactory('0%'),
-	[TableCellFormats.DecimalPercentage]: numberRendererFactory('0.00%'),
+	[DataFormats.Checkbox]: checkboxRenderer,
+	[DataFormats.Expander]: expanderRenderer,
+	[DataFormats.String]: stringRendererFactory(),
+	[DataFormats.StringLowerCase]: stringRendererFactory(CharCase.LowerCase),
+	[DataFormats.StringUpperCase]: stringRendererFactory(CharCase.UpperCase),
+	[DataFormats.StringTitleCase]: stringRendererFactory(CharCase.TitleCase),
+	[DataFormats.Integer]: numberRendererFactory(),
+	[DataFormats.Decimal]: numberRendererFactory('0,0'),
+	[DataFormats.Dollar]: numberRendererFactory('$'),
+	[DataFormats.Percentage]: numberRendererFactory('0%'),
+	[DataFormats.DecimalPercentage]: numberRendererFactory('0.00%'),
 	// [TableCellTypes.Date]: dateRenderer,
 	// [TableCellTypes.DateTime]: dateTimeRenderer,
 	// [TableCellTypes.Days]: daysRenderer,
-	[TableCellFormats.Time]: timeRenderer,
-	[TableCellFormats.Boolean]: booleanRenderer,
+	[DataFormats.Time]: timeRenderer,
+	[DataFormats.Boolean]: booleanRenderer,
 };

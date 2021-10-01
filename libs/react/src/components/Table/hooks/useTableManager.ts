@@ -1,9 +1,10 @@
 import { useState, useMemo, useCallback, ChangeEvent, useEffect } from 'react';
 
+import { Positioning, IColumnHeader } from '@xapp/shared/types';
 import { useColumnResize, useScrolling, useColumnSorting } from '.';
-import { ITableProps, ITableState, ITableRefsProps, IColumnKey, ITableColumn, ColumnStick } from '../types';
+import { ITableProps, ITableState, ITableRefsProps, IColumnKey } from '../types';
 
-const calcPosition = (pos: ColumnStick, collection: ITableColumn[], column: ITableColumn, index: number): ITableColumn => ({
+const calcPosition = (pos: Positioning, collection: IColumnHeader[], column: IColumnHeader, index: number): IColumnHeader => ({
 	...column,
 	resizable: false,
 	[pos]: index === 0 ? index : collection.slice(0, index).reduce((result, { width }) => result + (width ?? 0), 0),
@@ -28,13 +29,13 @@ export const useTableManager = <T extends IColumnKey = any>(props: ITableProps<T
 	});
 
 	const { headers, shadowLeft, shadowRight } = useMemo(() => {
-		let left = state.columns.filter(({ fixed }) => fixed === ColumnStick.Left);
-		left = left.map((col, index) => calcPosition(ColumnStick.Left, left, col, index));
+		let left = state.columns.filter(({ fixed }) => fixed === Positioning.Left);
+		left = left.map((col, index) => calcPosition(Positioning.Left, left, col, index));
 
 		const center = state.columns.filter(({ fixed }) => fixed === undefined);
 
-		let right  = [...state.columns].reverse().filter(({ fixed }) => fixed === ColumnStick.Right);
-		right = right.map((col, index) => calcPosition(ColumnStick.Right, right, col, index));
+		let right  = [...state.columns].reverse().filter(({ fixed }) => fixed === Positioning.Right);
+		right = right.map((col, index) => calcPosition(Positioning.Right, right, col, index));
 
 		return {
 			headers: [...left, ...center, ...right.reverse()],
@@ -43,9 +44,8 @@ export const useTableManager = <T extends IColumnKey = any>(props: ITableProps<T
 		};
 	}, [state.columns]);
 
-	const handleColumnDisplay = useCallback((key: ITableColumn['key'], visible: boolean) => {
+	const handleColumnDisplay = useCallback((key: IColumnHeader['key'], visible: boolean) => {
 		const index = state.columns.findIndex((col) => col.key === key);
-		console.log(index, state.columns);
 		const columns = [
 			...state.columns.slice(0, index),
 			{ ...state.columns[index], hidden: !visible },

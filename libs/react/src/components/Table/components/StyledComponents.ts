@@ -1,7 +1,7 @@
 import { CSSProperties } from 'react';
 import styled, { css } from 'styled-components';
 
-import { TextAlignment } from '@xapp/shared/types';
+import { Positioning } from '@xapp/shared/types';
 import { ITableSettings, IExpandedCellProps } from '../types';
 
 const shadowStyle = css`
@@ -73,7 +73,7 @@ export const Table = styled.div`
 	grid-template-rows: 26px 1fr;
 `;
 
-export const TableCellContent = styled.span<{ align?: TextAlignment; bg?: CSSProperties['color'] }>`
+export const TableCellContent = styled.span<{ align?: Positioning; bg?: CSSProperties['color'] }>`
 	${cellStyle};
 	${({ align }) => align && css`
 		text-align: ${align};
@@ -95,7 +95,7 @@ export const ExpandedTableCell = styled.div<Omit<IExpandedCellProps, 'children'>
 		border: 1px solid ${borderColor};
 	`};
 
-	${({ align }) => align === TextAlignment.Center && css`
+	${({ align }) => align === Positioning.Center && css`
 		justify-content: ${align};
 	`};
 
@@ -121,7 +121,7 @@ export const TableContainer = styled.div<{
 	display: grid;
 	grid-template-rows: ${({ showHeader, showFooter, settings }) =>
 		[showHeader && settings.headerHeight, '1fr', showFooter && settings.footerHeight].join(' ')
-	};
+};
 
 	${Table} {
 		z-index: 1;

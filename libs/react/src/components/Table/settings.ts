@@ -1,6 +1,6 @@
 import { ITableSettings } from './types';
 
-export const settings:ITableSettings = {
+export const defaultSettings:ITableSettings = {
 	rowsPerBody: 25,
 	fontSize: undefined,
 	rowHeight: 25,
@@ -14,4 +14,5 @@ export const settings:ITableSettings = {
 	borderColor: '#d1d1d1',
 	headerHeight: '32px',
 	footerHeight: '32px',
+	maxExpandedContentHeight: '300px',
 };

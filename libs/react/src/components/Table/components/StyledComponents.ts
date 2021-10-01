@@ -2,8 +2,7 @@ import { CSSProperties } from 'react';
 import styled, { css } from 'styled-components';
 
 import { TextAlignment } from '@xapp/shared/types';
-import { settings } from '../settings';
-import { ITableSettings } from '../types';
+import { ITableSettings, IExpandedCellProps } from '../types';
 
 const shadowStyle = css`
 	position: absolute;
@@ -25,7 +24,7 @@ const verticalShadowStyle = css`
 `;
 
 const cellStyle = css`
-	padding: ${settings.cellPadding};
+	padding: 0.5em;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -85,12 +84,14 @@ export const TableCellContent = styled.span<{ align?: TextAlignment; bg?: CSSPro
 `;
 
 
-export const ExpandedTableCell = styled.div<{ align?: TextAlignment; bg: CSSProperties['color']; borderColor: CSSProperties['borderColor'] }>`
+export const ExpandedTableCell = styled.div<Omit<IExpandedCellProps, 'children'>>`
 	display: grid;
 	grid-column: 1/-1;
 	align-items: center;
+	overflow: auto;
+	padding: 0.5em;
+
 	${({ borderColor }) => borderColor && css`
-		padding: 0.5em;
 		border: 1px solid ${borderColor};
 	`};
 
@@ -100,6 +101,10 @@ export const ExpandedTableCell = styled.div<{ align?: TextAlignment; bg: CSSProp
 
 	${({ bg }) => bg && css`
 		background-color: ${bg};
+	`};
+
+	${({ maxHeight }) => maxHeight && css`
+		max-height: ${maxHeight};
 	`};
 `;
 
@@ -114,7 +119,9 @@ export const TableContainer = styled.div<{
 	height: 100%;
 	overflow: hidden;
 	display: grid;
-	grid-template-rows: ${({ showHeader }) => showHeader && `${settings.headerHeight}`} 1fr ${({ showFooter }) => showFooter && `${settings.footerHeight}`} ;
+	grid-template-rows: ${({ showHeader, showFooter, settings }) =>
+		[showHeader && settings.headerHeight, '1fr', showFooter && settings.footerHeight].join(' ')
+	};
 
 	${Table} {
 		z-index: 1;
@@ -136,11 +143,11 @@ export const TableContainer = styled.div<{
 
 		${THead} {
 			> div {
-				background-color: ${settings.white};
+				background-color: ${({ settings }) => settings.white};
 			}
 			position: sticky;
 			top: 0;
-			border-bottom: 1px solid ${settings.borderColor};
+			border-bottom: 1px solid ${({ settings }) => settings.borderColor};
 			font-weight: 700;
 			z-index: 2;
 			width: 100%;

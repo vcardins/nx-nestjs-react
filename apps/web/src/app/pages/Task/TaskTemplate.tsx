@@ -174,6 +174,9 @@ const TaskTemplatePage = memo(() => {
 				onExpandItems={setExpandedItems}
 				customRenderers={getCustomRenderers()}
 				onGetExpandedContent={getExpandedContent}
+				settings={{
+					maxExpandedContentHeight: '200px',
+				}}
 			/>
 			{/* <TaskTemplateList>
 				{lookupStore?.roomTypes && Object.keys(mappedItems).map((roomTypeId) => {
@@ -208,7 +211,9 @@ const TaskTemplatePage = memo(() => {
 
 	function getExpandedContent(item: TaskTemplateOutput) {
 		return (
-			<p>{item.name}</p>
+			<div>
+				{ Array.from({ length: 20 }, (_, index) => <p key={index}>{item.name} - {index}</p>) }
+			</div>
 		);
 	}
 

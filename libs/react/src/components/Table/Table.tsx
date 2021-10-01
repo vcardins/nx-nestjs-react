@@ -21,10 +21,10 @@ import {
 	Footer,
 } from './components';
 import { useTableManager, useRenderer as renderers } from './hooks';
-import { settings } from './settings';
+import { defaultSettings } from './settings';
 
 const MessageCell = ({ children }: { children: React.ReactElement | string }) => (
-	<ExpandedCell align={TextAlignment.Center} bg={settings.messageRowColor}>
+	<ExpandedCell align={TextAlignment.Center} bg={defaultSettings.messageRowColor}>
 		{ children }
 	</ExpandedCell>
 );
@@ -87,7 +87,7 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 			left: useRef<HTMLDivElement>(null),
 		},
 	};
-	const config = { ...settings, ...props.settings };
+	const settings = { ...defaultSettings, ...props.settings };
 	const { idProp = 'id', onBuildIds, noRecordsMessage = 'No Records found' } = props;
 	const {
 		data,
@@ -109,7 +109,7 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 			addCheckbox: typeof props.onCheckItems === 'function',
 			addExpander: (typeof props.onExpandItems === 'function' && typeof props.onGetExpandedContent === 'function' ),
 		}),
-		settings: config,
+		settings,
 		refs,
 	});
 
@@ -274,6 +274,7 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 						<ExpandedCell
 							key={`expanded-${item[idProp]}`}
 							borderColor={settings.borderColor}
+							maxHeight={settings.maxExpandedContentHeight}
 						>
 							{ expandedContent }
 						</ExpandedCell>

@@ -6,17 +6,18 @@ import { TableCellFormats, ColumnStick } from './enums';
 export interface ITableSettings {
 	fontSize?: CSSProperties['fontSize'];
 	textColor?: CSSProperties['color'];
-	rowHeight: number;
-	rowsPerBody: number;
+	rowHeight?: number;
+	rowsPerBody?: number;
 	cellPadding?: CSSProperties['padding'];
-	white: CSSProperties['color'];
-	evenRowColor: CSSProperties['color'];
-	oddRowColor: CSSProperties['color'];
-	messageRowColor: CSSProperties['color'];
-	minCellWidth: CSSProperties['width'];
-	borderColor: CSSProperties['borderColor'];
-	headerHeight: CSSProperties['height'];
-	footerHeight: CSSProperties['height'];
+	white?: CSSProperties['color'];
+	evenRowColor?: CSSProperties['color'];
+	oddRowColor?: CSSProperties['color'];
+	messageRowColor?: CSSProperties['color'];
+	minCellWidth?: CSSProperties['width'];
+	borderColor?: CSSProperties['borderColor'];
+	headerHeight?: CSSProperties['height'];
+	footerHeight?: CSSProperties['height'];
+	maxExpandedContentHeight?: CSSProperties['height'];
 }
 
 export interface IIconProps {
@@ -29,6 +30,7 @@ export interface IExpandedCellProps {
 	align?: TextAlignment;
 	bg?: CSSProperties['color'];
 	borderColor?: CSSProperties['borderColor'];
+	maxHeight?: CSSProperties['height'];
 }
 
 export interface ITableCellProps {

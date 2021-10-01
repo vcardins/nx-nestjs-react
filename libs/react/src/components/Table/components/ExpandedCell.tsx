@@ -1,12 +1,10 @@
 import React from 'react';
 
 import { IExpandedCellProps } from '../types';
-import { ExpandedTableCell, TableCellContent } from './';
+import { ExpandedTableCell } from './';
 
-export const ExpandedCell = ({ children, align, bg, borderColor }: IExpandedCellProps) => (
-	<ExpandedTableCell align={align} bg={bg} borderColor={borderColor}>
-		<TableCellContent>
-			{ children }
-		</TableCellContent>
+export const ExpandedCell = ({ children, ...props }: IExpandedCellProps) => (
+	<ExpandedTableCell {...props}>
+		{ children }
 	</ExpandedTableCell>
 );

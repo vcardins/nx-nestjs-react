@@ -83,13 +83,13 @@ export const TableCellContent = styled.span<{ align?: Positioning; bg?: CSSPrope
 	`};
 `;
 
-
 export const ExpandedTableCell = styled.div<Omit<IExpandedCellProps, 'children'>>`
 	display: grid;
 	grid-column: 1/-1;
 	align-items: center;
 	overflow: auto;
 	padding: 0.5em;
+	z-index: 4;
 
 	${({ borderColor }) => borderColor && css`
 		border: 1px solid ${borderColor};

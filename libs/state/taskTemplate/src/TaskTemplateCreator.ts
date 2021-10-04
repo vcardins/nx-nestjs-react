@@ -1,11 +1,11 @@
 import { GetState, SetState, StateCreator, UseStore } from 'zustand';
 
 import { createStore, createBaseStore, storeValues, ICrudState, ApiCallStatus, setError, setLoading } from '@xapp/state/shared';
-import { TaskTemplateInput, TaskTemplateOutput, TaskTemplateOutputMapped, KeyType, Positioning, DataFormats, IColumnHeader } from '@xapp/shared/types';
+import { TaskTemplateInput, TaskTemplateOutput, TaskTemplateOutputMapped, KeyType, Positioning, DataFormats, IColumnInfo } from '@xapp/shared/types';
 
 import { TaskTemplateStore } from './TaskTemplateStore';
 
-const headers: IColumnHeader[] = [
+const headers: IColumnInfo[] = [
 	{ key: 'roomTypeId', label: 'Room Type', width: 80, fixed: Positioning.Left },
 	{ key: 'name', label: 'Name', width: 250 },
 	{ key: 'description', label: 'Description' },

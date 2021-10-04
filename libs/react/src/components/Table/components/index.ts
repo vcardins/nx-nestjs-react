@@ -1,11 +1,11 @@
 export * from './ActionLink';
 export * from './ExpandedCell';
+export * from './ColumnHeader';
 export * from './Icons';
 export * from './Spinner';
 export * from './Loading';
 export * from './StyledComponents';
+export * from './TableRow';
 export * from './TableCell';
-export * from './TableHeader';
-
+export * from './Slot';
 export * from './Toolbar';
-export * from './Footer';

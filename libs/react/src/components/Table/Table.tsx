@@ -1,11 +1,11 @@
 import React, { useMemo, useRef } from 'react';
 
-import { Positioning, DataFormats, IColumnHeader } from '@xapp/shared/types';
+import { Positioning, DataFormats, IColumnInfo } from '@xapp/shared/types';
 import { ITableProps, ITableRefsProps, IColumnKey } from './types';
 import {
 	TableContainer,
 	Table,
-	TableHeader,
+	ColumnHeader,
 	TD,
 	TableCellContent,
 	ExpandedCell,
@@ -29,12 +29,12 @@ const MessageCell = ({ children }: { children: React.ReactElement | string }) =>
 	</ExpandedCell>
 );
 function buildColumns<T extends IColumnKey = any>(props: {
-	columns: IColumnHeader[];
+	columns: IColumnInfo[];
 	onBuildIds: ITableProps<T>['onBuildIds'];
 	addCheckbox: boolean;
 	addExpander: boolean;
 }) {
-	const getWidth = (col: IColumnHeader) => {
+	const getWidth = (col: IColumnInfo) => {
 		if ([DataFormats.Checkbox, DataFormats.Expander].includes(col.format)) {
 			return 32;
 		}
@@ -54,7 +54,7 @@ function buildColumns<T extends IColumnKey = any>(props: {
 			sortable: false,
 			filterable: false,
 			key: 'checkbox',
-		} as IColumnHeader,
+		} as IColumnInfo,
 		props.addExpander && {
 			format: DataFormats.Expander,
 			width: 32,
@@ -63,9 +63,9 @@ function buildColumns<T extends IColumnKey = any>(props: {
 			sortable: false,
 			filterable: false,
 			key: 'expander',
-		} as IColumnHeader,
+		} as IColumnInfo,
 		...props.columns,
-	].filter(Boolean) as IColumnHeader[];
+	].filter(Boolean) as IColumnInfo[];
 
 	return columns.map((col, index) => ({
 		...col,
@@ -150,7 +150,7 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 		}
 
 		return (
-			<TableHeader
+			<ColumnHeader
 				{...{ ...column, fixed }}
 				id={onBuildIds?.header?.(column.key)}
 				key={`column-${index}`}
@@ -163,7 +163,7 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 				tableHeight={refs.body.current?.offsetHeight || 'auto'}
 			>
 				<TableCellContent align={align}>{children}</TableCellContent>
-			</TableHeader>
+			</ColumnHeader>
 		);
 	}), [
 		headers,

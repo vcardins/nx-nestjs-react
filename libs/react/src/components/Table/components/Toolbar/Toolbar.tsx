@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { IColumnHeader } from '@xapp/shared/types';
+import { IColumnInfo } from '@xapp/shared/types';
 import { Dropdown, DropdownList } from '../Dropdown';
 import { Columns as TableIcon, Filters as FiltersIcon } from '../Icons';
 
@@ -12,8 +12,8 @@ const Wrapper = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
+	width: 100%;
 	padding: 0.25em 1em;
-	border-bottom: 1px solid #eee;
 	user-select: none;
 	> :not(:last-child) {
 		margin-right: 0.75em
@@ -21,7 +21,7 @@ const Wrapper = styled.div`
 `;
 
 interface ITableToolbarProps extends Pick<ITableProps, 'filtersForm' | 'id' | 'columns'> {
-	onToggleColumnDisplay?: (key: IColumnHeader['key'], visible: boolean) => void;
+	onToggleColumnDisplay?: (key: IColumnInfo['key'], visible: boolean) => void;
 }
 
 export const Toolbar = React.memo(function Toolbar(props: ITableToolbarProps) {

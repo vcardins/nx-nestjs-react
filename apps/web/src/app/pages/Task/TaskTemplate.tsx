@@ -21,7 +21,7 @@ import {
 	InlineEdit,
 	FiltersForm
 } from '@xapp/react';
-import { TaskTemplateInput, TaskTemplateOutput, Frequencies, FilterControlType, IFilterControlItem } from '@xapp/shared/types';
+import { TaskTemplateInput, TaskTemplateOutput, Frequencies, FieldType, IFieldInfo, DataFilter } from '@xapp/shared/types';
 
 import { useAppStore } from '@xapp/state';
 
@@ -89,15 +89,15 @@ const TaskTemplatePage = memo(() => {
 		setIsDrawerOpen(false);
 	}
 
-	const filterControls: IFilterControlItem[] = useMemo(() => (lookupStore?.frequencies && lookupStore?.roomTypes) && (
+	const filterControls: IFieldInfo[] = useMemo(() => (lookupStore?.frequencies && lookupStore?.roomTypes) && (
 		[
-			{ key: 'roomTypeId', type: FilterControlType.Select, label: 'Room Type', options: Object.values(lookupStore?.roomTypes).map(({ id, name }) => ({ id, name }))},
-			{ key: 'name', type: FilterControlType.Text, label: 'Name',},
-			{ key: 'estimatedCompletionTime', type: FilterControlType.Number, label: 'Completion Type' },
-			{ key: 'rewardPoints', type: FilterControlType.Number, label: 'Points' },
-			{ key: 'frequencyId', type: FilterControlType.Select, label: 'Frequency', options: Object.values(lookupStore?.frequencies).map(({ id, name }) => ({ id, name })) },
-			{ key: 'daysOfWeek', type: FilterControlType.Days, label: 'Days' },
-			{ key: 'isActive', type: FilterControlType.Boolean, label: 'Active' },
+			{ name: 'roomTypeId', type: FieldType.Select, label: 'Room Type', options: Object.values(lookupStore?.roomTypes).map(({ id, name }) => ({ id, name }))},
+			{ name: 'name', type: FieldType.Text, label: 'Name',},
+			{ name: 'estimatedCompletionTime', type: FieldType.Number, label: 'Completion Type' },
+			{ name: 'rewardPoints', type: FieldType.Number, label: 'Points' },
+			{ name: 'frequencyId', type: FieldType.Select, label: 'Frequency', options: Object.values(lookupStore?.frequencies).map(({ id, name }) => ({ id, name })) },
+			{ name: 'daysOfWeek', type: FieldType.Days, label: 'Days' },
+			{ name: 'isActive', type: FieldType.Boolean, label: 'Active' },
 		]),
 		[lookupStore?.roomTypes, lookupStore?.frequencies]
 	);

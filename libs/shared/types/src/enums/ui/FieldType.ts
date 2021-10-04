@@ -1,4 +1,4 @@
-export enum FilterControlType {
+export enum FieldType {
 	Text = 'text',
 	Select = 'select',
 	Range = 'range',

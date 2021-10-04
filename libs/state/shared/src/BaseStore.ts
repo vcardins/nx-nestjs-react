@@ -1,6 +1,6 @@
 import { GetState, SetState } from 'zustand';
 
-import { SortDirections, KeyType, FilterControlType } from '@xapp/shared/types';
+import { SortDirections, KeyType, FieldType } from '@xapp/shared/types';
 
 import { ApiCallStatus, IAuthState, ICrudState, setError, setIdle, setLoading, setSuccess } from '.';
 import { DataContext } from './DataContext';
@@ -156,9 +156,9 @@ export function createBaseStore<
 							.every((key) => {
 								const { type, value } = filters[key];
 								switch (type) {
-									case FilterControlType.Text:
+									case FieldType.Text:
 										return item[key]?.toLowerCase().indexOf(value.toLowerCase()) > -1;
-									case FilterControlType.Array:
+									case FieldType.Array:
 										return Array.isArray(value) ? value.includes(item[key]) : false;
 									default:
 										return item[key] === value;

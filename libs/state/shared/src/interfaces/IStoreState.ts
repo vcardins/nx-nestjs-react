@@ -1,4 +1,4 @@
-import { KeyType, IColumnHeader } from '@xapp/shared/types';
+import { KeyType, IColumnInfo } from '@xapp/shared/types';
 import { IAuthState, IApiCallState } from './';
 
 export interface IStoreState<TStore = any> extends IApiCallState {
@@ -10,5 +10,5 @@ export interface IStoreState<TStore = any> extends IApiCallState {
 	setCheckedItems?: (items: KeyType[]) => void;
 	expandedItems?: KeyType[];
 	setExpandedItems?: (items: KeyType | KeyType[]) => void;
-	headers?: IColumnHeader[];
+	headers?: IColumnInfo[];
 }

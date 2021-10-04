@@ -1,10 +1,10 @@
 import { useState, useMemo, useCallback, ChangeEvent, useEffect } from 'react';
 
-import { Positioning, IColumnHeader } from '@xapp/shared/types';
+import { Positioning, IColumnInfo } from '@xapp/shared/types';
 import { useColumnResize, useScrolling, useColumnSorting } from '.';
 import { ITableProps, ITableState, ITableRefsProps, IColumnKey } from '../types';
 
-const calcPosition = (pos: Positioning, collection: IColumnHeader[], column: IColumnHeader, index: number): IColumnHeader => ({
+const calcPosition = (pos: Positioning, collection: IColumnInfo[], column: IColumnInfo, index: number): IColumnInfo => ({
 	...column,
 	resizable: false,
 	[pos]: index === 0 ? index : collection.slice(0, index).reduce((result, { width }) => result + (width ?? 0), 0),
@@ -44,7 +44,7 @@ export const useTableManager = <T extends IColumnKey = any>(props: ITableProps<T
 		};
 	}, [state.columns]);
 
-	const handleColumnDisplay = useCallback((key: IColumnHeader['key'], visible: boolean) => {
+	const handleColumnDisplay = useCallback((key: IColumnInfo['key'], visible: boolean) => {
 		const index = state.columns.findIndex((col) => col.key === key);
 		const columns = [
 			...state.columns.slice(0, index),

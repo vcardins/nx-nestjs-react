@@ -1,13 +1,13 @@
 import { useCallback, useEffect, CSSProperties } from 'react';
 
-import { IColumnHeader } from '@xapp/shared/types';
+import { IColumnInfo } from '@xapp/shared/types';
 import { ITableRefsProps } from '../types';
 
 const handleTextSelection = (isMouseMoving = false) =>
 	document.body.style.userSelect = isMouseMoving ? 'none' : 'auto';
 
 interface IUseColumnResize {
-	columns: IColumnHeader[];
+	columns: IColumnInfo[];
 	refs: ITableRefsProps;
 	minCellWidth: CSSProperties['width'];
 	resizingColumnIndex: number;

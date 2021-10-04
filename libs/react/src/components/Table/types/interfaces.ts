@@ -1,6 +1,6 @@
 import { CSSProperties, ReactNode, ChangeEvent, ReactElement, MutableRefObject } from 'react';
 
-import { SortDirections, Positioning, KeyType, IColumnHeader } from '@xapp/shared/types';
+import { SortDirections, Positioning, KeyType, IColumnInfo } from '@xapp/shared/types';
 
 export interface ITableSettings {
 	fontSize?: CSSProperties['fontSize'];
@@ -42,6 +42,14 @@ export interface ITableCellProps {
 	children?: ReactNode;
 }
 
+export interface ITableRowProps {
+	id?: string;
+	bg?: CSSProperties['color'];
+	children?: ReactNode;
+	columnsWidths?: string;
+	actions?: React.ReactNode[];
+}
+
 export interface ICommonRenderer<T = any> {
 	cellProps?: ITableCellProps;
 	data?: T;
@@ -72,7 +80,7 @@ export interface IExpanderOptions {
 	onClick(): any;
 }
 
-export interface ITableHeader extends IColumnHeader {
+export interface IColumnHeader extends IColumnInfo {
 	id?: string;
 	index: number;
 	isLast: boolean;
@@ -104,7 +112,7 @@ export type IdBuilder<T> = (key: string, item: T) => string;
 export interface ITableProps<T extends IColumnKey = any> {
 	id?: string;
 	idProp?: string;
-	columns: IColumnHeader[];
+	columns: IColumnInfo[];
 	data?: T[];
 	settings?: ITableSettings;
 	checkedItems?: KeyType[];
@@ -114,6 +122,7 @@ export interface ITableProps<T extends IColumnKey = any> {
 	noRecordsMessage?: string;
 	filtersForm?: ReactNode;
 	customRenderers?: CustomRenderers<T>;
+	actions?: ((item: T) => React.ReactNode)[];
 	onCheckItems?: (ids: KeyType | KeyType[]) => void;
 	onExpandItems?: (ids: KeyType | KeyType[]) => void;
 	onGetExpandedContent?: (item: T) => ReactNode;
@@ -128,7 +137,7 @@ export interface ITableProps<T extends IColumnKey = any> {
 }
 
 export interface ITableState<T extends IColumnKey> {
-	columns: IColumnHeader[];
+	columns: IColumnInfo[];
 	data?: T[];
 	loading: boolean;
 	total: number;
@@ -190,7 +199,7 @@ export interface IPendingUpdates<T> extends Record<IKey, T> {}
 export type RenderProps<Item> = {
 	// -- Table Data
 	// tableProps: { itemsLength: number; };
-	column: IColumnHeader;
+	column: IColumnInfo;
 	item: Item;
 	cellData?: ReactNode;
 	cellDataPlaceholder?: ReactNode;
@@ -227,7 +236,7 @@ export interface IDataTableProps<Item, TFilter = any> {
 	/** Items to be rendered in the table */
 	items: ModelKey<Item>[];
 	/** Items header config */
-	headers: IColumnHeader[] | (IColumnHeader[] | undefined)[];
+	headers: IColumnInfo[] | (IColumnInfo[] | undefined)[];
 	/** Id of items which should be fixed to the top */
 	fixedRowIds?: number[];
 	/** Optional background-color to be applied to fixed rows */
@@ -286,7 +295,7 @@ export interface IDataTableProps<Item, TFilter = any> {
 		checkbox?: (item: ModelKey<Item>) => string;
 		checkAll?: () => string;
 		cell?: (item: ModelKey<Item>, columnKey: string) => string;
-		header?(key: IColumnHeader['key']): string;
+		header?(key: IColumnInfo['key']): string;
 	};
 	/** Method to be called when the table is scrolled along the x-axis */
 	onHorizontalScroll?: () => boolean;

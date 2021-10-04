@@ -1,3 +1,3 @@
-import { FilterControlType } from '../enums';
+import { FieldType } from '../enums';
 
-export type DataFilter = Record<string, { value: any; type: FilterControlType }>;
+export type DataFilter = Record<string, { value: any; type: FieldType }>;

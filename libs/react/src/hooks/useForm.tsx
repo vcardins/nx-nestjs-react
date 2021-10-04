@@ -26,7 +26,7 @@ interface IUseFormResponse<TInput> {
 		event?: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | { target: { name: string; value: string }}
 	) => void;
 
-	onFormChange: (data: Partial<TInput>) => void;
+	onUpdateData: (data: TInput | Partial<TInput>, isReplace?: boolean) => void;
 }
 
 const isBoolean = (val: string | number) => {
@@ -76,7 +76,11 @@ export function useForm<TInput, TTransformedInput = TInput>(props: IUseFormProps
 			setSuccess(false);
 		}
 	};
-	const handleFormChange = (newData: Partial<TInput>) => setFormData({ ...data, ...newData });
+
+	const handleUpdateData = (newData: TInput | Partial<TInput>, isReplace: boolean) => {
+		setFormData(isReplace ? (newData as TInput) : { ...data, ...newData });
+	};
+
 	const handleSubmit = async () => {
 		setSubmitting(true);
 
@@ -128,7 +132,7 @@ export function useForm<TInput, TTransformedInput = TInput>(props: IUseFormProps
 		submitting,
 		data,
 		onFieldChange: handleFieldChange,
-		onFormChange: handleFormChange,
+		onUpdateData: handleUpdateData,
 		onSubmit: handleSubmit,
 		onReset: handleReset,
 	};

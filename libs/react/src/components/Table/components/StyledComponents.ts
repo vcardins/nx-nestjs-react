@@ -2,7 +2,7 @@ import { CSSProperties } from 'react';
 import styled, { css } from 'styled-components';
 
 import { Positioning } from '@xapp/shared/types';
-import { ITableSettings, IExpandedCellProps } from '../types';
+import { ITableSettings, IExpandedCellProps, ITableRowProps } from '../types';
 
 const shadowStyle = css`
 	position: absolute;

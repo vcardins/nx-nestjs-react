@@ -67,7 +67,7 @@ const TaskPage = memo(() => {
 
 	useEffect(() => {
 		if (selectedTemplate?.id) {
-			form.onFormChange({
+			form.onUpdateData({
 				frequencyId: selectedTemplate?.frequencyId,
 				estimatedCompletionTime: selectedTemplate?.estimatedCompletionTime,
 				rewardPoints: selectedTemplate?.rewardPoints,
@@ -78,7 +78,7 @@ const TaskPage = memo(() => {
 
 	useEffect(() => {
 		if (settingsState.activeHousehold) {
-			form.onFormChange({
+			form.onUpdateData({
 				householdId: settingsState.activeHousehold,
 			});
 		}

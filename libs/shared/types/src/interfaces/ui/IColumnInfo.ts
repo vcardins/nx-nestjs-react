@@ -1,7 +1,7 @@
 import { MutableRefObject } from 'react';
 import { Positioning, SortDirections, DataFormats } from '../../enums';
 
-export interface IColumnHeader {
+export interface IColumnInfo {
 	align?: Positioning;
 	editable?: boolean;
 	fixed?: Positioning;

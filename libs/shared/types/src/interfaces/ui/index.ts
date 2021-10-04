@@ -1,8 +1,8 @@
 
 export * from './IBadge';
-export * from './IColumnHeader';
+export * from './IColumnInfo';
 export * from './IDropdownItem';
-export * from './IFilterControl';
+export * from './IFieldInfo';
 export * from './IHtmlField';
 export * from './IMenuItem';
 export * from './INavItem';

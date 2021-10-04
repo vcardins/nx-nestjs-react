@@ -54,11 +54,11 @@ export const UpAndDownArrows = (props: IIconProps) => (
 
 const LoaderWrapper = styled(IconWrapper)<{ speed?: number }>`
 	[role="spinner"] {
-		animation: loader ${({ speed = 2 }) => `${speed}s`} infinite linear;
+		animation: spinner ${({ speed = 2 }) => `${speed}s`} infinite linear;
 		transform: translateZ(0);
 	}
 
-	@keyframes loader{
+	@keyframes spinner{
 		0% { transform: rotate(0deg); }
 		100% { transform: rotate(360deg); }
 	}

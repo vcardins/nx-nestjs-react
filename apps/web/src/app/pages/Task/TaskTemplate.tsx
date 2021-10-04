@@ -4,7 +4,8 @@ import { toast } from 'react-toastify';
 /* eslint-disable camelcase */
 import { ic_delete } from 'react-icons-kit/md/ic_delete';
 import { ic_save } from 'react-icons-kit/md/ic_save';
-import { ic_refresh } from 'react-icons-kit/md/ic_refresh';
+import { ic_close } from 'react-icons-kit/md/ic_close';
+import { ic_edit } from 'react-icons-kit/md/ic_edit';
 /* eslint-enable camelcase */
 
 import {
@@ -102,6 +103,18 @@ const TaskTemplatePage = memo(() => {
 		[lookupStore?.roomTypes, lookupStore?.frequencies]
 	);
 
+	const handleEditItem = (item: TaskTemplateOutput) => {
+		form.onUpdateData(item, true);
+		setTimeout(() => {
+			setIsDrawerOpen(true);
+		}, 100);
+	};
+
+	const handleDeleteItem = (item: TaskTemplateOutput) => {
+		if (confirm('Are you sure that you want to delete this item')) {
+			remove(item.id);
+		}
+	};
 
 	// Object.keys(mappedItems[roomTypeId]).forEach((frequencyId) => {
 	// 	const frequency = lookupStore?.frequencies?.[frequencyId];
@@ -118,7 +131,7 @@ const TaskTemplatePage = memo(() => {
 			<Drawer
 				id="task-template-form"
 				isOpen={isDrawerOpen}
-				size="300px"
+				size="400px"
 				onClose={handleClosePanel}
 				position="right"
 				overflow="hidden"
@@ -132,8 +145,8 @@ const TaskTemplatePage = memo(() => {
 							<Submit loading={form.submitting} success={form.success}>
 								<Icon icon={ic_save} />
 							</Submit>
-							<Button onClick={() => read?.()}>
-								<Icon icon={ic_refresh} />
+							<Button onClick={handleClosePanel}>
+								<Icon icon={ic_close} />
 							</Button>
 						</FieldGroup>
 					}
@@ -142,7 +155,7 @@ const TaskTemplatePage = memo(() => {
 						ref={formRef}
 						data={form.data}
 						onChange={form.onFieldChange}
-						onSubmit={() => form.onSubmit()}
+						onSubmit={form.onSubmit}
 						schema={validationSchema}
 					>
 						<TextInput
@@ -157,7 +170,7 @@ const TaskTemplatePage = memo(() => {
 				</Panel>
 			</Drawer>
 			<DataTable
-				id="task-template-data-table"
+				id="task-template-table"
 				isLoading={status === ApiCallStatus.Loading}
 				columns={headers}
 				data={filteredItems ? filteredItems : items}
@@ -168,6 +181,10 @@ const TaskTemplatePage = memo(() => {
 				onExpandItems={setExpandedItems}
 				customRenderers={getCustomRenderers()}
 				onGetExpandedContent={getExpandedContent}
+				actions={[
+					(item: TaskTemplateOutput) => <Icon id="edit" title="Edit" icon={ic_edit} onClick={() => handleEditItem(item)} />,
+					(item: TaskTemplateOutput) => <Icon id="delete" title="Delete" icon={ic_delete} onClick={() => handleDeleteItem(item)} />,
+				]}
 				filtersForm={(
 					<FormBuilder<Record<string, any>, DataFilter>
 						id="filters-form"

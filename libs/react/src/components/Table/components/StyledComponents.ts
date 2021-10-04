@@ -56,12 +56,6 @@ export const RightShadow = styled.div<{ right: number }>`
 	background-image: linear-gradient(270deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
 `;
 
-export const TR = styled.div<{ bg?: CSSProperties['color'] }>`
-	> div {
-		background-color: ${({ bg }) => bg};
-	}
-`;
-
 export const THead = styled.div`
 	display: grid;
 `;
@@ -81,6 +75,48 @@ export const TableCellContent = styled.span<{ align?: Positioning; bg?: CSSPrope
 	${({ bg = 'transparent' }) => css`
 		background-color: ${bg};
 	`};
+`;
+
+export const Actions = styled.div`
+	position: absolute;
+	right: 0;
+	top: 0;
+	height: 100%;
+	gap: 0.5em;
+	padding: 0 0.5em;
+	display: flex;
+	align-items: center;
+	z-index: 5;
+	opacity: 0;
+	transition: opacity 0.25s;
+
+	> * {
+		background-color: #fff;
+		border-radius: 50%;
+		border: 1px solid #ccc;
+		cursor: pointer;
+		padding: 0.25em;
+		svg {
+			fill: #4d8ee1;
+		}
+		&:hover svg {
+			animation: spinner 2s infinite linear;
+			transform: translateZ(0);
+		}
+	}
+`;
+
+export const TableRow = styled.div<{ bg: ITableRowProps['bg'] }>`
+	position: relative;
+	> [role='td'] {
+		background-color: ${({ bg }) => bg};
+	}
+
+	&:hover {
+		${Actions} {
+			opacity: 1;
+		}
+	}
 `;
 
 export const ExpandedTableCell = styled.div<Omit<IExpandedCellProps, 'children'>>`
@@ -127,8 +163,8 @@ export const TableContainer = styled.div<{
 		z-index: 1;
 		overflow: auto;
 
-		${TR},
-		${THead} {
+		[role='tr'],
+		[role='thead'] {
 			display: grid;
 			grid-template-rows: repeat(${({ rows }) => rows}, min-content) max-content;
 		}
@@ -141,7 +177,7 @@ export const TableContainer = styled.div<{
 			}
 		`}
 
-		${THead} {
+		[role='thead'] {
 			> div {
 				background-color: ${({ settings }) => settings.white};
 			}

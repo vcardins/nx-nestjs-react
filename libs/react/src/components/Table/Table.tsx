@@ -88,7 +88,7 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 		},
 	};
 	const settings = { ...defaultSettings, ...props.settings };
-	const { idProp = 'id', onBuildIds, noRecordsMessage = 'No Records found' } = props;
+	const { idProp = 'id', onBuildIds, actions, noRecordsMessage = 'No Records found' } = props;
 	const {
 		data,
 		headers,
@@ -262,7 +262,8 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 					key={rowIndex}
 					id={onBuildIds?.row?.(item)}
 					bg={bgColor}
-					style={{ gridTemplateColumns }}
+					columnsWidths={gridTemplateColumns}
+					actions={actions.map((action) => action(item))}
 				>
 					{columns}
 				</TR>,
@@ -270,7 +271,11 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 
 			if (expandedContent) {
 				result.push(
-					<TR bg={bgColor} key={`${rowIndex}-expanded`}>
+					<TR
+						id={`${onBuildIds?.row?.(item)}-expanded`}
+						bg={bgColor}
+						key={`${rowIndex}-expanded`}
+					>
 						<ExpandedCell
 							key={`expanded-${item[idProp]}`}
 							borderColor={settings.borderColor}
@@ -309,12 +314,12 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 			showFooter={true}
 		>
 			<Slot position="top">
-			<Toolbar
-				id={`${props.id}-toolbar`}
-				columns={headers}
-				onToggleColumnDisplay={onToggleColumnDisplay}
-				filtersForm={props.filtersForm}
-			/>
+				<Toolbar
+					id={`${props.id}-toolbar`}
+					columns={headers}
+					onToggleColumnDisplay={onToggleColumnDisplay}
+					filtersForm={props.filtersForm}
+				/>
 			</Slot>
 			<Table role="table" id={props.id} ref={refs.wrapper}>
 				<TopShadow top={state.rowHeight} ref={refs.shadow.top} />

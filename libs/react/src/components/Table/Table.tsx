@@ -17,8 +17,8 @@ import {
 	TopShadow,
 	RightShadow,
 	LeftShadow,
+	Slot,
 	Toolbar,
-	Footer,
 } from './components';
 import { useTableManager, useRenderer as renderers } from './hooks';
 import { defaultSettings } from './settings';
@@ -308,25 +308,27 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 			showHeader={true}
 			showFooter={true}
 		>
+			<Slot position="top">
 			<Toolbar
 				id={`${props.id}-toolbar`}
 				columns={headers}
 				onToggleColumnDisplay={onToggleColumnDisplay}
 				filtersForm={props.filtersForm}
 			/>
-			<Table id={props.id} role="table" ref={refs.wrapper}>
+			</Slot>
+			<Table role="table" id={props.id} ref={refs.wrapper}>
 				<TopShadow top={state.rowHeight} ref={refs.shadow.top} />
 				<LeftShadow left={shadowLeft} ref={refs.shadow.left} />
 				<RightShadow right={shadowRight} ref={refs.shadow.right} />
-				<THead ref={refs.header} style={{ gridTemplateColumns }}>
+				<THead role="thead" ref={refs.header} style={{ gridTemplateColumns }}>
 					{ tableHeader }
 				</THead>
-				<TBody ref={refs.body}>
+				<TBody role="tbody" ref={refs.body}>
 					{ tableBody }
 				</TBody>
 				<BottomShadow ref={refs.shadow.bottom}/>
 			</Table>
-			<Footer id={`${props.id}-footer`} columns={headers}/>
+			<Slot position="bottom" borderless={true} />
 		</TableContainer>
 	);
 }

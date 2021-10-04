@@ -8,7 +8,7 @@ export * from './Drawer';
 export * from './Dropdown/types';
 export * from './Error';
 export * from './Form';
-export * from './FiltersForm';
+export * from './FormBuilder';
 export * from './Icon';
 export * from './InlineEdit';
 export * from './Layout';

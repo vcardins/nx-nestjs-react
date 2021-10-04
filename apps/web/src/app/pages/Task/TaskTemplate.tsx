@@ -19,7 +19,7 @@ import {
 	DataTable, RenderProps,
 	Drawer,
 	InlineEdit,
-	FiltersForm
+	FormBuilder
 } from '@xapp/react';
 import { TaskTemplateInput, TaskTemplateOutput, Frequencies, FieldType, IFieldInfo, DataFilter } from '@xapp/shared/types';
 
@@ -102,13 +102,6 @@ const TaskTemplatePage = memo(() => {
 		[lookupStore?.roomTypes, lookupStore?.frequencies]
 	);
 
-	const filtersForm = useMemo(() => (
-		<FiltersForm
-			filterControls={filterControls}
-			onClearFilters={() => filter(null)}
-			onSubmit={filter}
-		/>
-	), [filterControls, filter]);
 
 	// Object.keys(mappedItems[roomTypeId]).forEach((frequencyId) => {
 	// 	const frequency = lookupStore?.frequencies?.[frequencyId];
@@ -175,7 +168,15 @@ const TaskTemplatePage = memo(() => {
 				onExpandItems={setExpandedItems}
 				customRenderers={getCustomRenderers()}
 				onGetExpandedContent={getExpandedContent}
-				filtersForm={filtersForm}
+				filtersForm={(
+					<FormBuilder<Record<string, any>, DataFilter>
+						id="filters-form"
+						tag="filters"
+						fields={filterControls}
+						onSubmit={filter}
+						onAfterReset={() => filter(null)}
+					/>
+				)}
 				settings={settings}
 			/>
 		</Panel>

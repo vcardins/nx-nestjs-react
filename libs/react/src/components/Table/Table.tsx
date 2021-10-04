@@ -28,6 +28,7 @@ const MessageCell = ({ children }: { children: React.ReactElement | string }) =>
 		{ children }
 	</ExpandedCell>
 );
+
 function buildColumns<T extends IColumnKey = any>(props: {
 	columns: IColumnInfo[];
 	onBuildIds: ITableProps<T>['onBuildIds'];

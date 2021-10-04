@@ -20,15 +20,15 @@ import {
 	DataTable, RenderProps,
 	Drawer,
 	InlineEdit,
-	FormBuilder
+	FormBuilder,
+	Popover,
 } from '@xapp/react';
 import { TaskTemplateInput, TaskTemplateOutput, Frequencies, FieldType, IFieldInfo, DataFilter } from '@xapp/shared/types';
 
 import { useAppStore } from '@xapp/state';
+import { ApiCallStatus } from '@xapp/state/shared';
 
 import { validationSchema } from './schema';
-import { TaskTemplateItem, TaskTemplateItemInfo, TaskTemplateIcon } from './components/TaskTemplate';
-import { ApiCallStatus } from '@xapp/state/shared';
 
 const initialValues: TaskTemplateInput = {
 	name: '',
@@ -61,7 +61,7 @@ const TaskTemplatePage = memo(() => {
 
 	const formRef = useRef({ valid: false });
 	const {
-		isApiReady, headers, mappedItems, items, read, save, remove, filter,
+		isApiReady, headers, /*mappedItems,*/ items, read, save, remove, filter,
 		status, filteredItems, checkedItems, setCheckedItems, expandedItems, setExpandedItems,
 		error, clearError,
 	} = useAppStore((state) => state.taskTemplate);
@@ -108,12 +108,6 @@ const TaskTemplatePage = memo(() => {
 		setTimeout(() => {
 			setIsDrawerOpen(true);
 		}, 100);
-	};
-
-	const handleDeleteItem = (item: TaskTemplateOutput) => {
-		if (confirm('Are you sure that you want to delete this item')) {
-			remove(item.id);
-		}
 	};
 
 	// Object.keys(mappedItems[roomTypeId]).forEach((frequencyId) => {
@@ -183,10 +177,22 @@ const TaskTemplatePage = memo(() => {
 				onGetExpandedContent={getExpandedContent}
 				actions={[
 					(item: TaskTemplateOutput) => <Icon id="edit" title="Edit" icon={ic_edit} onClick={() => handleEditItem(item)} />,
-					(item: TaskTemplateOutput) => <Icon id="delete" title="Delete" icon={ic_delete} onClick={() => handleDeleteItem(item)} />,
+					(item: TaskTemplateOutput) => (
+						<Popover trigger={<Icon id="delete" title="Delete" icon={ic_delete} />}>
+							{(onClose) => (
+								<div>
+									<div>Confirm item deletion?</div>
+									<FieldGroup sided>
+										<Button onClick={() => remove(item.id)}>Delete</Button>
+										<Button onClick={onClose}>Cancel</Button>
+									</FieldGroup>
+								</div>
+							)}
+						</Popover>
+					)
 				]}
 				filtersForm={(
-					<FormBuilder<Record<string, any>, DataFilter>
+					<FormBuilder<Record<string, TaskTemplateInput>, DataFilter>
 						id="filters-form"
 						tag="filters"
 						fields={filterControls}
@@ -221,29 +227,30 @@ const TaskTemplatePage = memo(() => {
 		);
 	}
 
-	function renderTaskTemplate(task: TaskTemplateOutput) {
-		return (
-			<TaskTemplateItem key={task.id}>
-				<TaskTemplateItemInfo>
-					<InlineEdit text={task.name} onSetText={(name) => save({ ...task, name }, task.id)} />
-					<TaskTemplateIcon icon={ic_delete} onClick={() => remove(task.id)} />
-				</TaskTemplateItemInfo>
-				{/* <TaskTemplateItemInvite>
-					<input
-						type="text"
-						name="invitation-firstName"
-						value={form.formData.invitation.firstName}
-					/>
-					<input
-						type="text"
-						name="invitation-email"
-						value={form.formData.invitation.email}
-					/>
-					<TaskTemplateIcon icon={ic_save} onClick={() => invite({ taskId: task.id, ...form.formData.invitation })} />
-				</TaskTemplateItemInvite> */}
-			</TaskTemplateItem>
-		);
-	}
+// import { TaskTemplateItem, TaskTemplateItemInfo, TaskTemplateIcon } from './components/TaskTemplate';
+// function renderTaskTemplate(task: TaskTemplateOutput) {
+// 	return (
+// 		<TaskTemplateItem key={task.id}>
+// 			<TaskTemplateItemInfo>
+// 				<InlineEdit text={task.name} onSetText={(name) => save({ ...task, name }, task.id)} />
+// 				<TaskTemplateIcon icon={ic_delete} onClick={() => remove(task.id)} />
+// 			</TaskTemplateItemInfo>
+// 			{/* <TaskTemplateItemInvite>
+// 				<input
+// 					type="text"
+// 					name="invitation-firstName"
+// 					value={form.formData.invitation.firstName}
+// 				/>
+// 				<input
+// 					type="text"
+// 					name="invitation-email"
+// 					value={form.formData.invitation.email}
+// 				/>
+// 				<TaskTemplateIcon icon={ic_save} onClick={() => invite({ taskId: task.id, ...form.formData.invitation })} />
+// 			</TaskTemplateItemInvite> */}
+// 		</TaskTemplateItem>
+// 	);
+// }
 });
 
 export default TaskTemplatePage;

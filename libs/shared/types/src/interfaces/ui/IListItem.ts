@@ -2,10 +2,12 @@ import { IBadge } from './IBadge';
 import { IRoute } from './IRoute';
 import { DropdownItemTypes } from '../../enums/ui';
 
-export interface IDropdownItem {
+export interface IListItem {
 	id?: string;
 	type?: DropdownItemTypes;
-	title?: string;
+	label?: string;
+	disabled?: boolean;
+	value?: string | number;
 	icon?: string;
 	auth?: string[];
 	badge?: IBadge;
@@ -13,7 +15,7 @@ export interface IDropdownItem {
 	href?: string;
 	onClick?: () => void;
 	target?: string;
-	children?: IDropdownItem[];
+	children?: IListItem[];
 	order?: number;
 	hide?: boolean;
 	iconOnly?: boolean;

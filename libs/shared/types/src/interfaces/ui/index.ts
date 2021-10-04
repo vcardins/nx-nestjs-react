@@ -1,9 +1,9 @@
 
 export * from './IBadge';
 export * from './IColumnInfo';
-export * from './IDropdownItem';
 export * from './IFieldInfo';
 export * from './IHtmlField';
+export * from './IListItem';
 export * from './IMenuItem';
 export * from './INavItem';
 export * from './INavProps';

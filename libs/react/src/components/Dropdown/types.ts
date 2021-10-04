@@ -1,26 +1,17 @@
 import React from 'react';
 
-import { IDropdownItem } from '@xapp/shared/types';
+import { IListItem } from '@xapp/shared/types';
+import { IPopoverProps } from '../Popover/types';
 
 export enum DropdownSizeStyle {
 	Small = 'small',
 	Default = 'default',
 }
 
-export interface IDropdownProps {
-	trigger?: React.ReactElement;
-	children?: (onClose: () => void) => React.ReactElement;
-	size?: DropdownSizeStyle;
-	label?: string;
-	hideChevron?: boolean;
-	position?: 'right' | 'left';
-	highlightOnHover?: boolean;
-}
-
-export interface IDropdownListProps extends Omit<IDropdownProps, 'children'> {
+export interface IDropdownListProps extends Omit<IPopoverProps, 'children'> {
 	emptyValueLabel?: string;
 	selectedItem?: string;
-	options: IDropdownItem[];
+	options: IListItem[];
 	disabled?: boolean;
 	size?: DropdownSizeStyle;
 	closeOnSelect?: boolean;

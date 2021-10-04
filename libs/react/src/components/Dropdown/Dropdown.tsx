@@ -1,33 +1,31 @@
 /* eslint-disable react/display-name */
-import React, { useState, useRef } from 'react';
+import React from 'react';
 
-import { useOuterClickNotifier } from '../../hooks/useOuterClickNotifier';
-import { DropdownWrapper, DropdownContent, DropdownLabel, DropdownContainer, DropdownTrigger } from './styles';
-import { IDropdownProps } from './types';
+import { DropdownItemTypes, Positioning, IListItem } from '@xapp/shared/types';
+import { Popover, ListItems } from '../';
+import { IDropdownListProps } from './types';
 
-export const Dropdown = (props: IDropdownProps) => {
-	const { trigger, children, size, label, position = 'right', hideChevron } = props;
-	const innerRef = useRef(null);
-	const [active, setActive] = useState(false);
-	const toggleShow = () => setActive(!active);
+export const Dropdown = (props: IDropdownListProps) => {
+	const { children, hideChevron, options = [], emptyValueLabel, position = Positioning.Right } = props;
 
-	useOuterClickNotifier(
-		() => setActive(false),
-		innerRef,
-	);
+	if (!options.length) {
+		return null;
+	}
+
+	const updatedOptions: IListItem[] = !emptyValueLabel
+		? options
+		: [{ id: null, type: DropdownItemTypes.Divider, label: emptyValueLabel } as IListItem].concat(options);
 
 	return (
-		<DropdownWrapper
-			ref={innerRef}
+		<Popover
 			hideChevron={hideChevron}
-			size={size}
-			highlightOnHover={false}
+			trigger={children}
+			position={position}
 		>
-			<DropdownTrigger onClick={toggleShow}>{ trigger }</DropdownTrigger>
-			<DropdownContent data-active={active} position={position}>
-				{label && <DropdownLabel>{label}</DropdownLabel>}
-				{ children(toggleShow) }
-			</DropdownContent>
-		</DropdownWrapper>
+			<ListItems
+				{...props}
+				items={updatedOptions}
+			/>
+		</Popover>
 	);
 };

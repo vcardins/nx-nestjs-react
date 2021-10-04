@@ -2,7 +2,7 @@ import { CSSProperties } from 'react';
 import styled, { css } from 'styled-components';
 
 import { Positioning } from '@xapp/shared/types';
-import { ITableSettings, IExpandedCellProps, ITableRowProps } from '../types';
+import { ITableSettings, IExpandedCellProps } from '../types';
 
 const shadowStyle = css`
 	position: absolute;
@@ -106,7 +106,7 @@ export const Actions = styled.div`
 	}
 `;
 
-export const TableRow = styled.div<{ bg: ITableRowProps['bg'] }>`
+export const TableRow = styled.div<{ bg: CSSProperties['color'] }>`
 	position: relative;
 	> [role='td'] {
 		background-color: ${({ bg }) => bg};

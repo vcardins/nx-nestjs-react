@@ -42,12 +42,25 @@ export interface ITableCellProps {
 	children?: ReactNode;
 }
 
-export interface ITableRowProps {
+type SharedTableProps =
+	'idProp'
+	| 'expandedItems'
+	| 'checkedItems'
+	| 'onBuildIds'
+	| 'onGetExpandedContent'
+	| 'onCheckItems'
+	| 'columns'
+	| 'customRenderers'
+	| 'onExpandItems';
+
+export interface ITableRowProps<T> extends Pick<ITableProps, SharedTableProps>{
 	id?: string;
+	index: number;
+	columnsWidths?: string;
 	bg?: CSSProperties['color'];
 	children?: ReactNode;
-	columnsWidths?: string;
-	actions?: React.ReactNode[];
+	actions?: ReactNode[];
+	item: T;
 }
 
 export interface ICommonRenderer<T = any> {
@@ -122,7 +135,7 @@ export interface ITableProps<T extends IColumnKey = any> {
 	noRecordsMessage?: string;
 	filtersForm?: ReactNode;
 	customRenderers?: CustomRenderers<T>;
-	actions?: ((item: T) => React.ReactNode)[];
+	actions?: ((item: T) => ReactNode)[];
 	onCheckItems?: (ids: KeyType | KeyType[]) => void;
 	onExpandItems?: (ids: KeyType | KeyType[]) => void;
 	onGetExpandedContent?: (item: T) => ReactNode;

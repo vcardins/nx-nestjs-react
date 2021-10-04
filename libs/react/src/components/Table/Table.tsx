@@ -6,7 +6,6 @@ import {
 	TableContainer,
 	Table,
 	ColumnHeader,
-	TD,
 	TableCellContent,
 	ExpandedCell,
 	THead,
@@ -19,6 +18,7 @@ import {
 	LeftShadow,
 	Slot,
 	Toolbar,
+	TableRow,
 } from './components';
 import { useTableManager, useRenderer as renderers } from './hooks';
 import { defaultSettings } from './settings';
@@ -113,12 +113,10 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 		refs,
 	});
 
-
 	const gridTemplateColumns = useMemo(() => headers.map(({ width, hidden }) => {
 		if (hidden) return;
 		return width ? ` ${width}px` : ' auto';
 	}).filter(Boolean).join(' '), [headers]);
-
 
 	const tableHeader = useMemo(() => headers.filter(({ hidden }) => !hidden).map((column, index) => {
 		let children: React.ReactElement;
@@ -191,87 +189,28 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 		}
 
 		return data.reduce((result, item, rowIndex) => {
-			let children: React.ReactElement;
-			let align: Positioning;
-			let fixed: Positioning;
-			let cellId: string;
-
 			const isExpanded = props.expandedItems.includes(item[idProp]);
 			const expandedContent = isExpanded ? props.onGetExpandedContent?.(item) : null;
-
-			// eslint-disable-next-line no-param-reassign
-			const columns = headers.filter(({ hidden }) => !hidden).map((column, colIndex) => {
-				switch (column.format) {
-					case DataFormats.Checkbox:
-						cellId = onBuildIds?.cell?.('checkbox', item);
-						align = Positioning.Center;
-						fixed = Positioning.Left;
-						children = props.onCheckItems
-							? renderers[DataFormats.Checkbox]({
-								id: onBuildIds?.checkbox?.(column.key, item),
-								fixed: Positioning.Left,
-								checked: props.checkedItems?.includes(item[idProp]),
-								onChange: () => props.onCheckItems(item[idProp]),
-							})
-							: null;
-						break;
-					case DataFormats.Expander:
-						cellId = onBuildIds?.cell?.('expander', item);
-						align = Positioning.Center;
-						fixed = Positioning.Left;
-						children = (props.onExpandItems && props.onGetExpandedContent)
-							? renderers[DataFormats.Expander]({
-								id: onBuildIds?.expander?.(column.key, item),
-								fixed: Positioning.Left,
-								isExpanded: props.expandedItems?.includes(item[idProp]),
-								onClick: () => props.onExpandItems(item[idProp]),
-							})
-							: null;
-						break;
-					default:
-						cellId = onBuildIds?.cell?.(column.key, item);
-						align = column.align;
-						fixed = column.fixed;
-						const defaultRenderer = renderers[column.format ?? DataFormats.String];
-						const customRenderer = props.customRenderers?.[column.key];
-						const data = customRenderer ? customRenderer({ item, column }) : item[column.key];
-						children = defaultRenderer({ data });
-						break;
-				}
-
-				return (
-					<TD
-						id={cellId}
-						key={`${rowIndex}-${colIndex}`}
-						fixed={fixed}
-						left={column.left}
-						right={column.right}
-					>
-						<TableCellContent align={align}>
-							{ children }
-						</TableCellContent>
-					</TD>
-				);
-			});
-
 			const bgColor = rowIndex % 2 === 0 ? settings.evenRowColor : settings.oddRowColor;
 
 			// eslint-disable-next-line no-param-reassign
 			result = result.concat(
-				<TR
+				<TR<T>
+					{...props}
+					index={rowIndex}
 					key={rowIndex}
 					id={onBuildIds?.row?.(item)}
 					bg={bgColor}
+					item={item}
 					columnsWidths={gridTemplateColumns}
 					actions={actions.map((action) => action(item))}
-				>
-					{columns}
-				</TR>,
+					columns={state.columns}
+				/>,
 			);
 
 			if (expandedContent) {
 				result.push(
-					<TR
+					<TableRow
 						id={`${onBuildIds?.row?.(item)}-expanded`}
 						bg={bgColor}
 						key={`${rowIndex}-expanded`}
@@ -283,7 +222,7 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 						>
 							{ expandedContent }
 						</ExpandedCell>
-					</TR>,
+					</TableRow>,
 				);
 			}
 
@@ -313,7 +252,7 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 			showHeader={true}
 			showFooter={true}
 		>
-			<Slot position="top">
+			<Slot position={Positioning.Top}>
 				<Toolbar
 					id={`${props.id}-toolbar`}
 					columns={headers}
@@ -333,7 +272,7 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 				</TBody>
 				<BottomShadow ref={refs.shadow.bottom}/>
 			</Table>
-			<Slot position="bottom" borderless={true} />
+			<Slot position={Positioning.Bottom} borderless={true} />
 		</TableContainer>
 	);
 }

@@ -51,7 +51,6 @@ export const useTableManager = <T extends IColumnKey = any>(props: ITableProps<T
 			{ ...state.columns[index], hidden: !visible },
 			...state.columns.slice(index + 1),
 		];
-		console.log(state.columns);
 
 		setState((prevState) => ({
 			...prevState,

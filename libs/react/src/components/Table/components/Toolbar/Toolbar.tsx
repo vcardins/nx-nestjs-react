@@ -2,11 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { IColumnInfo } from '@xapp/shared/types';
-import { Dropdown, DropdownList } from '../Dropdown';
+import { Popover } from '../../../Popover';
+import { ListItems } from '../../../ListItems';
+import { ITableProps } from '../../types';
+
 import { Columns as TableIcon, Filters as FiltersIcon } from '../Icons';
 
 import { useColumnToggle } from './useColumnToggle';
-import { ITableProps } from '../../types';
 
 const Wrapper = styled.div`
 	display: flex;
@@ -38,27 +40,25 @@ export const Toolbar = React.memo(function Toolbar(props: ITableToolbarProps) {
 	return (
 		<Wrapper id={id}>
 			{ showItemsFilter && (
-				<Dropdown
+				<Popover
 					trigger={<FiltersIcon/>}
 					padded={false}
 					title="Filters"
 				>
 					{ filtersForm }
-				</Dropdown>
+				</Popover>
 			)}
 			{showColumnDisplayToggle && (
-				<Dropdown
+				<Popover
 					title="Columns Toggler"
 					trigger={<TableIcon/>}
 				>
-					<DropdownList
+					<ListItems
+						{...columnsToggler}
 						showCheckbox={true}
-						columns={columnsToggler.columnsDisplay}
-						options={columnsToggler.options}
-						selectedItems={columnsToggler.selectedItems}
 						onSelect={onToggleColumnDisplay}
 					/>
-				</Dropdown>
+				</Popover>
 			)}
 		</Wrapper>
 	);

@@ -14,7 +14,7 @@ import { ic_mail } from 'react-icons-kit/md/ic_mail';
 import { ic_check } from 'react-icons-kit/md/ic_check';
 /* eslint-enable camelcase */
 
-import { Panel, Form, TextInput, FieldGroup, Submit, useForm, Button, Icon, InlineEdit, Dropdown, Drawer } from '@xapp/react';
+import { Panel, Form, TextInput, FieldGroup, Submit, useForm, Button, Icon, InlineEdit, Popover, Drawer } from '@xapp/react';
 import { HouseholdInput, HouseholdMemberOutput, HouseholdOutput, HouseholdRoomOutput } from '@xapp/shared/types';
 
 import { useAppStore } from '@xapp/state';
@@ -151,17 +151,17 @@ const HouseholdPage = memo(() => {
 						text={household.name}
 						onSetText={(name) => (name !== household.name ? handleSave(name, household) : undefined)}
 					/>
-					<Dropdown hideChevron={true} trigger={<HouseholdIcon icon={ic_home} />}>
+					<Popover trigger={<HouseholdIcon icon={ic_home} />}>
 						{(onClose) => (
 							<HouseholdRoom onClose={onClose} householdId={household.id} items={household.rooms} />
 						)}
-					</Dropdown>
-					<Dropdown hideChevron={true} trigger={<HouseholdIcon icon={ic_mail} />}>
+					</Popover>
+					<Popover trigger={<HouseholdIcon icon={ic_mail} />}>
 						{(onClose) => (
 							<HouseholdInvitation onClose={onClose} householdId={household.id} />
 						)}
-					</Dropdown>
-					<Dropdown hideChevron={true} trigger={<HouseholdIcon icon={ic_delete} />}>
+					</Popover>
+					<Popover trigger={<HouseholdIcon icon={ic_delete} />}>
 						{(onClose) => (
 							<ActionConfirm>
 								<div>Confirm item deletion?</div>
@@ -171,7 +171,7 @@ const HouseholdPage = memo(() => {
 								</FieldGroup>
 							</ActionConfirm>
 						)}
-					</Dropdown>
+					</Popover>
 				</HouseholdItemInfo>
 				<div>
 					<b>Members</b>
@@ -193,7 +193,7 @@ const HouseholdPage = memo(() => {
 		return (
 			<HouseholdItemInfo key={id}>
 				<span>{customName || lookupStore.roomTypes?.[roomTypeId].name}</span>
-				<Dropdown hideChevron={true} trigger={<HouseholdIcon icon={ic_delete} />}>
+				<Popover trigger={<HouseholdIcon icon={ic_delete} />}>
 					{(onClose) => (
 						<ActionConfirm>
 							<div>
@@ -208,10 +208,10 @@ const HouseholdPage = memo(() => {
 							</ActionConfirmButtonWrapper>
 						</ActionConfirm>
 					)}
-				</Dropdown>
-				<Dropdown hideChevron={true} trigger={<HouseholdIcon icon={ic_check} />}>
+				</Popover>
+				<Popover trigger={<HouseholdIcon icon={ic_check} />}>
 					{(onClose) => <HouseholdTask onClose={onClose} householdId={householdId} roomId={id} roomTypeId={roomTypeId} />}
-				</Dropdown>
+				</Popover>
 			</HouseholdItemInfo>
 		);
 	}

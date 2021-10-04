@@ -1,12 +1,22 @@
-import { ReactNode, ReactElement } from 'react';
+import { ReactNode, CSSProperties } from 'react';
 
-export interface IDropdownWrapper {
-	arrowPosition?: number;
-	children?: ReactNode;
-	position?: string;
+import { Positioning } from '@xapp/shared/types';
+
+export interface IPopoverContainer {
+	isOpen?: boolean;
+	padded?: boolean;
+	position?: Positioning;
+	width?: CSSProperties['width'];
+	height?: CSSProperties['height'];
 }
 
-export interface IPopoverProps extends IDropdownWrapper {
-	children?: ReactNode;
-	content?: ReactElement;
+export interface IChevron {
+	hideChevron?: boolean;
+}
+
+export interface IPopoverProps extends IChevron, Omit<IPopoverContainer, 'active'> {
+	trigger?: ReactNode;
+	title?: string;
+	children?: ReactNode | ((onClose: () => void) => ReactNode);
+	footer?: ReactNode;
 }

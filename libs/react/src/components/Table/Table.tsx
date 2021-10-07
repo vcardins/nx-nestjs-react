@@ -1,6 +1,9 @@
 import React, { useMemo, useRef } from 'react';
 
 import { Positioning, DataFormats, IColumnInfo } from '@xapp/shared/types';
+import { Toolbar } from '../Toolbar';
+import { ListItems } from '../ListItems';
+
 import { ITableProps, ITableRefsProps, IColumnKey } from './types';
 import {
 	TableContainer,
@@ -17,10 +20,10 @@ import {
 	RightShadow,
 	LeftShadow,
 	Slot,
-	Toolbar,
 	TableRow,
+	Columns as TableIcon, Filters as FiltersIcon,
 } from './components';
-import { useTableManager, useRenderer as renderers } from './hooks';
+import { useTableManager, useRenderer as renderers, useColumnToggle } from './hooks';
 import { defaultSettings } from './settings';
 
 const MessageCell = ({ children }: { children: React.ReactElement | string }) => (
@@ -76,7 +79,7 @@ function buildColumns<T extends IColumnKey = any>(props: {
 	}));
 }
 
-export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
+export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) {
 	const refs: ITableRefsProps = {
 		wrapper: useRef<HTMLDivElement>(null),
 		header: useRef<HTMLDivElement>(null),
@@ -88,8 +91,8 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 			left: useRef<HTMLDivElement>(null),
 		},
 	};
+	const props: ITableProps<T> = {  ...rawProps, idProp: rawProps.idProp ?? 'id', noRecordsMessage: rawProps.noRecordsMessage ?? 'No Records found' };
 	const settings = { ...defaultSettings, ...props.settings };
-	const { idProp = 'id', onBuildIds, actions, noRecordsMessage = 'No Records found' } = props;
 	const {
 		data,
 		headers,
@@ -114,57 +117,66 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 		refs,
 	});
 
-	const gridTemplateColumns = useMemo(() => headers.map(({ width, hidden }) => {
-		if (hidden) return;
-		return width ? ` ${width}px` : ' auto';
-	}).filter(Boolean).join(' '), [headers]);
+	const columnsToggler = useColumnToggle(headers, typeof onToggleColumnDisplay === 'function');
 
-	const tableHeader = useMemo(() => headers.filter(({ hidden }) => !hidden).map((column, index) => {
-		let children: React.ReactElement;
-		let align: Positioning;
-		let isControl = false;
-		let fixed: Positioning;
+	const gridTemplateColumns = useMemo(
+		() => headers.map(({ width, hidden }) => {
+			if (hidden) return [];
+			return width ? ` ${width}px` : ' auto';
+		}).filter(Boolean).join(' ')
+		, [headers],
+	);
 
-		switch (column.format) {
-			case DataFormats.Checkbox:
-				isControl = true;
-				fixed = Positioning.Left;
-				align = Positioning.Center;
-				children = renderers[DataFormats.Checkbox]({
-					id: onBuildIds?.header?.(column.key),
-					disabled: !data.length,
-					onChange: onCheckAll,
-				});
-				break;
-			case DataFormats.Expander:
-				isControl = true;
-				fixed = Positioning.Left;
-				align = Positioning.Center;
-				children = null;
-				break;
-			default:
-				fixed = column.fixed;
-				children = renderers[DataFormats.String]({ data: column.label });
-				break;
-		}
+	const tableHeader = useMemo(() =>
+		headers.filter(({ hidden }) => !hidden).map((column, index) => {
+			let children: React.ReactElement;
+			let align: Positioning;
+			let isControl = false;
+			let fixed: Positioning;
 
-		return (
-			<ColumnHeader
-				{...{ ...column, fixed }}
-				id={onBuildIds?.header?.(column.key)}
-				key={`column-${index}`}
-				index={index}
-				isLast={index === headers.length - 1}
-				isResizing={index === resizingColumnIndex}
-				isControl={isControl}
-				onResize={onStartResizingColumn}
-				onSort={() => onColumnSorting(index)}
-				tableHeight={refs.body.current?.offsetHeight || 'auto'}
-			>
-				<TableCellContent align={align}>{children}</TableCellContent>
-			</ColumnHeader>
-		);
-	}), [
+			switch (column.format) {
+				case DataFormats.Checkbox:
+					isControl = true;
+					fixed = Positioning.Left;
+					align = Positioning.Center;
+					children = renderers[DataFormats.Checkbox]({
+						id: props.onBuildIds?.header?.(column.key),
+						disabled: !data.length,
+						onChange: onCheckAll,
+					});
+					break;
+				case DataFormats.Expander:
+					isControl = true;
+					fixed = Positioning.Left;
+					align = Positioning.Center;
+					children = null;
+					break;
+				default:
+					fixed = column.fixed;
+					children = renderers[DataFormats.String]({ data: column.label });
+					break;
+			}
+
+			const id = props.onBuildIds?.header?.(column.key);
+
+			return (
+				<ColumnHeader
+					{...{ ...column, fixed }}
+					id={id}
+					key={id}
+					index={index}
+					isLast={index === headers.length - 1}
+					isResizing={index === resizingColumnIndex}
+					isControl={isControl}
+					onResize={onStartResizingColumn}
+					onSort={() => onColumnSorting(index)}
+					tableHeight={refs.body.current?.offsetHeight || 'auto'}
+				>
+					<TableCellContent align={align}>{children}</TableCellContent>
+				</ColumnHeader>
+			);
+		}),
+	[
 		headers,
 		resizingColumnIndex,
 		refs.body.current?.offsetHeight,
@@ -184,27 +196,29 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 		if (!data.length) {
 			return (
 				<MessageCell>
-					{ noRecordsMessage }
+					{ props.noRecordsMessage }
 				</MessageCell>
 			);
 		}
 
 		return data.reduce((result, item, rowIndex) => {
-			const isExpanded = props.expandedItems.includes(item[idProp]);
+			const isExpanded = props.expandedItems.includes(item[props.idProp]);
 			const expandedContent = isExpanded ? props.onGetExpandedContent?.(item) : null;
 			const bgColor = rowIndex % 2 === 0 ? settings.evenRowColor : settings.oddRowColor;
+			const id = props.onBuildIds?.row?.(item);
 
 			// eslint-disable-next-line no-param-reassign
 			result = result.concat(
 				<TR<T>
 					{...props}
+					id={id}
+					key={`${id}-tr`}
 					index={rowIndex}
-					key={rowIndex}
-					id={onBuildIds?.row?.(item)}
 					bg={bgColor}
+					idProp={props.idProp}
 					item={item}
 					columnsWidths={gridTemplateColumns}
-					actions={actions.map((action) => action(item))}
+					actions={props.actions.map((action) => action(item))}
 					columns={state.columns}
 				/>,
 			);
@@ -212,12 +226,11 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 			if (expandedContent) {
 				result.push(
 					<TableRow
-						id={`${onBuildIds?.row?.(item)}-expanded`}
+						id={`${props.onBuildIds?.row?.(item)}-expanded`}
 						bg={bgColor}
-						key={`${rowIndex}-expanded`}
+						key={`${id}-expanded`}
 					>
 						<ExpandedCell
-							key={`expanded-${item[idProp]}`}
 							borderColor={settings.borderColor}
 							maxHeight={settings.maxExpandedContentHeight}
 						>
@@ -256,9 +269,28 @@ export function DataTable<T extends IColumnKey = any>(props: ITableProps<T>) {
 			<Slot position={Positioning.Top}>
 				<Toolbar
 					id={`${props.id}-toolbar`}
-					columns={headers}
-					onToggleColumnDisplay={onToggleColumnDisplay}
-					filtersForm={props.filtersForm}
+					slots={{
+						right: [
+							{
+								id: `${props.id}-toolbar-filter`,
+								title: 'Filters',
+								trigger: <FiltersIcon/>,
+								children: props.filtersForm,
+							},
+							{
+								id: `${props.id}-toolbar-display`,
+								title: 'Columns Display',
+								trigger: <TableIcon/>,
+								children: (
+									<ListItems
+										{...columnsToggler}
+										showCheckbox={true}
+										onSelect={onToggleColumnDisplay}
+									/>
+								),
+							},
+						],
+					}}
 				/>
 			</Slot>
 			<Table role="table" id={props.id} ref={refs.wrapper}>

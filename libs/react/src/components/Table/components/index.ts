@@ -8,4 +8,3 @@ export * from './StyledComponents';
 export * from './TableRow';
 export * from './TableCell';
 export * from './Slot';
-export * from './Toolbar';

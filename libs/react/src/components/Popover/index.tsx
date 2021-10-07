@@ -3,16 +3,8 @@ import { Positioning } from '@xapp/shared/types';
 import React, { useRef, useState } from 'react';
 
 import { useOnClickOutside } from '../../hooks';
-
-import {
-	PopoverWrapper,
-	PopoverContent,
-	PopoverTitle,
-	PopoverFooter,
-	PopoverContainer,
-	PopoverTrigger,
-} from './styles';
 import { IPopoverProps } from './types';
+import { PopoverWrapper, PopoverContent, PopoverTitle, PopoverFooter, PopoverContainer, PopoverTrigger } from './styles';
 
 export const Popover = (props: IPopoverProps) => {
 	const { trigger, children, padded = true, title, footer, position, width, height, hideChevron = true } = props;
@@ -28,6 +20,7 @@ export const Popover = (props: IPopoverProps) => {
 			<PopoverTrigger
 				hideChevron={hideChevron}
 				onClick={toggleShow}
+				title={title}
 			>
 				{trigger}
 			</PopoverTrigger>

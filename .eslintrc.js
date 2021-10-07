@@ -433,7 +433,7 @@ const rules = {
 	'react/no-will-update-set-state': 'off', // Prevent usage of setState in componentWillUpdate
 	'react/prefer-es6-class': 'off', // Enforce ES5 or ES6 class for React Components
 	'react/prefer-stateless-function': 'off', // Enforce stateless React Components to be written as a pure function
-	'react/prop-types': 'error', // Prevent missing props validation in a React component definition
+	'react/prop-types': 'off', // Prevent missing props validation in a React component definition
 	'react/react-in-jsx-scope': 'off', // Prevent missing React when using JSX
 	'react/jsx-props-no-spreading': 'off',
 	'react/jsx-curly-newline': 'off',

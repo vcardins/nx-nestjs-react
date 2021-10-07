@@ -56,7 +56,7 @@ export const PopoverContainer = styled.div<IPopoverContainer>`
 	position: absolute;
 	overflow: hidden;
 	z-index: 999;
-	transition: all 0.3s;
+	transition: opacity 0.5s;
 	box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.05);
 	top: 20px;
 	padding: 0.5em;

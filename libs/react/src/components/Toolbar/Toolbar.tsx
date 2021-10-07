@@ -28,7 +28,7 @@ interface IToolbarSlot {
 	id?: string;
 	title?: string;
 	inline?: boolean;
-	trigger: React.ReactNode;
+	icon: React.ReactNode;
 	children: React.ReactNode;
 }
 
@@ -40,7 +40,7 @@ interface IToolbarProps {
 	}
 }
 
-const buildToolbarItem = ({ inline, ...props }: IToolbarSlot, position: Positioning) => {
+const buildToolbarItem = ({ inline, icon, ...props }: IToolbarSlot, position: Positioning) => {
 	if (inline) {
 		return (
 			<ToolbarInlineSlot id={props.id}>
@@ -50,7 +50,13 @@ const buildToolbarItem = ({ inline, ...props }: IToolbarSlot, position: Position
 	}
 
 	return (
-		<Popover key={props.id} position={position} {...props}/>
+		<Popover
+			key={props.id}
+			position={position}
+			trigger={icon}
+			hideTitle={!props.title}
+			{...props}
+		/>
 	);
 };
 

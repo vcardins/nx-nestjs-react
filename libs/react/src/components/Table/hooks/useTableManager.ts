@@ -39,7 +39,7 @@ export const useTableManager = <T extends IColumnKey = any>(props: ITableProps<T
 
 		return {
 			headers: [...left, ...center, ...right.reverse()],
-			shadowLeft: left.reduce((result, { width }) => result + width, 0),
+			shadowLeft: left.reduce((result, { width }) => result + width, -1),
 			shadowRight: right.reduce((result, { width }) => result + width, 0),
 		};
 	}, [state.columns]);
@@ -98,7 +98,7 @@ export const useTableManager = <T extends IColumnKey = any>(props: ITableProps<T
 		shadowRight,
 		data: state.data.slice(state.displayStart, state.displayEnd),
 		columnsWidths,
-		state,
+		rowHeight: state.rowHeight,
 		resizingColumnIndex,
 		onToggleColumnDisplay: handleColumnDisplay,
 		onStartResizingColumn,

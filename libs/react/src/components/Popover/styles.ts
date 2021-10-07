@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { IChevron, IPopoverContainer } from './types';
+import { IPopoverTrigger, IPopoverContainer } from './types';
 
 const buildArrow = ({ isBefore, color, position }: { isBefore: boolean, color: string, position: IPopoverContainer['position'] }) => {
 	const { border, topLeft } = isBefore
@@ -20,7 +20,7 @@ const buildArrow = ({ isBefore, color, position }: { isBefore: boolean, color: s
 	`;
 };
 
-export const PopoverTrigger = styled.a<IChevron>`
+export const PopoverTrigger = styled.a<IPopoverTrigger>`
 	cursor: pointer;
 	display: flex;
 	align-items: center;
@@ -33,8 +33,13 @@ export const PopoverTrigger = styled.a<IChevron>`
 	`}
 `;
 
+export const PopoverTriggerTitle = styled.span`
+	margin-left: 0.5em;
+`;
+
 export const PopoverTitle = styled.div`
-	padding: 0 0.25em 0.25em 0.25em;
+	padding: 0 0.25em 0.5em 0.25em;
+	font-weight: 700;
 	border-bottom: 1px solid ${({ theme }) => theme.colors.tertiary.lightestGrey};
 `;
 
@@ -59,7 +64,7 @@ export const PopoverContainer = styled.div<IPopoverContainer>`
 	transition: opacity 0.5s;
 	box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.05);
 	top: 20px;
-	padding: 0.5em;
+	padding: 1em;
 	${({ position }) => position}: -5px;
 	border: 1px solid ${({ theme }) => theme.colors.tertiary.lighterGrey };
 	background-color: ${({ theme }) => theme.colors.primary.white };

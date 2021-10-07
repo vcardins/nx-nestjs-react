@@ -4,6 +4,12 @@ import styled, { css } from 'styled-components';
 import { Positioning } from '@xapp/shared/types';
 import { ITableSettings, IExpandedCellProps } from '../types';
 
+const flexAlign = {
+	[Positioning.Left]: 'flex-start',
+	[Positioning.Right]: 'flex-end',
+	[Positioning.Center]: 'center',
+};
+
 const shadowStyle = css`
 	position: absolute;
 	z-index: 3;
@@ -11,14 +17,14 @@ const shadowStyle = css`
 
 const horizontalShadowStyle = css`
 	${shadowStyle};
-	height: 4px;
+	height: 6px;
 	left: 0;
 	right: 0;
 `;
 
 const verticalShadowStyle = css`
 	${shadowStyle};
-	width: 4px;
+	width: 6px;
 	height: 100%;
 	display: none;
 `;
@@ -54,6 +60,7 @@ export const RightShadow = styled.div<{ right: number }>`
 	${verticalShadowStyle};
 	right: ${({ right }) => right}px;
 	background-image: linear-gradient(270deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+	border-right: 1px solid #d1d1d1;
 `;
 
 export const THead = styled.div`
@@ -69,8 +76,10 @@ export const Table = styled.div`
 
 export const TableCellContent = styled.span<{ align?: Positioning; bg?: CSSProperties['color'] }>`
 	${cellStyle};
+	display: flex;
+	align-items: center;
 	${({ align }) => align && css`
-		text-align: ${align};
+		justify-content: ${flexAlign[align]};
 	`};
 	${({ bg = 'transparent' }) => css`
 		background-color: ${bg};
@@ -156,7 +165,11 @@ export const TableContainer = styled.div<{
 	overflow: hidden;
 	display: grid;
 	grid-template-rows: ${({ showHeader, showFooter, settings }) =>
-		[showHeader && settings.headerHeight, '1fr', showFooter && settings.footerHeight].join(' ')
+		[
+			showHeader ? settings.headerHeight : undefined,
+			'1fr',
+			showFooter ? settings.footerHeight : undefined,
+		].filter(Boolean).join(' ')
 };
 
 	${Table} {
@@ -216,16 +229,6 @@ export const TableContainer = styled.div<{
 			[data-fixed]{
 				z-index: 1;
 				position: sticky;
-			}
-
-			[data-align='left'] {
-				justify-content: flex-start;
-			}
-			[data-align='center'] {
-				justify-content: center;
-			}
-			[data-align='right'] {
-				justify-content: flex-end;
 			}
 		}
 	}

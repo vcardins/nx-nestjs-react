@@ -4,10 +4,13 @@ import React, { useRef, useState } from 'react';
 
 import { useOnClickOutside } from '../../hooks';
 import { IPopoverProps } from './types';
-import { PopoverWrapper, PopoverContent, PopoverTitle, PopoverFooter, PopoverContainer, PopoverTrigger } from './styles';
+import {
+	PopoverWrapper, PopoverContent, PopoverTitle, PopoverFooter,
+	PopoverContainer, PopoverTrigger, PopoverTriggerTitle,
+} from './styles';
 
 export const Popover = (props: IPopoverProps) => {
-	const { trigger, children, padded = true, title, footer, position, width, height, hideChevron = true } = props;
+	const { trigger, children, padded = true, title, footer, position, width, height, hideChevron = true, hideTitle = true } = props;
 	const innerRef = useRef(null);
 	const [isOpen, setIsOpen] = useState(false);
 	const toggleShow = () => setIsOpen(!isOpen);
@@ -23,6 +26,7 @@ export const Popover = (props: IPopoverProps) => {
 				title={title}
 			>
 				{trigger}
+				{ !hideTitle && <PopoverTriggerTitle>{title}</PopoverTriggerTitle> }
 			</PopoverTrigger>
 			<PopoverContainer
 				isOpen={isOpen}

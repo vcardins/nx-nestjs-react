@@ -99,8 +99,8 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 		shadowLeft,
 		shadowRight,
 		columnsWidths,
+		rowHeight,
 		onToggleColumnDisplay,
-		state,
 		resizingColumnIndex,
 		onStartResizingColumn,
 		onCheckAll,
@@ -219,7 +219,7 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 					item={item}
 					columnsWidths={gridTemplateColumns}
 					actions={props.actions.map((action) => action(item))}
-					columns={state.columns}
+					columns={headers}
 				/>,
 			);
 
@@ -262,9 +262,9 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 			rows={data.length}
 			colsWidths={columnsWidths}
 			settings={settings}
-			rowHeight={state.rowHeight}
+			rowHeight={rowHeight}
 			showHeader={true}
-			showFooter={true}
+			showFooter={false}
 		>
 			<Slot position={Positioning.Top}>
 				<Toolbar
@@ -273,14 +273,14 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 						right: [
 							{
 								id: `${props.id}-toolbar-filter`,
+								icon: <FiltersIcon/>,
 								title: 'Filters',
-								trigger: <FiltersIcon/>,
 								children: props.filtersForm,
 							},
 							{
 								id: `${props.id}-toolbar-display`,
+								icon: <TableIcon/>,
 								title: 'Columns Display',
-								trigger: <TableIcon/>,
 								children: (
 									<ListItems
 										{...columnsToggler}
@@ -294,7 +294,7 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 				/>
 			</Slot>
 			<Table role="table" id={props.id} ref={refs.wrapper}>
-				<TopShadow top={state.rowHeight} ref={refs.shadow.top} />
+				<TopShadow top={rowHeight} ref={refs.shadow.top} />
 				<LeftShadow left={shadowLeft} ref={refs.shadow.left} />
 				<RightShadow right={shadowRight} ref={refs.shadow.right} />
 				<THead role="thead" ref={refs.header} style={{ gridTemplateColumns }}>
@@ -305,7 +305,7 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 				</TBody>
 				<BottomShadow ref={refs.shadow.bottom}/>
 			</Table>
-			<Slot position={Positioning.Bottom} borderless={true} />
+			{/* <Slot position={Positioning.Bottom} borderless={true} /> */}
 		</TableContainer>
 	);
 }

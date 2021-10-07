@@ -33,7 +33,7 @@ export const PanelBody = styled.main<{ padded: boolean; columns?: number; overfl
 	display: grid;
 	grid-template-columns: ${({ columns = 1 }) => `repeat(${columns}, 1fr)`};
 	${({ columns }) => columns && css`gap: 0.5em 1em;`};
-	padding: ${({ padded = false }) => padded ? '1em' : '0.25em'};
+	padding: ${({ padded = false }) => padded ? '1em' : '0'};
 	overflow: ${({ overflow = 'auto' }) => overflow};
 `;
 export const PanelFooter = styled.div<{ padded: boolean }>`

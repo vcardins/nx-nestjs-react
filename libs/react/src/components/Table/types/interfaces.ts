@@ -38,7 +38,6 @@ export interface ITableCellProps {
 	forwardRef?: MutableRefObject<HTMLDivElement>;
 	align?: Positioning;
 	fixed?: Positioning;
-	order?: 'even' | 'odd';
 	children?: ReactNode;
 }
 

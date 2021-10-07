@@ -10,11 +10,12 @@ export interface IPopoverContainer {
 	height?: CSSProperties['height'];
 }
 
-export interface IChevron {
+export interface IPopoverTrigger {
 	hideChevron?: boolean;
+	hideTitle?: boolean;
 }
 
-export interface IPopoverProps extends IChevron, Omit<IPopoverContainer, 'active'> {
+export interface IPopoverProps extends IPopoverTrigger, Omit<IPopoverContainer, 'active'> {
 	trigger?: ReactNode;
 	title?: string;
 	children?: ReactNode | ((onClose: () => void) => ReactNode);

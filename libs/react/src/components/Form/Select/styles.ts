@@ -10,7 +10,6 @@ export const StyledSelect = styled(Field)`
 		width: 100%;
 		max-width: 100%;
 		box-sizing: border-box;
-		margin: 0;
 		border-radius: 3px;
 		outline: none;
 

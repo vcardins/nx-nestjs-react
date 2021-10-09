@@ -76,10 +76,8 @@ export const Table = styled.div`
 
 export const TableCellContent = styled.span<{ align?: Positioning; bg?: CSSProperties['color'] }>`
 	${cellStyle};
-	display: flex;
-	align-items: center;
 	${({ align }) => align && css`
-		justify-content: ${flexAlign[align]};
+		text-align: ${flexAlign[align]};
 	`};
 	${({ bg = 'transparent' }) => css`
 		background-color: ${bg};
@@ -115,7 +113,7 @@ export const Actions = styled.div`
 	}
 `;
 
-export const TableRow = styled.div<{ bg: CSSProperties['color'] }>`
+export const TR = styled.div<{ bg: CSSProperties['color'] }>`
 	position: relative;
 	> [role='td'] {
 		background-color: ${({ bg }) => bg};
@@ -126,6 +124,12 @@ export const TableRow = styled.div<{ bg: CSSProperties['color'] }>`
 			opacity: 1;
 		}
 	}
+`;
+
+export const TD = styled.div<{ left?: number; right?: number }>`
+	display: flex;
+	${({ left }) => left !== undefined && css`left: ${left}px;`};
+	${({ right }) => right !== undefined && css`right: ${right}px;`};
 `;
 
 export const ExpandedTableCell = styled.div<Omit<IExpandedCellProps, 'children'>>`

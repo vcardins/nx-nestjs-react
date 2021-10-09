@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { SortDirections } from '@xapp/shared/types';
 
 import { IColumnHeader } from '../types';
-import { DownArrow, UpArrow, UpAndDownArrows, Sorter, Resizer, ActionLink, TD } from './';
+import { DownArrow, UpArrow, UpAndDownArrows, Sorter, Resizer, ActionLink, TableCell } from './';
 
 export const ColumnHeader = (props: IColumnHeader & { isControl?: boolean; left?: number; right?: number }) => {
 	const {
@@ -41,7 +41,7 @@ export const ColumnHeader = (props: IColumnHeader & { isControl?: boolean; left?
 	}, [children, tableHeight, index, isResizing, sortDirection, resizable, onSort]);
 
 	return (
-		<TD
+		<TableCell
 			id={id}
 			role="th"
 			forwardRef={forwardRef}
@@ -50,6 +50,6 @@ export const ColumnHeader = (props: IColumnHeader & { isControl?: boolean; left?
 			fixed={fixed}
 		>
 			{content}
-		</TD>
+		</TableCell>
 	);
 };

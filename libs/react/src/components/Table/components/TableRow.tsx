@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { DataFormats, Positioning } from '@xapp/shared/types';
-import { TD } from '.';
+import { TableCell } from '.';
 import { ITableRowProps } from '../types';
-import { TableRow, Actions, TableCellContent } from './StyledComponents';
+import { TR, Actions, TableCellContent } from './StyledComponents';
 import { useRenderer as renderers } from '../hooks';
 
 function Row <T = any>(props: ITableRowProps<T>) {
@@ -59,7 +59,7 @@ function Row <T = any>(props: ITableRowProps<T>) {
 		}
 
 		return (
-			<TD
+			<TableCell
 				id={cellId}
 				key={`${index}-${colIndex}`}
 				fixed={fixed}
@@ -69,23 +69,25 @@ function Row <T = any>(props: ITableRowProps<T>) {
 				<TableCellContent align={align}>
 					{ children }
 				</TableCellContent>
-			</TD>
+			</TableCell>
 		);
 	});
 
 	return (
-		<TableRow
+		<TR
 			id={id}
 			bg={bg}
 			role="tr"
 			style={{ gridTemplateColumns }}
 		>
 			{columnsInfo}
-			<Actions>
+			<Actions key={`actions-${id}`}>
 				{ actions }
 			</Actions>
-		</TableRow>
+		</TR>
 	);
 }
 
-export const TR = React.memo(Row) as typeof Row;
+Row.displayName = 'TR';
+
+export const TableRow = React.memo(Row) as typeof Row;

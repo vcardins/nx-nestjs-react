@@ -209,7 +209,7 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 
 			// eslint-disable-next-line no-param-reassign
 			result = result.concat(
-				<TR<T>
+				<TableRow<T>
 					{...props}
 					id={id}
 					key={`${id}-tr`}
@@ -225,7 +225,7 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 
 			if (expandedContent) {
 				result.push(
-					<TableRow
+					<TR
 						id={`${props.onBuildIds?.row?.(item)}-expanded`}
 						bg={bgColor}
 						key={`${id}-expanded`}

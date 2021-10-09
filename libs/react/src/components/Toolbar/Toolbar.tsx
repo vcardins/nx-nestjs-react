@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import { Positioning } from '@xapp/shared/types';
 import { Popover } from '../Popover';
@@ -13,13 +13,22 @@ const ToolbarWrapper = styled.div`
 	padding: 0 0.5em;
 `;
 
-const ToolbarSlot = styled.div<{ isLeft?: boolean }>`
+const ToolbarSlot = styled.div<{ position?: Positioning }>`
 	display: flex;
 	width: 100%;
 	height: 100%;
 	align-items: center;
 	gap: 1em;
-	${({ isLeft }) => isLeft ? css`justify-content: flex-start;` :  css`justify-content: flex-end;` };
+	justify-content: ${({ position }) => {
+		switch (position) {
+			case Positioning.Left:
+				return 'flex-start';
+			case Positioning.Right:
+				return 'flex-end';
+			default:
+				return 'center';
+		}
+	}};
 `;
 
 const ToolbarInlineSlot = styled.div``;
@@ -28,14 +37,15 @@ interface IToolbarSlot {
 	id?: string;
 	title?: string;
 	inline?: boolean;
-	icon: React.ReactNode;
+	icon?: React.ReactNode;
 	children: React.ReactNode;
 }
 
 interface IToolbarProps {
 	id?: string;
-	slots: {
+	alignment: {
 		left?: IToolbarSlot[];
+		center?: IToolbarSlot[];
 		right?: IToolbarSlot[];
 	}
 }
@@ -43,7 +53,7 @@ interface IToolbarProps {
 const buildToolbarItem = ({ inline, icon, ...props }: IToolbarSlot, position: Positioning) => {
 	if (inline) {
 		return (
-			<ToolbarInlineSlot id={props.id}>
+			<ToolbarInlineSlot id={props.id} key={props.id}>
 				{ props.children }
 			</ToolbarInlineSlot>
 		);
@@ -61,24 +71,23 @@ const buildToolbarItem = ({ inline, icon, ...props }: IToolbarSlot, position: Po
 };
 
 export const Toolbar = React.memo(function Toolbar(props: IToolbarProps) {
-	const { id, slots } = props;
+	const { id, alignment = {} } = props;
 
-	if (!slots.left?.length && !slots.right?.length) {
+	const slots = Object.keys(alignment).length ? Object.keys(alignment) : [];
+
+	if (!slots.length) {
 		return null;
 	}
 
 	return (
 		<ToolbarWrapper id={id}>
-			{slots.left?.length && (
-				<ToolbarSlot isLeft={true}>
-					{slots.left.map((item) => buildToolbarItem(item, Positioning.Left))}
+			{slots.map((position) => (
+				<ToolbarSlot key={`${id}-${position}`} position={position as Positioning}>
+					{alignment[position]?.filter(Boolean)?.map((item: IToolbarSlot) => buildToolbarItem(item, position as Positioning))}
 				</ToolbarSlot>
-			)}
-			{slots.right?.length && (
-				<ToolbarSlot>
-					{slots.right.map((item) => buildToolbarItem(item, Positioning.Right))}
-				</ToolbarSlot>
-			)}
+			))}
 		</ToolbarWrapper>
 	);
 });
+
+Toolbar.displayName = 'Toolbar';

@@ -1,6 +1,6 @@
 import { CSSProperties, ReactNode, ChangeEvent, ReactElement, MutableRefObject } from 'react';
 
-import { SortDirections, Positioning, KeyType, IColumnInfo } from '@xapp/shared/types';
+import { SortDirections, Positioning, PaginationMode, KeyType, IColumnInfo } from '@xapp/shared/types';
 
 export interface ITableSettings {
 	fontSize?: CSSProperties['fontSize'];
@@ -132,6 +132,11 @@ export interface ITableProps<T extends IColumnKey = any> {
 	allowCheckAll?: boolean;
 	isLoading?: boolean;
 	noRecordsMessage?: string;
+	pagination?: {
+		mode?: PaginationMode;
+		pageSize?: number;
+		onPageChange?: (page: number) => Promise<void> | void;
+	},
 	filtersForm?: ReactNode;
 	customRenderers?: CustomRenderers<T>;
 	actions?: ((item: T) => ReactNode)[];

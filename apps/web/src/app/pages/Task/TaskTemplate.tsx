@@ -23,7 +23,7 @@ import {
 	FormBuilder,
 	Popover,
 } from '@xapp/react';
-import { TaskTemplateInput, TaskTemplateOutput, Frequencies, FieldType, IFieldInfo, DataFilter } from '@xapp/shared/types';
+import { TaskTemplateInput, TaskTemplateOutput, Frequencies, FieldType, IFieldInfo, DataFilter, PaginationMode } from '@xapp/shared/types';
 
 import { useAppStore } from '@xapp/state';
 import { ApiCallStatus } from '@xapp/state/shared';
@@ -165,9 +165,10 @@ const TaskTemplatePage = memo(() => {
 			</Drawer>
 			<DataTable
 				id="task-template-table"
-				isLoading={status === ApiCallStatus.Loading}
 				columns={headers}
+				isLoading={status === ApiCallStatus.Loading}
 				data={filteredItems ? filteredItems : items}
+				pagination={{ mode: PaginationMode.Pagination, pageSize: 20 }}
 				onBuildIds={handleBuildIds}
 				checkedItems={checkedItems}
 				onCheckItems={setCheckedItems}

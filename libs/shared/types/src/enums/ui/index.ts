@@ -6,6 +6,7 @@ export * from './LayoutStyles';
 export * from './NavItemTypes';
 export * from './PageKey';
 export * from './PageModes';
+export * from './PaginationMode';
 export * from './Positioning';
 export * from './ScrollOptions';
 export * from './SortDirections';

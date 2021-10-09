@@ -1,6 +1,6 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 
-import { Positioning, DataFormats, IColumnInfo } from '@xapp/shared/types';
+import { Positioning, DataFormats, PaginationMode, IColumnInfo } from '@xapp/shared/types';
 import { Toolbar } from '../Toolbar';
 import { ListItems } from '../ListItems';
 
@@ -20,6 +20,7 @@ import {
 	RightShadow,
 	LeftShadow,
 	Slot,
+	Pagination,
 	TableRow,
 	Columns as TableIcon, Filters as FiltersIcon,
 } from './components';
@@ -79,6 +80,8 @@ function buildColumns<T extends IColumnKey = any>(props: {
 	}));
 }
 
+const PageSize = 20;
+
 export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) {
 	const refs: ITableRefsProps = {
 		wrapper: useRef<HTMLDivElement>(null),
@@ -91,11 +94,16 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 			left: useRef<HTMLDivElement>(null),
 		},
 	};
-	const props: ITableProps<T> = {  ...rawProps, idProp: rawProps.idProp ?? 'id', noRecordsMessage: rawProps.noRecordsMessage ?? 'No Records found' };
+	const props: ITableProps<T> = {
+		...rawProps,
+		idProp: rawProps.idProp ?? 'id',
+		noRecordsMessage: rawProps.noRecordsMessage ?? 'No Records found',
+		pagination: rawProps.pagination ?? { mode: PaginationMode.None, pageSize: PageSize },
+	};
 	const settings = { ...defaultSettings, ...props.settings };
 	const {
 		data,
-		headers,
+		columns,
 		shadowLeft,
 		shadowRight,
 		columnsWidths,
@@ -117,18 +125,29 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 		refs,
 	});
 
-	const columnsToggler = useColumnToggle(headers, typeof onToggleColumnDisplay === 'function');
+	const isPaginated = props.pagination.mode === PaginationMode.Pagination;
+	const [currentPage, setCurrentPage] = useState(1);
+	const currentTableData = useMemo(() => {
+		if (!isPaginated) {
+			return data;
+		}
+		const firstPageIndex = (currentPage - 1) * PageSize;
+		const lastPageIndex = firstPageIndex + PageSize;
+		return data.slice(firstPageIndex, lastPageIndex);
+	}, [currentPage, data, isPaginated]);
+
+	const columnsToggler = useColumnToggle(columns, typeof onToggleColumnDisplay === 'function');
 
 	const gridTemplateColumns = useMemo(
-		() => headers.map(({ width, hidden }) => {
+		() => columns.map(({ width, hidden }) => {
 			if (hidden) return [];
 			return width ? ` ${width}px` : ' auto';
 		}).filter(Boolean).join(' ')
-		, [headers],
+		, [columns],
 	);
 
 	const tableHeader = useMemo(() =>
-		headers.filter(({ hidden }) => !hidden).map((column, index) => {
+		columns.filter(({ hidden }) => !hidden).map((column, index) => {
 			let children: React.ReactElement;
 			let align: Positioning;
 			let isControl = false;
@@ -165,7 +184,7 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 					id={id}
 					key={id}
 					index={index}
-					isLast={index === headers.length - 1}
+					isLast={index === columns.length - 1}
 					isResizing={index === resizingColumnIndex}
 					isControl={isControl}
 					onResize={onStartResizingColumn}
@@ -177,7 +196,7 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 			);
 		}),
 	[
-		headers,
+		columns,
 		resizingColumnIndex,
 		refs.body.current?.offsetHeight,
 		onCheckAll,
@@ -193,7 +212,7 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 			);
 		}
 
-		if (!data.length) {
+		if (!currentTableData.length) {
 			return (
 				<MessageCell>
 					{ props.noRecordsMessage }
@@ -201,11 +220,11 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 			);
 		}
 
-		return data.reduce((result, item, rowIndex) => {
-			const isExpanded = props.expandedItems.includes(item[props.idProp]);
-			const expandedContent = isExpanded ? props.onGetExpandedContent?.(item) : null;
+		return currentTableData.reduce((result, item, rowIndex) => {
+			const isExpanded = props.expandedItems?.includes(item[props.idProp]);
+			const expandedContent = isExpanded ? props?.onGetExpandedContent?.(item) : null;
 			const bgColor = rowIndex % 2 === 0 ? settings.evenRowColor : settings.oddRowColor;
-			const id = props.onBuildIds?.row?.(item);
+			const id = props.onBuildIds?.row?.(item) ?? item[props.idProp].toString();
 
 			// eslint-disable-next-line no-param-reassign
 			result = result.concat(
@@ -218,8 +237,8 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 					idProp={props.idProp}
 					item={item}
 					columnsWidths={gridTemplateColumns}
-					actions={props.actions.map((action) => action(item))}
-					columns={headers}
+					actions={props.actions?.map((action) => action(item))}
+					columns={columns}
 				/>,
 			);
 
@@ -236,15 +255,15 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 						>
 							{ expandedContent }
 						</ExpandedCell>
-					</TableRow>,
+					</TR>,
 				);
 			}
 
 			return result;
 		}, [] as React.ReactNode[]);
 	}, [
-		headers,
-		data,
+		columns,
+		currentTableData,
 		props.idProp,
 		props.isLoading,
 		props.customRenderers,
@@ -259,24 +278,26 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 	return (
 		<TableContainer
 			role="table-container"
-			rows={data.length}
+			rows={currentTableData.length}
 			colsWidths={columnsWidths}
 			settings={settings}
 			rowHeight={rowHeight}
 			showHeader={true}
-			showFooter={false}
+			showFooter={isPaginated}
 		>
 			<Slot position={Positioning.Top}>
 				<Toolbar
 					id={`${props.id}-toolbar`}
-					slots={{
-						right: [
-							{
+					alignment={{
+						left: [
+							props.filtersForm && {
 								id: `${props.id}-toolbar-filter`,
 								icon: <FiltersIcon/>,
 								title: 'Filters',
 								children: props.filtersForm,
 							},
+						],
+						right: [
 							{
 								id: `${props.id}-toolbar-display`,
 								icon: <TableIcon/>,
@@ -305,7 +326,31 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 				</TBody>
 				<BottomShadow ref={refs.shadow.bottom}/>
 			</Table>
-			{/* <Slot position={Positioning.Bottom} borderless={true} /> */}
+			{isPaginated && (
+				<Slot position={Positioning.Bottom}>
+					<Toolbar
+						id={`${props.id}-footer`}
+						alignment={{
+							center: [
+								{
+									id: `${props.id}-pagination`,
+									inline: true,
+									children: (
+										<Pagination
+											currentPage={currentPage}
+											totalCount={data.length}
+											pageSize={props.pagination.pageSize}
+											onPageChange={(page) => setCurrentPage(page)}
+										/>
+									),
+								},
+							],
+						}}
+					/>
+				</Slot>
+			)}
 		</TableContainer>
 	);
 }
+
+Table.displayName = 'Table';

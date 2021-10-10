@@ -23,6 +23,7 @@ import {
 	Pagination,
 	TableRow,
 	Columns as TableIcon, Filters as FiltersIcon,
+	PaginationDisplayType,
 } from './components';
 import { useTableManager, useRenderer as renderers, useColumnToggle } from './hooks';
 import { defaultSettings } from './settings';

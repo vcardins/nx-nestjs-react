@@ -8,7 +8,7 @@ const calcPosition = (
 	pos: Positioning,
 	collection: IColumnInfo[],
 	column: IColumnInfo,
-	index: number
+	index: number,
 ): IColumnInfo => ({
 	...column,
 	resizable: false,
@@ -63,7 +63,7 @@ export const useTableManager = <T extends IColumnKey = any>(props: ITableProps<T
 				columns,
 			}));
 		},
-		[state.columns]
+		[state.columns],
 	);
 
 	useEffect(() => {
@@ -80,7 +80,11 @@ export const useTableManager = <T extends IColumnKey = any>(props: ITableProps<T
 
 	useScrolling<T>({ refs: props.refs, state, onUpdateState: setState });
 
-	const { onColumnSorting } = useColumnSorting<T>({ state, onUpdateState: setState });
+	const { onColumnSorting } = useColumnSorting<T>({
+		columns: state.columns,
+		data: state.data,
+		onUpdateState: setState,
+	});
 
 	const columnsWidths = useMemo(() => state.columns.map((col) => (col.width ? col.width : 'auto')), [state.columns]);
 

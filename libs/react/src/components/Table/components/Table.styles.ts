@@ -69,11 +69,6 @@ export const THead = styled.div`
 
 export const TBody = styled.div``;
 
-export const Table = styled.div`
-	display: grid;
-	grid-template-rows: 26px 1fr;
-`;
-
 export const TableCellContent = styled.span<{ align?: Positioning; bg?: CSSProperties['color'] }>`
 	${cellStyle};
 	${({ align }) => align && css`
@@ -130,6 +125,12 @@ export const TD = styled.div<{ left?: number; right?: number }>`
 	display: flex;
 	${({ left }) => left !== undefined && css`left: ${left}px;`};
 	${({ right }) => right !== undefined && css`right: ${right}px;`};
+`;
+
+
+export const Table = styled.div`
+	display: grid;
+	grid-template-rows: 26px 1fr;
 `;
 
 export const ExpandedTableCell = styled.div<Omit<IExpandedCellProps, 'children'>>`

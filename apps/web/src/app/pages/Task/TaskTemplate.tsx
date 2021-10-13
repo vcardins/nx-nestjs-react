@@ -103,12 +103,31 @@ const TaskTemplatePage = memo(() => {
 		[lookupStore?.roomTypes, lookupStore?.frequencies]
 	);
 
-	const handleEditItem = (item: TaskTemplateOutput) => {
-		form.onUpdateData(item, true);
-		setTimeout(() => {
-			setIsDrawerOpen(true);
-		}, 100);
-	};
+	const actions = useMemo(() => [
+		(item: TaskTemplateOutput) =>
+			<Icon
+				id="edit"
+				title="Edit"
+				icon={ic_edit}
+				onClick={() => {
+					form.onUpdateData(item, true);
+					setTimeout(() => setIsDrawerOpen(true), 100);
+				}}
+			/>,
+		(item: TaskTemplateOutput) => (
+			<Popover trigger={<Icon id="delete" title="Delete" icon={ic_delete} />}>
+				{(onClose) => (
+					<div>
+						<div>Confirm item deletion?</div>
+						<FieldGroup sided>
+							<Button onClick={() => remove(item.id)}>Delete</Button>
+							<Button onClick={onClose}>Cancel</Button>
+						</FieldGroup>
+					</div>
+				)}
+			</Popover>
+		)
+	], [form.onUpdateData, remove]);
 
 	// Object.keys(mappedItems[roomTypeId]).forEach((frequencyId) => {
 	// 	const frequency = lookupStore?.frequencies?.[frequencyId];
@@ -168,7 +187,7 @@ const TaskTemplatePage = memo(() => {
 				columns={headers}
 				isLoading={status === ApiCallStatus.Loading}
 				data={filteredItems ? filteredItems : items}
-				pagination={{ mode: PaginationMode.Pagination, pageSize: 20 }}
+				pagination={{ mode: PaginationMode.InfiniteScrolling, pageSize: 20 }}
 				onBuildIds={handleBuildIds}
 				checkedItems={checkedItems}
 				onCheckItems={setCheckedItems}
@@ -176,22 +195,7 @@ const TaskTemplatePage = memo(() => {
 				onExpandItems={setExpandedItems}
 				customRenderers={getCustomRenderers()}
 				onGetExpandedContent={getExpandedContent}
-				actions={[
-					(item: TaskTemplateOutput) => <Icon id="edit" title="Edit" icon={ic_edit} onClick={() => handleEditItem(item)} />,
-					(item: TaskTemplateOutput) => (
-						<Popover trigger={<Icon id="delete" title="Delete" icon={ic_delete} />}>
-							{(onClose) => (
-								<div>
-									<div>Confirm item deletion?</div>
-									<FieldGroup sided>
-										<Button onClick={() => remove(item.id)}>Delete</Button>
-										<Button onClick={onClose}>Cancel</Button>
-									</FieldGroup>
-								</div>
-							)}
-						</Popover>
-					)
-				]}
+				actions={actions}
 				filtersForm={(
 					<FormBuilder<Record<string, TaskTemplateInput>, DataFilter>
 						id="filters-form"

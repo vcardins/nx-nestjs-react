@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { useMemo } from 'react';
 import styled, { css } from 'styled-components';
 
 import { IPaginatorProps } from './types';
@@ -35,10 +35,17 @@ const Select = styled.select`
 	margin: 0 0.5em;
 `;
 
-
-export function PaginatorDropdown (props: IPaginatorProps): React.ReactElement<any> {
+export const PaginatorDropdown = (props: IPaginatorProps): React.ReactElement<any> => {
 	const { currentPage, lastPage, onGoToPage, onGoPrevious, onGoFirst, onGoLast, onGoNext } = props;
 	let pageSelector = <div>No records</div>;
+	const options = useMemo(() =>
+		Array.from({ length: lastPage }, (_, index) => {
+			const value = index + 1;
+			return (
+				<option key={value} value={value} selected={currentPage === value}>{value}</option>
+			);
+		})
+	, [lastPage, currentPage]);
 
 	if (lastPage > 0) {
 		pageSelector = (
@@ -47,15 +54,8 @@ export function PaginatorDropdown (props: IPaginatorProps): React.ReactElement<a
 				<PageLink disabled={currentPage <= 1} onClick={onGoPrevious}> ← Prev</PageLink>
 				<PageSelector>
 					<span>Page</span>
-					<Select
-						onChange={({ target: { value } }: ChangeEvent<HTMLSelectElement>) => onGoToPage(Number(value))}
-					>
-						{ Array.from({ length: lastPage }, (_, index) => {
-							const value = index + 1;
-							return (
-								<option key={value} value={value} selected={currentPage === value}>{value}</option>
-							);
-						}) }
+					<Select onChange={({ target: { value } }) => onGoToPage(Number(value))}>
+						{ options }
 					</Select>
 					<span>of { lastPage }</span>
 				</PageSelector>
@@ -70,4 +70,4 @@ export function PaginatorDropdown (props: IPaginatorProps): React.ReactElement<a
 			{ pageSelector }
 		</PaginatorContainer>
 	);
-}
+};

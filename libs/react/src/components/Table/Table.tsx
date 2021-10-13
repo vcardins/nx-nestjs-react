@@ -6,25 +6,11 @@ import { ListItems } from '../ListItems';
 
 import { ITableProps, ITableRefsProps, IColumnKey } from './types';
 import {
-	TableContainer,
-	Table,
-	ColumnHeader,
-	TableCellContent,
-	ExpandedCell,
-	THead,
-	TR,
-	TBody,
-	Loading,
-	BottomShadow,
-	TopShadow,
-	RightShadow,
-	LeftShadow,
-	Slot,
-	Pagination,
-	TableRow,
+	ColumnHeader, ExpandedCell, Loading, Slot, Pagination, TableRow,
 	Columns as TableIcon, Filters as FiltersIcon,
-	PaginationDisplayType,
 } from './components';
+import * as S from './components/Table.styles';
+
 import { useTableManager, useRenderer as renderers, useColumnToggle } from './hooks';
 import { defaultSettings } from './settings';
 
@@ -135,7 +121,7 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 		const firstPageIndex = (currentPage - 1) * PageSize;
 		const lastPageIndex = firstPageIndex + PageSize;
 		return data.slice(firstPageIndex, lastPageIndex);
-	}, [currentPage, data, isPaginated]);
+	}, [currentPage, data, props.pagination.mode]);
 
 	const columnsToggler = useColumnToggle(columns, typeof onToggleColumnDisplay === 'function');
 
@@ -192,7 +178,7 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 					onSort={() => onColumnSorting(index)}
 					tableHeight={refs.body.current?.offsetHeight || 'auto'}
 				>
-					<TableCellContent align={align}>{children}</TableCellContent>
+					<S.TableCellContent align={align}>{children}</S.TableCellContent>
 				</ColumnHeader>
 			);
 		}),
@@ -245,7 +231,7 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 
 			if (expandedContent) {
 				result.push(
-					<TR
+					<S.TR
 						id={`${props.onBuildIds?.row?.(item)}-expanded`}
 						bg={bgColor}
 						key={`${id}-expanded`}
@@ -256,7 +242,7 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 						>
 							{ expandedContent }
 						</ExpandedCell>
-					</TR>,
+					</S.TR>,
 				);
 			}
 
@@ -268,16 +254,16 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 		props.idProp,
 		props.isLoading,
 		props.customRenderers,
-		props.expandedItems,
-		props.checkedItems,
-		props.onGetExpandedContent,
 		props.onBuildIds,
+		props.expandedItems,
 		props.onExpandItems,
+		props.onGetExpandedContent,
+		props.checkedItems,
 		props.onCheckItems,
 	]);
 
 	return (
-		<TableContainer
+		<S.TableContainer
 			role="table-container"
 			rows={currentTableData.length}
 			colsWidths={columnsWidths}
@@ -315,18 +301,18 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 					}}
 				/>
 			</Slot>
-			<Table role="table" id={props.id} ref={refs.wrapper}>
-				<TopShadow top={rowHeight} ref={refs.shadow.top} />
-				<LeftShadow left={shadowLeft} ref={refs.shadow.left} />
-				<RightShadow right={shadowRight} ref={refs.shadow.right} />
-				<THead role="thead" ref={refs.header} style={{ gridTemplateColumns }}>
+			<S.Table role="table" id={props.id} ref={refs.wrapper}>
+				<S.TopShadow top={rowHeight} ref={refs.shadow.top} />
+				<S.LeftShadow left={shadowLeft} ref={refs.shadow.left} />
+				<S.RightShadow right={shadowRight} ref={refs.shadow.right} />
+				<S.THead role="thead" ref={refs.header} style={{ gridTemplateColumns }}>
 					{ tableHeader }
-				</THead>
-				<TBody role="tbody" ref={refs.body}>
+				</S.THead>
+				<S.TBody role="tbody" ref={refs.body}>
 					{ tableBody }
-				</TBody>
-				<BottomShadow ref={refs.shadow.bottom}/>
-			</Table>
+				</S.TBody>
+				<S.BottomShadow ref={refs.shadow.bottom}/>
+			</S.Table>
 			{isPaginated && (
 				<Slot position={Positioning.Bottom}>
 					<Toolbar
@@ -350,8 +336,8 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 					/>
 				</Slot>
 			)}
-		</TableContainer>
+		</S.TableContainer>
 	);
 }
 
-Table.displayName = 'Table';
+DataTable.displayName = 'DataTable';

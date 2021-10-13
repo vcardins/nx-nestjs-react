@@ -3,7 +3,7 @@ import React from 'react';
 import { DataFormats, Positioning } from '@xapp/shared/types';
 import { TableCell } from '.';
 import { ITableRowProps } from '../types';
-import { TR, Actions, TableCellContent } from './StyledComponents';
+import * as S from './Table.styles';
 import { useRenderer as renderers } from '../hooks';
 
 function Row <T = any>(props: ITableRowProps<T>) {
@@ -66,25 +66,27 @@ function Row <T = any>(props: ITableRowProps<T>) {
 				left={column.left}
 				right={column.right}
 			>
-				<TableCellContent align={align}>
+				<S.TableCellContent align={align}>
 					{ children }
-				</TableCellContent>
+				</S.TableCellContent>
 			</TableCell>
 		);
 	});
 
 	return (
-		<TR
+		<S.TR
 			id={id}
 			bg={bg}
 			role="tr"
 			style={{ gridTemplateColumns }}
 		>
 			{columnsInfo}
-			<Actions key={`actions-${id}`}>
-				{ actions }
-			</Actions>
-		</TR>
+			{actions && (
+				<S.Actions key={`actions-${id}`}>
+					{ actions }
+				</S.Actions>
+			)}
+		</S.TR>
 	);
 }
 

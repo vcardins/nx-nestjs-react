@@ -4,11 +4,11 @@ import numeral from 'numeral';
 import { ActionLink, DownArrow, UpArrow } from '../components';
 
 import { CharCase, DataFormats } from '@xapp/shared/types';
-import { ICheckboxOptions, IExpanderOptions, ICommonRenderer, RenderProps } from '../types';
+import { ICheckboxRenderer, IExpanderRenderer, ICommonRenderer, RenderProps } from '../types';
 
 type JSX = React.ReactElement;
 
-function checkboxRenderer(checkbox: ICheckboxOptions): JSX {
+function checkboxRenderer(checkbox: ICheckboxRenderer): JSX {
 	return (
 		checkbox && (
 			<input
@@ -19,7 +19,7 @@ function checkboxRenderer(checkbox: ICheckboxOptions): JSX {
 	);
 }
 
-function expanderRenderer(expander: IExpanderOptions): JSX {
+function expanderRenderer(expander: IExpanderRenderer): JSX {
 	const { isExpanded, ...rest } = expander;
 	return (
 		expander && (

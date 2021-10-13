@@ -1,21 +1,22 @@
 import { Dispatch, SetStateAction } from 'react';
-import { SortDirections } from '@xapp/shared/types';
+import { IColumnInfo, SortDirections } from '@xapp/shared/types';
 
 import { ITableState, IColumnKey } from '../types';
 
 interface IUseColumnSorting<T extends IColumnKey = any> {
-	state: ITableState<T>;
+	columns: IColumnInfo[];
+	data: T[];
 	onUpdateState: Dispatch<SetStateAction<ITableState<T>>>;
 }
 
 export const useColumnSorting = <T extends IColumnKey = any>(props: IUseColumnSorting<T>) => {
-	const { state, onUpdateState } = props;
+	const { columns, data, onUpdateState } = props;
 
 	function handleSortColumn(sortIndex: number) {
-		const sortKey = state.columns[sortIndex].key;
+		const sortKey = columns[sortIndex].key;
 		let sortDirection: SortDirections;
 
-		const columns = state.columns.map((col, i) => {
+		const updatedColumns = columns.map((col, i) => {
 			if (i === sortIndex) {
 				if (!col.sortDirection || col.sortDirection === SortDirections.DESC) {
 					sortDirection = SortDirections.ASC;
@@ -29,7 +30,7 @@ export const useColumnSorting = <T extends IColumnKey = any>(props: IUseColumnSo
 			return { ...col, sortDirection: null };
 		});
 
-		const updateRows = [...state.data].sort((a, b) => {
+		const updateRows = [...data].sort((a, b) => {
 			if (a[sortKey] === b[sortKey]) {
 				return 0;
 			}
@@ -42,7 +43,7 @@ export const useColumnSorting = <T extends IColumnKey = any>(props: IUseColumnSo
 		onUpdateState((prevState) => ({
 			...prevState,
 			data: updateRows,
-			columns,
+			columns: updatedColumns,
 			shouldUpdate: true,
 		}));
 	}

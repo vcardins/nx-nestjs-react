@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React from 'react';
-import { Link as NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const Link = styled(NavLink)`
+export const Link = styled.a`
 	display: inherit;
 `;
 
@@ -21,7 +20,7 @@ export function ActionLink({ id, label, children, onClick }: IActionLinkProps) {
 	}
 
 	return (
-		<Link id={id} to="#" onClick={handleClick}>
+		<Link id={id} href="#" onClick={handleClick}>
 			{ label ?? children }
 		</Link>
 	);

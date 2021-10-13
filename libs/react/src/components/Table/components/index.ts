@@ -4,7 +4,7 @@ export * from './ColumnHeader';
 export * from './Icons';
 export * from './Spinner';
 export * from './Loading';
-export * from './StyledComponents';
+// export * from './Table.styles';
 export * from './Pagination';
 export * from './TableRow';
 export * from './TableCell';

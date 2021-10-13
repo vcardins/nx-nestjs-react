@@ -3,7 +3,8 @@ import React, { useMemo } from 'react';
 import { SortDirections } from '@xapp/shared/types';
 
 import { IColumnHeader } from '../types';
-import { DownArrow, UpArrow, UpAndDownArrows, Sorter, Resizer, ActionLink, TableCell } from './';
+import { DownArrow, UpArrow, UpAndDownArrows, ActionLink, TableCell } from './';
+import * as S from './Table.styles';
 
 export const ColumnHeader = (props: IColumnHeader & { isControl?: boolean; left?: number; right?: number }) => {
 	const {
@@ -27,10 +28,10 @@ export const ColumnHeader = (props: IColumnHeader & { isControl?: boolean; left?
 			<>
 				<ActionLink onClick={onSort}>
 					{children}
-					<Sorter>{icon}</Sorter>
+					<S.Sorter>{icon}</S.Sorter>
 				</ActionLink>
 				{resizable && (
-					<Resizer
+					<S.Resizer
 						height={tableHeight}
 						onMouseDown={() => onResize(index)}
 						active={isResizing}

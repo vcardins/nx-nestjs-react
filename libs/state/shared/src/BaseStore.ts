@@ -1,6 +1,6 @@
 import { GetState, SetState } from 'zustand';
 
-import { SortDirections, KeyType, FieldType } from '@xapp/shared/types';
+import { SortDirections, KeyType, FieldType, IColumnInfo } from '@xapp/shared/types';
 
 import { ApiCallStatus, IAuthState, ICrudState, setError, setIdle, setLoading, setSuccess } from '.';
 import { DataContext } from './DataContext';
@@ -173,6 +173,26 @@ export function createBaseStore<
 			}
 			catch (error) {
 				setError<TState, { filteredItems: TOutput[] }>(set)(error, { filteredItems: null });
+			}
+		},
+		toggleColumnDisplay(key: string, visible: boolean) {
+			const { columns } = get();
+			if (!columns?.length) {
+				return;
+			}
+
+			try {
+				const index = columns.findIndex((col) => col.key === key);
+				const updatedColumns = [
+					...columns.slice(0, index),
+					{ ...columns[index], hidden: !visible },
+					...columns.slice(index + 1),
+				];
+
+				setSuccess<TState, { columns: IColumnInfo[] }>(set)({ columns: updatedColumns });
+			}
+			catch (error) {
+				setError<TState, { columns: IColumnInfo[] }>(set)(error);
 			}
 		},
 		...extraMethods?.(set, get),

@@ -61,7 +61,7 @@ const TaskTemplatePage = memo(() => {
 
 	const formRef = useRef({ valid: false });
 	const {
-		isApiReady, headers, /*mappedItems,*/ items, read, save, remove, filter,
+		isApiReady, columns, toggleColumnDisplay, /*mappedItems,*/ items, read, save, remove, filter,
 		status, filteredItems, checkedItems, setCheckedItems, expandedItems, setExpandedItems,
 		error, clearError,
 	} = useAppStore((state) => state.taskTemplate);
@@ -184,7 +184,8 @@ const TaskTemplatePage = memo(() => {
 			</Drawer>
 			<DataTable
 				id="task-template-table"
-				columns={headers}
+				settings={settings}
+				columns={columns}
 				isLoading={status === ApiCallStatus.Loading}
 				data={filteredItems ? filteredItems : items}
 				pagination={{ mode: PaginationMode.InfiniteScrolling, pageSize: 20 }}
@@ -205,7 +206,7 @@ const TaskTemplatePage = memo(() => {
 						onAfterReset={() => filter(null)}
 					/>
 				)}
-				settings={settings}
+				}
 			/>
 		</Panel>
 	);

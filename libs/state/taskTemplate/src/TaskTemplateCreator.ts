@@ -5,7 +5,7 @@ import { TaskTemplateInput, TaskTemplateOutput, TaskTemplateOutputMapped, KeyTyp
 
 import { TaskTemplateStore } from './TaskTemplateStore';
 
-const headers: IColumnInfo[] = [
+const columns: IColumnInfo[] = [
 	{ key: 'roomTypeId', label: 'Room Type', width: 80, fixed: Positioning.Left },
 	{ key: 'name', label: 'Name', width: 250 },
 	{ key: 'description', label: 'Description' },
@@ -28,7 +28,7 @@ export const createTaskTemplate: StateCreator<ITaskTemplateState> =
 			store: new TaskTemplateStore(),
 			mappedItems: {} as TaskTemplateOutputMapped,
 			expandedItems: [],
-			headers,
+			columns,
 		},
 		(set: SetState<ITaskTemplateState>, get: GetState<ITaskTemplateState>) => ({
 			read: async (): Promise<void> => {

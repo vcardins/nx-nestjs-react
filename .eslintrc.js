@@ -589,7 +589,7 @@ module.exports = {
 		{
 			files: ['*.ts', '*.tsx'],
 			plugins: [
-				'@typescript-eslint'
+				'@nrwl/nx/typescript'
 			],
 			rules
 		}

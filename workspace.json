@@ -52,7 +52,8 @@
 						"passWithNoTests": true
 					}
 				}
-			}
+			},
+			"tags": ["type:library", "scope:api", "platform:server"]
 		},
 		"api-access-control": {
 			"root": "libs/api/access-control",
@@ -73,7 +74,8 @@
 						"passWithNoTests": true
 					}
 				}
-			}
+			},
+			"tags": ["type:library", "scope:api", "platform:server"]
 		},
 		"api-auth": {
 			"root": "libs/api/auth",
@@ -97,7 +99,8 @@
 						"passWithNoTests": true
 					}
 				}
-			}
+			},
+			"tags": ["type:library", "scope:api", "platform:server"]
 		},
 		"api-config": {
 			"root": "libs/api/config",
@@ -111,7 +114,8 @@
 						"lintFilePatterns": ["libs/api/config/**/*.ts"]
 					}
 				}
-			}
+			},
+			"tags": ["type:library", "scope:api", "platform:server"]
 		},
 		"api-core": {
 			"root": "libs/api/core",
@@ -135,7 +139,8 @@
 						"passWithNoTests": true
 					}
 				}
-			}
+			},
+			"tags": ["type:library", "scope:api", "platform:server"]
 		},
 		"api-database": {
 			"root": "libs/api/database",
@@ -151,7 +156,8 @@
 						"exclude": ["**/node_modules/**", "!libs/api/database/**/*"]
 					}
 				}
-			}
+			},
+			"tags": ["type:library", "scope:api", "platform:server"]
 		},
 		"api-files": {
 			"root": "libs/api/files",
@@ -172,7 +178,8 @@
 						"passWithNoTests": true
 					}
 				}
-			}
+			},
+			"tags": ["type:library", "scope:api", "platform:server"]
 		},
 		"api-mail": {
 			"root": "libs/api/mail",
@@ -193,7 +200,8 @@
 						"passWithNoTests": true
 					}
 				}
-			}
+			},
+			"tags": ["type:library", "scope:api", "platform:server"]
 		},
 		"react": {
 			"root": "libs/react",
@@ -216,7 +224,8 @@
 						"passWithNoTests": true
 					}
 				}
-			}
+			},
+			"tags": []
 		},
 		"shared": {
 			"root": "libs/shared",
@@ -238,7 +247,8 @@
 						"passWithNoTests": true
 					}
 				}
-			}
+			},
+			"tags": []
 		},
 		"shared-api": {
 			"root": "libs/shared/api",
@@ -259,14 +269,16 @@
 						"passWithNoTests": true
 					}
 				}
-			}
+			},
+			"tags": []
 		},
 		"shared-assets": {
 			"root": "libs/shared/assets",
 			"sourceRoot": "libs/shared/assets/src",
 			"projectType": "library",
 			"schematics": {},
-			"architect": {}
+			"architect": {},
+			"tags": []
 		},
 		"shared-config": {
 			"root": "libs/shared/config",
@@ -280,7 +292,8 @@
 						"lintFilePatterns": ["libs/shared/config/**/*.ts"]
 					}
 				}
-			}
+			},
+			"tags": []
 		},
 		"shared-exceptions": {
 			"root": "libs/shared/exceptions",
@@ -294,7 +307,8 @@
 						"lintFilePatterns": ["libs/shared/exceptions/**/*.ts"]
 					}
 				}
-			}
+			},
+			"tags": []
 		},
 		"shared-types": {
 			"root": "libs/shared/types",
@@ -315,7 +329,8 @@
 						"passWithNoTests": true
 					}
 				}
-			}
+			},
+			"tags": []
 		},
 		"shared-utils": {
 			"root": "libs/shared/utils",
@@ -336,7 +351,8 @@
 						"passWithNoTests": true
 					}
 				}
-			}
+			},
+			"tags": []
 		},
 		"state": {
 			"root": "libs/state",
@@ -357,7 +373,8 @@
 						"passWithNoTests": true
 					}
 				}
-			}
+			},
+			"tags": []
 		},
 		"state-account": {
 			"root": "libs/state/account",
@@ -378,7 +395,8 @@
 						"passWithNoTests": true
 					}
 				}
-			}
+			},
+			"tags": []
 		},
 		"state-auth": {
 			"root": "libs/state/auth",
@@ -399,7 +417,8 @@
 						"passWithNoTests": true
 					}
 				}
-			}
+			},
+			"tags": []
 		},
 		"state-global": {
 			"root": "libs/state/global",
@@ -420,7 +439,8 @@
 						"passWithNoTests": true
 					}
 				}
-			}
+			},
+			"tags": []
 		},
 		"state-household": {
 			"root": "libs/state/household",
@@ -441,7 +461,8 @@
 						"passWithNoTests": true
 					}
 				}
-			}
+			},
+			"tags": []
 		},
 		"state-shared": {
 			"root": "libs/state/shared",
@@ -462,7 +483,8 @@
 						"passWithNoTests": true
 					}
 				}
-			}
+			},
+			"tags": []
 		},
 		"state-task": {
 			"root": "libs/state/task",
@@ -483,7 +505,8 @@
 						"passWithNoTests": true
 					}
 				}
-			}
+			},
+			"tags": []
 		},
 		"state-task-template": {
 			"root": "libs/state/taskTemplate",
@@ -504,7 +527,8 @@
 						"passWithNoTests": true
 					}
 				}
-			}
+			},
+			"tags": []
 		},
 		"state-todo": {
 			"root": "libs/state/todo",
@@ -525,7 +549,8 @@
 						"passWithNoTests": true
 					}
 				}
-			}
+			},
+			"tags": []
 		},
 		"web": {
 			"root": "apps/web",
@@ -605,7 +630,8 @@
 						"passWithNoTests": true
 					}
 				}
-			}
+			},
+			"tags": []
 		},
 		"web-e2e": {
 			"root": "apps/web-e2e",
@@ -631,11 +657,10 @@
 						"lintFilePatterns": ["apps/web-e2e/**/*.{js,ts}"]
 					}
 				}
-			}
+			},
+			"tags": [],
+			"implicitDependencies": ["web"]
 		}
-	},
-	"cli": {
-		"defaultCollection": "@nrwl/react"
 	},
 	"schematics": {
 		"@nrwl/react": {
@@ -652,6 +677,5 @@
 				"linter": "eslint"
 			}
 		}
-	},
-	"defaultProject": "api"
+	}
 }

@@ -2,7 +2,9 @@ import { IAppConfig, IRouteUriConfig, Themes } from '@xapp/shared/types';
 import { endpoints } from './endpoints';
 import { apiMeta } from './apiMeta';
 
-import { name, title, description, version } from '../../../../package.json';
+import packageInfo from '../../../../package.json';
+
+const { name, title, description, version } = packageInfo;
 
 const routeUriConfig: IRouteUriConfig = {
 	home: '/',

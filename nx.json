@@ -24,88 +24,24 @@
 			}
 		}
 	},
-	"projects": {
-		"api": {
-			"tags": ["type:library", "scope:api", "platform:server"]
-		},
-		"api-access-control": {
-			"tags": ["type:library", "scope:api", "platform:server"]
-		},
-		"api-auth": {
-			"tags": ["type:library", "scope:api", "platform:server"]
-		},
-		"api-config": {
-			"tags": ["type:library", "scope:api", "platform:server"]
-		},
-		"api-core": {
-			"tags": ["type:library", "scope:api", "platform:server"]
-		},
-		"api-database": {
-			"tags": ["type:library", "scope:api", "platform:server"]
-		},
-		"api-files": {
-			"tags": ["type:library", "scope:api", "platform:server"]
-		},
-		"api-mail": {
-			"tags": ["type:library", "scope:api", "platform:server"]
-		},
-		"react": {
-			"tags": []
-		},
-		"shared": {
-			"tags": []
-		},
-		"shared-api": {
-			"tags": []
-		},
-		"shared-assets": {
-			"tags": []
-		},
-		"shared-config": {
-			"tags": []
-		},
-		"shared-exceptions": {
-			"tags": []
-		},
-		"shared-types": {
-			"tags": []
-		},
-		"shared-utils": {
-			"tags": []
-		},
-		"state": {
-			"tags": []
-		},
-		"state-account": {
-			"tags": []
-		},
-		"state-auth": {
-			"tags": []
-		},
-		"state-global": {
-			"tags": []
-		},
-		"state-household": {
-			"tags": []
-		},
-		"state-shared": {
-			"tags": []
-		},
-		"state-task": {
-			"tags": []
-		},
-		"state-task-template": {
-			"tags": []
-		},
-		"state-todo": {
-			"tags": []
-		},
-		"web": {
-			"tags": []
-		},
-		"web-e2e": {
-			"tags": [],
-			"implicitDependencies": ["web"]
+	"cli": {
+		"defaultCollection": "@nrwl/react"
+	},
+	"generators": {
+		"@nrwl/react": {
+			"application": {
+				"style": "styled-components",
+				"linter": "eslint",
+				"babel": true
+			},
+			"component": {
+				"style": "styled-components"
+			},
+			"library": {
+				"style": "styled-components",
+				"linter": "eslint"
+			}
 		}
-	}
+	},
+	"defaultProject": "api"
 }

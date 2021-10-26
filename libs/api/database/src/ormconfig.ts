@@ -4,7 +4,7 @@ import { config as load } from 'dotenv';
 import { ConnectionOptions } from 'typeorm-seeding';
 import { DatabaseType } from 'typeorm';
 
-import * as workspaceJson from '../../../../workspace.json';
+import workspaceJson from '../../../../workspace.json';
 import { IWorkspaceJson } from '../../../../IWorkspaceJson';
 
 const basePath = '../../../../';
@@ -16,7 +16,7 @@ const filesExt = isFromMigration ? '.ts' : '{.ts}';
 const envFile = `.env${envName ? '.' : ''}${envName}`;
 const envFilePath = `${basePath}${envFile}`;
 
-const { projects, defaultProject } = (workspaceJson as unknown) as IWorkspaceJson;
+const { projects, defaultProject = 'api' } = (workspaceJson as unknown) as IWorkspaceJson;
 
 try {
 	fs.accessSync(envFilePath);

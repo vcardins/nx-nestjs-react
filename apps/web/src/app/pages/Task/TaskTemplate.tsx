@@ -17,13 +17,22 @@ import {
 	useForm,
 	Button,
 	Icon,
-	DataTable, RenderProps,
+	DataTable,
+	RenderProps,
 	Drawer,
 	InlineEdit,
 	FormBuilder,
 	Popover,
 } from '@xapp/react';
-import { TaskTemplateInput, TaskTemplateOutput, Frequencies, FieldType, IFieldInfo, DataFilter, PaginationMode } from '@xapp/shared/types';
+import {
+	TaskTemplateInput,
+	TaskTemplateOutput,
+	Frequencies,
+	FieldType,
+	IFieldInfo,
+	DataFilter,
+	PaginationMode,
+} from '@xapp/shared/types';
 
 import { useAppStore } from '@xapp/state';
 import { ApiCallStatus } from '@xapp/state/shared';
@@ -50,7 +59,7 @@ const handleBuildIds = {
 	checkbox: (key: string, { id }: TaskTemplateOutput) => `${tableTag}-checkbox-${key}-${id}`,
 	allCheckbox: () => 'checkbox-all',
 	expander: (key: string, { id }: TaskTemplateOutput) => `${tableTag}-expander-${key}-${id}`,
-}
+};
 
 const settings = {
 	maxExpandedContentHeight: '200px',
@@ -61,9 +70,22 @@ const TaskTemplatePage = memo(() => {
 
 	const formRef = useRef({ valid: false });
 	const {
-		isApiReady, columns, toggleColumnDisplay, /*mappedItems,*/ items, read, save, remove, filter,
-		status, filteredItems, checkedItems, setCheckedItems, expandedItems, setExpandedItems,
-		error, clearError,
+		isApiReady,
+		columns,
+		toggleColumnDisplay,
+		/*mappedItems,*/ items,
+		read,
+		save,
+		remove,
+		filter,
+		status,
+		filteredItems,
+		checkedItems,
+		setCheckedItems,
+		expandedItems,
+		setExpandedItems,
+		error,
+		clearError,
 	} = useAppStore((state) => state.taskTemplate);
 	const lookupStore = useAppStore((state) => state.lookup);
 
@@ -90,44 +112,60 @@ const TaskTemplatePage = memo(() => {
 		setIsDrawerOpen(false);
 	}
 
-	const filterControls: IFieldInfo[] = useMemo(() => (lookupStore?.frequencies && lookupStore?.roomTypes) && (
-		[
-			{ name: 'roomTypeId', type: FieldType.Select, label: 'Room Type', options: Object.values(lookupStore?.roomTypes).map(({ id, name }) => ({ id, name }))},
-			{ name: 'name', type: FieldType.Text, label: 'Name',},
-			{ name: 'estimatedCompletionTime', type: FieldType.Number, label: 'Completion Type' },
-			{ name: 'rewardPoints', type: FieldType.Number, label: 'Points' },
-			{ name: 'frequencyId', type: FieldType.Select, label: 'Frequency', options: Object.values(lookupStore?.frequencies).map(({ id, name }) => ({ id, name })) },
-			{ name: 'daysOfWeek', type: FieldType.Days, label: 'Days' },
-			{ name: 'isActive', type: FieldType.Boolean, label: 'Active' },
-		]),
+	const filterControls: IFieldInfo[] = useMemo(
+		() =>
+			lookupStore?.frequencies &&
+			lookupStore?.roomTypes && [
+				{
+					name: 'roomTypeId',
+					type: FieldType.Select,
+					label: 'Room Type',
+					options: Object.values(lookupStore?.roomTypes).map(({ id, name }) => ({ id, name })),
+				},
+				{ name: 'name', type: FieldType.Text, label: 'Name' },
+				{ name: 'estimatedCompletionTime', type: FieldType.Number, label: 'Completion Type' },
+				{ name: 'rewardPoints', type: FieldType.Number, label: 'Points' },
+				{
+					name: 'frequencyId',
+					type: FieldType.Select,
+					label: 'Frequency',
+					options: Object.values(lookupStore?.frequencies).map(({ id, name }) => ({ id, name })),
+				},
+				{ name: 'daysOfWeek', type: FieldType.Days, label: 'Days' },
+				{ name: 'isActive', type: FieldType.Boolean, label: 'Active' },
+			],
 		[lookupStore?.roomTypes, lookupStore?.frequencies]
 	);
 
-	const actions = useMemo(() => [
-		(item: TaskTemplateOutput) =>
-			<Icon
-				id="edit"
-				title="Edit"
-				icon={ic_edit}
-				onClick={() => {
-					form.onUpdateData(item, true);
-					setTimeout(() => setIsDrawerOpen(true), 100);
-				}}
-			/>,
-		(item: TaskTemplateOutput) => (
-			<Popover trigger={<Icon id="delete" title="Delete" icon={ic_delete} />}>
-				{(onClose) => (
-					<div>
-						<div>Confirm item deletion?</div>
-						<FieldGroup sided>
-							<Button onClick={() => remove(item.id)}>Delete</Button>
-							<Button onClick={onClose}>Cancel</Button>
-						</FieldGroup>
-					</div>
-				)}
-			</Popover>
-		)
-	], [form.onUpdateData, remove]);
+	const actions = useMemo(
+		() => [
+			(item: TaskTemplateOutput) => (
+				<Icon
+					id="edit"
+					title="Edit"
+					icon={ic_edit}
+					onClick={() => {
+						form.onUpdateData(item, true);
+						setTimeout(() => setIsDrawerOpen(true), 100);
+					}}
+				/>
+			),
+			(item: TaskTemplateOutput) => (
+				<Popover trigger={<Icon id="delete" title="Delete" icon={ic_delete} />}>
+					{(onClose) => (
+						<div>
+							<div>Confirm item deletion?</div>
+							<FieldGroup sided>
+								<Button onClick={() => remove(item.id)}>Delete</Button>
+								<Button onClick={onClose}>Cancel</Button>
+							</FieldGroup>
+						</div>
+					)}
+				</Popover>
+			),
+		],
+		[form.onUpdateData, remove]
+	);
 
 	// Object.keys(mappedItems[roomTypeId]).forEach((frequencyId) => {
 	// 	const frequency = lookupStore?.frequencies?.[frequencyId];
@@ -136,11 +174,7 @@ const TaskTemplatePage = memo(() => {
 	// 	return tasks.map(renderTaskTemplate);
 	// })
 	return (
-		<Panel
-			title="Task Template"
-			tag={domain}
-			overflow="hidden"
-		>
+		<Panel title="Task Template" tag={domain} overflow="hidden">
 			<Drawer
 				id="task-template-form"
 				isOpen={isDrawerOpen}
@@ -197,7 +231,7 @@ const TaskTemplatePage = memo(() => {
 				customRenderers={getCustomRenderers()}
 				onGetExpandedContent={getExpandedContent}
 				actions={actions}
-				filtersForm={(
+				filtersForm={
 					<FormBuilder<Record<string, TaskTemplateInput>, DataFilter>
 						id="filters-form"
 						tag="filters"
@@ -205,7 +239,6 @@ const TaskTemplatePage = memo(() => {
 						onSubmit={filter}
 						onAfterReset={() => filter(null)}
 					/>
-				)}
 				}
 			/>
 		</Panel>
@@ -228,35 +261,39 @@ const TaskTemplatePage = memo(() => {
 	function getExpandedContent(item: TaskTemplateOutput) {
 		return (
 			<div>
-				{ Array.from({ length: 20 }, (_, index) => <p key={index}>{item.name} - {index}</p>) }
+				{Array.from({ length: 20 }, (_, index) => (
+					<p key={index}>
+						{item.name} - {index}
+					</p>
+				))}
 			</div>
 		);
 	}
 
-// import { TaskTemplateItem, TaskTemplateItemInfo, TaskTemplateIcon } from './components/TaskTemplate';
-// function renderTaskTemplate(task: TaskTemplateOutput) {
-// 	return (
-// 		<TaskTemplateItem key={task.id}>
-// 			<TaskTemplateItemInfo>
-// 				<InlineEdit text={task.name} onSetText={(name) => save({ ...task, name }, task.id)} />
-// 				<TaskTemplateIcon icon={ic_delete} onClick={() => remove(task.id)} />
-// 			</TaskTemplateItemInfo>
-// 			{/* <TaskTemplateItemInvite>
-// 				<input
-// 					type="text"
-// 					name="invitation-firstName"
-// 					value={form.formData.invitation.firstName}
-// 				/>
-// 				<input
-// 					type="text"
-// 					name="invitation-email"
-// 					value={form.formData.invitation.email}
-// 				/>
-// 				<TaskTemplateIcon icon={ic_save} onClick={() => invite({ taskId: task.id, ...form.formData.invitation })} />
-// 			</TaskTemplateItemInvite> */}
-// 		</TaskTemplateItem>
-// 	);
-// }
+	// import { TaskTemplateItem, TaskTemplateItemInfo, TaskTemplateIcon } from './components/TaskTemplate';
+	// function renderTaskTemplate(task: TaskTemplateOutput) {
+	// 	return (
+	// 		<TaskTemplateItem key={task.id}>
+	// 			<TaskTemplateItemInfo>
+	// 				<InlineEdit text={task.name} onSetText={(name) => save({ ...task, name }, task.id)} />
+	// 				<TaskTemplateIcon icon={ic_delete} onClick={() => remove(task.id)} />
+	// 			</TaskTemplateItemInfo>
+	// 			{/* <TaskTemplateItemInvite>
+	// 				<input
+	// 					type="text"
+	// 					name="invitation-firstName"
+	// 					value={form.formData.invitation.firstName}
+	// 				/>
+	// 				<input
+	// 					type="text"
+	// 					name="invitation-email"
+	// 					value={form.formData.invitation.email}
+	// 				/>
+	// 				<TaskTemplateIcon icon={ic_save} onClick={() => invite({ taskId: task.id, ...form.formData.invitation })} />
+	// 			</TaskTemplateItemInvite> */}
+	// 		</TaskTemplateItem>
+	// 	);
+	// }
 });
 
 export default TaskTemplatePage;

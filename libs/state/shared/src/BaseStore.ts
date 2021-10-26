@@ -6,7 +6,7 @@ import { ApiCallStatus, IAuthState, ICrudState, setError, setIdle, setLoading, s
 import { DataContext } from './DataContext';
 
 interface Class<TDataContext> {
-	new(authHeader: IAuthState['authHeader']): TDataContext;
+	new (authHeader: IAuthState['authHeader']): TDataContext;
 }
 
 type TStore<TOutput, TInput> = DataContext<TOutput, TInput, TInput & { id: KeyType }>;
@@ -25,8 +25,7 @@ export function storeValues(id: KeyType | KeyType[], collection: KeyType[]) {
 
 		if (index === -1) {
 			value = [...collection, id];
-		}
-		else {
+		} else {
 			value = collection.filter((index) => index !== id);
 		}
 	}
@@ -36,11 +35,11 @@ export function storeValues(id: KeyType | KeyType[], collection: KeyType[]) {
 export function createBaseStore<
 	TState extends ICrudState<TStore<TOutput, TInput>, TOutput, TInput>,
 	TInput = any,
-	TOutput extends { id: KeyType } = any,
+	TOutput extends { id: KeyType } = any
 >(
 	Store: Class<TStore<TOutput, TInput>>,
 	initialStateValues?: Partial<TState>,
-	extraMethods?: (set: SetState<TState>, get: GetState<TState>) => Partial<TState>,
+	extraMethods?: (set: SetState<TState>, get: GetState<TState>) => Partial<TState>
 ) {
 	return (set: SetState<TState>, get: GetState<TState>) => ({
 		status: ApiCallStatus.Idle,
@@ -71,8 +70,7 @@ export function createBaseStore<
 			try {
 				const items = await store?.readAll(filters, id);
 				setSuccess<TState, { items: TOutput[] }>(set)({ items });
-			}
-			catch (error) {
+			} catch (error) {
 				setError<TState, { items: TOutput[] }>(set)(error, { items: [] });
 			}
 		},
@@ -86,21 +84,17 @@ export function createBaseStore<
 			setLoading(set)();
 
 			try {
-				const item = !id
-					? await store.create({ data })
-					: await store.update({ data }, id);
+				const item = !id ? await store.create({ data }) : await store.update({ data }, id);
 
 				const index = items.findIndex(({ id }) => id === item.id);
 
-				set((state) => void (
-					index === -1
-						? (state.items = [item, ...items])
-						: (state.items[index] = item),
-					(state.status = ApiCallStatus.Success),
-					(state.error = null)
-				));
-			}
-			catch (error) {
+				set(
+					(state) =>
+						void (index === -1 ? (state.items = [item, ...items]) : (state.items[index] = item),
+						(state.status = ApiCallStatus.Success),
+						(state.error = null))
+				);
+			} catch (error) {
 				setError(set)(error);
 			}
 		},
@@ -116,8 +110,7 @@ export function createBaseStore<
 			try {
 				await store.delete(null, id);
 				setSuccess<TState, { items: TOutput[] }>(set)({ items: items.filter((item) => item.id !== id) });
-			}
-			catch (error) {
+			} catch (error) {
 				setError(set)(error);
 			}
 		},
@@ -151,27 +144,27 @@ export function createBaseStore<
 			try {
 				const filteredItems = await new Promise<TOutput[]>((resolve) => {
 					setTimeout(() => {
-						const response = items.filter((item) => Object.keys(filters)
-							.filter((key) => !!filters[key])
-							.every((key) => {
-								const { type, value } = filters[key];
-								switch (type) {
-									case FieldType.Text:
-										return item[key]?.toLowerCase().indexOf(value.toLowerCase()) > -1;
-									case FieldType.Array:
-										return Array.isArray(value) ? value.includes(item[key]) : false;
-									default:
-										return item[key] === value;
-								}
-							}),
+						const response = items.filter((item) =>
+							Object.keys(filters)
+								.filter((key) => !!filters[key])
+								.every((key) => {
+									const { type, value } = filters[key];
+									switch (type) {
+										case FieldType.Text:
+											return item[key]?.toLowerCase().indexOf(value.toLowerCase()) > -1;
+										case FieldType.Array:
+											return Array.isArray(value) ? value.includes(item[key]) : false;
+										default:
+											return item[key] === value;
+									}
+								})
 						);
 						resolve(response);
 					}, 100);
 				});
 
 				setSuccess<TState, { filteredItems: TOutput[] }>(set)({ filteredItems });
-			}
-			catch (error) {
+			} catch (error) {
 				setError<TState, { filteredItems: TOutput[] }>(set)(error, { filteredItems: null });
 			}
 		},
@@ -190,8 +183,7 @@ export function createBaseStore<
 				];
 
 				setSuccess<TState, { columns: IColumnInfo[] }>(set)({ columns: updatedColumns });
-			}
-			catch (error) {
+			} catch (error) {
 				setError<TState, { columns: IColumnInfo[] }>(set)(error);
 			}
 		},

@@ -50,6 +50,7 @@ type SharedTableProps =
 	'idProp'
 	| 'expandedItems'
 	| 'checkedItems'
+	| 'actions'
 	| 'onBuildIds'
 	| 'onGetExpandedContent'
 	| 'onCheckItems'
@@ -57,14 +58,13 @@ type SharedTableProps =
 	| 'customRenderers'
 	| 'onExpandItems';
 
-export interface ITableRowProps<T> extends Pick<ITableProps, SharedTableProps>{
+export interface ITableRowProps<T extends IColumnKey> extends Pick<ITableProps, SharedTableProps> {
 	id?: string;
 	index: number;
 	columnsWidths?: string;
 	bg?: CSSProperties['color'];
-	children?: ReactNode;
-	actions?: ReactNode[];
 	item: T;
+	children?: ReactNode;
 }
 
 export interface ICommonRenderer<T = any> {
@@ -117,8 +117,6 @@ export interface IExpanderRenderer {
 export type CustomRenderer<TItem> = (props: RenderProps<TItem>) => ReactElement | string | undefined;
 export type CustomRenderers<TItem> = Record<string, CustomRenderer<Partial<TItem>>>;
 
-export type IdBuilder<T> = (key: string, item: T) => string;
-
 export interface IPaginationSettings {
 	mode: PaginationMode;
 	pageSize?: number;
@@ -155,10 +153,10 @@ export interface ITableProps<T extends IColumnKey = any> {
 	onBuildIds?: {
 		header?: (key: string) => string;
 		row?: (item: T) => string;
-		cell?: IdBuilder<T>;
-		checkbox?: IdBuilder<T>;
+		cell?: (key: string, item: T) => string;
+		checkbox?: (item: T) => string;
 		checkboxAll?: () => string;
-		expander?: IdBuilder<T>;
+		expander?: (item: T) => string;
 	}
 }
 

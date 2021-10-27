@@ -221,10 +221,8 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 					key={`${id}-tr`}
 					index={rowIndex}
 					bg={bgColor}
-					idProp={props.idProp}
 					item={item}
 					columnsWidths={gridTemplateColumns}
-					actions={props.actions?.map((action) => action(item))}
 					columns={columns}
 				/>,
 			);

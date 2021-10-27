@@ -2,11 +2,11 @@ import React from 'react';
 
 import { DataFormats, Positioning } from '@xapp/shared/types';
 import { TableCell } from '.';
-import { ITableRowProps } from '../types';
+import { ITableRowProps, IColumnKey } from '../types';
 import * as S from './Table.styles';
 import { useRenderer as renderers } from '../hooks';
 
-function Row <T = any>(props: ITableRowProps<T>) {
+function Row <T extends IColumnKey = any>(props: ITableRowProps<T>) {
 	let children: React.ReactNode;
 	let align: Positioning;
 	let fixed: Positioning;
@@ -27,7 +27,7 @@ function Row <T = any>(props: ITableRowProps<T>) {
 				fixed = Positioning.Left;
 				children = onCheckItems
 					? renderers[DataFormats.Checkbox]({
-						id: onBuildIds?.checkbox?.(column.key, item),
+						id: onBuildIds?.checkbox?.(item),
 						fixed: Positioning.Left,
 						checked: checkedItems?.includes(item[idProp]),
 						onChange: () => onCheckItems(item[idProp]),
@@ -40,7 +40,7 @@ function Row <T = any>(props: ITableRowProps<T>) {
 				fixed = Positioning.Left;
 				children = (onExpandItems && onGetExpandedContent)
 					? renderers[DataFormats.Expander]({
-						id: onBuildIds?.expander?.(column.key, item),
+						id: onBuildIds?.expander?.(item),
 						fixed: Positioning.Left,
 						isExpanded: expandedItems?.includes(item[idProp]),
 						onClick: () => onExpandItems(item[idProp]),
@@ -76,6 +76,7 @@ function Row <T = any>(props: ITableRowProps<T>) {
 	return (
 		<S.TR
 			id={id}
+			key={id}
 			bg={bg}
 			role="tr"
 			style={{ gridTemplateColumns }}
@@ -83,7 +84,11 @@ function Row <T = any>(props: ITableRowProps<T>) {
 			{columnsInfo}
 			{actions && (
 				<S.Actions key={`actions-${id}`}>
-					{ actions }
+					{ actions?.map((action, index) => (
+						<React.Fragment key={`${id}-${item.id}-${index}`}>
+							{action(item)}
+						</React.Fragment>
+					))}
 				</S.Actions>
 			)}
 		</S.TR>

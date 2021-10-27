@@ -17,7 +17,7 @@ import {
 	useForm,
 	Button,
 	Icon,
-	DataTable,
+	DataTable, ITableProps,
 	RenderProps,
 	Drawer,
 	InlineEdit,
@@ -50,15 +50,17 @@ const initialValues: TaskTemplateInput = {
 };
 
 const domain = 'task-template';
-const tableTag = `${domain}-table`;
 
-const handleBuildIds = {
-	header: (key: string) => `${tableTag}-header-${key}`,
-	row: ({ id }: TaskTemplateOutput) => `${tableTag}-row-${id}`,
-	cell: (key: string, { id }: TaskTemplateOutput) => `${tableTag}-cell-${key}-${id}`,
-	checkbox: (key: string, { id }: TaskTemplateOutput) => `${tableTag}-checkbox-${key}-${id}`,
-	allCheckbox: () => 'checkbox-all',
-	expander: (key: string, { id }: TaskTemplateOutput) => `${tableTag}-expander-${key}-${id}`,
+const getId = (tag: string, key?: string, id?: number) =>
+	`${domain}-table-${tag}${key ? `-${key}` : ''}${id ? `-${id}` : ''}`;
+
+const handleBuildIds: ITableProps['onBuildIds'] = {
+	header: (key: string) => getId('header', key),
+	row: ({ id }: TaskTemplateOutput) => getId('row', null, id),
+	cell: (key: string, { id }: TaskTemplateOutput) => getId('cell', key, id),
+	checkbox: ({ id }: TaskTemplateOutput) => getId('checkbox', null, id),
+	checkboxAll: () => getId('checkbox-all'),
+	expander: ({ id }: TaskTemplateOutput) => getId('expander', null, id),
 };
 
 const settings = {
@@ -141,7 +143,7 @@ const TaskTemplatePage = memo(() => {
 		() => [
 			(item: TaskTemplateOutput) => (
 				<Icon
-					id="edit"
+					id={getId('edit', null, item.id)}
 					title="Edit"
 					icon={ic_edit}
 					onClick={() => {
@@ -151,7 +153,13 @@ const TaskTemplatePage = memo(() => {
 				/>
 			),
 			(item: TaskTemplateOutput) => (
-				<Popover trigger={<Icon id="delete" title="Delete" icon={ic_delete} />}>
+				<Popover trigger={
+					<Icon
+						id={getId('delete', null, item.id)}
+						title="Delete"
+						icon={ic_delete}
+					/>
+				}>
 					{(onClose) => (
 						<div>
 							<div>Confirm item deletion?</div>
@@ -246,15 +254,12 @@ const TaskTemplatePage = memo(() => {
 
 	function getCustomRenderers() {
 		return {
-			roomTypeId: ({ item, column }: RenderProps<TaskTemplateOutput>) => {
-				return lookupStore?.roomTypes?.[item.roomTypeId]?.name;
-			},
-			frequencyId: ({ item, column }: RenderProps<TaskTemplateOutput>) => {
-				return lookupStore?.frequencies?.[item.frequencyId]?.name;
-			},
-			daysOfWeek: ({ item, column }: RenderProps<TaskTemplateOutput>) => {
-				return <span>{item.daysOfWeek}</span>;
-			},
+			roomTypeId: ({ item, column }: RenderProps<TaskTemplateOutput>) =>
+				lookupStore?.roomTypes?.[item.roomTypeId]?.name,
+			frequencyId: ({ item, column }: RenderProps<TaskTemplateOutput>) =>
+				lookupStore?.frequencies?.[item.frequencyId]?.name,
+			daysOfWeek: ({ item, column }: RenderProps<TaskTemplateOutput>) =>
+				<span>{item.daysOfWeek}</span>,
 		};
 	}
 

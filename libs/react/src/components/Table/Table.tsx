@@ -95,7 +95,6 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 		shadowRight,
 		columnsWidths,
 		rowHeight,
-		onToggleColumnDisplay,
 		resizingColumnIndex,
 		onStartResizingColumn,
 		onCheckAll,

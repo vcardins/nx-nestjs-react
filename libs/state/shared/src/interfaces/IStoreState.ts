@@ -11,5 +11,6 @@ export interface IStoreState<TStore = any> extends IApiCallState {
 	expandedItems?: KeyType[];
 	setExpandedItems?: (items: KeyType | KeyType[]) => void;
 	columns?: IColumnInfo[];
-	toggleColumnDisplay?: (key: IColumnInfo['key'], visible: boolean) => void;
+	visibleColumns?: IColumnInfo['key'][];
+	toggleColumnVisibility?: (key: IColumnInfo['key'], visible: boolean) => void;
 }

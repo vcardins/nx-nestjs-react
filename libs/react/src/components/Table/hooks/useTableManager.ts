@@ -47,24 +47,7 @@ export const useTableManager = <T extends IColumnKey = any>(props: ITableProps<T
 			shadowLeft: left.reduce((result, { width }) => result + width, -1),
 			shadowRight: right.reduce((result, { width }) => result + width, 0),
 		};
-	}, [state.columns]);
-
-	const handleColumnDisplay = useCallback(
-		(key: IColumnInfo['key'], visible: boolean) => {
-			const index = state.columns.findIndex((col) => col.key === key);
-			const columns = [
-				...state.columns.slice(0, index),
-				{ ...state.columns[index], hidden: !visible },
-				...state.columns.slice(index + 1),
-			];
-
-			setState((prevState) => ({
-				...prevState,
-				columns,
-			}));
-		},
-		[state.columns],
-	);
+	}, [props.columns]);
 
 	useEffect(() => {
 		setState((prevState) => ({ ...prevState, data: props.data }));
@@ -109,7 +92,6 @@ export const useTableManager = <T extends IColumnKey = any>(props: ITableProps<T
 		columnsWidths,
 		rowHeight: state.rowHeight,
 		resizingColumnIndex,
-		onToggleColumnDisplay: handleColumnDisplay,
 		onStartResizingColumn,
 		onCheckAll: handleCheckAll,
 		onColumnSorting,

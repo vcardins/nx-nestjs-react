@@ -32,6 +32,12 @@ export function storeValues(id: KeyType | KeyType[], collection: KeyType[]) {
 
 	return value;
 }
+
+const getVisibleColumns = (columns?: IColumnInfo[]) =>
+	columns?.filter(({ hidden }) => !hidden )?.map?.(({ key }) => key) ?? []
+
+const columns: IColumnInfo[] = [];
+
 export function createBaseStore<
 	TState extends ICrudState<TStore<TOutput, TInput>, TOutput, TInput>,
 	TInput = any,
@@ -44,6 +50,8 @@ export function createBaseStore<
 	return (set: SetState<TState>, get: GetState<TState>) => ({
 		status: ApiCallStatus.Idle,
 		items: [] as TOutput[],
+		columns,
+		visibleColumns: [],
 		filteredItems: null,
 		checkedItems: [] as KeyType[],
 		expandedItems: [] as KeyType[],
@@ -54,7 +62,8 @@ export function createBaseStore<
 		store: null,
 		init(props: IAuthState): Promise<void> {
 			return new Promise((resolve) => {
-				set({ store: new Store(props.authHeader), isApiReady: true });
+				const visibleColumns = getVisibleColumns(get()?.columns);
+				set({ store: new Store(props.authHeader), visibleColumns, isApiReady: true });
 				resolve();
 			});
 		},
@@ -168,7 +177,7 @@ export function createBaseStore<
 				setError<TState, { filteredItems: TOutput[] }>(set)(error, { filteredItems: null });
 			}
 		},
-		toggleColumnDisplay(key: string, visible: boolean) {
+		toggleColumnVisibility(key: string, visible: boolean) {
 			const { columns } = get();
 			if (!columns?.length) {
 				return;
@@ -182,7 +191,10 @@ export function createBaseStore<
 					...columns.slice(index + 1),
 				];
 
-				setSuccess<TState, { columns: IColumnInfo[] }>(set)({ columns: updatedColumns });
+				setSuccess<TState, { columns: IColumnInfo[]; visibleColumns: string[] }>(set)({
+					columns: updatedColumns,
+					visibleColumns: getVisibleColumns(updatedColumns),
+				});
 			} catch (error) {
 				setError<TState, { columns: IColumnInfo[] }>(set)(error);
 			}

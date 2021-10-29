@@ -41,7 +41,10 @@ export const PanelFooter = styled.div<{ padded: boolean }>`
 	max-height: 60px;
 	display: flex;
 	align-items: center;
-	padding: 0.75em;
+	${({ theme, padded }) => padded
+		? css`padding: ${theme.spacing.small}`
+		: css`padding-top: ${theme.spacing.normal}`
+	};
 	margin-top: 0.5em;
 	background-color: ${({ theme }) => theme.colors.tertiary.lightestGrey};
 	> * {

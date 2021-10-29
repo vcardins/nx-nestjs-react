@@ -34,12 +34,12 @@ export const useTableManager = <T extends IColumnKey = any>(props: ITableProps<T
 	});
 
 	const { columns, shadowLeft, shadowRight } = useMemo(() => {
-		let left = state.columns.filter(({ fixed }) => fixed === Positioning.Left);
+		let left = props.columns.filter(({ fixed }) => fixed === Positioning.Left);
 		left = left.map((col, index) => calcPosition(Positioning.Left, left, col, index));
 
-		const center = state.columns.filter(({ fixed }) => fixed === undefined);
+		const center = props.columns.filter(({ fixed }) => fixed === undefined);
 
-		let right = [...state.columns].reverse().filter(({ fixed }) => fixed === Positioning.Right);
+		let right = [...props.columns].reverse().filter(({ fixed }) => fixed === Positioning.Right);
 		right = right.map((col, index) => calcPosition(Positioning.Right, right, col, index));
 
 		return {
@@ -54,7 +54,7 @@ export const useTableManager = <T extends IColumnKey = any>(props: ITableProps<T
 	}, [props.data]);
 
 	useColumnResize({
-		columns: state.columns,
+		columns,
 		resizingColumnIndex,
 		minCellWidth: props.settings.minCellWidth,
 		refs: props.refs,
@@ -64,12 +64,17 @@ export const useTableManager = <T extends IColumnKey = any>(props: ITableProps<T
 	useScrolling<T>({ refs: props.refs, state, onUpdateState: setState });
 
 	const { onColumnSorting } = useColumnSorting<T>({
-		columns: state.columns,
+		columns,
 		data: state.data,
 		onUpdateState: setState,
 	});
 
-	const columnsWidths = useMemo(() => state.columns.map((col) => (col.width ? col.width : 'auto')), [state.columns]);
+	const columnsWidths = useMemo(() =>
+		columns.map(({ width, hidden }) => hidden
+			? undefined
+			: (width ? `${width}px` : 'auto')
+		).filter(Boolean).join(' ')
+	, [columns]);
 
 	const handleCheckAll = useCallback(
 		({ target: { checked } }: ChangeEvent<HTMLInputElement>) => {

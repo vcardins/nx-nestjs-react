@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-import { Positioning } from '@xapp/shared/types';
+import { VerticalPositioning, HorizontalPositioning } from '@xapp/shared/types';
 
 interface ITableSlotProps {
+	id?: string;
 	children?: React.ReactNode;
-	position: Positioning;
+	position: VerticalPositioning;
+	alignment?: HorizontalPositioning;
 	borderless?: boolean;
 }
 
@@ -15,14 +17,20 @@ const Wrapper = styled.div<Omit<ITableSlotProps, 'children'>>`
 	align-items: center;
 	padding: 0.25em 0.5em;
 	${({ position, borderless }) => !borderless
-		? `border-${position === Positioning.Top ? Positioning.Bottom : Positioning.Top}: 1px solid #eee`
-		: undefined
-};
+		? `border-${position === VerticalPositioning.Top ? VerticalPositioning.Bottom : VerticalPositioning.Top}: 1px solid #eee`
+		: undefined};
+	${({ alignment = HorizontalPositioning.Center }) => {
+		let align = 'center'
+		if (alignment === HorizontalPositioning.Left) align = 'flex-start';
+		if (alignment === HorizontalPositioning.Right) align = 'flex-end';
+
+		return css `justify-content: ${align}`;
+	}}
 `;
 
-export const Slot = React.memo(function Slot({ position, borderless, children = null }: ITableSlotProps) {
+export const Slot = React.memo(function Slot({ children = null, ...props }: ITableSlotProps) {
 	return (
-		<Wrapper position={position} borderless={borderless}>
+		<Wrapper {...props}>
 			{ children }
 		</Wrapper>
 	);

@@ -91,10 +91,10 @@ export interface ITableRefsProps {
 	body: MutableRefObject<HTMLDivElement>;
 	header: MutableRefObject<HTMLDivElement>;
 	shadow: {
-		top: MutableRefObject<HTMLDivElement>,
-		right: MutableRefObject<HTMLDivElement>,
-		bottom: MutableRefObject<HTMLDivElement>,
-		left: MutableRefObject<HTMLDivElement>,
+		top?: MutableRefObject<HTMLDivElement>,
+		right?: MutableRefObject<HTMLDivElement>,
+		bottom?: MutableRefObject<HTMLDivElement>,
+		left?: MutableRefObject<HTMLDivElement>,
 	};
 }
 

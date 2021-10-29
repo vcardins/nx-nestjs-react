@@ -34,11 +34,18 @@ export const useScrolling = <T extends IColumnKey = any>(props: IUseScrolling<T>
 			}));
 		}
 
-		refs.shadow.top.current.style.display = verticalScroll > 0 ? 'block' : 'none';
-		refs.shadow.bottom.current.style.display = verticalScroll > 0 ? 'block' : 'none';
-
-		refs.shadow.left.current.style.display = horizontalScroll > 0 ? 'block' : 'none';
-		refs.shadow.right.current.style.display = horizontalScroll > 0 ? 'block' : 'none';
+		if (refs.shadow.top) {
+			refs.shadow.top.current.style.display = verticalScroll > 0 ? 'block' : 'none';
+		}
+		if (refs.shadow.bottom) {
+			refs.shadow.bottom.current.style.display = verticalScroll > 0 ? 'block' : 'none';
+		}
+		if (refs.shadow.left) {
+			refs.shadow.left.current.style.display = horizontalScroll > 0 ? 'block' : 'none';
+		}
+		if (refs.shadow.right) {
+			refs.shadow.right.current.style.display = horizontalScroll > 0 ? 'block' : 'none';
+		}
 	}
 
 	useEffect(() => {

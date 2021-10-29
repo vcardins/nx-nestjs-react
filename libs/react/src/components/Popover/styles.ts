@@ -59,7 +59,6 @@ export const PopoverContainer = styled.div<IPopoverContainer>`
 	display: flex;
 	flex-direction: column;
 	position: absolute;
-	overflow: hidden;
 	z-index: 999;
 	transition: opacity 0.5s;
 	box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.05);

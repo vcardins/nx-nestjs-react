@@ -37,9 +37,9 @@ const cellStyle = css`
 	width: inherit;
 `;
 
-export const BottomShadow = styled.div`
+export const BottomShadow = styled.div<{ showFooter?: boolean }>`
 	${horizontalShadowStyle};
-	bottom: 30px;
+	bottom: ${({ showFooter }) => showFooter ? '30px' : '1px' };
 	background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
 `;
 
@@ -159,7 +159,6 @@ export const ExpandedTableCell = styled.div<Omit<IExpandedCellProps, 'children'>
 `;
 
 export const TableContainer = styled.div<{
-	colsWidths: (number | 'auto')[];
 	rows: number;
 	settings: ITableSettings;
 	rowHeight: ITableSettings['rowHeight'];

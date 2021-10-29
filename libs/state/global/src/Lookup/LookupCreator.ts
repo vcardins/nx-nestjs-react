@@ -1,4 +1,4 @@
-import { StateCreator, UseStore } from 'zustand';
+import { StateCreator, UseBoundStore } from 'zustand';
 
 import { SortDirections, ILookup } from '@xapp/shared/types';
 import { IAuthState, ApiCallStatus, createStore, setError, setLoading, setSuccess } from '@xapp/state/shared';
@@ -45,5 +45,5 @@ export const createLookup: StateCreator<ILookupState> = (set, get, api) => ({
 	},
 });
 
-export const useLookupState: UseStore<ReturnType<typeof createLookup>> =
+export const useLookupState: UseBoundStore<ReturnType<typeof createLookup>> =
 	createStore<ILookupState>((set, get, api) => createLookup(set, get, api));

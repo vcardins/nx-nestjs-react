@@ -1,4 +1,4 @@
-import { StateCreator, UseStore } from 'zustand';
+import { StateCreator, UseBoundStore } from 'zustand';
 
 import { createStore, createBaseStore, ICrudState } from '@xapp/state/shared';
 import { TaskInput, TaskOutput } from '@xapp/shared/types';
@@ -14,5 +14,5 @@ export const createTask: StateCreator<ITaskState> =
 		{ store: new TaskStore() },
 	);
 
-export const useTaskState: UseStore<ReturnType<typeof createTask>> =
+export const useTaskState: UseBoundStore<ReturnType<typeof createTask>> =
 	createStore<ITaskState>((set, get, api) => createTask(set, get, api));

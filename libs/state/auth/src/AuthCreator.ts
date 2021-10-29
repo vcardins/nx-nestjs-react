@@ -1,4 +1,4 @@
-import { GetState, SetState, StateCreator, UseStore } from 'zustand';
+import { GetState, SetState, StateCreator, UseBoundStore } from 'zustand';
 
 import { ApiCallStatus, createStore, setError, setLoading, setSuccess, IStoreState } from '@xapp/state/shared';
 import { ISignedUserOutput, ISignInInput } from '@xapp/shared/types';
@@ -118,5 +118,5 @@ export const createAuth: StateCreator<IAuthStoreState> = (set, get) => ({
 	},
 });
 
-export const useAuthState: UseStore<ReturnType<typeof createAuth>> =
+export const useAuthState: UseBoundStore<ReturnType<typeof createAuth>> =
 	createStore<IAuthStoreState>((set, get, api) => createAuth(set, get, api));

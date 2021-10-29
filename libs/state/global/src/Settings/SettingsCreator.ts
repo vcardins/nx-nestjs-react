@@ -1,4 +1,4 @@
-import { StateCreator, UseStore } from 'zustand';
+import { StateCreator, UseBoundStore } from 'zustand';
 
 import { ISettings } from '@xapp/shared/types';
 import { ApiCallStatus, createStore, setSuccess/*, setError, setLoading*/ } from '@xapp/state/shared';
@@ -28,5 +28,5 @@ export const createSettings: StateCreator<ISettingsState> = (set, get, api) => (
 	},
 });
 
-export const useSettingsState: UseStore<ReturnType<typeof createSettings>> =
+export const useSettingsState: UseBoundStore<ReturnType<typeof createSettings>> =
 	createStore<ISettingsState>((set, get, api) => createSettings(set, get, api));

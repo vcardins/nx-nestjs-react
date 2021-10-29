@@ -1,4 +1,4 @@
-import { UseStore } from 'zustand';
+import { UseBoundStore } from 'zustand';
 
 import { INotifier, IAppConfig } from '@xapp/shared/types';
 import { createStore, namespace, Namespaces, IAuthState } from '@xapp/state/shared';
@@ -25,7 +25,7 @@ export type AppState = {
 	reset: () => void;
 };
 
-export const useAppStore: UseStore<AppState> = createStore((set, get, api) => {
+export const useAppStore: UseBoundStore<AppState> = createStore((set, get, api) => {
 	const account = namespace(Namespaces.Account, createAccount)(set, get, api);
 	const auth = namespace(Namespaces.Auth, createAuth)(set, get, api);
 	const household = namespace(Namespaces.Household, createHousehold)(set, get, api);

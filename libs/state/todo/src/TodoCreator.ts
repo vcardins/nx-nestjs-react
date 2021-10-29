@@ -1,4 +1,4 @@
-import { GetState, SetState, StateCreator, UseStore } from 'zustand';
+import { GetState, SetState, StateCreator, UseBoundStore } from 'zustand';
 
 import { ApiCallStatus, createStore, setError, setLoading, createBaseStore, ICrudState } from '@xapp/state/shared';
 import { TodoInput, TodoOutput } from '@xapp/shared/types';
@@ -140,5 +140,5 @@ export const createTodo: StateCreator<ITodoState> = createBaseStore<ITodoState, 
 	}),
 );
 
-export const useTodoState: UseStore<ReturnType<typeof createTodo>> =
+export const useTodoState: UseBoundStore<ReturnType<typeof createTodo>> =
 	createStore<ITodoState>((set, get, api) => createTodo(set, get, api));

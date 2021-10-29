@@ -1,4 +1,4 @@
-import { GetState, SetState, StateCreator, UseStore } from 'zustand';
+import { GetState, SetState, StateCreator, UseBoundStore } from 'zustand';
 
 import {
 	createStore,
@@ -60,7 +60,6 @@ export const createTaskTemplate: StateCreator<ITaskTemplateState> = createBaseSt
 	{
 		store: new TaskTemplateStore(),
 		mappedItems: {} as TaskTemplateOutputMapped,
-		expandedItems: [],
 		columns,
 	},
 	(set: SetState<ITaskTemplateState>, get: GetState<ITaskTemplateState>) => ({
@@ -88,7 +87,6 @@ export const createTaskTemplate: StateCreator<ITaskTemplateState> = createBaseSt
 				setError(set)(error.message);
 			}
 		},
-
 		setExpandedItems(id: KeyType | KeyType[]) {
 			const { expandedItems } = get();
 			const values = storeValues(id, expandedItems);
@@ -98,6 +96,6 @@ export const createTaskTemplate: StateCreator<ITaskTemplateState> = createBaseSt
 	})
 );
 
-export const useTaskTemplateState: UseStore<ReturnType<typeof createTaskTemplate>> = createStore<ITaskTemplateState>(
+export const useTaskTemplateState: UseBoundStore<ReturnType<typeof createTaskTemplate>> = createStore<ITaskTemplateState>(
 	(set, get, api) => createTaskTemplate(set, get, api)
 );

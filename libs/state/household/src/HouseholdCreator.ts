@@ -1,4 +1,4 @@
-import { GetState, SetState, StateCreator, UseStore } from 'zustand';
+import { GetState, SetState, StateCreator, UseBoundStore } from 'zustand';
 
 import { ApiCallStatus, createStore, setError, setLoading, createBaseStore, ICrudState } from '@xapp/state/shared';
 import { HouseholdInput, HouseholdInvitationInput, HouseholdInvitationWelcome, HouseholdOutput, HouseholdMemberSignup, HouseholdRoomInput } from '@xapp/shared/types';
@@ -138,5 +138,5 @@ export const createHousehold: StateCreator<IHouseholdState> =
 		}),
 	);
 
-export const useHouseholdState: UseStore<ReturnType<typeof createHousehold>> =
+export const useHouseholdState: UseBoundStore<ReturnType<typeof createHousehold>> =
 	createStore<IHouseholdState>((set, get, api) => createHousehold(set, get, api));

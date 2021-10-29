@@ -63,8 +63,6 @@ function buildColumns<T extends IColumnKey = any>(props: {
 	}));
 }
 
-const PageSize = 20;
-
 export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) {
 	const refs: ITableRefsProps = {
 		wrapper: useRef<HTMLDivElement>(null),
@@ -80,16 +78,15 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 	const props: ITableProps<T> = {
 		...rawProps,
 		idProp: rawProps.idProp ?? 'id',
+		allowCheckAll: rawProps.allowCheckAll || true,
+
 		noRecordsMessage: rawProps.noRecordsMessage ?? 'No Records found',
-		pagination: rawProps.pagination ?? { mode: PaginationMode.None, pageSize: PageSize },
+		pagination: rawProps.pagination ?? { mode: PaginationMode.None },
 	};
 	const settings = { ...defaultSettings, ...props.settings };
-	const isPaginated = props.pagination.mode === PaginationMode.Pagination;
-	const showFooter = isPaginated;
-	const [currentPage, setCurrentPage] = useState(1);
 
 	const {
-		data,
+		pagination,
 		columns,
 		shadowLeft,
 		shadowRight,
@@ -111,15 +108,6 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 		refs,
 	});
 
-	const currentTableData = useMemo(() => {
-		if (!isPaginated) {
-			return data;
-		}
-		const firstPageIndex = (currentPage - 1) * PageSize;
-		const lastPageIndex = firstPageIndex + PageSize;
-		return data.slice(firstPageIndex, lastPageIndex);
-	}, [currentPage, data, props.pagination.mode]);
-
 	const tableHeader = useMemo(() =>
 		columns.filter(({ hidden }) => !hidden).map((column, index) => {
 			let children: React.ReactElement;
@@ -133,8 +121,8 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 					fixed = Positioning.Left;
 					align = Positioning.Center;
 					children = renderers[DataFormats.Checkbox]({
-						id: props.onBuildIds?.header?.(column.key),
-						disabled: !data.length,
+						id: props.onBuildIds?.checkboxAll?.(),
+						disabled: !pagination.total,
 						onChange: onCheckAll,
 					});
 					break;
@@ -151,6 +139,9 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 			}
 
 			const id = props.onBuildIds?.header?.(column.key);
+			if (column.format === DataFormats.Checkbox) {
+				console.log(children);
+			}
 
 			return (
 				<ColumnHeader
@@ -165,14 +156,19 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 					onSort={() => onColumnSorting(index)}
 					tableHeight={refs.body.current?.offsetHeight || 'auto'}
 				>
-					<S.TableCellContent align={align}>{children}</S.TableCellContent>
+					<S.TableCellContent align={align}>
+						{children}
+					</S.TableCellContent>
 				</ColumnHeader>
 			);
 		}),
 	[
 		columns,
+		pagination,
+		renderers,
 		resizingColumnIndex,
 		refs.body.current?.offsetHeight,
+		props.onBuildIds,
 		onCheckAll,
 		onStartResizingColumn,
 	]);
@@ -186,7 +182,7 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 			);
 		}
 
-		if (!currentTableData.length) {
+		if (!pagination.data.length) {
 			return (
 				<MessageCell>
 					{ props.noRecordsMessage }
@@ -194,7 +190,7 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 			);
 		}
 
-		return currentTableData.reduce((result, item, rowIndex) => {
+		return pagination.data.reduce((result, item, rowIndex) => {
 			const isExpanded = props.expandedItems?.includes(item[props.idProp]);
 			const expandedContent = isExpanded ? props?.onGetExpandedContent?.(item) : null;
 			const bgColor = rowIndex % 2 === 0 ? settings.evenRowColor : settings.oddRowColor;
@@ -235,7 +231,7 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 		}, [] as React.ReactNode[]);
 	}, [
 		columns,
-		currentTableData,
+		pagination.data,
 		props.idProp,
 		props.isLoading,
 		props.customRenderers,
@@ -250,11 +246,11 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 	return (
 		<S.TableContainer
 			role="table-container"
-			rows={currentTableData.length}
+			rows={pagination.data.length}
 			settings={settings}
 			rowHeight={rowHeight}
 			showHeader={true}
-			showFooter={isPaginated}
+			showFooter={pagination.isPaginated}
 		>
 			{props.toolbar && (
 				<Slot position={Positioning.Top}>
@@ -271,19 +267,19 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 				<S.TBody role="tbody" ref={refs.body}>
 					{ tableBody }
 				</S.TBody>
-				<S.BottomShadow ref={refs.shadow.bottom} showFooter={showFooter}/>
+				<S.BottomShadow ref={refs.shadow.bottom} showFooter={pagination.isPaginated}/>
 			</S.Table>
-			{showFooter && (
+			{pagination.isPaginated && (
 				<Slot
 					id={`${props.id}-footer`}
 					position={Positioning.Bottom}
 					alignment={Positioning.Center}
 				>
 					<Pagination
-						currentPage={currentPage}
-						totalCount={data.length}
-						pageSize={props.pagination.pageSize}
-						onPageChange={(page) => setCurrentPage(page)}
+						currentPage={pagination.currentPage}
+						totalCount={pagination.total}
+						pageSize={pagination.pageSize}
+						onPageChange={(page) => pagination.onPageChange(page)}
 					/>
 				</Slot>
 			)}

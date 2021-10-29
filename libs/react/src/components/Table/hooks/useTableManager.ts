@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback, ChangeEvent, useEffect } from 'react';
 
-import { Positioning, IColumnInfo } from '@xapp/shared/types';
-import { useColumnResize, useScrolling, useColumnSorting } from '.';
+import { Positioning, IColumnInfo, PaginationMode } from '@xapp/shared/types';
+import { useColumnResize, useScrolling, useColumnSorting, usePagination } from '.';
 import { ITableProps, ITableState, ITableRefsProps, IColumnKey } from '../types';
 
 const calcPosition = (
@@ -15,6 +15,7 @@ const calcPosition = (
 	[pos]: index === 0 ? index : collection.slice(0, index).reduce((result, { width }) => result + (width ?? 0), 0),
 });
 
+const PageSize = 20;
 export const useTableManager = <T extends IColumnKey = any>(props: ITableProps<T> & { refs: ITableRefsProps }) => {
 	const [resizingColumnIndex, onStartResizingColumn] = useState<number | null>(null);
 	const [state, setState] = useState<ITableState<T>>({
@@ -33,6 +34,10 @@ export const useTableManager = <T extends IColumnKey = any>(props: ITableProps<T
 		shouldUpdate: false,
 	});
 
+	useEffect(() => {
+		setState((prevState) => ({ ...prevState, data: props.data }));
+	}, [props.data]);
+
 	const { columns, shadowLeft, shadowRight } = useMemo(() => {
 		let left = props.columns.filter(({ fixed }) => fixed === Positioning.Left);
 		left = left.map((col, index) => calcPosition(Positioning.Left, left, col, index));
@@ -48,10 +53,6 @@ export const useTableManager = <T extends IColumnKey = any>(props: ITableProps<T
 			shadowRight: right.reduce((result, { width }) => result + width, 0),
 		};
 	}, [props.columns]);
-
-	useEffect(() => {
-		setState((prevState) => ({ ...prevState, data: props.data }));
-	}, [props.data]);
 
 	useColumnResize({
 		columns,
@@ -69,6 +70,12 @@ export const useTableManager = <T extends IColumnKey = any>(props: ITableProps<T
 		onUpdateState: setState,
 	});
 
+	const pagination = usePagination<T>(
+		props.pagination.mode,
+		state.data,
+		props.pagination.pageSize || PageSize,
+	);
+
 	const columnsWidths = useMemo(() =>
 		columns.map(({ width, hidden }) => hidden
 			? undefined
@@ -77,22 +84,21 @@ export const useTableManager = <T extends IColumnKey = any>(props: ITableProps<T
 	, [columns]);
 
 	const handleCheckAll = useCallback(
-		({ target: { checked } }: ChangeEvent<HTMLInputElement>) => {
+		({ target }: ChangeEvent<HTMLInputElement>) => {
 			if (!props.allowCheckAll) return;
 
-			const allItemIds = checked ? state.data.map((item) => item.id) : [];
+			const allItemIds = target.checked ? pagination.data.map((item) => item.id) : [];
 
-			if (typeof props.onCheckItems === 'function') {
-				props.onCheckItems(allItemIds);
-			}
+			props.onCheckItems?.(allItemIds);
 		},
-		[props.onCheckItems, state.data],
+		[props.onCheckItems, props.allowCheckAll, pagination.data],
 	);
 
 	return {
 		columns,
 		shadowLeft,
 		shadowRight,
+		pagination,
 		data: state.data, // .slice(state.displayStart, state.displayEnd),
 		columnsWidths,
 		rowHeight: state.rowHeight,

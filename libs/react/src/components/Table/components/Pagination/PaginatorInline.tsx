@@ -8,12 +8,13 @@ const PaginationContainer = styled.ul`
 	list-style-type: none;
 `;
 
+const Arrow = styled.div``;
+
 const PaginationItem = styled.li<{ disabled?: boolean; selected?: boolean; dots?: boolean }>`
 	padding: 0 0.5em;
 	height: 2em;
 	width: 2em;
 	margin: auto 0.25em;
-	color: rgba(0, 0, 0, 0.87);
 	box-sizing: border-box;
 	display: flex;
 	justify-content: center;
@@ -21,11 +22,12 @@ const PaginationItem = styled.li<{ disabled?: boolean; selected?: boolean; dots?
 	letter-spacing: 0.01071em;
 	border-radius: 2px;
 	font-size: 12px;
+	color: rgba(0, 0, 0, 0.87);
 
 	&:hover {
 		background-color: rgba(0, 0, 0, 0.04);
 		cursor: pointer;
-    }
+	}
 
 	${({ dots }) => dots && css`
 		&:hover {
@@ -38,20 +40,6 @@ const PaginationItem = styled.li<{ disabled?: boolean; selected?: boolean; dots?
 		background-color: rgba(0, 0, 0, 0.08);
 	`}
 
-	${({ disabled }) => disabled && css`
-		pointer-events: none;
-
-		[data-arrow]::before {
-			border-right: 0.12em solid rgba(0, 0, 0, 0.43);
-			border-top: 0.12em solid rgba(0, 0, 0, 0.43);
-		}
-
-		&:hover {
-			background-color: transparent;
-			cursor: default;
-		}
-	`}
-
 	[data-arrow]::before {
 		position: relative;
 		/* top: 3pt; Uncomment this to lower the icons as requested in comments*/
@@ -60,8 +48,8 @@ const PaginationItem = styled.li<{ disabled?: boolean; selected?: boolean; dots?
 		display: inline-block;
 		width: 0.4em;
 		height: 0.4em;
-		border-right: 0.12em solid rgba(0, 0, 0, 0.87);
-		border-top: 0.12em solid rgba(0, 0, 0, 0.87);
+		border-right: 0.12em solid;
+		border-top: 0.12em solid;
 	}
 
 	[data-arrow="left"] {
@@ -71,6 +59,20 @@ const PaginationItem = styled.li<{ disabled?: boolean; selected?: boolean; dots?
 	[data-arrow="right"] {
 		transform: rotate(45deg);
 	}
+
+	${({ disabled }) => disabled && css`
+		pointer-events: none;
+
+		[data-arrow]::before {
+			border-right: 0.12em solid #ddd;
+			border-top: 0.12em solid #ddd;
+		}
+
+		&:hover {
+			background-color: transparent;
+			cursor: default;
+		}
+	`}
 `;
 
 export function PaginatorInline (props: IPaginatorProps): React.ReactElement<any> {
@@ -79,7 +81,7 @@ export function PaginatorInline (props: IPaginatorProps): React.ReactElement<any
 	return (
 		<PaginationContainer>
 			<PaginationItem disabled={currentPage === 1} onClick={onGoPrevious}>
-				<div data-arrow="left" />
+				<Arrow data-arrow="left" />
 			</PaginationItem>
 
 			{paginationRange.map((pageNumber, index) => {
@@ -100,7 +102,7 @@ export function PaginatorInline (props: IPaginatorProps): React.ReactElement<any
 				);
 			})}
 			<PaginationItem disabled={currentPage === lastPage} onClick={onGoNext}>
-				<div data-arrow="right" />
+				<Arrow data-arrow="right" />
 			</PaginationItem>
 		</PaginationContainer>
 	);

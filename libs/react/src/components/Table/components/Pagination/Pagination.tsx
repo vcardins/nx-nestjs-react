@@ -22,19 +22,13 @@ export const Pagination = (props: IPaginationProps) => {
 
 	const lastPage = paginationRange[paginationRange.length - 1];
 
-	const onGoFirst = () => currentPage > 1 ? onPageChange(1) : undefined;
-	const onGoPrevious = () => currentPage > 1 ? onPageChange(currentPage - 1) : undefined;
-	const onGoToPage = (page: number) => onPageChange(page);
-	const onGoNext = () => currentPage < lastPage ? onPageChange(currentPage + 1) : undefined;
-	const onGoLast = () => currentPage < lastPage ? onPageChange(lastPage) : undefined;
-
 	const paginatorProps = {
 		currentPage, paginationRange, lastPage,
-		onGoToPage,
-		onGoFirst,
-		onGoPrevious,
-		onGoNext,
-		onGoLast,
+		onGoToPage: (page: number) => onPageChange(page),
+		onGoFirst: () => currentPage > 1 ? onPageChange(1) : undefined,
+		onGoPrevious: () => currentPage > 1 ? onPageChange(currentPage - 1) : undefined,
+		onGoNext: () => currentPage < lastPage ? onPageChange(currentPage + 1) : undefined,
+		onGoLast: () => currentPage < lastPage ? onPageChange(lastPage) : undefined,
 	};
 
 	return displayType === PaginationDisplayType.Dropdown

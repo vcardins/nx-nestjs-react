@@ -139,9 +139,6 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 			}
 
 			const id = props.onBuildIds?.header?.(column.key);
-			if (column.format === DataFormats.Checkbox) {
-				console.log(children);
-			}
 
 			return (
 				<ColumnHeader

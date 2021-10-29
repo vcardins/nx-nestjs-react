@@ -87,11 +87,11 @@ export const useTableManager = <T extends IColumnKey = any>(props: ITableProps<T
 		({ target }: ChangeEvent<HTMLInputElement>) => {
 			if (!props.allowCheckAll) return;
 
-			const allItemIds = target.checked ? pagination.data.map((item) => item.id) : [];
+			const allItemIds = target.checked ? state.data.map((item) => item.id) : [];
 
 			props.onCheckItems?.(allItemIds);
 		},
-		[props.onCheckItems, props.allowCheckAll, pagination.data],
+		[props.onCheckItems, props.allowCheckAll, state.data],
 	);
 
 	return {

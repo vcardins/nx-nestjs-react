@@ -76,10 +76,13 @@ const PaginationItem = styled.li<{ disabled?: boolean; selected?: boolean; dots?
 `;
 
 export function PaginatorInline (props: IPaginatorProps): React.ReactElement<any> {
-	const { currentPage, lastPage, paginationRange, onGoToPage, onGoPrevious, onGoNext } = props;
+	const { currentPage, lastPage, paginationRange, onGoToPage, onGoFirst, onGoPrevious, onGoNext, onGoLast } = props;
 
 	return (
 		<PaginationContainer>
+			<PaginationItem disabled={currentPage === 1} onClick={onGoFirst}>
+				|<Arrow data-arrow="left" />
+			</PaginationItem>
 			<PaginationItem disabled={currentPage === 1} onClick={onGoPrevious}>
 				<Arrow data-arrow="left" />
 			</PaginationItem>
@@ -103,6 +106,9 @@ export function PaginatorInline (props: IPaginatorProps): React.ReactElement<any
 			})}
 			<PaginationItem disabled={currentPage === lastPage} onClick={onGoNext}>
 				<Arrow data-arrow="right" />
+			</PaginationItem>
+			<PaginationItem disabled={currentPage === lastPage} onClick={onGoLast}>
+				<Arrow data-arrow="right" />|
 			</PaginationItem>
 		</PaginationContainer>
 	);

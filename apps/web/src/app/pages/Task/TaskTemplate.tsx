@@ -247,7 +247,7 @@ const TaskTemplatePage = memo(() => {
 				columns={store.columns}
 				isLoading={store.status === ApiCallStatus.Loading}
 				data={store.filteredItems ? store.filteredItems : store.items}
-				pagination={{ mode: PaginationMode.Pagination, pageSize: 20 }}
+				pagination={{ mode: PaginationMode.InfiniteScrolling, pageSize: 20 }}
 				onBuildIds={handleBuildIds}
 				checkedItems={store.checkedItems}
 				onCheckItems={store.setCheckedItems}
@@ -268,11 +268,11 @@ const TaskTemplatePage = memo(() => {
 
 	function getCustomRenderers() {
 		return {
-			roomTypeId: ({ item, column }: RenderProps<TaskTemplateOutput>) =>
+			roomTypeId: ({ item }: RenderProps<TaskTemplateOutput>) =>
 				lookupStore?.roomTypes?.[item.roomTypeId]?.name,
-			frequencyId: ({ item, column }: RenderProps<TaskTemplateOutput>) =>
+			frequencyId: ({ item }: RenderProps<TaskTemplateOutput>) =>
 				lookupStore?.frequencies?.[item.frequencyId]?.name,
-			daysOfWeek: ({ item, column }: RenderProps<TaskTemplateOutput>) =>
+			daysOfWeek: ({ item }: RenderProps<TaskTemplateOutput>) =>
 				<span>{item.daysOfWeek}</span>,
 		};
 	}

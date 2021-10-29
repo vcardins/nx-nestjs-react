@@ -14,7 +14,7 @@ export const Dropdown = (props: IDropdownListProps) => {
 
 	const updatedOptions: IListItem[] = !emptyValueLabel
 		? options
-		: [{ id: null, type: DropdownItemTypes.Divider, label: emptyValueLabel } as IListItem].concat(options);
+		: [{ key: null, type: DropdownItemTypes.Divider, label: emptyValueLabel } as IListItem].concat(options);
 
 	return (
 		<Popover

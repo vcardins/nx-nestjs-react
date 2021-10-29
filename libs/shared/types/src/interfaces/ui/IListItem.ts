@@ -3,7 +3,7 @@ import { IRoute } from './IRoute';
 import { DropdownItemTypes } from '../../enums/ui';
 
 export interface IListItem {
-	id?: string;
+	key?: string;
 	type?: DropdownItemTypes;
 	label?: string;
 	disabled?: boolean;

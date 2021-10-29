@@ -1,17 +1,13 @@
 import React, { useMemo, useRef, useState } from 'react';
 
 import { Positioning, DataFormats, PaginationMode, IColumnInfo } from '@xapp/shared/types';
-import { Toolbar } from '../Toolbar';
-import { ListItems } from '../ListItems';
 
-import { ITableProps, ITableRefsProps, IColumnKey } from './types';
-import {
-	ColumnHeader, ExpandedCell, Loading, Slot, Pagination, TableRow,
-	Columns as TableIcon, Filters as FiltersIcon,
-} from './components';
 import * as S from './components/Table.styles';
 
-import { useTableManager, useRenderer as renderers, useColumnToggle } from './hooks';
+import { ITableProps, ITableRefsProps, IColumnKey } from './types';
+import { ColumnHeader, ExpandedCell, Loading, Slot, Pagination, TableRow } from './components';
+
+import { useTableManager, useRenderer as renderers } from './hooks';
 import { defaultSettings } from './settings';
 
 const MessageCell = ({ children }: { children: React.ReactElement | string }) => (
@@ -88,6 +84,10 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 		pagination: rawProps.pagination ?? { mode: PaginationMode.None, pageSize: PageSize },
 	};
 	const settings = { ...defaultSettings, ...props.settings };
+	const isPaginated = props.pagination.mode === PaginationMode.Pagination;
+	const showFooter = isPaginated;
+	const [currentPage, setCurrentPage] = useState(1);
+
 	const {
 		data,
 		columns,
@@ -111,8 +111,6 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 		refs,
 	});
 
-	const isPaginated = props.pagination.mode === PaginationMode.Pagination;
-	const [currentPage, setCurrentPage] = useState(1);
 	const currentTableData = useMemo(() => {
 		if (!isPaginated) {
 			return data;
@@ -121,16 +119,6 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 		const lastPageIndex = firstPageIndex + PageSize;
 		return data.slice(firstPageIndex, lastPageIndex);
 	}, [currentPage, data, props.pagination.mode]);
-
-	const columnsToggler = useColumnToggle(columns, typeof onToggleColumnDisplay === 'function');
-
-	const gridTemplateColumns = useMemo(
-		() => columns.map(({ width, hidden }) => {
-			if (hidden) return [];
-			return width ? ` ${width}px` : ' auto';
-		}).filter(Boolean).join(' ')
-		, [columns],
-	);
 
 	const tableHeader = useMemo(() =>
 		columns.filter(({ hidden }) => !hidden).map((column, index) => {
@@ -221,7 +209,7 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 					index={rowIndex}
 					bg={bgColor}
 					item={item}
-					columnsWidths={gridTemplateColumns}
+					columnsWidths={columnsWidths}
 					columns={columns}
 				/>,
 			);
@@ -263,73 +251,39 @@ export function DataTable<T extends IColumnKey = any>(rawProps: ITableProps<T>) 
 		<S.TableContainer
 			role="table-container"
 			rows={currentTableData.length}
-			colsWidths={columnsWidths}
 			settings={settings}
 			rowHeight={rowHeight}
 			showHeader={true}
 			showFooter={isPaginated}
 		>
-			<Slot position={Positioning.Top}>
-				<Toolbar
-					id={`${props.id}-toolbar`}
-					alignment={{
-						left: [
-							props.filtersForm && {
-								id: `${props.id}-toolbar-filter`,
-								icon: <FiltersIcon/>,
-								title: 'Filters',
-								children: props.filtersForm,
-							},
-						],
-						right: [
-							{
-								id: `${props.id}-toolbar-display`,
-								icon: <TableIcon/>,
-								title: 'Columns Display',
-								children: (
-									<ListItems
-										{...columnsToggler}
-										showCheckbox={true}
-										onSelect={onToggleColumnDisplay}
-									/>
-								),
-							},
-						],
-					}}
-				/>
-			</Slot>
+			{props.toolbar && (
+				<Slot position={Positioning.Top}>
+					{props.toolbar}
+				</Slot>
+			)}
 			<S.Table role="table" id={props.id} ref={refs.wrapper}>
 				<S.TopShadow top={rowHeight} ref={refs.shadow.top} />
 				<S.LeftShadow left={shadowLeft} ref={refs.shadow.left} />
 				<S.RightShadow right={shadowRight} ref={refs.shadow.right} />
-				<S.THead role="thead" ref={refs.header} style={{ gridTemplateColumns }}>
+				<S.THead role="thead" ref={refs.header} style={{ gridTemplateColumns: columnsWidths }}>
 					{ tableHeader }
 				</S.THead>
 				<S.TBody role="tbody" ref={refs.body}>
 					{ tableBody }
 				</S.TBody>
-				<S.BottomShadow ref={refs.shadow.bottom}/>
+				<S.BottomShadow ref={refs.shadow.bottom} showFooter={showFooter}/>
 			</S.Table>
-			{isPaginated && (
-				<Slot position={Positioning.Bottom}>
-					<Toolbar
-						id={`${props.id}-footer`}
-						alignment={{
-							center: [
-								{
-									id: `${props.id}-pagination`,
-									inline: true,
-									children: (
-										<Pagination
-											currentPage={currentPage}
-											totalCount={data.length}
-											pageSize={props.pagination.pageSize}
-											onPageChange={(page) => setCurrentPage(page)}
-										/>
-									),
-								},
-							],
-						}}
+			{showFooter && (
+				<Slot
+					id={`${props.id}-footer`}
+					position={Positioning.Bottom}
+					alignment={Positioning.Center}
+				>
+					<Pagination
+						currentPage={currentPage}
+						totalCount={data.length}
+						pageSize={props.pagination.pageSize}
+						onPageChange={(page) => setCurrentPage(page)}
 					/>
 				</Slot>
 			)}

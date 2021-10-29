@@ -144,7 +144,7 @@ export interface ITableProps<T extends IColumnKey = any> {
 	expandedItems?: KeyType[];
 	noRecordsMessage?: string;
 	pagination?: IPaginationSettings;
-	filtersForm?: ReactNode;
+	toolbar?: ReactNode;
 	customRenderers?: CustomRenderers<T>;
 	actions?: ((item: T) => ReactNode)[];
 	onCheckItems?: (ids: KeyType | KeyType[]) => void;

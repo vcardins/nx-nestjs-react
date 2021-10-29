@@ -8,23 +8,23 @@ export interface IListItemsProps {
 	columnsCount?: number;
 	showCheckbox?: boolean;
 	selectedItems?: IListItem['value'][];
-	items?: IListItem[];
+	items: IListItem[];
 	onSelect?: (value: IListItem['value'], checked?: boolean) => void;
 }
 
 export const ListItems = React.memo(({ columnsCount = 1, showCheckbox = false, items = [], onSelect, selectedItems }: IListItemsProps) => (
 	<ListItemsWrapper columns={columnsCount}>
-		{items.map(({ id, label, value, disabled }) => {
-			const elemId = `column-toggler-${id}`;
-			const selected = selectedItems.includes(id);
+		{items.map(({ key, label, disabled }) => {
+			const elemId = `column-toggler-${key}`;
+			const selected = selectedItems.includes(key);
 
 			return (
-				<ListItemLabel key={id} htmlFor={elemId}>
+				<ListItemLabel key={key} htmlFor={elemId}>
 					<ListItem
 						title={label}
 						selected={selected}
 						showCheckbox={showCheckbox}
-						onClick={showCheckbox ? undefined : () => onSelect(value, !selected)}
+						onClick={showCheckbox ? undefined : () => onSelect(key, !selected)}
 					>
 						{ showCheckbox && (
 							<input
@@ -32,7 +32,7 @@ export const ListItems = React.memo(({ columnsCount = 1, showCheckbox = false, i
 								type="checkbox"
 								checked={selected}
 								disabled={disabled}
-								onChange={(e) => onSelect(value, e.target.checked)}
+								onChange={(e) => onSelect(key, e.target.checked)}
 							/>
 						)}
 						<ListItemLabelWrapper>

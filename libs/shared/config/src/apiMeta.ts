@@ -14,7 +14,8 @@ const protocol = 'http';
 const domain = 'localhost';
 const port = '3333';
 
-const baseUrl = `${protocol}://${domain}${port ? `:${port}` : ''}`;
+const fullUrl = `${domain}${port ? `:${port}` : ''}`;
+const baseUrl = `${protocol}://${fullUrl}`;
 const url = `${baseUrl}${basePath}`;
 
 export const ApiMeta = (): IAppConfig['apiMeta'] => ({
@@ -30,7 +31,7 @@ export const ApiMeta = (): IAppConfig['apiMeta'] => ({
 	userSettingsStorageKey: `${CODE}_settings`,
 	userInfoStorageKey: `${CODE}_user`,
 	authToken: 'Bearer',
-	websocketEndpoint: baseUrl,
+	websocketEndpoint: fullUrl,
 });
 
 export const apiMeta = ApiMeta();

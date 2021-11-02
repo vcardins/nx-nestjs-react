@@ -16,7 +16,6 @@ import {
 	Form,
 	TextInput,
 	FieldGroup,
-	Submit,
 	useForm,
 	Button,
 	Icon,
@@ -210,15 +209,15 @@ const TaskTemplatePage = memo(() => {
 			>
 				<Panel
 					tag={getId('form')}
-					title="Create Household"
+					title={ form.data.name ? `Edit ${form.data.name}` : 'Create Task Template'}
 					padded
 					footer={
 						<FieldGroup sided>
-							<Submit loading={form.submitting} success={form.success}>
-								<Icon icon={ic_save} />
-							</Submit>
+							<Button disabled={form.submitting} onClick={form.onSubmit}>
+								<Icon icon={ic_save} /> Save
+							</Button>
 							<Button onClick={handleClosePanel}>
-								<Icon icon={ic_close} />
+								<Icon icon={ic_close} /> Cancel
 							</Button>
 						</FieldGroup>
 					}

@@ -1,87 +1,23 @@
-import React from 'react';
-import { toast } from 'react-toastify';
+import { INotifier, NotifierFunc } from '@xapp/shared/types';
+import { toast, ToastOptions, TypeOptions } from 'react-toastify';
 
-/* eslint-disable camelcase */
-import { ic_close } from 'react-icons-kit/md/ic_close';
-/* eslint-enable camelcase */
+const defaultOptions: Partial<ToastOptions> = {
+	position: 'bottom-right',
+	autoClose: 2500,
+	hideProgressBar: true,
+	closeOnClick: true,
+	pauseOnHover: true,
+	draggable: true,
+	progress: undefined,
+};
 
-import { INotifier, INotifierCallback } from '@xapp/shared/types';
-import { Icon } from '../../components/Icon';
+const notify = (type: TypeOptions): NotifierFunc => (message: string, options?: ToastOptions) =>
+	toast[type](message, { ...defaultOptions, ...options });
 
-/**
- * Notifier class
- */
 export const useNotifier = (): INotifier => ({
-	info: (
-		message: string,
-		title?: string,
-		callback?: INotifierCallback,
-	) => {
-		toast.info(title, {
-			position: 'bottom-right',
-			autoClose: 2500,
-			hideProgressBar: true,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-		});
-
-		callback?.();
-	},
-
-	success: (
-		message: string,
-		title?: string,
-		callback?: INotifierCallback,
-	) => {
-		toast.info(title, {
-			position: 'bottom-right',
-			autoClose: 2500,
-			hideProgressBar: true,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-		});
-
-		callback?.();
-	},
-
-	error: (error: string, onClose?: INotifierCallback) => {
-		toast.error(
-			<>
-				<Icon
-					style={{ verticalAlign: 'bottom', marginLeft: '1em' }}
-					icon={ic_close}
-				/>
-				<span
-					style={{
-						display: 'inline-block',
-						marginLeft: '1em',
-						marginBottom: '2px',
-					}}
-				>
-					{error}
-				</span>
-			</>,
-			{
-				position: 'bottom-right',
-				autoClose: 2500,
-				hideProgressBar: true,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-			},
-		);
-
-		onClose?.();
-	},
-
-	showLoading: (show = true) => {
-		if (show) {
-			toast.info('Loading ...');
-		}
-	},
+	info: notify('info'),
+	success: notify('success'),
+	warning: notify('warning'),
+	error: notify('error'),
+	showLoading: (show = true) => show ? toast.info('Loading ...') : null,
 });

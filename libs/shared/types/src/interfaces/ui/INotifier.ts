@@ -1,34 +1,12 @@
-/**
- * Notifier callback function
- */
-export interface INotifierCallback {
-	(ok?: boolean): void;
-}
+import React from 'react';
+import { ToastOptions, TypeOptions } from 'react-toastify';
 
-/**
- * Notifier interface
- */
+export type NotifierFunc = (message: string, options?: ToastOptions) => React.ReactText;
+
 export interface INotifier {
-	/**
-	 * Report message
-	 * @param message Message
-	 * @param title Title
-	 * @callback callback Callback
-	 */
-	info(message: string, title?: string, callback?: INotifierCallback): void;
-
-	success(message: string, title?: string, callback?: INotifierCallback): void;
-
-	/**
-	 * Report error
-	 * @param error Error message
-	 * @callback callback Callback
-	 */
-	error(error: string, callback?: INotifierCallback): void;
-
-	/**
-	 * Show loading
-	 * @param show Show it or hide
-	 */
-	showLoading(show: boolean): void;
+	info: NotifierFunc;
+	success: NotifierFunc;
+	warning: NotifierFunc;
+	error: NotifierFunc;
+	showLoading?: (show: boolean) => React.ReactText | null;
 }

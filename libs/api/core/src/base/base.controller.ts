@@ -23,7 +23,8 @@ import {
 	ApiBearerAuth,
 } from '@nestjs/swagger';
 
-import { Operations } from '@xapp/shared/types';
+import { Operations, QueryOptions, IdType, SortDirections } from '@xapp/shared/types';
+import { SocketService } from '@xapp/api/socket';
 
 import { ApiException } from '../dto/api-exception.dto';
 import { BaseService } from './base.service';
@@ -31,8 +32,6 @@ import { formatEntityName } from './base.utils';
 import { IBaseControllerFactoryOpts, IPaginationQuery, IFindAndCountResult } from './base.interface';
 
 import { ParseIntWithDefaultPipe } from '../pipes/parse-int-with-default.pipe';
-import { QueryOptions, IdType, SortDirections } from '@xapp/shared/types';
-import { SocketGateway } from '../socket/socket.gateway';
 
 import { getOperationId } from '../utils/get-operation-id';
 import { filterMetadata } from '../utils/filter-metadata-factory';
@@ -67,18 +66,18 @@ export function baseControllerFactory<T extends BaseEntity>(options: IBaseContro
 	@ApiBearerAuth() //
 	abstract class BaseController {
 		protected readonly _service: BaseService<T>;
-		protected readonly _socket: SocketGateway;
+		// protected readonly _socket: SocketService;
 
 		protected readonly _defaultOptions: QueryOptions;
 
-		constructor(service: BaseService<T>, socketGateway?: SocketGateway, defaultOptions?: QueryOptions) {
+		constructor(service: BaseService<T>, socketGateway?: SocketService, defaultOptions?: QueryOptions) {
 			this._service = service;
-			this._socket = socketGateway;
+			// this._socket = socketGateway;
 			this._defaultOptions = defaultOptions;
 		}
 
 		emit(event: Operations, data?: any) {
-			this._socket?.server.emit('events', { resource: Entity.name, event, data });
+			// this._socket?.server.emit('events', { resource: Entity.name, event, data });
 		}
 
 		@ApiBadRequestResponse({ type: ApiException })

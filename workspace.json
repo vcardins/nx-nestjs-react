@@ -181,6 +181,28 @@
 			},
 			"tags": ["type:library", "scope:api", "platform:server"]
 		},
+		"api-socket": {
+			"root": "libs/api/socket",
+			"sourceRoot": "libs/api/socket/src",
+			"projectType": "library",
+			"schematics": {},
+			"architect": {
+				"lint": {
+					"builder": "@nrwl/linter:eslint",
+					"options": {
+						"lintFilePatterns": ["libs/api/socket/**/*.ts"]
+					}
+				},
+				"test": {
+					"builder": "@nrwl/jest:jest",
+					"options": {
+						"jestConfig": "libs/api/socket/jest.config.js",
+						"passWithNoTests": true
+					}
+				}
+			},
+			"tags": ["type:library", "scope:api", "platform:server"]
+		},
 		"api-mail": {
 			"root": "libs/api/mail",
 			"sourceRoot": "libs/api/mail/src",

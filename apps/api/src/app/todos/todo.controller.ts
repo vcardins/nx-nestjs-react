@@ -2,7 +2,7 @@ import { Controller, Patch, Body, Response, InternalServerErrorException } from 
 import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiBadRequestResponse, ApiOperation } from '@nestjs/swagger';
 import { Entity } from 'typeorm';
 
-import { SocketGateway, baseAuthControllerFactory, ResourceGroup, Permissions, ApiException, getDefaultPermissions } from '@xapp/api/core';
+import { baseAuthControllerFactory, ResourceGroup, Permissions, ApiException, getDefaultPermissions } from '@xapp/api/core';
 import { getOperationId, getUtcDate } from '@xapp/shared/utils';
 import { Resources, AuthGroups, SortDirections } from '@xapp/shared/types';
 
@@ -10,6 +10,7 @@ import { TodoService } from './todo.service';
 import { Todo } from './todo.entity';
 import { TodoOutput } from './dto/todo.output';
 import { ITodoComplete } from './todo-complete.interface';
+import { SocketService } from '@xapp/api/socket';
 
 const auth = getDefaultPermissions(AuthGroups.User);
 
@@ -25,7 +26,7 @@ const BaseController = baseAuthControllerFactory<Todo>({
 export class TodoController extends BaseController {
 	constructor(
 		private readonly service: TodoService,
-		private readonly socketService: SocketGateway,
+		private readonly socketService: SocketService,
 	) {
 		super(
 			service,

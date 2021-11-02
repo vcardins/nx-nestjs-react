@@ -1,7 +1,8 @@
 import { Controller, Get, Req, Response } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse } from '@nestjs/swagger';
 
-import { SocketGateway, baseAuthControllerFactory, ResourceGroup, getDefaultPermissions, Roles, Permissions, ApiException } from '@xapp/api/core';
+import { baseAuthControllerFactory, ResourceGroup, getDefaultPermissions, Roles, Permissions, ApiException } from '@xapp/api/core';
+import { SocketGateway, SocketService } from '@xapp/api/socket';
 import { Resources, TaskTemplateOutput, AuthGroups } from '@xapp/shared/types';
 import { TaskTemplate } from './entities/task_template.entity';
 import { TaskTemplateService } from './task_template.service';
@@ -20,7 +21,8 @@ const BaseController = baseAuthControllerFactory<TaskTemplate>({
 export class TaskTemplateController extends BaseController {
 	constructor(
 		private readonly service: TaskTemplateService,
-		private readonly socketService: SocketGateway,
+		private readonly socketService: SocketService,
+		private readonly socketGateway: SocketGateway,
 	) {
 		super(service, socketService);
 	}
@@ -35,6 +37,10 @@ export class TaskTemplateController extends BaseController {
 	@ApiBadRequestResponse({ type: ApiException })
 	public async getAll(@Req() req, @Response() response) {
 		const result = await this.service.getMappedValues();
+		const event = `${Resources.TaskTemplate}:read`;
+
+		this.socketGateway.emit(event, result);
+
 		return response.send(result);
 	}
 }

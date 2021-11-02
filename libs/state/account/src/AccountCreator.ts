@@ -1,6 +1,6 @@
 import { GetState, SetState, StateCreator, UseBoundStore } from 'zustand';
 
-import { IAuthState, ApiCallStatus, createStore, setError, setLoading, setSuccess, IStoreState } from '@xapp/state/shared';
+import { IAuthState, ApiCallStatus, createStore, setError, setLoading, setSuccess, IStoreState, StoreEventHandlers } from '@xapp/state/shared';
 import {
 	IUserProfileInput,
 	ISignedUserOutput,
@@ -23,7 +23,7 @@ interface IAccountStateValues {
 }
 
 export interface IAccountState extends IAccountStateValues, Omit<IStoreState<AccountStore>, 'init'> {
-	init: (props: IAuthState, endpoints: IEndpointsConfig) => void;
+	init: (props: IAuthState, endpoints: IEndpointsConfig, onEvent?: StoreEventHandlers) => void;
 	signUp(data: ISignUpInput): Promise<void>;
 	verifyEmail(data: IVerifyEmailInput): Promise<void>;
 	verifyPhoneNumber(data: IVerifyPhoneNumberInput): Promise<void>;
@@ -37,7 +37,7 @@ export interface IAccountState extends IAccountStateValues, Omit<IStoreState<Acc
 	resetPassword(data: IResetPasswordInput): Promise<void>;
 }
 
-const init = (set: SetState<IAccountState>) => (props: IAuthState, endpoints: IEndpointsConfig) => {
+const init = (set: SetState<IAccountState>) => (props: IAuthState, endpoints: IEndpointsConfig, onEvent?: StoreEventHandlers) => {
 	set({
 		store: new AccountStore(props.authHeader, endpoints),
 	});

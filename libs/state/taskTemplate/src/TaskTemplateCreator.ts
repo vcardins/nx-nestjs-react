@@ -17,6 +17,7 @@ import {
 	Positioning,
 	DataFormats,
 	IColumnInfo,
+	Resources,
 } from '@xapp/shared/types';
 
 import { TaskTemplateStore } from './TaskTemplateStore';
@@ -63,6 +64,12 @@ export const createTaskTemplate: StateCreator<ITaskTemplateState> = createBaseSt
 		columns,
 	},
 	(set: SetState<ITaskTemplateState>, get: GetState<ITaskTemplateState>) => ({
+		getEventsListeners: (): Record<string, (arg: any) => void> => {
+			const options = get();
+			return {
+				'task-template:read': (data: any) => console.log('Task Template Read Event', data),
+			};
+		},
 		read: async (): Promise<void> => {
 			const { store, status } = get();
 
@@ -96,6 +103,5 @@ export const createTaskTemplate: StateCreator<ITaskTemplateState> = createBaseSt
 	})
 );
 
-export const useTaskTemplateState: UseBoundStore<ReturnType<typeof createTaskTemplate>> = createStore<ITaskTemplateState>(
-	(set, get, api) => createTaskTemplate(set, get, api)
-);
+export const useTaskTemplateState: UseBoundStore<ReturnType<typeof createTaskTemplate>> =
+	createStore<ITaskTemplateState>((set, get, api) => createTaskTemplate(set, get, api));

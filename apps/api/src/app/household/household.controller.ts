@@ -3,7 +3,6 @@ import { ApiBadRequestResponse, ApiBody, ApiCreatedResponse, ApiOkResponse, ApiO
 import { User, UserService } from '@xapp/api/access-control';
 
 import {
-	SocketGateway,
 	baseAuthControllerFactory,
 	ResourceGroup,
 	getDefaultPermissions,
@@ -12,6 +11,7 @@ import {
 	Public,
 	Roles,
 } from '@xapp/api/core';
+import { SocketService } from '@xapp/api/socket';
 import {
 	Resources,
 	HouseholdOutput,
@@ -54,7 +54,7 @@ export class HouseholdController extends BaseController {
 		private readonly userService: UserService,
 		private readonly householdMemberService: HouseholdMemberService,
 		private readonly householdRoomService: HouseholdRoomService,
-		private readonly socketService: SocketGateway,
+		private readonly socketService: SocketService,
 	) {
 		super(service, socketService);
 	}

@@ -6,6 +6,7 @@ import { authenticate } from 'passport';
 import { CoreModule } from '@xapp/api/core';
 import { MailModule } from '@xapp/api/mail';
 import { FilesModule } from '@xapp/api/files';
+import { SocketModule, SocketService } from '@xapp/api/socket';
 import { OAuthProvider } from '@xapp/shared/types';
 import { DatabaseModule } from '@xapp/api/database';
 import { UserModule, AccessControlModule } from '@xapp/api/access-control';
@@ -21,6 +22,7 @@ import { OauthTokensAccessTokenService } from './auth-tokens/oauth-tokens-access
 export const services = [
 	JwtTokenService,
 	AuthService,
+	SocketService,
 	OauthTokensAccessTokenService,
 ];
 
@@ -41,6 +43,7 @@ export class AuthModule implements NestModule {
 				AccessControlModule,
 				MailModule,
 				FilesModule,
+				SocketModule,
 				CoreModule.forFeature(options),
 				DatabaseModule.forFeature(entities),
 			],
@@ -58,6 +61,7 @@ export class AuthModule implements NestModule {
 				MailModule,
 				UserModule,
 				AccessControlModule,
+				SocketModule,
 				JwtModule.register({ secret: 'secret_key' }),
 				CoreModule.forFeature(options),
 				DatabaseModule.forFeature(entities),

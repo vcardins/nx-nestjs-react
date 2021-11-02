@@ -26,13 +26,13 @@ import {
 
 import { Operations, UserRoles, IdType, SortDirections, QueryOptions } from '@xapp/shared/types';
 import { getOperationId } from '@xapp/shared/utils';
+import { SocketService } from '@xapp/api/socket';
 
 import { AuthConstraint, IBaseAuthControllerFactoryOpts } from './base-auth.interface';
 import { getAuthConstraints } from './base-auth.utils';
 import { formatEntityName } from './base.utils';
 import { filterMetadata } from '../utils/filter-metadata-factory';
 import { BaseService } from './base.service';
-import { SocketGateway } from '../socket/socket.gateway';
 import { Roles } from '../decorators/roles.decorator';
 import { Permissions } from '../decorators/permissions.decorator';
 import { ApiException } from '../dto/api-exception.dto';
@@ -53,7 +53,6 @@ export const getDefaultPermissions = (roles: UserRoles[] = []): Record<string, A
 	updateOrCreate: { roles, permissions: [Operations.Update] },
 	delete: { roles, permissions: [Operations.Delete] },
 });
-
 
 export function baseAuthControllerFactory<T extends IBaseEntity>(options: IBaseAuthControllerFactoryOpts<T>) {
 	const Entity = options.entity;
@@ -80,12 +79,12 @@ export function baseAuthControllerFactory<T extends IBaseEntity>(options: IBaseA
 	@ApiTags(Entity.name)
 	abstract class BaseAuthController {
 		protected readonly _service: BaseService<T>;
-		protected readonly _socket: SocketGateway;
+		protected readonly _socket: SocketService;
 		protected readonly _defaultOptions: QueryOptions;
 
-		constructor(service: BaseService<T>, socketGateway?: SocketGateway, defaultOptions?: QueryOptions ) {
+		constructor(service: BaseService<T>, socketService?: SocketService, defaultOptions?: QueryOptions ) {
 			this._service = service;
-			this._socket = socketGateway;
+			this._socket = socketService;
 			this._defaultOptions = defaultOptions;
 		}
 

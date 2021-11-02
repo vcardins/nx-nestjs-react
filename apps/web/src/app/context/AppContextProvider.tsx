@@ -1,13 +1,14 @@
 import React, { FC, Context, createContext, useEffect, useState, useRef, useMemo } from 'react';
 
-import { IKeyedRoute, INavItem, IRoute } from '@xapp/shared/types';
+import { IKeyedRoute, INavItem, IRoute, INotifier } from '@xapp/shared/types';
 import { useAppStore } from '@xapp/state';
-import { useNotifier } from '@xapp/react';
+import { useNotifier, useSocket, UseSocketReturnType } from '@xapp/react';
 import { appConfig } from '@xapp/shared/config';
 
 export interface IAppContext {
 	activeRoute: IRoute;
 	routes: IKeyedRoute;
+	socket: UseSocketReturnType;
 
 	navigation: INavItem[];
 	onActivateRoute?: (value: IRoute, location: string) => void;
@@ -17,6 +18,7 @@ const initialContext: IAppContext = {
 	routes: {},
 	activeRoute: null,
 	navigation: null,
+	socket: undefined,
 	onActivateRoute: () => null,
 };
 
@@ -27,6 +29,19 @@ interface IAppContextProviderProps {
 	routes: IAppContext['routes'];
 }
 
+export const useAuthenticatedSocket = (namespace?: string, notifier?: INotifier) =>
+	(accessToken?: string) => useSocket(namespace,
+		{
+			enabled: !!accessToken,
+			transports: ['websocket'],
+			query: { token: accessToken },
+		},
+		// {
+		// 	'user:connected': (data: { clientId: string }) => notifier?.info(`${data.clientId} just connected`),
+		// 	'user:disconnected': () => notifier?.info('Client disconnected')
+		// }
+	);
+
 const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: IAppContextProviderProps) => {
 	const { accessToken, authHeader } = useAppStore((state) => state.auth);
 
@@ -36,6 +51,7 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 	const notifier = useNotifier();
 
 	const ref = useRef(null);
+	const socket = useAuthenticatedSocket(appConfig.apiMeta.websocketEndpoint, notifier)(accessToken);
 
 	useEffect(() => {
 		const bootstrap = async () => {
@@ -45,14 +61,13 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 			}
 
 			if (accessToken) {
-				await dataStore.init(appConfig, notifier, { authHeader });
+				const eventsListeners = { on: socket.on, off: socket.off, emit: socket.emit };
+				await dataStore.init(appConfig, notifier, { authHeader }, eventsListeners);
 				await dataStore.account.getUserProfile();
 				await dataStore.lookup.read();
 			} else {
 				setNavigation([]);
 				dataStore.reset();
-				dataStore.account.init({ authHeader }, appConfig.endpoints );
-				await dataStore.household.init({ authHeader });
 			}
 
 			ref.current = accessToken;
@@ -79,17 +94,31 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 		}
 	}, [dataStore.lookup.data, dataStore]);
 
-	const value = useMemo<IAppContext>(
-		() => ({
-			routes,
-			activeRoute,
-			navigation,
-			onActivateRoute: setActiveRoute,
-		}),
-		[routes, activeRoute, navigation]
-	);
+	useEffect(() => {
+		if (socket.connected) {
+			console.log(socket.socket);
+		}
+	}, [socket.connected]);
 
-	return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+	const value = useMemo<IAppContext>(() => ({
+		routes,
+		activeRoute,
+		socket,
+		navigation,
+		onActivateRoute: setActiveRoute,
+	}),
+	[
+		routes,
+		activeRoute,
+		navigation,
+		socket,
+	]);
+
+	return (
+		<AppContext.Provider value={value}>
+			{children}
+		</AppContext.Provider>
+	);
 };
 
 export { AppContextProvider, AppContext as appContext };

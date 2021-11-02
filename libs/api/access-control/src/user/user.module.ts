@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { DatabaseModule } from '@xapp/api/database';
 import { FilesModule } from '@xapp/api/files';
 import { MailModule } from '@xapp/api/mail';
+import { SocketModule } from '@xapp/api/socket';
 
 import { AccountController } from './account/account.controller';
 import { AccountService } from './account/account.service';
@@ -34,6 +35,7 @@ const providers = [
 	imports: [
 		FilesModule,
 		MailModule,
+		SocketModule,
 		DatabaseModule.forFeature(entities),
 	],
 	controllers: [

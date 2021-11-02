@@ -1,3 +1,4 @@
+import { StoreEventHandlers } from './types/StoreEventHandlers';
 import { GetState, SetState } from 'zustand';
 
 import { SortDirections, KeyType, FieldType, IColumnInfo } from '@xapp/shared/types';
@@ -60,9 +61,16 @@ export function createBaseStore<
 		isApiReady: false,
 		...initialStateValues,
 		store: null,
-		init(props: IAuthState): Promise<void> {
+		async init(props: IAuthState, eventsHandlers?: StoreEventHandlers): Promise<void> {
 			return new Promise((resolve) => {
-				const visibleColumns = getVisibleColumns(get()?.columns);
+				const { columns, getEventsListeners } = get();
+				const visibleColumns = getVisibleColumns(columns);
+				const handles = getEventsListeners?.();
+
+				if (handles) {
+					Object.keys?.(handles).forEach((key) => eventsHandlers.on(key, handles[key]));
+				}
+
 				set({ store: new Store(props.authHeader), visibleColumns, isApiReady: true });
 				resolve();
 			});

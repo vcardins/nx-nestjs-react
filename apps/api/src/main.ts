@@ -3,6 +3,7 @@
  * This is only a minimal backend to get started.
  */
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { IoAdapter } from '@nestjs/platform-socket.io';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { register } from 'tsconfig-paths';
 
@@ -33,6 +34,8 @@ async function bootstrap() {
 	);
 
 	app.setGlobalPrefix(apiConfig.basePath);
+
+	app.useWebSocketAdapter(new IoAdapter(app));
 
 	apiConfig.project.staticFolders.forEach((folder) => {
 		app.useStaticAssets(folder);

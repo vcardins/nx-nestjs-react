@@ -37,8 +37,6 @@ export * from './exceptions/FieldValidationError';
 export * from './exceptions/UnauthorizedError';
 export * from './exceptions/ValidationError';
 
-export * from './socket/socket.gateway';
-
 export * from './utils/filter-metadata-factory';
 export * from './utils/date';
 export * from './utils/string';

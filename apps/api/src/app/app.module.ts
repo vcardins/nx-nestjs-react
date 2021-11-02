@@ -8,6 +8,7 @@ import { AuthModule, AUTH_GUARD_TYPE } from '@xapp/api/auth';
 import { AccessControlModule, UserModule } from '@xapp/api/access-control';
 import { DatabaseModule } from '@xapp/api/database';
 import { FilesModule } from '@xapp/api/files';
+import { SocketModule } from '@xapp/api/socket';
 import { ConfigModule } from '@xapp/api/config';
 
 import { TodoModule } from './todos/todo.module';
@@ -38,6 +39,7 @@ export class AppModule {
 				UserModule,
 				AccessControlModule,
 				FilesModule,
+				SocketModule,
 				ScheduleModule.forRoot(),
 				CoreModule.forRoot(options),
 				authModule,

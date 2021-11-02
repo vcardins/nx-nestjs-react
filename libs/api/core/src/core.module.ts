@@ -1,8 +1,6 @@
 import { DynamicModule, Module, Provider } from '@nestjs/common';
 import { AutomapperModule } from 'nestjsx-automapper';
 
-import { SocketModule } from './socket/socket.module';
-
 @Module({})
 export class CoreModule {
 	static forFeature(options?: { providers: Provider[] }): DynamicModule {
@@ -21,7 +19,6 @@ export class CoreModule {
 			module: CoreModule,
 			imports: [
 				AutomapperModule.withMapper(),
-				SocketModule,
 			],
 			controllers: [],
 			providers: [

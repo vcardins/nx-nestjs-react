@@ -1,10 +1,11 @@
 import { Controller } from '@nestjs/common';
 
-import { SocketGateway, ResourceGroup, baseAuthControllerFactory, getDefaultPermissions } from '@xapp/api/core';
+import { ResourceGroup, baseAuthControllerFactory, getDefaultPermissions } from '@xapp/api/core';
 import { Resources, AuthGroups } from '@xapp/shared/types';
 import { RoleService } from './role.service';
 import { Role } from './role.entity';
 import { RoleOutput } from './dto/role.output';
+import { SocketService } from '@xapp/api/socket';
 
 const BaseController = baseAuthControllerFactory<Role>({
 	entity: Role,
@@ -18,7 +19,7 @@ export class RoleController extends BaseController {
 	constructor(
 		// private readonly configService: ConfigService,
 		private readonly service: RoleService,
-		private readonly socketService: SocketGateway,
+		private readonly socketService: SocketService,
 	) {
 		super(service, socketService);
 	}

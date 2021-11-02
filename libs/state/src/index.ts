@@ -1,7 +1,8 @@
 import { UseBoundStore } from 'zustand';
+import { Socket } from 'socket.io-client';
 
 import { INotifier, IAppConfig } from '@xapp/shared/types';
-import { createStore, namespace, Namespaces, IAuthState } from '@xapp/state/shared';
+import { createStore, namespace, Namespaces, IAuthState, StoreEventHandlers } from '@xapp/state/shared';
 import { createTodo }  from '@xapp/state/todo';
 import { createAuth } from '@xapp/state/auth';
 import { createLookup, createSettings } from '@xapp/state/global';
@@ -21,7 +22,12 @@ export type AppState = {
 	todo: ReturnType<typeof createTodo>;
 	task: ReturnType<typeof createTask>;
 	taskTemplate: ReturnType<typeof createTaskTemplate>;
-	init: (appConfig: IAppConfig, notifier: INotifier, authState: IAuthState) => Promise<void>;
+	init: (
+		appConfig: IAppConfig,
+		notifier: INotifier,
+		authState: IAuthState,
+		eventsHandler?: StoreEventHandlers,
+	) => Promise<void>;
 	reset: () => void;
 };
 
@@ -35,19 +41,20 @@ export const useAppStore: UseBoundStore<AppState> = createStore((set, get, api) 
 	const task = namespace(Namespaces.Task, createTask)(set, get, api);
 	const taskTemplate = namespace(Namespaces.TaskTemplate, createTaskTemplate)(set, get, api);
 
-	const init = async (appConfig: IAppConfig, notifier: INotifier, authState: IAuthState): Promise<void> => {
+	const init = async (appConfig: IAppConfig, notifier: INotifier, authState: IAuthState, eventsHandler?: StoreEventHandlers): Promise<void> => {
 		set((state) => void (
 			(state.config = appConfig),
 			(state.notifier = notifier)
 		));
 
-		account.init(authState, appConfig.endpoints);
-		await household.init(authState);
-		await lookup.init(authState);
-		await todo.init(authState);
-		await task.init(authState);
-		await settings.init();
-		await taskTemplate.init(authState);
+		account.init(authState, appConfig.endpoints, eventsHandler);
+
+		await household.init(authState, eventsHandler);
+		await lookup.init(authState, eventsHandler);
+		await todo.init(authState, eventsHandler);
+		await task.init(authState, eventsHandler);
+		await settings.init(eventsHandler);
+		await taskTemplate.init(authState, eventsHandler);
 	};
 
 	return {

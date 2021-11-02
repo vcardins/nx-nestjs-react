@@ -37,7 +37,7 @@ interface IState {
 }
 
 export const Authorization = ({ children, routes }: IAuthorizationProps) => {
-	const location = useLocation() as Location<IState>; // <{ redirectUrl?: string }>
+	const location = useLocation() as Location;
 	const navigate = useNavigate();
 	const { user, isSessionValid, onSignOut } = useAppStore((state) => state.auth);
 	const isPrivatePage = ![

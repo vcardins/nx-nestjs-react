@@ -19,6 +19,12 @@ export const createHousehold: StateCreator<IHouseholdState> =
 		HouseholdStore,
 		{ store: new HouseholdStore() },
 		(set: SetState<IHouseholdState>, get: GetState<IHouseholdState>) => ({
+			getEventsListeners: (): Record<string, (arg: any) => void> => {
+				const options = get();
+				return {
+					'household:read': (data: any) => console.log('Household Read Event', data),
+				};
+			},
 			getInvitation: async (invitationCode: string): Promise<void> => {
 				const { store, status } = get();
 

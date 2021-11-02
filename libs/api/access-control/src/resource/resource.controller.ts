@@ -1,9 +1,10 @@
 import { Controller } from '@nestjs/common';
 
-import { SocketGateway, ResourceGroup, baseAuthControllerFactory, getDefaultPermissions } from '@xapp/api/core';
+import { ResourceGroup, baseAuthControllerFactory, getDefaultPermissions } from '@xapp/api/core';
 import { Resources, AuthGroups } from '@xapp/shared/types';
 import { ResourceService } from './resource.service';
 import { Resource } from './resource.entity';
+import { SocketService } from '@xapp/api/socket';
 
 const BaseController = baseAuthControllerFactory<Resource>({
 	entity: Resource,
@@ -16,7 +17,7 @@ const BaseController = baseAuthControllerFactory<Resource>({
 export class ResourceController extends BaseController {
 	constructor(
 		private readonly service: ResourceService,
-		private readonly socketService: SocketGateway,
+		private readonly socketService: SocketService,
 	) {
 		super(service, socketService);
 	}

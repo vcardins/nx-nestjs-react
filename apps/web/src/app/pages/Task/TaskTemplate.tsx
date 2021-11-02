@@ -42,6 +42,7 @@ import { useAppStore } from '@xapp/state';
 import { ApiCallStatus } from '@xapp/state/shared';
 
 import { validationSchema } from './schema';
+// import { useSocket } from '../../context';
 
 const initialValues: TaskTemplateInput = {
 	name: '',

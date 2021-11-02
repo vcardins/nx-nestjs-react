@@ -3,7 +3,7 @@ import { ThemeProvider } from 'styled-components';
 import { ToastContainer, Slide } from 'react-toastify';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import { Layout, Menu } from '@xapp/react';
+import { Layout, Menu, IoProvider } from '@xapp/react';
 import { appConfig, getTheme } from '@xapp/shared/config';
 import { useAppStore } from '@xapp/state';
 import { IKeyedRoute, Themes } from '@xapp/shared/types';
@@ -12,7 +12,7 @@ import { Authorization } from './Authorization';
 import { getRoutes, getNavigation } from './config';
 import { globalStyle as GlobalStyle } from './styles';
 
-import { AppContextProvider, SocketContextProvider } from './context';
+import { AppContextProvider } from './context';
 import { HouseholdSelector } from './components';
 
 export const App = () => {
@@ -68,11 +68,11 @@ export const App = () => {
 function AppProviders (props: { children: React.ReactNode; routes: IKeyedRoute }) {
 	return (
 		<ThemeProvider theme={getTheme(appConfig.theme as Themes)}>
-			<AppContextProvider routes={props.routes}>
-				<SocketContextProvider>
+			<IoProvider>
+				<AppContextProvider routes={props.routes}>
 					<Router>{props.children}</Router>
-				</SocketContextProvider>
-			</AppContextProvider>
+				</AppContextProvider>
+			</IoProvider>
 		</ThemeProvider>
 	);
 }

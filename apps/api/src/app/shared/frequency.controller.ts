@@ -1,7 +1,8 @@
 import { Controller } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
-import { SocketGateway, baseAuthControllerFactory, ResourceGroup, getDefaultPermissions } from '@xapp/api/core';
+import { baseAuthControllerFactory, ResourceGroup, getDefaultPermissions } from '@xapp/api/core';
+import { SocketService } from '@xapp/api/socket';
 import { Resources, FrequencyOutput, AuthGroups, FrequencyInput } from '@xapp/shared/types';
 
 import { Frequency } from './entities/frequency.entity';
@@ -21,7 +22,7 @@ export class FrequencyController extends BaseController {
 	constructor(
 		// private readonly configService: ConfigService,
 		private readonly service: FrequencyService,
-		private readonly socketService: SocketGateway,
+		private readonly socketService: SocketService,
 	) {
 		super(service, socketService);
 	}

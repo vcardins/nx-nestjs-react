@@ -3,7 +3,8 @@ import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiO
 import { plainToClass } from 'class-transformer';
 import { Entity } from 'typeorm';
 
-import { SocketGateway, baseAuthControllerFactory, ResourceGroup, getDefaultPermissions, ApiException, Roles, Permissions } from '@xapp/api/core';
+import { SocketService } from '@xapp/api/socket';
+import { baseAuthControllerFactory, ResourceGroup, getDefaultPermissions, ApiException, Roles, Permissions } from '@xapp/api/core';
 import { Resources, TaskOutput, TaskInput, AuthGroups, TaskTemplateOutput } from '@xapp/shared/types';
 import { getOperationId } from '@xapp/shared/utils';
 
@@ -26,7 +27,7 @@ export class TaskController extends BaseController {
 	constructor(
 		// private readonly configService: ConfigService,
 		private readonly service: TaskService,
-		private readonly socketService: SocketGateway,
+		private readonly socketService: SocketService,
 	) {
 		super(service, socketService);
 	}

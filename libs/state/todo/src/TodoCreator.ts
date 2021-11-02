@@ -114,6 +114,12 @@ export const createTodo: StateCreator<ITodoState> = createBaseStore<ITodoState, 
 	TodoStore,
 	{ store: new TodoStore() },
 	(set: SetState<ITodoState>, get: GetState<ITodoState>) => ({
+		getEventsListeners: (): Record<string, (arg: any) => void> => {
+			const options = get();
+			return {
+				'todo:read': (data: any) => console.log('Todo Read Event', data),
+			};
+		},
 		setComplete: async (todo: TodoOutput) => {
 			const { store, status, items } = get();
 

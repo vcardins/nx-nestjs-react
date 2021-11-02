@@ -1,7 +1,8 @@
 import { Controller } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
-import { SocketGateway, baseAuthControllerFactory, ResourceGroup, getDefaultPermissions } from '@xapp/api/core';
+import { baseAuthControllerFactory, ResourceGroup, getDefaultPermissions } from '@xapp/api/core';
+import { SocketService } from '@xapp/api/socket';
 import { Resources, RoomTypeOutput, AuthGroups, RoomTypeInput } from '@xapp/shared/types';
 
 import { RoomType } from './entities/room_type.entity';
@@ -20,7 +21,7 @@ const BaseController = baseAuthControllerFactory<RoomType>({
 export class RoomTypeController extends BaseController {
 	constructor(
 		private readonly service: RoomTypeService,
-		private readonly socketService: SocketGateway,
+		private readonly socketService: SocketService,
 	) {
 		super(service, socketService);
 	}

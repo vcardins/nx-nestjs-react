@@ -5,8 +5,9 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { plainToClass } from 'class-transformer';
 
 import { OAuthProvider } from '@xapp/shared/types';
-import { CORE_CONFIG_TOKEN, IRestApiConfig, /*AccountOutput, RoleDto, */Public, SocketGateway } from '@xapp/api/core';
+import { CORE_CONFIG_TOKEN, IRestApiConfig, /*AccountOutput, RoleDto, */Public } from '@xapp/api/core';
 import { UserDto } from '@xapp/api/access-control';
+import { SocketService } from '@xapp/api/socket';
 
 // import { FacebookTokenOutput } from '../dto/facebook-token.output';
 // import { FacebookSignInInput } from '../dto/facebook-signIn.input';
@@ -27,7 +28,7 @@ export class AuthController {
 		@Inject(CORE_CONFIG_TOKEN) private readonly apiConfig: IRestApiConfig,
 		private readonly authService: AuthService,
 		private readonly tokenService: JwtTokenService,
-		private readonly socketService: SocketGateway,
+		private readonly socketService: SocketService,
 	) {}
 
 	private getUserTokenDto(user: UserDto): UserTokenOutput {

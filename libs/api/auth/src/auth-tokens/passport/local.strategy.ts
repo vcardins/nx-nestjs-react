@@ -15,7 +15,7 @@ export class LocalStrategySignIn extends PassportStrategy(Strategy, 'signin') {
 		super(credentials);
 	}
 
-	public async validate(req, email: string, password: string) {
+	public async validate(req: Request, email: string, password: string) {
 		return this.authService.signIn({ email, password });
 	}
 }
@@ -26,7 +26,7 @@ export class LocalStrategySignUp extends PassportStrategy(Strategy, 'signup') {
 		super(credentials);
 	}
 
-	public async validate(req, email: string, password: string) {
+	public async validate(req: any, email: string, password: string) {
 		if (req.user) {
 			return req.user;
 		}

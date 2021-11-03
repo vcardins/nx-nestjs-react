@@ -7,7 +7,7 @@ import { Form, TextInput, FieldGroup, Submit, useForm } from '@xapp/react';
 import { HouseholdMemberSignup, PageKey } from '@xapp/shared/types';
 import { useAppStore } from '@xapp/state';
 
-import { appContext } from '../../../context';
+import { useAppContext } from '../../../context';
 import { validationSchema } from './schema';
 
 const initialValues: HouseholdMemberSignup = {
@@ -24,7 +24,7 @@ const SignUpPage = memo(() => {
 	const [params] = useSearchParams();
 	const invitationCode = params.get('invitationCode');
 
-	const { routes } = useContext(appContext);
+	const { routes } = useAppContext();
 	const { signUp } = useAppStore((state) => state.account);
 	const { getInvitation, registerMember: signUpMember, invitation, error, store } = useAppStore((state) => state.household);
 	const formRef = useRef({ valid: false });

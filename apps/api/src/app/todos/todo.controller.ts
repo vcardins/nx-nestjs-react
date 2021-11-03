@@ -10,7 +10,6 @@ import { TodoService } from './todo.service';
 import { Todo } from './todo.entity';
 import { TodoOutput } from './dto/todo.output';
 import { ITodoComplete } from './todo-complete.interface';
-import { SocketService } from '@xapp/api/socket';
 
 const auth = getDefaultPermissions(AuthGroups.User);
 
@@ -24,13 +23,9 @@ const BaseController = baseAuthControllerFactory<Todo>({
 @Controller('/todo')
 @ResourceGroup(Resources.Todo)
 export class TodoController extends BaseController {
-	constructor(
-		private readonly service: TodoService,
-		private readonly socketService: SocketService,
-	) {
+	constructor(readonly service: TodoService) {
 		super(
 			service,
-			socketService,
 			{ sortBy: { completedAt: SortDirections.DESC, createdAt: SortDirections.DESC } },
 		);
 	}

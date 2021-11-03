@@ -1,6 +1,6 @@
 import parseuri from "parseuri";
 
-type ParsedUrl = {
+export type ParsedUrl = {
 	source: string;
 	protocol: string;
 	authority: string;

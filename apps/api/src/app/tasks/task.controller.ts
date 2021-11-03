@@ -3,9 +3,9 @@ import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiO
 import { plainToClass } from 'class-transformer';
 import { Entity } from 'typeorm';
 
-import { SocketService } from '@xapp/api/socket';
+import { SocketGateway } from '@xapp/api/socket';
 import { baseAuthControllerFactory, ResourceGroup, getDefaultPermissions, ApiException, Roles, Permissions } from '@xapp/api/core';
-import { Resources, TaskOutput, TaskInput, AuthGroups, TaskTemplateOutput } from '@xapp/shared/types';
+import { Resources, Operations, TaskOutput, TaskInput, AuthGroups, TaskTemplateOutput } from '@xapp/shared/types';
 import { getOperationId } from '@xapp/shared/utils';
 
 import { Task } from './entities/task.entity';
@@ -20,16 +20,20 @@ const BaseController = baseAuthControllerFactory<Task>({
 	auth,
 });
 
+const event = (action: Operations) => `${Resources.Task}:${action}`;
+
 @ApiBearerAuth()
 @Controller('/task')
 @ResourceGroup(Resources.Task)
 export class TaskController extends BaseController {
 	constructor(
-		// private readonly configService: ConfigService,
 		private readonly service: TaskService,
-		private readonly socketService: SocketService,
+		private readonly socket: SocketGateway,
 	) {
-		super(service, socketService);
+		super(service);
+		this.service.afterCreate = (data: any) => socket.emit(event(Operations.Create), data);
+		this.service.afterUpdate = (data: any) => socket.emit(event(Operations.Update), data);
+		this.service.afterDelete = (data: any) => socket.emit(event(Operations.Delete), data);
 	}
 
 	@Get(':householdId')
@@ -61,7 +65,7 @@ export class TaskController extends BaseController {
 	})
 	@ApiCreatedResponse({ type: TaskOutput })
 	@ApiBadRequestResponse({ type: ApiException })
-	@ApiOperation(getOperationId(Entity.name, 'Create'))
+	@ApiOperation(getOperationId(Entity.name, Operations.Create))
 	public async create(@Req() req, @Body() body: TaskInput, @Response() response) {
 		try {
 			const task = plainToClass(Task, body);

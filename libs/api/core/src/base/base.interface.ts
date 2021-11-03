@@ -47,6 +47,11 @@ export interface IBaseService<T> {
 	delete: (i: string | number) => Promise<DeleteResult>;
 	count: () => Promise<number>;
 	map<S = any, D = any>(o: Partial<T> | Partial<T>[], s: S, d: D): Promise<any>;
+	afterCount?(count: number): void;
+	afterCreate?(data: any): void;
+	afterUpdateOrCreate?(data: any): void;
+	afterUpdate?(data: any): void;
+	afterDelete?(id: IdType, data: DeleteResult): void;
 }
 
 export interface IBeforeRoot<T = any> {

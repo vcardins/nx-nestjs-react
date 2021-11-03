@@ -37,12 +37,14 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 		this.clients.push(client);
 		this.socketService.join(client);
 
+		client.emit('connected', { clientId: client.id });
 		client.emit('user:connected', { clientId: client.id });
 	}
 
 	async handleDisconnect(client: Socket) {
 		const message = `Client ${client.id} was disconnected`;
 		this.logger.log(message);
+		client.emit('disconnected', { clientId: client.id });
 		client.emit('user:disconnected');
 	}
 
@@ -52,7 +54,7 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 		return data;
 	}
 
-	emit(event: string, data: any) {
+	emit(event: string, data: any, roomId?: string) {
 		for (let c of this.clients) {
 			c.emit(event, data);
 		}

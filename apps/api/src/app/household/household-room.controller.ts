@@ -10,7 +10,7 @@ import {
 	ApiException,
 	Roles,
 } from '@xapp/api/core';
-import { SocketService } from '@xapp/api/socket';
+import { SocketGateway } from '@xapp/api/socket';
 import {
 	Resources,
 	HouseholdRoomOutput,
@@ -40,9 +40,8 @@ export class HouseholdRoomController extends BaseController {
 	constructor(
 		private readonly service: HouseholdRoomService,
 		private readonly userService: UserService,
-		private readonly socketService: SocketService,
 	) {
-		super(service, socketService);
+		super(service);
 	}
 
 	@Post()

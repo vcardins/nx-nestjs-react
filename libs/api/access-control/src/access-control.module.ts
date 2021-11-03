@@ -17,7 +17,6 @@ import { RoleController } from './role/role.controller';
 import { Permission } from './permission/permission.entity';
 import { PermissionService } from './permission/permission.service';
 import { PermissionController } from './permission/permission.controller';
-import { SocketService } from '@xapp/api/socket';
 
 @Module({
 	imports: [
@@ -33,7 +32,6 @@ import { SocketService } from '@xapp/api/socket';
 		ResourceController,
 	],
 	providers: [
-		SocketService,
 		RoleService,
 		PermissionService,
 		OperationService,

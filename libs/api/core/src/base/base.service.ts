@@ -62,7 +62,11 @@ export abstract class BaseService<T extends IBaseEntity> implements IBaseService
 
 	async create(model: any): Promise<T> {
 		try {
-			return await this.repository.save(model);
+			const result = await this.repository.save(model);
+
+			this.afterCreate?.(result);
+
+			return result;
 		}
 		catch (error) {
 			throw new BadGatewayException(error);
@@ -79,7 +83,11 @@ export abstract class BaseService<T extends IBaseEntity> implements IBaseService
 
 			entity = this.repository.merge(entity, model as TUpdate);
 
-			return this.repository.save(entity as any);
+			const result = await this.repository.save(entity as any);
+
+			this.afterUpdate?.(result);
+
+			return result;
 		}
 		catch (error) {
 			throw new BadGatewayException(error);
@@ -97,7 +105,9 @@ export abstract class BaseService<T extends IBaseEntity> implements IBaseService
 
 	async delete(id: IdType): Promise<DeleteResult> {
 		try {
-			return (await this.repository.delete(this.getId(id))) as DeleteResult;
+			const result = (await this.repository.delete(this.getId(id))) as DeleteResult;
+			this.afterDelete?.(id, result);
+			return result;
 		}
 		catch (error) {
 			throw new BadGatewayException(error);
@@ -185,4 +195,10 @@ export abstract class BaseService<T extends IBaseEntity> implements IBaseService
 			this.cache = cache;
 		}
 	}
+
+	afterCount?(count: number): void;
+	afterCreate?(data: any): void;
+	afterUpdateOrCreate?(data: any): void;
+	afterUpdate?(data: any): void;
+	afterDelete?(id: IdType, data: DeleteResult): void;
 }

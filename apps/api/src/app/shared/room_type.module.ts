@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 
 import { DatabaseModule } from '@xapp/api/database';
-import { SocketService } from '@xapp/api/socket';
 
 import { RoomType } from './entities/room_type.entity';
 import { RoomTypeController } from './room_type.controller';
@@ -12,6 +11,6 @@ import { RoomTypeService } from './room_type.service';
 		DatabaseModule.forFeature([RoomType]),
 	],
 	controllers: [RoomTypeController],
-	providers: [RoomTypeService, SocketService],
+	providers: [RoomTypeService],
 })
 export class RoomTypeModule {}

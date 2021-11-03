@@ -24,7 +24,6 @@ import {
 } from '@nestjs/swagger';
 
 import { Operations, QueryOptions, IdType, SortDirections } from '@xapp/shared/types';
-import { SocketService } from '@xapp/api/socket';
 
 import { ApiException } from '../dto/api-exception.dto';
 import { BaseService } from './base.service';
@@ -66,18 +65,12 @@ export function baseControllerFactory<T extends BaseEntity>(options: IBaseContro
 	@ApiBearerAuth() //
 	abstract class BaseController {
 		protected readonly _service: BaseService<T>;
-		// protected readonly _socket: SocketService;
 
 		protected readonly _defaultOptions: QueryOptions;
 
-		constructor(service: BaseService<T>, socketGateway?: SocketService, defaultOptions?: QueryOptions) {
+		constructor(service: BaseService<T>, defaultOptions?: QueryOptions) {
 			this._service = service;
-			// this._socket = socketGateway;
 			this._defaultOptions = defaultOptions;
-		}
-
-		emit(event: Operations, data?: any) {
-			// this._socket?.server.emit('events', { resource: Entity.name, event, data });
 		}
 
 		@ApiBadRequestResponse({ type: ApiException })

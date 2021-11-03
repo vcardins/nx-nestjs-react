@@ -15,7 +15,9 @@ export const createTask: StateCreator<ITaskState> =
 			getEventsListeners: (): Record<string, (arg: any) => void> => {
 				const options = get();
 				return {
-					'task:read': (data: any) => console.log('Task Read Event', data),
+					'task:create': (data: any) => console.log('Task Create Event', data),
+					'task:update': (data: any) => console.log('Task Update Event', data),
+					'task:delete': (data: any) => console.log('Task Delete Event', data),
 				};
 			},
 		})

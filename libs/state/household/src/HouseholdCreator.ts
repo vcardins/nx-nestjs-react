@@ -22,7 +22,9 @@ export const createHousehold: StateCreator<IHouseholdState> =
 			getEventsListeners: (): Record<string, (arg: any) => void> => {
 				const options = get();
 				return {
-					'household:read': (data: any) => console.log('Household Read Event', data),
+					'household:create': (data: any) => console.log('Household Create Event', data),
+					'household:update': (data: any) => console.log('Household Update Event', data),
+					'household:delete': (data: any) => console.log('Household Delete Event', data),
 				};
 			},
 			getInvitation: async (invitationCode: string): Promise<void> => {

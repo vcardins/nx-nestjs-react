@@ -1,48 +1,33 @@
-import React, { FC, Context, createContext, useEffect, useState, useRef, useMemo } from 'react';
+import React, { FC, Context, createContext, useContext, useEffect, useState, useRef, useMemo } from 'react';
 
 import { IKeyedRoute, INavItem, IRoute, INotifier } from '@xapp/shared/types';
 import { useAppStore } from '@xapp/state';
-import { useNotifier, useSocket, UseSocketReturnType } from '@xapp/react';
+import { useNotifier, SocketService, IRealTimeService } from '@xapp/react';
 import { appConfig } from '@xapp/shared/config';
+
+interface IAppContextProviderProps extends React.PropsWithChildren<{}> {
+	routes: IAppContext['routes'];
+}
 
 export interface IAppContext {
 	activeRoute: IRoute;
 	routes: IKeyedRoute;
-	socket: UseSocketReturnType;
-
+	socket: IRealTimeService;
 	navigation: INavItem[];
 	onActivateRoute?: (value: IRoute, location: string) => void;
 }
 
-const initialContext: IAppContext = {
+const AppContext: Context<IAppContext> = createContext<IAppContext>({
 	routes: {},
 	activeRoute: null,
 	navigation: null,
 	socket: undefined,
 	onActivateRoute: () => null,
-};
+});
 
-const AppContext: Context<IAppContext> = createContext<IAppContext>(initialContext);
+let socket: IRealTimeService = null;
 
-interface IAppContextProviderProps {
-	children: React.ReactNode;
-	routes: IAppContext['routes'];
-}
-
-export const useAuthenticatedSocket = (namespace?: string, notifier?: INotifier) =>
-	(accessToken?: string) => useSocket(namespace,
-		{
-			enabled: !!accessToken,
-			transports: ['websocket'],
-			query: { token: accessToken },
-		},
-		// {
-		// 	'user:connected': (data: { clientId: string }) => notifier?.info(`${data.clientId} just connected`),
-		// 	'user:disconnected': () => notifier?.info('Client disconnected')
-		// }
-	);
-
-const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: IAppContextProviderProps) => {
+export const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: IAppContextProviderProps) => {
 	const { accessToken, authHeader } = useAppStore((state) => state.auth);
 
 	const [activeRoute, setActiveRoute] = useState(null);
@@ -51,7 +36,6 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 	const notifier = useNotifier();
 
 	const ref = useRef(null);
-	const socket = useAuthenticatedSocket(appConfig.apiMeta.websocketEndpoint, notifier)(accessToken);
 
 	useEffect(() => {
 		const bootstrap = async () => {
@@ -60,8 +44,18 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 				return;
 			}
 
+			socket?.stop();
+
 			if (accessToken) {
-				const eventsListeners = { on: socket.on, off: socket.off, emit: socket.emit };
+				socket = createRealTimeService(accessToken, notifier);
+				socket.start();
+
+				const eventsListeners = {
+					on: socket.on,
+					off: socket.off,
+					emit: socket.emit,
+				};
+
 				await dataStore.init(appConfig, notifier, { authHeader }, eventsListeners);
 				await dataStore.account.getUserProfile();
 				await dataStore.lookup.read();
@@ -76,6 +70,7 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 		bootstrap();
 
 		return () => {
+			socket?.stop();
 			dataStore.reset();
 		};
 	// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -93,12 +88,6 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 			Object.assign(window, { State: dataStore });
 		}
 	}, [dataStore.lookup.data, dataStore]);
-
-	useEffect(() => {
-		if (socket.connected) {
-			console.log(socket.socket);
-		}
-	}, [socket.connected]);
 
 	const value = useMemo<IAppContext>(() => ({
 		routes,
@@ -121,4 +110,26 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children, routes }: 
 	);
 };
 
-export { AppContextProvider, AppContext as appContext };
+export const useAppContext = () => {
+	const context = useContext(AppContext);
+	if (context === undefined) {
+		throw new Error('AppContext not provided to calling context');
+	}
+	return context;
+};
+
+function createRealTimeService(accessToken: string, notifier: INotifier): IRealTimeService {
+	return new SocketService({
+		namespace: appConfig.apiMeta.websocketEndpoint,
+		options: {
+			enabled: !!accessToken,
+			transports: ['websocket'],
+			query: { token: accessToken },
+		},
+		onSubscribe: (instance: IRealTimeService) => {
+			instance.on('publishMessage', (data: any) => console.log(data));
+			instance.on('user:connected', (data: { clientId: string }) => notifier?.info(`${data.clientId} just connected`));
+			instance.on('user:disconnected', () => notifier?.info('Client disconnected'));
+		},
+	});
+}

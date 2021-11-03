@@ -7,7 +7,7 @@ import { OAuthProvider, ISignInInput, PageKey } from '@xapp/shared/types';
 import { useAppStore } from '@xapp/state';
 
 import { validationSchema } from './schema';
-import { appContext } from '../../../context';
+import { useAppContext } from '../../../context';
 
 // import { GoogleLogo } from './logos';
 
@@ -21,7 +21,7 @@ const normalizePath = (path: string | string[]): string => (Array.isArray(path) 
 
 const SignInPage = memo(() => {
 	// const location = useLocation();
-	const { routes } = useContext(appContext);
+	const { routes } = useAppContext();
 	const { onSignIn, getProviderUri } = useAppStore((state) => state.auth); // getOauthAccessToken
 	const form = useForm<ISignInInput>({
 		initialValues,

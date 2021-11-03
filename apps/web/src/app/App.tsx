@@ -3,7 +3,7 @@ import { ThemeProvider } from 'styled-components';
 import { ToastContainer, Slide } from 'react-toastify';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import { Layout, Menu, IoProvider } from '@xapp/react';
+import { Layout, Menu } from '@xapp/react';
 import { appConfig, getTheme } from '@xapp/shared/config';
 import { useAppStore } from '@xapp/state';
 import { IKeyedRoute, Themes } from '@xapp/shared/types';
@@ -68,11 +68,9 @@ export const App = () => {
 function AppProviders (props: { children: React.ReactNode; routes: IKeyedRoute }) {
 	return (
 		<ThemeProvider theme={getTheme(appConfig.theme as Themes)}>
-			<IoProvider>
-				<AppContextProvider routes={props.routes}>
-					<Router>{props.children}</Router>
-				</AppContextProvider>
-			</IoProvider>
+			<AppContextProvider routes={props.routes}>
+				<Router>{props.children}</Router>
+			</AppContextProvider>
 		</ThemeProvider>
 	);
 }

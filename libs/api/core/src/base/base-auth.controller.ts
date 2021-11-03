@@ -26,7 +26,6 @@ import {
 
 import { Operations, UserRoles, IdType, SortDirections, QueryOptions } from '@xapp/shared/types';
 import { getOperationId } from '@xapp/shared/utils';
-import { SocketService } from '@xapp/api/socket';
 
 import { AuthConstraint, IBaseAuthControllerFactoryOpts } from './base-auth.interface';
 import { getAuthConstraints } from './base-auth.utils';
@@ -79,17 +78,11 @@ export function baseAuthControllerFactory<T extends IBaseEntity>(options: IBaseA
 	@ApiTags(Entity.name)
 	abstract class BaseAuthController {
 		protected readonly _service: BaseService<T>;
-		protected readonly _socket: SocketService;
 		protected readonly _defaultOptions: QueryOptions;
 
-		constructor(service: BaseService<T>, socketService?: SocketService, defaultOptions?: QueryOptions ) {
+		constructor(service: BaseService<T>, defaultOptions?: QueryOptions ) {
 			this._service = service;
-			this._socket = socketService;
 			this._defaultOptions = defaultOptions;
-		}
-
-		emit(event: Operations, data?: any) {
-			this._socket?.server.emit('events', { resource: Entity.name, event, data });
 		}
 
 		@Get('count')

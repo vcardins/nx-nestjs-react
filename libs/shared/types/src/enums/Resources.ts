@@ -11,5 +11,6 @@ export enum Resources {
 	Frequency = 'frequency',
 	Operation = 'operation',
 	Admin = 'admin',
+	Resource = 'resource',
 	Room = 'room',
 }

@@ -7,14 +7,14 @@ import { useAppStore } from '@xapp/state';
 import { PageKey } from '@xapp/shared/types';
 
 import { validationSchema } from './schema';
-import { appContext } from '../../../context';
+import { useAppContext } from '../../../context';
 
 const initialValues: IForgotPasswordInput = {
 	email: '',
 };
 
 const ForgotPasswordPage = memo(() => {
-	const { routes } = useContext(appContext);
+	const { routes } = useAppContext();
 	const formRef = useRef({ valid: false });
 	const { forgotPassword } = useAppStore((state) => state.account);
 	const form = useForm<IForgotPasswordInput>({ initialValues, onSubmit: forgotPassword });

@@ -67,7 +67,9 @@ export const createTaskTemplate: StateCreator<ITaskTemplateState> = createBaseSt
 		getEventsListeners: (): Record<string, (arg: any) => void> => {
 			const options = get();
 			return {
-				'task-template:read': (data: any) => console.log('Task Template Read Event', data),
+				'task-template:create': (data: any) => console.log('Task Template Create Event', data),
+				'task-template:update': (data: any) => console.log('Task Template Update Event', data),
+				'task-template:delete': (data: any) => console.log('Task Template Delete Event', data),
 			};
 		},
 		read: async (): Promise<void> => {

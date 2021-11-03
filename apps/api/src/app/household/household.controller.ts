@@ -11,7 +11,7 @@ import {
 	Public,
 	Roles,
 } from '@xapp/api/core';
-import { SocketService } from '@xapp/api/socket';
+import { SocketGateway } from '@xapp/api/socket';
 import {
 	Resources,
 	HouseholdOutput,
@@ -25,6 +25,7 @@ import {
 	HouseholdRoomInput,
 	HouseholdRoomOutput,
 	IdType,
+	Operations,
 } from '@xapp/shared/types';
 import { getOperationId } from '@xapp/shared/utils';
 import { plainToClass } from 'class-transformer';
@@ -46,6 +47,8 @@ const BaseController = baseAuthControllerFactory<Household>({
 	auth,
 });
 
+const event = (action: Operations) => `${Resources.Household}:${action}`;
+
 @Controller('/household')
 @ResourceGroup(Resources.Household)
 export class HouseholdController extends BaseController {
@@ -54,9 +57,13 @@ export class HouseholdController extends BaseController {
 		private readonly userService: UserService,
 		private readonly householdMemberService: HouseholdMemberService,
 		private readonly householdRoomService: HouseholdRoomService,
-		private readonly socketService: SocketService,
+		private readonly socket: SocketGateway
 	) {
-		super(service, socketService);
+		super(service);
+
+		this.service.afterCreate = (data: any) => socket.emit(event(Operations.Create), data);
+		this.service.afterUpdate = (data: any) => socket.emit(event(Operations.Update), data);
+		this.service.afterDelete = (data: any) => socket.emit(event(Operations.Delete), data);
 	}
 
 	@Get()

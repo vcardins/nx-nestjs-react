@@ -11,7 +11,6 @@ export * from './auth-tokens/interfaces/oauth-provider.interface';
 export * from './auth-tokens/interfaces/facebook-config.interface';
 export * from './auth-tokens/interfaces/google-config.interface';
 export * from './auth-tokens/interfaces/jwt-config.interface';
-export * from './auth-tokens/interfaces/jwt-payload.interface';
 
 export * from './auth-tokens/configs/facebook.config';
 export * from './auth-tokens/configs/google.config';

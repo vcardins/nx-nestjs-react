@@ -11,6 +11,7 @@ export class AccessGuard extends AuthGuard(AUTH_GUARD_TYPE) {
 	constructor(private readonly reflector: Reflector) {
 		super();
 	}
+
 	async canActivate(context: ExecutionContext) {
 		const request = context.switchToHttp().getRequest();
 

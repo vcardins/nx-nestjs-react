@@ -33,7 +33,7 @@ export class JwtTokenService {
 		return this.jwtService.sign(data, { secret: this.jwtConfig.secretKey });
 	}
 
-	validate(token: string) {
+	verify(token: string) {
 		return this.jwtService.verify<IJwtPayload>(token, { secret: this.jwtConfig.secretKey });
 	}
 

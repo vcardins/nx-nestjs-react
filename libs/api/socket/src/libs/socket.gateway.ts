@@ -4,59 +4,79 @@ import {
 	OnGatewayInit,
 	OnGatewayConnection,
 	OnGatewayDisconnect,
-	ConnectedSocket,
-	MessageBody,
-	SubscribeMessage,
 } from '@nestjs/websockets';
 import { forwardRef, Inject, Logger, UseGuards } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
+import { JwtTokenService } from '@xapp/api/auth';
+import { IJwtPayload } from '@xapp/shared/types';
+
 import { SocketService } from './socket.service';
 import { WsGuard } from './ws.guard';
+
+interface SocketWithUserData extends Socket {
+	userData: IJwtPayload
+}
 
 @WebSocketGateway({ cors: true, transports: ['websocket'] })
 export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 	@WebSocketServer()
 	public server: Server;
+	connectedUsers: Set<number> = new Set();
 	clients: Socket[] = [];
-	private logger: Logger = new Logger('AppGateway');
+	protected logger: Logger = new Logger();
 
 	constructor(
-		// @Inject(forwardRef(() => SocketService))
-		private readonly socketService: SocketService,
+		@Inject(forwardRef(() => SocketService))
+		protected readonly socketService: SocketService,
+		protected jwtService: JwtTokenService,
 	) {}
 
 	afterInit(server: Server) {
 		this.socketService.server = server;
 		this.logger.log('Init');
-		server.emit('task-template:read', { do: 'stuff' });
 	}
 
-	async handleConnection(client: Socket, ...args: any[]): Promise<void> {
-		const message = `Client ${client.id} has been connected`;
-		this.logger.log(message);
-		this.clients.push(client);
-		this.socketService.join(client);
-
-		client.emit('connected', { clientId: client.id });
-		client.emit('user:connected', { clientId: client.id });
-	}
-
-	async handleDisconnect(client: Socket) {
-		const message = `Client ${client.id} was disconnected`;
-		this.logger.log(message);
-		client.emit('disconnected', { clientId: client.id });
-		client.emit('user:disconnected');
+	getJwtPayload(client: Socket) {
+		const token = client.handshake.query.token as string;
+		return this.jwtService.verify(token);
 	}
 
 	@UseGuards(WsGuard)
-	@SubscribeMessage('events')
-	onEvent(@ConnectedSocket() client: Socket, @MessageBody() data: any): any {
-		return data;
+	async handleConnection(client: SocketWithUserData, ...args: any[]): Promise<void> {
+		try {
+			client.userData = this.getJwtPayload(client);
+
+			this.logger.log(`Client ${client.id} has been connected`);
+			this.clients.push(client);
+			this.connectedUsers.add(client.userData.id);
+			this.socketService.join(client);
+
+			client.emit('user:connected', { clientId: client.id });
+
+			// Send list of connected users
+			client.emit('users', Array.from(this.connectedUsers));
+
+		  } catch (e) {
+			this.logger.error("Socket disconnected within handleConnection() in AppGateway:", e)
+			client.disconnect(true)
+			return;
+		  }
+	}
+
+	async handleDisconnect(client: Socket) {
+		this.logger.log(`Client ${client.id} was disconnected`);
+		const userData = this.getJwtPayload(client);
+
+		this.connectedUsers.delete(userData.id);
+
+		// Sends the new list of connected users
+		this.server.emit('users', this.connectedUsers);
+		client.emit('user:disconnected');
 	}
 
 	emit(event: string, data: any, roomId?: string) {
-		for (let c of this.clients) {
-			c.emit(event, data);
+		for (let client of this.clients) {
+			client.emit(event, data);
 		}
 	}
 }

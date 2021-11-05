@@ -26,11 +26,10 @@ import {
 } from '@xapp/api/core';
 
 import { DatabaseConfig } from './database.config';
-import { AppConfig } from './app.config';
+import { appConfig } from './app.config';
 import { OAuthConfig } from './oath.config';
 
 const dbConfig = DatabaseConfig();
-const appConfig = AppConfig();
 const oauthConfig = OAuthConfig();
 
 const envName = process.env.NODE_ENV || 'development';

@@ -1,11 +1,16 @@
-import * as packageJson from '../../../../../package.json';
+import { readFileSync } from 'fs';
+import { IPackageJson } from 'package-json-type';
+
+const secret = readFileSync(`${process.cwd()}/keys/jwt.private.key`).toString();
+const packageJson = readFileSync(`${process.cwd()}/package.json`) as IPackageJson;
+
 const { name, title, description, version } = packageJson;
 
 export const AppConfig = () => {
 	const {
 		NODE_ENV, PROTOCOL, DOMAIN, PORT, BASE_PATH,
 		CODE, CLIENT_ID, CLIENT_SECRET, GOOGLE_ANALYTICS_ID,
-		JWT_SECRET_KEY, JWT_EXPIRATION_DELTA, JWT_AUTH_HEADER_PREFIX,
+		JWT_EXPIRATION_DELTA, JWT_AUTH_HEADER_PREFIX,
 	} = process.env;
 
 	return {
@@ -50,8 +55,10 @@ export const AppConfig = () => {
 		clientId: CLIENT_ID,
 		clientSecret: CLIENT_SECRET,
 		analyticsId: GOOGLE_ANALYTICS_ID,
-		jwtSecretKey: JWT_SECRET_KEY,
+		jwtSecretKey: secret,
 		jwtExpirationDelta: JWT_EXPIRATION_DELTA,
 		jwtAuthHeaderPrefix: JWT_AUTH_HEADER_PREFIX,
 	};
 };
+
+export const appConfig = AppConfig();

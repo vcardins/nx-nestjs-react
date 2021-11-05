@@ -6,9 +6,9 @@ import { Strategy, ExtractJwt } from 'passport-jwt';
 import { User, UserService, RoleService } from '@xapp/api/access-control';
 
 import { JWT_CONFIG_TOKEN } from '../configs/jwt.config';
-import { IJwtPayload } from '../interfaces/jwt-payload.interface';
 import { IJwtConfig } from '../interfaces/jwt-config.interface';
 import { AUTH_GUARD_TYPE } from '../../constants';
+import { IJwtPayload } from '@xapp/shared/types';
 // import { TokenService } from '../services/token.service';
 
 @Injectable()

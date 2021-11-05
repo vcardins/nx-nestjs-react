@@ -3,15 +3,15 @@
  * This is only a minimal backend to get started.
  */
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { IoAdapter } from '@nestjs/platform-socket.io';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { register } from 'tsconfig-paths';
 
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
-import { apiConfig } from '@xapp/api/config';
+import { apiConfig, appConfig } from '@xapp/api/config';
 import { AppModule } from './app/app.module';
+import { AuthenticatedSocketIoAdapter } from '@xapp/api/socket';
 
 async function bootstrap() {
 	if (apiConfig.env.name !== 'development') {
@@ -24,6 +24,7 @@ async function bootstrap() {
 	const appOptions = { cors: true };
 	const app = await NestFactory.create<NestExpressApplication>(
 		AppModule.forRoot({
+			jwtSecretKey: appConfig.jwtSecretKey,
 			providers: [
 				...apiConfig.core.providers(),
 				...apiConfig.auth.providers(),
@@ -35,7 +36,7 @@ async function bootstrap() {
 
 	app.setGlobalPrefix(apiConfig.basePath);
 
-	app.useWebSocketAdapter(new IoAdapter(app));
+	app.useWebSocketAdapter(new AuthenticatedSocketIoAdapter(app));
 
 	apiConfig.project.staticFolders.forEach((folder) => {
 		app.useStaticAssets(folder);

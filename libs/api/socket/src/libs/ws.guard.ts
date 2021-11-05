@@ -1,29 +1,33 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { AuthGuard } from '@nestjs/passport';
 
 // import { UserService } from '@xapp/api/access-control';
-// import { JwtTokenService } from '@xapp/api/auth';
+import { AUTH_GUARD_TYPE, JwtTokenService } from '@xapp/api/auth';
 
 @Injectable()
-export class WsGuard implements CanActivate {
+export class WsGuard extends AuthGuard(AUTH_GUARD_TYPE) {
 	constructor(
-		// private tokenService: JwtTokenService,
+		private readonly reflector: Reflector,
+		private tokenService: JwtTokenService,
 		// private userService: UserService,
-	) {}
+	) {
+		super();
+		// console.log(tokenService);
+	}
 
 	async canActivate(context: ExecutionContext) {
-		console.log(context);
-		// const accessToken = context.args[0].handshake.query['token'] as string;
-		// console.log('AccessToken', accessToken);
-		return false;
-		// try {
-		// 	const decoded = this.tokenService.validate(accessToken);
-		// 	console.log(decoded);
+		const accessToken = context.getArgs()[0].handshake.query['token'] as string;
 
-		// 	const user = await this.userService.findById(decoded.id);
-		// 	return !!user;
-		// } catch (ex) {
-		// 	console.log(ex);
-		// 	return false;
-		// }
+		try {
+			const decoded = this.tokenService.verify(accessToken);
+			console.log(decoded.id);
+
+			// const user = await this.userService.findById(decoded.id);
+			return !!decoded.id;
+		} catch (ex) {
+			console.log(ex);
+			return false;
+		}
 	}
 }

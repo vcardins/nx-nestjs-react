@@ -12,6 +12,10 @@ const stateConversion: any = {
 	4: 'Disconnected',
 };
 
+const connectionStateChanged = ({oldState, newState}: any) => {
+	console.info(`State change ${stateConversion[oldState]} => ${stateConversion[newState]}`);
+}
+
 export class SignalRService implements IRealTimeService {
 	private config: ISignalRServiceProps;
 	private connection: any;
@@ -41,6 +45,13 @@ export class SignalRService implements IRealTimeService {
 		}
 
 		this.connection.logging = config.logging;
+	}
+
+	listenStatesChanges = ({id, state}: any) => {
+		if (id) {
+			console.info(`${this.hub} State: ${stateConversion[state]} - ${id}`);
+			this.connection.stateChanged(connectionStateChanged);
+		}
 	}
 
 	start = async () => {

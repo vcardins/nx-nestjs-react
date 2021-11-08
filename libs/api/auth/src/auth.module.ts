@@ -36,13 +36,13 @@ export class AuthModule implements NestModule {
 		return {
 			module: AuthModule,
 			imports: [
-				HttpModule,
-				UserModule,
 				AccessControlModule,
-				MailModule,
-				FilesModule,
 				CoreModule.forFeature(options),
 				DatabaseModule.forFeature(entities),
+				FilesModule,
+				HttpModule,
+				MailModule,
+				UserModule,
 			],
 			providers: [...providers, ...services],
 			exports: services,
@@ -54,13 +54,13 @@ export class AuthModule implements NestModule {
 		return {
 			module: AuthModule,
 			imports: [
-				HttpModule,
-				MailModule,
-				UserModule,
 				AccessControlModule,
-				JwtModule.register({ secret: options.jwtSecretKey }),
 				CoreModule.forFeature(options),
 				DatabaseModule.forFeature(entities),
+				HttpModule,
+				JwtModule.register({ secret: options.jwtSecretKey }),
+				MailModule,
+				UserModule,
 			],
 			controllers: [
 				AuthController,

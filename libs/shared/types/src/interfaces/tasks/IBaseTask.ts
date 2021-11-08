@@ -1,6 +1,7 @@
 import { Frequencies } from '../../enums/Frequencies';
 
 export interface IBaseTask {
+	id?: number;
 	name: string;
 	description?: string | null;
 	isActive: boolean | null;
@@ -8,4 +9,5 @@ export interface IBaseTask {
 	daysOfWeek: number | null;
 	rewardPoints: number | null;
 	frequencyId: Frequencies;
+	roomTypeId?: number;
 }

@@ -55,7 +55,6 @@ export class TaskTemplateService extends BaseService<TaskTemplate> {
 		}, {} as Record<RoomTypes, TaskTemplateOutput[]>);
 	}
 
-
 	getTaskTemplateByName(name: string) {
 		const tasks = this.items.filter((group) => group.name === name);
 

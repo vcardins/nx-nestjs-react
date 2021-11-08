@@ -1,9 +1,10 @@
 import { HouseholdRoomOutput } from './../household/HouseholdRoomOutput';
 import { Frequencies } from '../../enums/Frequencies';
-import { TaskTemplateOutput } from './TaskTemplateOutput';
 import { IBaseTask } from '../../interfaces';
+import { TaskTemplateOutput } from '.';
 
 export class TaskInput implements IBaseTask {
+	id?: number;
 	name: string;
 	description?: string | null;
 	isActive: boolean | null;
@@ -14,5 +15,6 @@ export class TaskInput implements IBaseTask {
 	assignedUserId?: number | null;
 	frequencyId: Frequencies;
 	templateId?: TaskTemplateOutput['id'] | null;
+	roomTypeId?: number;
 	householdRoomId: HouseholdRoomOutput['id'];
 }

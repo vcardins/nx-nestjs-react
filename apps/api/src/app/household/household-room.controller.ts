@@ -10,7 +10,6 @@ import {
 	ApiException,
 	Roles,
 } from '@xapp/api/core';
-import { SocketGateway } from '@xapp/api/socket';
 import {
 	Resources,
 	HouseholdRoomOutput,

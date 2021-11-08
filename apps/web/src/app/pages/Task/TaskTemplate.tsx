@@ -27,13 +27,14 @@ import {
 	InlineEdit,
 	FormBuilder,
 	Popover,
+	Checkbox,
+	Select,
 } from '@xapp/react';
 import {
 	TaskTemplateInput,
 	TaskTemplateOutput,
 	Frequencies,
 	FieldType,
-	IFieldInfo,
 	DataFilter,
 	PaginationMode,
 } from '@xapp/shared/types';
@@ -42,7 +43,6 @@ import { useAppStore } from '@xapp/state';
 import { ApiCallStatus } from '@xapp/state/shared';
 
 import { validationSchema } from './schema';
-// import { useSocket } from '../../context';
 
 const initialValues: TaskTemplateInput = {
 	name: '',
@@ -52,6 +52,7 @@ const initialValues: TaskTemplateInput = {
 	daysOfWeek: 0,
 	rewardPoints: 1,
 	frequencyId: Frequencies.Weekly,
+	roomTypeId: null,
 };
 
 const domain = 'task-template';
@@ -140,8 +141,21 @@ const TaskTemplatePage = memo(() => {
 		[form.onUpdateData, store.remove]
 	);
 
+
+	const roomTypes = useMemo(() => lookupStore?.frequencies
+		? Object.values(lookupStore?.roomTypes).map(({ id, name }) => ({ id, name }))
+		: []
+	, [lookupStore?.frequencies]);
+
+
+	const frequencies = useMemo(() => lookupStore?.frequencies
+		? Object.values(lookupStore?.frequencies).map(({ id, name }) => ({ id, name }))
+		: []
+	, [lookupStore?.frequencies]);
+
+
 	const filterControls = useMemo(() => {
-		if (!lookupStore?.frequencies && !lookupStore?.roomTypes) {
+		if (!frequencies && !roomTypes) {
 			return null;
 		}
 
@@ -150,7 +164,7 @@ const TaskTemplatePage = memo(() => {
 				name: 'roomTypeId',
 				type: FieldType.Select,
 				label: 'Room Type',
-				options: Object.values(lookupStore?.roomTypes).map(({ id, name }) => ({ id, name })),
+				options: roomTypes,
 			},
 			{ name: 'name', type: FieldType.Text, label: 'Name' },
 			{ name: 'estimatedCompletionTime', type: FieldType.Number, label: 'Completion Type' },
@@ -159,7 +173,7 @@ const TaskTemplatePage = memo(() => {
 				name: 'frequencyId',
 				type: FieldType.Select,
 				label: 'Frequency',
-				options: Object.values(lookupStore?.frequencies).map(({ id, name }) => ({ id, name })),
+				options: frequencies,
 			},
 			{ name: 'daysOfWeek', type: FieldType.Days, label: 'Days' },
 			{ name: 'isActive', type: FieldType.Boolean, label: 'Active' },
@@ -179,7 +193,7 @@ const TaskTemplatePage = memo(() => {
 				/>
 			),
 		};
-	}, [lookupStore?.roomTypes, lookupStore?.frequencies, store.filter]);
+	}, [roomTypes, frequencies, store.filter]);
 
 	const columnsDisplayControls = useMemo(() => {
 		return {
@@ -198,6 +212,10 @@ const TaskTemplatePage = memo(() => {
 		};
 	}, [store.columns, store.visibleColumns, store.toggleColumnVisibility]);
 
+	function handleSubmitForm() {
+		form.onSubmit(form.data.id);
+	}
+
 	return (
 		<Panel title="Task Template" tag={domain} overflow="hidden">
 			<Drawer
@@ -208,38 +226,77 @@ const TaskTemplatePage = memo(() => {
 				position="right"
 				overflow="hidden"
 			>
-				<Panel
-					tag={getId('form')}
-					title={ form.data.name ? `Edit ${form.data.name}` : 'Create Task Template'}
-					padded
-					footer={
-						<FieldGroup sided>
-							<Button disabled={form.submitting} onClick={form.onSubmit}>
-								<Icon icon={ic_save} /> Save
-							</Button>
-							<Button onClick={handleClosePanel}>
-								<Icon icon={ic_close} /> Cancel
-							</Button>
-						</FieldGroup>
-					}
+				<Form
+					ref={formRef}
+					data={form.data}
+					onChange={form.onFieldChange}
+					schema={validationSchema}
 				>
-					<Form
-						ref={formRef}
-						data={form.data}
-						onChange={form.onFieldChange}
-						onSubmit={form.onSubmit}
-						schema={validationSchema}
+					<Panel
+						tag={getId('form')}
+						title={ form.data.name ? `Edit ${form.data.name}` : 'Create Task Template'}
+						padded
+						footer={
+							<FieldGroup sided>
+								<Button disabled={form.submitting} onClick={handleSubmitForm}>
+									<Icon icon={ic_save} /> Save
+								</Button>
+								<Button onClick={handleClosePanel}>
+									<Icon icon={ic_close} /> Cancel
+								</Button>
+							</FieldGroup>
+						}
 					>
 						<TextInput
 							type="text"
 							label="Name"
 							name="name"
-							autoComplete="true"
 							value={form.data.name}
 							error={form.errors?.name}
 						/>
-					</Form>
-				</Panel>
+						<TextInput
+							type="textarea"
+							label="Notes"
+							name="description"
+							component="textarea"
+							autoComplete="true"
+							value={form.data.description ?? ''}
+							error={form.errors?.description}
+						/>
+						<Select
+							name="frequencyId"
+							label="Frequency"
+							value={form.data.frequencyId ?? ''}
+							items={frequencies}
+						/>
+						<Select
+							name="roomTypeId"
+							label="Room Type"
+							value={form.data.roomTypeId ?? ''}
+							items={roomTypes}
+						/>
+						<TextInput
+							type="number"
+							label="Estimated Completion Time"
+							name="estimatedCompletionTime"
+							value={form.data.estimatedCompletionTime}
+							error={form.errors?.estimatedCompletionTime}
+						/>
+						<TextInput
+							type="number"
+							label="Reward Points"
+							name="rewardPoints"
+							value={form.data.rewardPoints}
+							error={form.errors?.rewardPoints}
+						/>
+						<Checkbox
+							label="Active"
+							name="isActive"
+							value={form.data.isActive}
+							error={form.errors?.isActive}
+						/>
+					</Panel>
+				</Form>
 			</Drawer>
 			<DataTable
 				id={getId('table')}

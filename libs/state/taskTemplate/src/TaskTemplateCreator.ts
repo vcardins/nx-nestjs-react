@@ -3,6 +3,7 @@ import { GetState, SetState, StateCreator, UseBoundStore } from 'zustand';
 import {
 	createStore,
 	createBaseStore,
+	updateAfterAction,
 	storeValues,
 	ICrudState,
 	ApiCallStatus,
@@ -18,6 +19,7 @@ import {
 	DataFormats,
 	IColumnInfo,
 	Resources,
+	Operations,
 } from '@xapp/shared/types';
 
 import { TaskTemplateStore } from './TaskTemplateStore';
@@ -64,12 +66,12 @@ export const createTaskTemplate: StateCreator<ITaskTemplateState> = createBaseSt
 		columns,
 	},
 	(set: SetState<ITaskTemplateState>, get: GetState<ITaskTemplateState>) => ({
-		getEventsListeners: (): Record<string, (arg: any) => void> => {
-			const options = get();
+		getEventsListeners: () => {
+			const action = updateAfterAction(set, get);
 			return {
-				'task-template:create': (data: any) => console.log('Task Template Create Event', data),
-				'task-template:update': (data: any) => console.log('Task Template Update Event', data),
-				'task-template:delete': (data: any) => console.log('Task Template Delete Event', data),
+				'task-template:create': (item: any) => action(Operations.Create, item),
+				'task-template:update': (item: any) => action(Operations.Update, item),
+				'task-template:delete': (item: any) => action(Operations.Delete, item),
 			};
 		},
 		read: async (): Promise<void> => {

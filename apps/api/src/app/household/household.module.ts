@@ -5,7 +5,6 @@ import { MailModule, MailService, TemplateService } from '@xapp/api/mail';
 import { User, UserModule, UserService } from '@xapp/api/access-control';
 import { FilesModule, FilesService, PublicFile } from '@xapp/api/files';
 import { CoreModule } from '@xapp/api/core';
-import { SocketModule } from '@xapp/api/socket';
 
 import { Household } from './entities/household.entity';
 import { HouseholdMember } from './entities/household_member.entity';
@@ -16,6 +15,7 @@ import { HouseholdService } from './household.service';
 import { HouseholdMemberService } from './household_member.service';
 
 import { HouseholdRoomService } from './household_room.service';
+import { AppGateway } from '../app.gateway';
 
 @Module({})
 export class HouseholdModule {
@@ -23,12 +23,11 @@ export class HouseholdModule {
 		return {
 			module: HouseholdModule,
 			imports: [
+				authModule,
+				CoreModule,
+				FilesModule,
 				MailModule,
 				UserModule,
-				FilesModule,
-				SocketModule,
-				CoreModule,
-				authModule,
 				DatabaseModule.forFeature([
 					Household,
 					HouseholdRoom,
@@ -43,7 +42,6 @@ export class HouseholdModule {
 				HouseholdMemberService,
 				HouseholdRoomService,
 				UserService,
-				// AuthService,
 				FilesService,
 				MailService,
 				TemplateService,

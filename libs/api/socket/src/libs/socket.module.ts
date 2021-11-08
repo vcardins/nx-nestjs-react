@@ -3,8 +3,7 @@ import { Global, DynamicModule, Provider } from '@nestjs/common';
 import { AuthModule } from '@xapp/api/auth';
 import { UserModule } from '@xapp/api/access-control';
 
-import { SocketService } from './socket.service';
-import { SocketGateway } from './socket.gateway';
+import { BaseSocketGateway } from './socket.gateway';
 
 @Global()
 export class SocketModule {
@@ -16,8 +15,8 @@ export class SocketModule {
 				UserModule,
 			],
 			controllers: [],
-			providers: [SocketGateway, SocketService],
-			exports: [SocketGateway, SocketService],
+			providers: [BaseSocketGateway],
+			exports: [BaseSocketGateway],
 		};
 	}
 }

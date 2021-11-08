@@ -2,8 +2,8 @@ import { Controller, Get, Req, Response } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse } from '@nestjs/swagger';
 
 import { baseAuthControllerFactory, ResourceGroup, getDefaultPermissions, Roles, Permissions, ApiException } from '@xapp/api/core';
-import { SocketGateway } from '@xapp/api/socket';
 import { Resources, TaskTemplateOutput, AuthGroups, Operations } from '@xapp/shared/types';
+import { AppGateway } from '../app.gateway';
 import { TaskTemplate } from './entities/task_template.entity';
 import { TaskTemplateService } from './task_template.service';
 
@@ -23,7 +23,7 @@ const event = (action: Operations) => `${Resources.TaskTemplate}:${action}`;
 export class TaskTemplateController extends BaseController {
 	constructor(
 		private readonly service: TaskTemplateService,
-		private readonly socket: SocketGateway,
+		private readonly socket: AppGateway,
 	) {
 		super(service);
 

@@ -3,13 +3,13 @@ import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiO
 import { plainToClass } from 'class-transformer';
 import { Entity } from 'typeorm';
 
-import { SocketGateway } from '@xapp/api/socket';
 import { baseAuthControllerFactory, ResourceGroup, getDefaultPermissions, ApiException, Roles, Permissions } from '@xapp/api/core';
 import { Resources, Operations, TaskOutput, TaskInput, AuthGroups, TaskTemplateOutput } from '@xapp/shared/types';
 import { getOperationId } from '@xapp/shared/utils';
 
 import { Task } from './entities/task.entity';
 import { TaskService } from './task.service';
+import { AppGateway } from '../app.gateway';
 
 const auth = getDefaultPermissions(AuthGroups.User);
 
@@ -28,7 +28,7 @@ const event = (action: Operations) => `${Resources.Task}:${action}`;
 export class TaskController extends BaseController {
 	constructor(
 		private readonly service: TaskService,
-		private readonly socket: SocketGateway,
+		private readonly socket: AppGateway,
 	) {
 		super(service);
 		this.service.afterCreate = (data: any) => socket.emit(event(Operations.Create), data);

@@ -1,4 +1,4 @@
-import { QueryOptions, DataFilter } from '@xapp/shared/types';
+import { QueryOptions, DataFilter, KeyType } from '@xapp/shared/types';
 import { DataContext } from '../DataContext';
 import { IStoreState } from './';
 
@@ -14,6 +14,6 @@ export interface ICrudState<
 	sortBy?: QueryOptions['sortBy'];
 	read(filters?: DataFilter, id?: number): Promise<void>;
 	save(data: TInput, id?: number): Promise<void>;
-	remove(id: number): Promise<void>;
+	remove(id: KeyType): Promise<void>;
 	filter?(filters?: DataFilter): Promise<void>;
 }

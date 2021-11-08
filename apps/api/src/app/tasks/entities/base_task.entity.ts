@@ -19,4 +19,7 @@ export class BaseTask extends BaseEntity {
 
 	@Column({ name: 'frequency_id' })
 	frequencyId: number;
+
+	@Column({ name: 'room_type_id', nullable: true })
+	roomTypeId?: number;
 }

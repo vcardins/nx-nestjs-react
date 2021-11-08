@@ -11,7 +11,6 @@ import {
 	Public,
 	Roles,
 } from '@xapp/api/core';
-import { SocketGateway } from '@xapp/api/socket';
 import {
 	Resources,
 	HouseholdOutput,
@@ -30,6 +29,7 @@ import {
 import { getOperationId } from '@xapp/shared/utils';
 import { plainToClass } from 'class-transformer';
 import { Entity } from 'typeorm';
+import { AppGateway } from '../app.gateway';
 
 import { Household } from './entities/household.entity';
 import { HouseholdMember } from './entities/household_member.entity';
@@ -57,7 +57,7 @@ export class HouseholdController extends BaseController {
 		private readonly userService: UserService,
 		private readonly householdMemberService: HouseholdMemberService,
 		private readonly householdRoomService: HouseholdRoomService,
-		private readonly socket: SocketGateway
+		private readonly socket: AppGateway
 	) {
 		super(service);
 

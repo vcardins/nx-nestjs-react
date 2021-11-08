@@ -44,14 +44,14 @@ export interface IBaseService<T> {
 	findAndCount: (query: IPaginationQuery) => Promise<IFindAndCountResult<T> | T[]>;
 	create: (i: any) => Promise<T>;
 	update: (id: string | number, i: any) => Promise<T>; // UpdateResult
-	delete: (i: string | number) => Promise<DeleteResult>;
+	delete: (i: string | number) => Promise<{ id: IdType }>;
 	count: () => Promise<number>;
 	map<S = any, D = any>(o: Partial<T> | Partial<T>[], s: S, d: D): Promise<any>;
 	afterCount?(count: number): void;
 	afterCreate?(data: any): void;
 	afterUpdateOrCreate?(data: any): void;
 	afterUpdate?(data: any): void;
-	afterDelete?(id: IdType, data: DeleteResult): void;
+	afterDelete?(data: any): void;
 }
 
 export interface IBeforeRoot<T = any> {

@@ -1,9 +1,9 @@
 import { StoreEventHandlers } from './types/StoreEventHandlers';
 import { GetState, SetState } from 'zustand';
 
-import { SortDirections, KeyType, FieldType, IColumnInfo } from '@xapp/shared/types';
+import { SortDirections, KeyType, FieldType, IColumnInfo, Operations } from '@xapp/shared/types';
 
-import { ApiCallStatus, IAuthState, ICrudState, setError, setIdle, setLoading, setSuccess } from '.';
+import { ApiCallStatus, IAuthState, ICrudState, setError, setIdle, setLoading, setSubmitting, setSuccess } from '.';
 import { DataContext } from './DataContext';
 
 interface Class<TDataContext> {
@@ -39,9 +39,35 @@ const getVisibleColumns = (columns?: IColumnInfo[]) =>
 
 const columns: IColumnInfo[] = [];
 
+export const updateAfterAction = <
+	TState extends ICrudState<TStore<TOutput, TInput>, TOutput, TInput>,
+	TInput extends { id?: KeyType } = any,
+	TOutput extends { id: KeyType } = any
+>(set: SetState<TState>, get: GetState<TState>) =>
+	(action: Operations, data: any) => {
+		const { items } = get();
+		console.log(`Event: ${action}: `, data);
+
+		switch (action) {
+			case Operations.Create:
+			case Operations.Update:
+				const index = items.findIndex(({ id }) => id === data.id);
+
+				set((state) =>
+					void (index === -1 ? (state.items = [data, ...items]) : (state.items[index] = data))
+				);
+				break;
+			case Operations.Delete:
+				set((state) =>
+					void (state.items = items.filter((item) => item.id !== data.id))
+				);
+				break;
+		}
+	}
+
 export function createBaseStore<
 	TState extends ICrudState<TStore<TOutput, TInput>, TOutput, TInput>,
-	TInput = any,
+	TInput extends { id?: KeyType } = any,
 	TOutput extends { id: KeyType } = any
 >(
 	Store: Class<TStore<TOutput, TInput>>,
@@ -91,42 +117,43 @@ export function createBaseStore<
 				setError<TState, { items: TOutput[] }>(set)(error, { items: [] });
 			}
 		},
-		async save(data: TInput, id?: number) {
-			const { store, status, items } = get();
+		async save(model: TInput, id?: KeyType) {
+			const { store, status } = get();
 
 			if (status === ApiCallStatus.Loading) {
 				return;
 			}
 
-			setLoading(set)();
+			setSubmitting(set)();
 
 			try {
-				const item = !id ? await store.create({ data }) : await store.update({ data }, id);
+				const isNew = !Number.isFinite(id);
+				const data = isNew ? { ...model, id: undefined } : model;
 
-				const index = items.findIndex(({ id }) => id === item.id);
+				isNew ? await store.create({ data }) : await store.update({ data }, id);
 
-				set(
-					(state) =>
-						void (index === -1 ? (state.items = [item, ...items]) : (state.items[index] = item),
+				set((state) =>
+					void (
 						(state.status = ApiCallStatus.Success),
-						(state.error = null))
+						(state.error = null)
+					)
 				);
 			} catch (error) {
 				setError(set)(error);
 			}
 		},
 		async remove(id: number) {
-			const { store, status, items } = get();
+			const { store, status } = get();
 
 			if (status === ApiCallStatus.Loading) {
 				return;
 			}
 
-			setLoading(set)();
+			setSubmitting(set)();
 
 			try {
 				await store.delete(null, id);
-				setSuccess<TState, { items: TOutput[] }>(set)({ items: items.filter((item) => item.id !== id) });
+				setSuccess<TState>(set)();
 			} catch (error) {
 				setError(set)(error);
 			}
@@ -160,24 +187,22 @@ export function createBaseStore<
 
 			try {
 				const filteredItems = await new Promise<TOutput[]>((resolve) => {
-					setTimeout(() => {
-						const response = items.filter((item) =>
-							Object.keys(filters)
-								.filter((key) => !!filters[key])
-								.every((key) => {
-									const { type, value } = filters[key];
-									switch (type) {
-										case FieldType.Text:
-											return item[key]?.toLowerCase().indexOf(value.toLowerCase()) > -1;
-										case FieldType.Array:
-											return Array.isArray(value) ? value.includes(item[key]) : false;
-										default:
-											return item[key] === value;
-									}
-								})
-						);
-						resolve(response);
-					}, 100);
+					const response = items.filter((item) =>
+						Object.keys(filters)
+							.filter((key) => !!filters[key])
+							.every((key) => {
+								const { type, value } = filters[key];
+								switch (type) {
+									case FieldType.Text:
+										return item[key]?.toLowerCase().indexOf(value.toLowerCase()) > -1;
+									case FieldType.Array:
+										return Array.isArray(value) ? value.includes(item[key]) : false;
+									default:
+										return item[key] === value;
+								}
+							})
+					);
+					resolve(response);
 				});
 
 				setSuccess<TState, { filteredItems: TOutput[] }>(set)({ filteredItems });

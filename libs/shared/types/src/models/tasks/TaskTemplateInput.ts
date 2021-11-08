@@ -1,6 +1,8 @@
 import { IBaseTask } from '../../interfaces';
-import { Frequencies } from '../../enums/Frequencies';
+import { Frequencies } from '../../enums';
+
 export class TaskTemplateInput implements IBaseTask {
+	id?: number;
 	name: string;
 	description?: string | null;
 	isActive: boolean | null;
@@ -8,4 +10,5 @@ export class TaskTemplateInput implements IBaseTask {
 	daysOfWeek: number | null;
 	rewardPoints: number | null;
 	frequencyId: Frequencies;
+	roomTypeId?: number;
 }

@@ -5,12 +5,11 @@ import {
 	OnGatewayConnection,
 	OnGatewayDisconnect,
 } from '@nestjs/websockets';
-import { forwardRef, Inject, Logger, UseGuards } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 import { JwtTokenService } from '@xapp/api/auth';
 import { IJwtPayload } from '@xapp/shared/types';
 
-import { SocketService } from './socket.service';
 import { WsGuard } from './ws.guard';
 
 interface SocketWithUserData extends Socket {
@@ -18,21 +17,17 @@ interface SocketWithUserData extends Socket {
 }
 
 @WebSocketGateway({ cors: true, transports: ['websocket'] })
-export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+export class BaseSocketGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 	@WebSocketServer()
 	public server: Server;
 	connectedUsers: Set<number> = new Set();
 	clients: Socket[] = [];
 	protected logger: Logger = new Logger();
 
-	constructor(
-		@Inject(forwardRef(() => SocketService))
-		protected readonly socketService: SocketService,
-		protected jwtService: JwtTokenService,
-	) {}
+	constructor(protected jwtService: JwtTokenService) {}
 
 	afterInit(server: Server) {
-		this.socketService.server = server;
+		// this.socketService.server = server;
 		this.logger.log('Init');
 	}
 
@@ -49,7 +44,6 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 			this.logger.log(`Client ${client.id} has been connected`);
 			this.clients.push(client);
 			this.connectedUsers.add(client.userData.id);
-			this.socketService.join(client);
 
 			client.emit('user:connected', { clientId: client.id });
 

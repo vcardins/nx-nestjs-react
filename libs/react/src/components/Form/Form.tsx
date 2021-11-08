@@ -8,6 +8,7 @@ import { FieldGroup } from './FieldSet';
 export const Form = styled(AjvForm)<{ padded: boolean }>`
 	padding: ${({ theme, padded }) => padded ? theme.spacing.normal : 0};
 	box-sizing: border-box;
+	height: 100%;
 
 	${FieldGroup} {
 		&:first-child { margin-top: 0 }

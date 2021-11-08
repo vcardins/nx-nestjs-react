@@ -1,4 +1,4 @@
-import { KeyType, IColumnInfo } from '@xapp/shared/types';
+import { KeyType, IColumnInfo, Operations } from '@xapp/shared/types';
 import { IAuthState, IApiCallState, StoreEventHandlers } from './';
 
 export interface IStoreState<TStore = any> extends IApiCallState {

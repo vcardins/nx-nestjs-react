@@ -103,10 +103,11 @@ export abstract class BaseService<T extends IBaseEntity> implements IBaseService
 		}
 	}
 
-	async delete(id: IdType): Promise<DeleteResult> {
+	async delete(id: IdType): Promise<{ id: IdType }> {
 		try {
-			const result = (await this.repository.delete(this.getId(id))) as DeleteResult;
-			this.afterDelete?.(id, result);
+			(await this.repository.delete(this.getId(id))) as DeleteResult;
+			const result = { id: Number(id) };
+			this.afterDelete?.(result);
 			return result;
 		}
 		catch (error) {
@@ -200,5 +201,5 @@ export abstract class BaseService<T extends IBaseEntity> implements IBaseService
 	afterCreate?(data: any): void;
 	afterUpdateOrCreate?(data: any): void;
 	afterUpdate?(data: any): void;
-	afterDelete?(id: IdType, data: DeleteResult): void;
+	afterDelete?(data: any): void;
 }

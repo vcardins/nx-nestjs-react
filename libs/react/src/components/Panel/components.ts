@@ -30,15 +30,15 @@ export const PanelActionsWrapper = styled.div`
 
 export const PanelBody = styled.main<{ padded: boolean; columns?: number; overflow?: CSSProperties['overflow']; }>`
 	grid-area: body;
-	display: grid;
-	grid-template-columns: ${({ columns = 1 }) => `repeat(${columns}, 1fr)`};
+	/* display: grid;
+	grid-template-columns: ${({ columns = 1 }) => `repeat(${columns}, 1fr)`}; */
 	${({ columns }) => columns && css`gap: 0.5em 1em;`};
 	padding: ${({ padded = false }) => padded ? '1em' : '0'};
 	overflow: ${({ overflow = 'auto' }) => overflow};
 `;
 export const PanelFooter = styled.div<{ padded: boolean }>`
 	grid-area: footer;
-	max-height: 60px;
+	min-height: 50px;
 	display: flex;
 	align-items: center;
 	${({ theme, padded }) => padded

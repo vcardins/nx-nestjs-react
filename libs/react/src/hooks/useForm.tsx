@@ -4,12 +4,13 @@ import { toast } from 'react-toastify';
 import { JSONSchema7 } from 'json-schema';
 
 import { FieldValidationError } from '@xapp/shared/exceptions';
+import { KeyType } from '@xapp/shared/types';
 
 export interface IUseFormProps<TInput, TTransformedInput = TInput> {
 	validationSchema?: JSONSchema7;
 	initialValues: TInput;
 	clearAfterSubmit?: boolean;
-	onSubmit: (data: TTransformedInput) => Promise<any>;
+	onSubmit: (data: TTransformedInput, itemId?: KeyType) => Promise<any>;
 	onBeforeSubmit?: (data: TInput) => TTransformedInput;
 	onSuccess?: () => void;
 }
@@ -19,7 +20,7 @@ interface IUseFormResponse<TInput> {
 	success: boolean;
 	errors?: FieldValidationError<TInput>['errors'];
 	data: TInput;
-	onSubmit: () => Promise<any>;
+	onSubmit: (itemId?: KeyType) => Promise<any>;
 	onReset: () => void;
 	onFieldChange: (
 		data: TInput,
@@ -81,11 +82,11 @@ export function useForm<TInput, TTransformedInput = TInput>(props: IUseFormProps
 		setFormData(isReplace ? (newData as TInput) : { ...data, ...newData });
 	};
 
-	const handleSubmit = async () => {
+	const handleSubmit = async (itemId?: KeyType) => {
 		setSubmitting(true);
 
 		try {
-			const response = await onSubmit(onBeforeSubmit(data) as TTransformedInput);
+			const response = await onSubmit(onBeforeSubmit(data) as TTransformedInput, itemId);
 
 			setSuccess(true);
 			onSuccess?.();

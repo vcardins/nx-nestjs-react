@@ -45,7 +45,7 @@ export const useHouseholdTask = ({
 	, [lookupState?.tasksTemplates, selectedRoom?.roomTypeId]);
 
 	const selectedTemplate = useMemo(() => (templates && templateId)
-		? templates.find(({ id }) => id === Number(templateId))
+		? templates.find(({ id }) => id === templateId)
 		: null
 	, [templateId, templates]);
 

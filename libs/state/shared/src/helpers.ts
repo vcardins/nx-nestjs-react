@@ -1,11 +1,12 @@
 import { SetState } from 'zustand';
 import { ApiCallStatus, IApiCallState } from '.';
 
-
 export const setLoading = <TState extends IApiCallState>(set: SetState<TState>) => () => {
-	set({
-		status: ApiCallStatus.Loading,
-	});
+	set({ status: ApiCallStatus.Loading });
+};
+
+export const setSubmitting= <TState extends IApiCallState>(set: SetState<TState>) => () => {
+	set({ status: ApiCallStatus.Submitting});
 };
 
 export const setError = <TState extends IApiCallState, TValues = Partial<TState>>(set: SetState<TState>) =>

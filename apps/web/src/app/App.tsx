@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { ToastContainer, Slide } from 'react-toastify';
-import { BrowserRouter as Router } from 'react-router-dom';
 
 import { Layout, Menu } from '@xapp/react';
 import { appConfig, getTheme } from '@xapp/shared/config';
@@ -69,7 +68,7 @@ function AppProviders (props: { children: React.ReactNode; routes: IKeyedRoute }
 	return (
 		<ThemeProvider theme={getTheme(appConfig.theme as Themes)}>
 			<AppContextProvider routes={props.routes}>
-				<Router>{props.children}</Router>
+				{props.children}
 			</AppContextProvider>
 		</ThemeProvider>
 	);

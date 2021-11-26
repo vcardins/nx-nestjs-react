@@ -2,6 +2,8 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
+
 import * as serviceWorker from './serviceWorker';
 
 import { App } from './app/App';
@@ -10,7 +12,11 @@ const ROOT_ELEMENT = document.getElementById('root') as HTMLElement;
 
 function render() {
 	// Let's bind the component to the tree through the `root` higher-order component
-	ReactDOM.render(<App />, ROOT_ELEMENT);
+	ReactDOM.render(
+		<Router>
+			<App />
+		</Router>
+	, ROOT_ELEMENT);
 }
 
 window.onload = render;

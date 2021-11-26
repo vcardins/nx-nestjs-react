@@ -1,7 +1,7 @@
 import { GetState, SetState, StateCreator, UseBoundStore } from 'zustand';
 
-import { ApiCallStatus, createStore, setError, setLoading, createBaseStore, ICrudState } from '@xapp/state/shared';
-import { HouseholdInput, HouseholdInvitationInput, HouseholdInvitationWelcome, HouseholdOutput, HouseholdMemberSignup, HouseholdRoomInput } from '@xapp/shared/types';
+import { ApiCallStatus, createStore, setError, setLoading, createBaseStore, updateAfterAction, ICrudState } from '@xapp/state/shared';
+import { Operations, HouseholdInput, HouseholdInvitationInput, HouseholdInvitationWelcome, HouseholdOutput, HouseholdMemberSignup, HouseholdRoomInput } from '@xapp/shared/types';
 
 import { HouseholdStore } from './HouseholdStore';
 
@@ -19,12 +19,12 @@ export const createHousehold: StateCreator<IHouseholdState> =
 		HouseholdStore,
 		{ store: new HouseholdStore() },
 		(set: SetState<IHouseholdState>, get: GetState<IHouseholdState>) => ({
-			getEventsListeners: (): Record<string, (arg: any) => void> => {
-				const options = get();
+			getEventsListeners: () => {
+				const action = updateAfterAction(set, get);
 				return {
-					'household:create': (data: any) => console.log('Household Create Event', data),
-					'household:update': (data: any) => console.log('Household Update Event', data),
-					'household:delete': (data: any) => console.log('Household Delete Event', data),
+					'household:create': (item: any) => action(Operations.Create, item),
+					'household:update': (item: any) => action(Operations.Update, item),
+					'household:delete': (item: any) => action(Operations.Delete, item),
 				};
 			},
 			getInvitation: async (invitationCode: string): Promise<void> => {

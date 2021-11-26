@@ -1,11 +1,12 @@
 /* eslint-disable no-param-reassign */
-import { State as ZustandState, StateCreator, SetState, GetState, StoreApi, Subscribe } from 'zustand';
-export function namespace<K extends string, T extends ZustandState>(
+import { State, StateCreator, SetState, GetState, StoreApi, Subscribe } from 'zustand';
+
+export const namespace = <K extends string, S extends State>(
 	key: K,
-	creator: StateCreator<T>,
-): (liftedSet: SetState<any>, liftedGet: GetState<any>, liftedApi: StoreApi<any>) => T {
-	return (liftedSet: SetState<any>, liftedGet: GetState<any>, liftedApi: StoreApi<any>) => {
-		const setState: any = (updates: any, replace?: boolean) => {
+	creator: StateCreator<S>,
+): (liftedSet: SetState<any>, liftedGet: GetState<any>, liftedApi: StoreApi<any>) => S =>
+	(liftedSet: SetState<any>, liftedGet: GetState<any>, liftedApi: StoreApi<any>) => {
+		const setState: any = (updates: S | ((data: S) => S), replace?: boolean) => {
 			liftedSet((liftedState: any) => {
 				if (typeof updates === 'function') {
 					updates = updates(liftedState[key]);
@@ -22,13 +23,13 @@ export function namespace<K extends string, T extends ZustandState>(
 				// };
 			}, replace);
 		};
-		const getState: GetState<T> = () => liftedGet()[key];
+		const getState: GetState<S> = () => liftedGet()[key];
 		const subscribe = ((listener: any, selector: any, equalityFn?: any) => {
 			if (selector) {
 				return liftedApi.subscribe(listener, (state: any) => selector(state[key]), equalityFn);
 			}
 			return liftedApi.subscribe(listener, (state: any) => state[key]);
-		}) as Subscribe<T>;
+		}) as Subscribe<S>;
 		const destroy = () => {
 			// todo?
 			// - remove state slice
@@ -37,5 +38,4 @@ export function namespace<K extends string, T extends ZustandState>(
 		const api = { getState, setState, subscribe, destroy };
 
 		return creator(setState, getState, api);
-	};
 }

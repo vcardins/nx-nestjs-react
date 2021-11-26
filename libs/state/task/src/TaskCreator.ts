@@ -1,7 +1,7 @@
 import { GetState, SetState, StateCreator, UseBoundStore } from 'zustand';
 
-import { createStore, createBaseStore, ICrudState } from '@xapp/state/shared';
-import { TaskInput, TaskOutput } from '@xapp/shared/types';
+import { createStore, createBaseStore, ICrudState, updateAfterAction } from '@xapp/state/shared';
+import { Operations, TaskInput, TaskOutput } from '@xapp/shared/types';
 
 import { TaskStore } from './TaskStore';
 
@@ -12,12 +12,12 @@ export const createTask: StateCreator<ITaskState> =
 		TaskStore,
 		{ store: new TaskStore() },
 		(set: SetState<ITaskState>, get: GetState<ITaskState>) => ({
-			getEventsListeners: (): Record<string, (arg: any) => void> => {
-				const options = get();
+			getEventsListeners: () => {
+				const action = updateAfterAction(set, get);
 				return {
-					'task:create': (data: any) => console.log('Task Create Event', data),
-					'task:update': (data: any) => console.log('Task Update Event', data),
-					'task:delete': (data: any) => console.log('Task Delete Event', data),
+					'task:create': (item: any) => action(Operations.Create, item),
+					'task:update': (item: any) => action(Operations.Update, item),
+					'task:delete': (item: any) => action(Operations.Delete, item),
 				};
 			},
 		})

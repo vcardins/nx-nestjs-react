@@ -1,8 +1,9 @@
+import create, { State, StateCreator, UseBoundStore } from 'zustand';
+import { devtools, persist } from 'zustand/middleware';
 
-import create from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { useImmer } from './middleware';
 
-import { useImmer } from './immer';
-
-export const createStore: typeof create = <TState = any>(fn: TState) => create(devtools(useImmer(fn)));
-
+export const createStore = <T extends State>(fn: StateCreator<T>, persistTag?: string, prefix?: string) =>
+	!persistTag
+		? create(devtools(useImmer(fn), prefix))
+		: create(devtools(persist(useImmer(fn), { name: persistTag }), prefix))

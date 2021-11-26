@@ -13,6 +13,7 @@ const data = {
 export const createSettings: StateCreator<ISettingsState> = (set, get, api) => ({
 	// store: null,
 	status: ApiCallStatus.Idle,
+	activeHousehold: null,
 	error: null,
 	...data,
 	init(): Promise<void> {

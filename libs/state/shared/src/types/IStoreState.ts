@@ -1,7 +1,9 @@
+import { State } from 'zustand';
+
 import { KeyType, IColumnInfo, Operations } from '@xapp/shared/types';
 import { IAuthState, IApiCallState, StoreEventHandlers } from './';
 
-export interface IStoreState<TStore = any> extends IApiCallState {
+export interface IStoreState<TStore extends State> extends IApiCallState {
 	store: TStore | null;
 	init: (authProps: IAuthState, eventsHandlers?: StoreEventHandlers) => Promise<void>;
 	reset?: () => void;

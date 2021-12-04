@@ -61,7 +61,7 @@ export const AppContextProvider: FC<IAppContextProviderProps> = ({ children, rou
 				await dataStore.lookup.read();
 			} else {
 				setNavigation([]);
-				dataStore.reset();
+				dataStore.account.reset();
 			}
 
 			ref.current = accessToken;
@@ -71,13 +71,13 @@ export const AppContextProvider: FC<IAppContextProviderProps> = ({ children, rou
 
 		return () => {
 			socket?.stop();
-			dataStore.reset();
+			dataStore.account.reset();
 		};
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		accessToken,
 		authHeader,
-		dataStore.reset,
+		dataStore.account.reset,
 		dataStore.account.getUserProfile,
 		dataStore.lookup.read,
 		dataStore.init,

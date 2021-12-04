@@ -1,5 +1,4 @@
 import { UseBoundStore } from 'zustand';
-import { Socket } from 'socket.io-client';
 
 import { INotifier, IAppConfig } from '@xapp/shared/types';
 import { createStore, namespace, Namespaces, IAuthState, StoreEventHandlers } from '@xapp/state/shared';
@@ -28,7 +27,6 @@ export type AppState = {
 		authState: IAuthState,
 		eventsHandler?: StoreEventHandlers,
 	) => Promise<void>;
-	reset: () => void;
 };
 
 export const useAppStore: UseBoundStore<AppState> = createStore((set, get, api) => {
@@ -66,7 +64,6 @@ export const useAppStore: UseBoundStore<AppState> = createStore((set, get, api) 
 		auth,
 		account,
 		household,
-		reset: account.reset,
 		settings,
 		task,
 		taskTemplate,

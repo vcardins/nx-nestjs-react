@@ -72,7 +72,7 @@ export class SocketService<I extends Record<string, any>> implements IRealTimeSe
 	}
 
 	stop = () => {
-		this.socket.removeAllListeners();
+		this.socket?.removeAllListeners();
 		if (--this.connections[this.connectionKey] === 0) {
 			const socketsToClose = Object.keys(this.sockets).filter((key) => key.includes(this.connectionKey));
 

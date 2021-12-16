@@ -581,7 +581,7 @@
 			"schematics": {},
 			"architect": {
 				"build": {
-					"builder": "@nrwl/web:build",
+					"builder": "@nrwl/web:webpack",
 					"options": {
 						"outputPath": "dist/apps/web",
 						"index": "apps/web/src/index.html",

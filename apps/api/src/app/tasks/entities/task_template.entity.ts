@@ -25,6 +25,9 @@ export class TaskTemplate extends BaseTask {
 	@JoinColumn([{ name: 'frequency_id', referencedColumnName: 'id' }])
 	frequency: Frequency;
 
+	@Column({ name: 'room_type_id', nullable: true })
+	roomTypeId?: number;
+
 	@OneToMany(() => Task, ({ template }) => template, { onDelete: 'CASCADE' })
 	tasks: Task[];
 

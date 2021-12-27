@@ -89,7 +89,7 @@ const baseOrmConfig: Partial<ConnectionOptions> = {
 const ormConfig: Partial<ConnectionOptions> = connectionString.protocol === 'sqlite'
 	? {
 		type,
-		database: `${connectionString.hosts?.[0]?.name ?? '' }/${ connectionString.path?.[0] ?? '' }` as DatabaseType,
+		database: `${connectionString.hosts?.[0]?.name ?? '' }/${ connectionString.path?.[0] ?? '' }`,
 		...baseOrmConfig,
 	}
 	: {

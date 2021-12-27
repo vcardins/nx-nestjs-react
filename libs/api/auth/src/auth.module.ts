@@ -73,18 +73,18 @@ export class AuthModule implements NestModule {
 	public configure(consumer: MiddlewareConsumer) {
 		const options = { session: false, passReqToCallback: true };
 
-		consumer
-			.apply(authenticate('signup', options))
-			.forRoutes('api/auth/signup');
-		consumer
-			.apply(authenticate('signin', options))
-			.forRoutes('api/auth/signin');
+		// consumer
+		// 	.apply(authenticate('signup', options))
+		// 	.forRoutes('api/auth/signup');
+		// consumer
+		// 	.apply(authenticate('signin', options))
+		// 	.forRoutes('api/auth/signin');
 
-		Object.keys(OAuthProvider).forEach((providerKey) => {
-			const provider = OAuthProvider[providerKey];
-			consumer
-				.apply(authenticate(provider, options))
-				.forRoutes(`api/auth/${provider}/token`);
-		});
+		// Object.keys(OAuthProvider).forEach((providerKey) => {
+		// 	const provider = OAuthProvider[providerKey];
+		// 	consumer
+		// 		.apply(authenticate(provider, options))
+		// 		.forRoutes(`api/auth/${provider}/token`);
+		// });
 	}
 }

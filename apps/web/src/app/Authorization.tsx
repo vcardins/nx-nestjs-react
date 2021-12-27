@@ -36,8 +36,12 @@ interface IState {
 	pathname?: string;
 }
 
+interface CustomLocation extends Location {
+	state: IState;
+}
+
 export const Authorization = ({ children, routes }: IAuthorizationProps) => {
-	const location = useLocation() as Location;
+	const location = useLocation() as CustomLocation;
 	const navigate = useNavigate();
 	const { user, isSessionValid, onSignOut } = useAppStore((state) => state.auth);
 	const isPrivatePage = ![
